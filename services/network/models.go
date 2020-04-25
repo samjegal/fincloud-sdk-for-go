@@ -548,7 +548,7 @@ type RouteTableSearchListParameter struct {
 type RouteTableSearchParameter struct {
 	// Filter - Route Table 검색 필터 리스트
 	Filter *[]RouteTableSearchFilterParameter `json:"filter,omitempty"`
-	// PageNo - 검색할 Route Table 페이지 번���
+	// PageNo - 검색��� Route Table 페이지 번호
 	PageNo *int32 `json:"pageNo,omitempty"`
 	// PageSizeNo - 한 페이지에 나올 Route Table 개수
 	PageSizeNo *int32 `json:"pageSizeNo,omitempty"`
