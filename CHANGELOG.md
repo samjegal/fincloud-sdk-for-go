@@ -1,3 +1,15 @@
+## 1.2.0 (April 26, 2020)
+
+### NEW SERVICES
+
+- Cloud Insight
+
+### UPDATED SERVICES
+
+- Compute
+  - Login Key
+- Cloude Outbound Mailer
+
 ## 1.1.0 (April 26, 2020)
 
 ### NEW SERVICES
