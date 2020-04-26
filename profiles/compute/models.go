@@ -140,7 +140,6 @@ type LoginKeyClient = original.LoginKeyClient
 type LoginKeyContentParameter = original.LoginKeyContentParameter
 type LoginKeyContentProperties = original.LoginKeyContentProperties
 type LoginKeyListParameter = original.LoginKeyListParameter
-type LoginKeysClient = original.LoginKeysClient
 type NetworkInterfaceAttachableContentParameter = original.NetworkInterfaceAttachableContentParameter
 type NetworkInterfaceAttachableListParameter = original.NetworkInterfaceAttachableListParameter
 type NetworkInterfaceAttachableListProperties = original.NetworkInterfaceAttachableListProperties
@@ -236,12 +235,6 @@ func NewLoginKeyClient() LoginKeyClient {
 }
 func NewLoginKeyClientWithBaseURI(baseURI string) LoginKeyClient {
 	return original.NewLoginKeyClientWithBaseURI(baseURI)
-}
-func NewLoginKeysClient() LoginKeysClient {
-	return original.NewLoginKeysClient()
-}
-func NewLoginKeysClientWithBaseURI(baseURI string) LoginKeysClient {
-	return original.NewLoginKeysClientWithBaseURI(baseURI)
 }
 func NewNetworkInterfaceClient() NetworkInterfaceClient {
 	return original.NewNetworkInterfaceClient()

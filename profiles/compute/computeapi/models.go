@@ -23,7 +23,6 @@ type BlockStorageClientAPI = original.BlockStorageClientAPI
 type InboundRuleClientAPI = original.InboundRuleClientAPI
 type InitScriptClientAPI = original.InitScriptClientAPI
 type LoginKeyClientAPI = original.LoginKeyClientAPI
-type LoginKeysClientAPI = original.LoginKeysClientAPI
 type NetworkInterfaceClientAPI = original.NetworkInterfaceClientAPI
 type OutboundRuleClientAPI = original.OutboundRuleClientAPI
 type PublicIPAddressClientAPI = original.PublicIPAddressClientAPI
