@@ -19,4 +19,7 @@ package outboundmailerapi
 
 import original "github.com/samjegal/fincloud-sdk-for-go/services/outboundmailer/outboundmailerapi"
 
+type AddressBookClientAPI = original.AddressBookClientAPI
+type FileClientAPI = original.FileClientAPI
 type MailClientAPI = original.MailClientAPI
+type UnsubscriberClientAPI = original.UnsubscriberClientAPI

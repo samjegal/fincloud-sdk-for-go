@@ -23,22 +23,75 @@ const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
+type AddressBookClient = original.AddressBookClient
+type AddressBookDeleteAddressRequest = original.AddressBookDeleteAddressRequest
+type AddressBookDeleteRelationRequest = original.AddressBookDeleteRelationRequest
+type AddressBookGenerateRequest = original.AddressBookGenerateRequest
+type AddressBookGenerateRequestGroupsItem = original.AddressBookGenerateRequestGroupsItem
+type AddressBookInitResponse = original.AddressBookInitResponse
+type AddressBookResponse = original.AddressBookResponse
+type AddressBookResponseGroupsItem = original.AddressBookResponseGroupsItem
 type BaseClient = original.BaseClient
+type EmailListResponse = original.EmailListResponse
+type EmailListResponseContentItem = original.EmailListResponseContentItem
+type EmailListResponseContentItemEmailStatus = original.EmailListResponseContentItemEmailStatus
+type EmailListResponseContentItemReservationStatus = original.EmailListResponseContentItemReservationStatus
+type EmailListResponseSortItem = original.EmailListResponseSortItem
+type EmailResponse = original.EmailResponse
+type EmailResponseAttachFilesItem = original.EmailResponseAttachFilesItem
+type EmailResponseEmailStatus = original.EmailResponseEmailStatus
+type EmailResponseRecipientsItem = original.EmailResponseRecipientsItem
+type EmailResponseRecipientsItemStatus = original.EmailResponseRecipientsItemStatus
+type EmailResponseRecipientsItemType = original.EmailResponseRecipientsItemType
+type EmailSendListResponse = original.EmailSendListResponse
+type EmailSendListResponseContentItem = original.EmailSendListResponseContentItem
+type EmailSendListResponseContentItemEmailStatus = original.EmailSendListResponseContentItemEmailStatus
+type EmailSendListResponseSortItem = original.EmailSendListResponseSortItem
+type ErrorResponse = original.ErrorResponse
+type ErrorResponseError = original.ErrorResponseError
+type FileClient = original.FileClient
+type FileUploadResponse = original.FileUploadResponse
+type FileUploadResponseFilesItem = original.FileUploadResponseFilesItem
 type MailClient = original.MailClient
+type MailRequestParameter = original.MailRequestParameter
+type MailResponseParameter = original.MailResponseParameter
+type NesDateTime = original.NesDateTime
 type RecipientForRequest = original.RecipientForRequest
 type RecipientForRequestParameters = original.RecipientForRequestParameters
 type RecipientGroupFilter = original.RecipientGroupFilter
-type RequestParameter = original.RequestParameter
-type ResponseParameter = original.ResponseParameter
+type SetObject = original.SetObject
+type UnsubscribeListResponse = original.UnsubscribeListResponse
+type UnsubscribeListResponseContentItem = original.UnsubscribeListResponseContentItem
+type UnsubscribeListResponseContentItemBlockDate = original.UnsubscribeListResponseContentItemBlockDate
+type UnsubscribeListResponseSortItem = original.UnsubscribeListResponseSortItem
+type UnsubscriberClient = original.UnsubscriberClient
 
 func New() BaseClient {
 	return original.New()
+}
+func NewAddressBookClient() AddressBookClient {
+	return original.NewAddressBookClient()
+}
+func NewAddressBookClientWithBaseURI(baseURI string) AddressBookClient {
+	return original.NewAddressBookClientWithBaseURI(baseURI)
+}
+func NewFileClient() FileClient {
+	return original.NewFileClient()
+}
+func NewFileClientWithBaseURI(baseURI string) FileClient {
+	return original.NewFileClientWithBaseURI(baseURI)
 }
 func NewMailClient() MailClient {
 	return original.NewMailClient()
 }
 func NewMailClientWithBaseURI(baseURI string) MailClient {
 	return original.NewMailClientWithBaseURI(baseURI)
+}
+func NewUnsubscriberClient() UnsubscriberClient {
+	return original.NewUnsubscriberClient()
+}
+func NewUnsubscriberClientWithBaseURI(baseURI string) UnsubscriberClient {
+	return original.NewUnsubscriberClientWithBaseURI(baseURI)
 }
 func NewWithBaseURI(baseURI string) BaseClient {
 	return original.NewWithBaseURI(baseURI)
