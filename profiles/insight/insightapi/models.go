@@ -19,6 +19,7 @@ package insightapi
 
 import original "github.com/samjegal/fincloud-sdk-for-go/services/insight/insightapi"
 
+type CollectorClientAPI = original.CollectorClientAPI
 type DataClientAPI = original.DataClientAPI
 type EventClientAPI = original.EventClientAPI
 type RuleClientAPI = original.RuleClientAPI

@@ -23,15 +23,70 @@ const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
+type AggregationType = original.AggregationType
+
+const (
+	AVG   AggregationType = original.AVG
+	COUNT AggregationType = original.COUNT
+	MAX   AggregationType = original.MAX
+	MIN   AggregationType = original.MIN
+	SUM   AggregationType = original.SUM
+)
+
+type QueryAggregationType = original.QueryAggregationType
+
+const (
+	QueryAggregationTypeAVG   QueryAggregationType = original.QueryAggregationTypeAVG
+	QueryAggregationTypeCOUNT QueryAggregationType = original.QueryAggregationTypeCOUNT
+	QueryAggregationTypeFIRST QueryAggregationType = original.QueryAggregationTypeFIRST
+	QueryAggregationTypeLAST  QueryAggregationType = original.QueryAggregationTypeLAST
+	QueryAggregationTypeMAX   QueryAggregationType = original.QueryAggregationTypeMAX
+	QueryAggregationTypeMIN   QueryAggregationType = original.QueryAggregationTypeMIN
+	QueryAggregationTypeMULT  QueryAggregationType = original.QueryAggregationTypeMULT
+	QueryAggregationTypeNONE  QueryAggregationType = original.QueryAggregationTypeNONE
+	QueryAggregationTypeSUM   QueryAggregationType = original.QueryAggregationTypeSUM
+)
+
+type QueryIntervalTime = original.QueryIntervalTime
+
+const (
+	DAY1  QueryIntervalTime = original.DAY1
+	HOUR2 QueryIntervalTime = original.HOUR2
+	MIN1  QueryIntervalTime = original.MIN1
+	MIN30 QueryIntervalTime = original.MIN30
+	MIN5  QueryIntervalTime = original.MIN5
+)
+
+type SchemaDataType = original.SchemaDataType
+
+const (
+	FLOAT   SchemaDataType = original.FLOAT
+	INTEGER SchemaDataType = original.INTEGER
+	LONG    SchemaDataType = original.LONG
+	STRING  SchemaDataType = original.STRING
+)
+
 type BaseClient = original.BaseClient
+type CloudInsightCollectorParameter = original.CloudInsightCollectorParameter
+type CloudInsightQueryParameter = original.CloudInsightQueryParameter
+type CloudInsightSchemaFieldsParameter = original.CloudInsightSchemaFieldsParameter
+type CloudInsightSchemaParameter = original.CloudInsightSchemaParameter
+type CollectorClient = original.CollectorClient
 type DataClient = original.DataClient
 type EventClient = original.EventClient
+type ListListFloat64 = original.ListListFloat64
 type RuleClient = original.RuleClient
 type SchemaClient = original.SchemaClient
 type ServerClient = original.ServerClient
 
 func New() BaseClient {
 	return original.New()
+}
+func NewCollectorClient() CollectorClient {
+	return original.NewCollectorClient()
+}
+func NewCollectorClientWithBaseURI(baseURI string) CollectorClient {
+	return original.NewCollectorClientWithBaseURI(baseURI)
 }
 func NewDataClient() DataClient {
 	return original.NewDataClient()
@@ -65,6 +120,18 @@ func NewServerClientWithBaseURI(baseURI string) ServerClient {
 }
 func NewWithBaseURI(baseURI string) BaseClient {
 	return original.NewWithBaseURI(baseURI)
+}
+func PossibleAggregationTypeValues() []AggregationType {
+	return original.PossibleAggregationTypeValues()
+}
+func PossibleQueryAggregationTypeValues() []QueryAggregationType {
+	return original.PossibleQueryAggregationTypeValues()
+}
+func PossibleQueryIntervalTimeValues() []QueryIntervalTime {
+	return original.PossibleQueryIntervalTimeValues()
+}
+func PossibleSchemaDataTypeValues() []SchemaDataType {
+	return original.PossibleSchemaDataTypeValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"
