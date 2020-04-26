@@ -1,3 +1,15 @@
+## 1.1.0 (April 26, 2020)
+
+### NEW SERVICES
+
+- SSL VPN
+
+### UPDATED SERVICES
+
+- Network
+  - Route Table
+  - NAT Gateway
+
 ## 1.0.0 (April 21, 2020)
 
 ### NEW SERVICES
