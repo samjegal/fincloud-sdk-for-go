@@ -68,7 +68,7 @@ type ContentParameter struct {
 // LimitUserCountParameter ...
 type LimitUserCountParameter struct {
 	// UserCountLimitation - 사용자 등록 가능 수
-	UserCountLimitation *string `json:"userCountLimitation,omitempty"`
+	UserCountLimitation *int32 `json:"userCountLimitation,omitempty"`
 }
 
 // Parameter ...

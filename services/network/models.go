@@ -548,14 +548,53 @@ type RouteTableSearchListParameter struct {
 type RouteTableSearchParameter struct {
 	// Filter - Route Table 검색 필터 리스트
 	Filter *[]RouteTableSearchFilterParameter `json:"filter,omitempty"`
-	// PageNo - 검색��� Route Table 페이지 번호
+	// PageNo - 검색할 Route Table 페이지 번호
 	PageNo *int32 `json:"pageNo,omitempty"`
 	// PageSizeNo - 한 페이지에 나올 Route Table 개수
 	PageSizeNo *int32 `json:"pageSizeNo,omitempty"`
 }
 
-// RouteTableUpdateSubnetParameter ...
-type RouteTableUpdateSubnetParameter struct {
+// RouteTableSubnetListContentParameter ...
+type RouteTableSubnetListContentParameter struct {
+	// Disabled - 서브넷 해제 여부
+	Disabled *bool `json:"disabled,omitempty"`
+	// VpcNo - VPC 번호
+	VpcNo *string `json:"vpcNo,omitempty"`
+	// ZoneNo - Zone 번호
+	ZoneNo *int32 `json:"zoneNo,omitempty"`
+	// SubnetNo - Subnet 번호
+	SubnetNo *string `json:"subnetNo,omitempty"`
+	// SubnetName - Subnet 이름
+	SubnetName *string `json:"subnetName,omitempty"`
+	// Subnet - Subnet CIDR
+	Subnet *string `json:"subnet,omitempty"`
+	// Gateway - Subnet Gateway IP 주소
+	Gateway *string `json:"gateway,omitempty"`
+	// DNS1 - DNS1 IP 주소
+	DNS1 *string `json:"dns1,omitempty"`
+	// DNS2 - DNS2 IP 주소
+	DNS2 *string `json:"dns2,omitempty"`
+	// IgwYn - 인터넷 사용여부
+	IgwYn *string `json:"igwYn,omitempty"`
+	// StatusCode - Subnet 상태 코드. Possible values include: 'SubnetStatusCodeCREATING', 'SubnetStatusCodeRUN', 'SubnetStatusCodeTERMTING'
+	StatusCode SubnetStatusCode `json:"statusCode,omitempty"`
+	// StatusName - Subnet 상태 이름
+	StatusName *string `json:"statusName,omitempty"`
+}
+
+// RouteTableSubnetListParameter ...
+type RouteTableSubnetListParameter struct {
+	autorest.Response `json:"-"`
+	// Content - Route Table 연관 서브넷 컨텐츠 리스트
+	Content *[]RouteTableSubnetListContentParameter `json:"content,omitempty"`
+	// Total - 전체 Route Table 개수
+	Total *int32 `json:"total,omitempty"`
+	// UserRequestID - Route Table UUID
+	UserRequestID *string `json:"userRequestId,omitempty"`
+}
+
+// RouteTableSubnetParameter ...
+type RouteTableSubnetParameter struct {
 	// RouteTableNo - Route Table 번호
 	RouteTableNo *int32 `json:"routeTableNo,omitempty"`
 	// VpcNo - VPC 번호

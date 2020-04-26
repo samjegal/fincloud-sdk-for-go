@@ -76,7 +76,14 @@ type RouteTableClientAPI interface {
 	IsSetted(ctx context.Context) (result network.RouteTableIsSettedParameter, err error)
 	List(ctx context.Context, parameters network.RouteTableSearchParameter) (result network.RouteTableSearchListParameter, err error)
 	Update(ctx context.Context, routeTableNo string, parameters network.RouteTableRuleParameter) (result autorest.Response, err error)
-	UpdateSubnet(ctx context.Context, routeTableNo string, parameters network.RouteTableUpdateSubnetParameter) (result autorest.Response, err error)
 }
 
 var _ RouteTableClientAPI = (*network.RouteTableClient)(nil)
+
+// RouteTableSubnetClientAPI contains the set of methods on the RouteTableSubnetClient type.
+type RouteTableSubnetClientAPI interface {
+	List(ctx context.Context, routeTableNo string) (result network.RouteTableSubnetListParameter, err error)
+	Update(ctx context.Context, routeTableNo string, parameters network.RouteTableSubnetParameter) (result autorest.Response, err error)
+}
+
+var _ RouteTableSubnetClientAPI = (*network.RouteTableSubnetClient)(nil)

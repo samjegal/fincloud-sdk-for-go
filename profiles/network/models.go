@@ -125,7 +125,10 @@ type RouteTableSearchContentParameter = original.RouteTableSearchContentParamete
 type RouteTableSearchFilterParameter = original.RouteTableSearchFilterParameter
 type RouteTableSearchListParameter = original.RouteTableSearchListParameter
 type RouteTableSearchParameter = original.RouteTableSearchParameter
-type RouteTableUpdateSubnetParameter = original.RouteTableUpdateSubnetParameter
+type RouteTableSubnetClient = original.RouteTableSubnetClient
+type RouteTableSubnetListContentParameter = original.RouteTableSubnetListContentParameter
+type RouteTableSubnetListParameter = original.RouteTableSubnetListParameter
+type RouteTableSubnetParameter = original.RouteTableSubnetParameter
 type RuleClient = original.RuleClient
 type SubnetClient = original.SubnetClient
 type SubnetParameter = original.SubnetParameter
@@ -170,6 +173,12 @@ func NewRouteTableClient() RouteTableClient {
 }
 func NewRouteTableClientWithBaseURI(baseURI string) RouteTableClient {
 	return original.NewRouteTableClientWithBaseURI(baseURI)
+}
+func NewRouteTableSubnetClient() RouteTableSubnetClient {
+	return original.NewRouteTableSubnetClient()
+}
+func NewRouteTableSubnetClientWithBaseURI(baseURI string) RouteTableSubnetClient {
+	return original.NewRouteTableSubnetClientWithBaseURI(baseURI)
 }
 func NewRuleClient() RuleClient {
 	return original.NewRuleClient()
