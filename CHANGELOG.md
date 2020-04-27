@@ -1,3 +1,11 @@
+## 1.2.1 (April 27, 2020)
+
+### UPDATED SERVICES
+
+- SENS
+  - Push
+  - AlimTalk
+
 ## 1.2.0 (April 26, 2020)
 
 ### NEW SERVICES
