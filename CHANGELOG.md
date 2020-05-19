@@ -1,3 +1,10 @@
+## 1.2.2 (May 19, 2020)
+
+### UPDATED SERVICES
+
+- SENS
+- Cloud Insight
+
 ## 1.2.1 (April 27, 2020)
 
 ### UPDATED SERVICES
