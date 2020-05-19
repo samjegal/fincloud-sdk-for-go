@@ -107,6 +107,22 @@ type CloudInsightCollectorParameter struct {
 	CwKey *string `json:"cw_key,omitempty"`
 }
 
+// CloudInsightDimensionParameter ...
+type CloudInsightDimensionParameter struct {
+	// Type - Dimension 타입
+	Type *string `json:"type,omitempty"`
+	// InstanceNo - 서버 인스턴스
+	InstanceNo *string `json:"instanceNo,omitempty"`
+	// CPUIdx - CPU 인덱스
+	CPUIdx *int32 `json:"cpu_idx,omitempty"`
+	// DiskIdx - 디스크 인덱스
+	DiskIdx *string `json:"disk_idx,omitempty"`
+	// MntNm - 파일시스템 마운트 정보
+	MntNm *string `json:"mnt_nm,omitempty"`
+	// NicDesc - 네트워크 인터페이스 정보
+	NicDesc *string `json:"nic_desc,omitempty"`
+}
+
 // CloudInsightQueryParameter ...
 type CloudInsightQueryParameter struct {
 	// TimeEnd - 마지막 조회 시간
@@ -126,7 +142,7 @@ type CloudInsightQueryParameter struct {
 	// ProductName - Product 이름
 	ProductName *string `json:"productName,omitempty"`
 	// Dimensions - Query Dimension 데이터
-	Dimensions interface{} `json:"dimensions,omitempty"`
+	Dimensions *CloudInsightDimensionParameter `json:"dimensions,omitempty"`
 }
 
 // CloudInsightSchemaFieldsParameter ...

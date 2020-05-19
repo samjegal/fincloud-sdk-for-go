@@ -68,6 +68,7 @@ const (
 
 type BaseClient = original.BaseClient
 type CloudInsightCollectorParameter = original.CloudInsightCollectorParameter
+type CloudInsightDimensionParameter = original.CloudInsightDimensionParameter
 type CloudInsightQueryParameter = original.CloudInsightQueryParameter
 type CloudInsightSchemaFieldsParameter = original.CloudInsightSchemaFieldsParameter
 type CloudInsightSchemaParameter = original.CloudInsightSchemaParameter
