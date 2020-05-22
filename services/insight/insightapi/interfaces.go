@@ -12,7 +12,7 @@ import (
 type DataClientAPI interface {
 	Preview(ctx context.Context) (result autorest.Response, err error)
 	Query(ctx context.Context, parameters insight.CloudInsightQueryParameter) (result insight.ListListFloat64, err error)
-	QueryMultiple(ctx context.Context) (result autorest.Response, err error)
+	QueryMultiple(ctx context.Context, parameters insight.CloudInsightQueryMultipleParameter) (result insight.ListCloudInsightDataInfoParameter, err error)
 }
 
 var _ DataClientAPI = (*insight.DataClient)(nil)

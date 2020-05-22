@@ -68,13 +68,17 @@ const (
 
 type BaseClient = original.BaseClient
 type CloudInsightCollectorParameter = original.CloudInsightCollectorParameter
+type CloudInsightDataInfoParameter = original.CloudInsightDataInfoParameter
 type CloudInsightDimensionParameter = original.CloudInsightDimensionParameter
+type CloudInsightMetricInfoParameter = original.CloudInsightMetricInfoParameter
+type CloudInsightQueryMultipleParameter = original.CloudInsightQueryMultipleParameter
 type CloudInsightQueryParameter = original.CloudInsightQueryParameter
 type CloudInsightSchemaFieldsParameter = original.CloudInsightSchemaFieldsParameter
 type CloudInsightSchemaParameter = original.CloudInsightSchemaParameter
 type CollectorClient = original.CollectorClient
 type DataClient = original.DataClient
 type EventClient = original.EventClient
+type ListCloudInsightDataInfoParameter = original.ListCloudInsightDataInfoParameter
 type ListListFloat64 = original.ListListFloat64
 type RuleClient = original.RuleClient
 type SchemaClient = original.SchemaClient

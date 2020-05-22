@@ -107,6 +107,21 @@ type CloudInsightCollectorParameter struct {
 	CwKey *string `json:"cw_key,omitempty"`
 }
 
+// CloudInsightDataInfoParameter ...
+type CloudInsightDataInfoParameter struct {
+	// Aggregation - 일괄 처리. Possible values include: 'MIN', 'MAX', 'SUM', 'COUNT', 'AVG'
+	Aggregation AggregationType `json:"aggregation,omitempty"`
+	// Dimensions - Query Dimension 데이터
+	Dimensions *CloudInsightDimensionParameter `json:"dimensions,omitempty"`
+	Dps        *[][]float64                    `json:"dps,omitempty"`
+	// Interval - 조회 시간 간격. Possible values include: 'MIN1', 'MIN5', 'MIN30', 'HOUR2', 'DAY1'
+	Interval QueryIntervalTime `json:"interval,omitempty"`
+	// Metric - Metric 이름
+	Metric *string `json:"metric,omitempty"`
+	// ProductName - Product 이름
+	ProductName *string `json:"productName,omitempty"`
+}
+
 // CloudInsightDimensionParameter ...
 type CloudInsightDimensionParameter struct {
 	// Type - Dimension 타입
@@ -121,6 +136,34 @@ type CloudInsightDimensionParameter struct {
 	MntNm *string `json:"mnt_nm,omitempty"`
 	// NicDesc - 네트워크 인터페이스 정보
 	NicDesc *string `json:"nic_desc,omitempty"`
+}
+
+// CloudInsightMetricInfoParameter ...
+type CloudInsightMetricInfoParameter struct {
+	// Prodkey - Schema 생성시 발급받은 키
+	Prodkey *string `json:"prodkey,omitempty"`
+	// ProductName - Product 이름
+	ProductName *string `json:"productName,omitempty"`
+	// Metric - Metric 이름
+	Metric *string `json:"metric,omitempty"`
+	// Interval - 조회 시간 간격. Possible values include: 'MIN1', 'MIN5', 'MIN30', 'HOUR2', 'DAY1'
+	Interval QueryIntervalTime `json:"interval,omitempty"`
+	// Aggregation - 일괄 처리. Possible values include: 'MIN', 'MAX', 'SUM', 'COUNT', 'AVG'
+	Aggregation AggregationType `json:"aggregation,omitempty"`
+	// QueryAggregation - Query 일괄 처리. Possible values include: 'QueryAggregationTypeAVG', 'QueryAggregationTypeCOUNT', 'QueryAggregationTypeMIN', 'QueryAggregationTypeMAX', 'QueryAggregationTypeNONE', 'QueryAggregationTypeSUM', 'QueryAggregationTypeFIRST', 'QueryAggregationTypeLAST', 'QueryAggregationTypeMULT'
+	QueryAggregation QueryAggregationType `json:"queryAggregation,omitempty"`
+	// Dimensions - Query Dimension 데이터
+	Dimensions *CloudInsightDimensionParameter `json:"dimensions,omitempty"`
+}
+
+// CloudInsightQueryMultipleParameter ...
+type CloudInsightQueryMultipleParameter struct {
+	// MetricInfoList - 요청할 Metric 정보
+	MetricInfoList *[]CloudInsightMetricInfoParameter `json:"metricInfoList,omitempty"`
+	// TimeStart - 최초 조회 시간
+	TimeStart *float64 `json:"timeStart,omitempty"`
+	// TimeEnd - 마지막 조회 시간
+	TimeEnd *float64 `json:"timeEnd,omitempty"`
 }
 
 // CloudInsightQueryParameter ...
@@ -167,6 +210,12 @@ type CloudInsightSchemaParameter struct {
 	ProdName *string `json:"prodName,omitempty"`
 	// Fields - Metric 필드 정의
 	Fields *[]CloudInsightSchemaFieldsParameter `json:"fields,omitempty"`
+}
+
+// ListCloudInsightDataInfoParameter ...
+type ListCloudInsightDataInfoParameter struct {
+	autorest.Response `json:"-"`
+	Value             *[]CloudInsightDataInfoParameter `json:"value,omitempty"`
 }
 
 // ListListFloat64 ...

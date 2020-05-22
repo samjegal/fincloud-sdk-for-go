@@ -153,18 +153,20 @@ func (client DataClient) QueryResponder(resp *http.Response) (result ListListFlo
 }
 
 // QueryMultiple query multiple metric data for a specific product with specified criteria
-func (client DataClient) QueryMultiple(ctx context.Context) (result autorest.Response, err error) {
+// Parameters:
+// parameters - cloud Insight Custom 메트릭 데이터
+func (client DataClient) QueryMultiple(ctx context.Context, parameters CloudInsightQueryMultipleParameter) (result ListCloudInsightDataInfoParameter, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DataClient.QueryMultiple")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.QueryMultiplePreparer(ctx)
+	req, err := client.QueryMultiplePreparer(ctx, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "insight.DataClient", "QueryMultiple", nil, "Failure preparing request")
 		return
@@ -172,7 +174,7 @@ func (client DataClient) QueryMultiple(ctx context.Context) (result autorest.Res
 
 	resp, err := client.QueryMultipleSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "insight.DataClient", "QueryMultiple", resp, "Failure sending request")
 		return
 	}
@@ -186,11 +188,13 @@ func (client DataClient) QueryMultiple(ctx context.Context) (result autorest.Res
 }
 
 // QueryMultiplePreparer prepares the QueryMultiple request.
-func (client DataClient) QueryMultiplePreparer(ctx context.Context) (*http.Request, error) {
+func (client DataClient) QueryMultiplePreparer(ctx context.Context, parameters CloudInsightQueryMultipleParameter) (*http.Request, error) {
 	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/cw_fea/real/cw/api/data/query/multiple"))
+		autorest.WithPath("/cw_fea/real/cw/api/data/query/multiple"),
+		autorest.WithJSON(parameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -203,12 +207,13 @@ func (client DataClient) QueryMultipleSender(req *http.Request) (*http.Response,
 
 // QueryMultipleResponder handles the response to the QueryMultiple request. The method always
 // closes the http.Response Body.
-func (client DataClient) QueryMultipleResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client DataClient) QueryMultipleResponder(resp *http.Response) (result ListCloudInsightDataInfoParameter, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
