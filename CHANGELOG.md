@@ -1,3 +1,9 @@
+## 1.3.0 (May 22, 2020)
+
+### UPDATED SERVICES
+
+- Cloud Insight (QueryDataMultiple)
+
 ## 1.2.2 (May 19, 2020)
 
 ### UPDATED SERVICES
