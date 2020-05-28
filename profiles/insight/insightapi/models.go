@@ -22,6 +22,8 @@ import original "github.com/samjegal/fincloud-sdk-for-go/services/insight/insigh
 type CollectorClientAPI = original.CollectorClientAPI
 type DataClientAPI = original.DataClientAPI
 type EventClientAPI = original.EventClientAPI
+type PortPluginClientAPI = original.PortPluginClientAPI
+type ProcessPluginClientAPI = original.ProcessPluginClientAPI
 type RuleClientAPI = original.RuleClientAPI
 type SchemaClientAPI = original.SchemaClientAPI
 type ServerClientAPI = original.ServerClientAPI

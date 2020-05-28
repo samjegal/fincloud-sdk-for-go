@@ -33,6 +33,22 @@ const (
 	SUM   AggregationType = original.SUM
 )
 
+type DimensionType = original.DimensionType
+
+const (
+	Agent         DimensionType = original.Agent
+	CPU           DimensionType = original.CPU
+	Disk          DimensionType = original.Disk
+	Filesystem    DimensionType = original.Filesystem
+	Memory        DimensionType = original.Memory
+	Network       DimensionType = original.Network
+	PluginFile    DimensionType = original.PluginFile
+	PluginPort    DimensionType = original.PluginPort
+	PluginProcess DimensionType = original.PluginProcess
+	Process       DimensionType = original.Process
+	Svr           DimensionType = original.Svr
+)
+
 type QueryAggregationType = original.QueryAggregationType
 
 const (
@@ -80,6 +96,12 @@ type DataClient = original.DataClient
 type EventClient = original.EventClient
 type ListCloudInsightDataInfoParameter = original.ListCloudInsightDataInfoParameter
 type ListListFloat64 = original.ListListFloat64
+type ListPortPluginParameter = original.ListPortPluginParameter
+type ListProcessPluginParameter = original.ListProcessPluginParameter
+type PortPluginClient = original.PortPluginClient
+type PortPluginParameter = original.PortPluginParameter
+type ProcessPluginClient = original.ProcessPluginClient
+type ProcessPluginParameter = original.ProcessPluginParameter
 type RuleClient = original.RuleClient
 type SchemaClient = original.SchemaClient
 type ServerClient = original.ServerClient
@@ -105,6 +127,18 @@ func NewEventClient() EventClient {
 func NewEventClientWithBaseURI(baseURI string) EventClient {
 	return original.NewEventClientWithBaseURI(baseURI)
 }
+func NewPortPluginClient() PortPluginClient {
+	return original.NewPortPluginClient()
+}
+func NewPortPluginClientWithBaseURI(baseURI string) PortPluginClient {
+	return original.NewPortPluginClientWithBaseURI(baseURI)
+}
+func NewProcessPluginClient() ProcessPluginClient {
+	return original.NewProcessPluginClient()
+}
+func NewProcessPluginClientWithBaseURI(baseURI string) ProcessPluginClient {
+	return original.NewProcessPluginClientWithBaseURI(baseURI)
+}
 func NewRuleClient() RuleClient {
 	return original.NewRuleClient()
 }
@@ -128,6 +162,9 @@ func NewWithBaseURI(baseURI string) BaseClient {
 }
 func PossibleAggregationTypeValues() []AggregationType {
 	return original.PossibleAggregationTypeValues()
+}
+func PossibleDimensionTypeValues() []DimensionType {
+	return original.PossibleDimensionTypeValues()
 }
 func PossibleQueryAggregationTypeValues() []QueryAggregationType {
 	return original.PossibleQueryAggregationTypeValues()

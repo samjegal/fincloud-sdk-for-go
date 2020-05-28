@@ -62,3 +62,21 @@ type CollectorClientAPI interface {
 }
 
 var _ CollectorClientAPI = (*insight.CollectorClient)(nil)
+
+// ProcessPluginClientAPI contains the set of methods on the ProcessPluginClient type.
+type ProcessPluginClientAPI interface {
+	Create(ctx context.Context, parameters insight.ProcessPluginParameter) (result autorest.Response, err error)
+	Get(ctx context.Context, instanceNo string) (result insight.ProcessPluginParameter, err error)
+	List(ctx context.Context) (result insight.ListProcessPluginParameter, err error)
+}
+
+var _ ProcessPluginClientAPI = (*insight.ProcessPluginClient)(nil)
+
+// PortPluginClientAPI contains the set of methods on the PortPluginClient type.
+type PortPluginClientAPI interface {
+	Create(ctx context.Context, parameters insight.PortPluginParameter) (result autorest.Response, err error)
+	Get(ctx context.Context, instanceNo string) (result insight.PortPluginParameter, err error)
+	List(ctx context.Context) (result insight.ListPortPluginParameter, err error)
+}
+
+var _ PortPluginClientAPI = (*insight.PortPluginClient)(nil)

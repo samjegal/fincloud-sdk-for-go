@@ -30,6 +30,39 @@ func PossibleAggregationTypeValues() []AggregationType {
 	return []AggregationType{AVG, COUNT, MAX, MIN, SUM}
 }
 
+// DimensionType enumerates the values for dimension type.
+type DimensionType string
+
+const (
+	// Agent ...
+	Agent DimensionType = "agent"
+	// CPU ...
+	CPU DimensionType = "cpu"
+	// Disk ...
+	Disk DimensionType = "disk"
+	// Filesystem ...
+	Filesystem DimensionType = "file system"
+	// Memory ...
+	Memory DimensionType = "memory"
+	// Network ...
+	Network DimensionType = "network"
+	// PluginFile ...
+	PluginFile DimensionType = "plugin_file"
+	// PluginPort ...
+	PluginPort DimensionType = "plugin_port"
+	// PluginProcess ...
+	PluginProcess DimensionType = "plugin_process"
+	// Process ...
+	Process DimensionType = "process"
+	// Svr ...
+	Svr DimensionType = "svr"
+)
+
+// PossibleDimensionTypeValues returns an array of possible values for the DimensionType const type.
+func PossibleDimensionTypeValues() []DimensionType {
+	return []DimensionType{Agent, CPU, Disk, Filesystem, Memory, Network, PluginFile, PluginPort, PluginProcess, Process, Svr}
+}
+
 // QueryAggregationType enumerates the values for query aggregation type.
 type QueryAggregationType string
 
@@ -124,8 +157,8 @@ type CloudInsightDataInfoParameter struct {
 
 // CloudInsightDimensionParameter ...
 type CloudInsightDimensionParameter struct {
-	// Type - Dimension 타입
-	Type *string `json:"type,omitempty"`
+	// Type - Dimension 타입. Possible values include: 'Svr', 'CPU', 'Disk', 'Filesystem', 'Memory', 'Network', 'Process', 'PluginProcess', 'PluginFile', 'PluginPort', 'Agent'
+	Type DimensionType `json:"type,omitempty"`
 	// InstanceNo - 서버 인스턴스
 	InstanceNo *string `json:"instanceNo,omitempty"`
 	// CPUIdx - CPU 인덱스
@@ -136,6 +169,26 @@ type CloudInsightDimensionParameter struct {
 	MntNm *string `json:"mnt_nm,omitempty"`
 	// NicDesc - 네트워크 인터페이스 정보
 	NicDesc *string `json:"nic_desc,omitempty"`
+	// ProcName - 프로세스 이름
+	ProcName *string `json:"proc_name,omitempty"`
+	// Path - 프로세스 경로
+	Path *string `json:"path,omitempty"`
+	// Port - 포트 번호
+	Port *int32 `json:"port,omitempty"`
+	// LoadBalancerAddress - 로드밸런서 주소
+	LoadBalancerAddress *string `json:"loadBalancerAddress,omitempty"`
+	// LoadBalancerPort - 로드밸런서 포트
+	LoadBalancerPort *string `json:"loadBalancerPort,omitempty"`
+	// InstanceID - 인스턴스 번호
+	InstanceID *string `json:"instanceId,omitempty"`
+	// LoadBalancerName - 로드밸런서 이름
+	LoadBalancerName *string `json:"loadBalancerName,omitempty"`
+	// NetworkType - 네트워크 타입
+	NetworkType *string `json:"networkType,omitempty"`
+	// LayerType - 로드밸런서 레이어 타입
+	LayerType *string `json:"layerType,omitempty"`
+	// AutoScalingGroupNo - 오토 스케일링 그룹 번호
+	AutoScalingGroupNo *int32 `json:"autoScalingGroupNo,omitempty"`
 }
 
 // CloudInsightMetricInfoParameter ...
@@ -222,4 +275,34 @@ type ListCloudInsightDataInfoParameter struct {
 type ListListFloat64 struct {
 	autorest.Response `json:"-"`
 	Value             *[][]float64 `json:"value,omitempty"`
+}
+
+// ListPortPluginParameter ...
+type ListPortPluginParameter struct {
+	autorest.Response `json:"-"`
+	Value             *[]PortPluginParameter `json:"value,omitempty"`
+}
+
+// ListProcessPluginParameter ...
+type ListProcessPluginParameter struct {
+	autorest.Response `json:"-"`
+	Value             *[]ProcessPluginParameter `json:"value,omitempty"`
+}
+
+// PortPluginParameter ...
+type PortPluginParameter struct {
+	autorest.Response `json:"-"`
+	// ConfigList - 포트 번호 리스트
+	ConfigList *[]int32 `json:"configList,omitempty"`
+	// InstanceNo - 서버 인스턴스 번호
+	InstanceNo *string `json:"instanceNo,omitempty"`
+}
+
+// ProcessPluginParameter ...
+type ProcessPluginParameter struct {
+	autorest.Response `json:"-"`
+	// ConfigList - 프로세스 이름
+	ConfigList *[]string `json:"configList,omitempty"`
+	// InstanceNo - 서버 인스턴스 번호
+	InstanceNo *string `json:"instanceNo,omitempty"`
 }
