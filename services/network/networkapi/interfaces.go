@@ -87,3 +87,10 @@ type RouteTableSubnetClientAPI interface {
 }
 
 var _ RouteTableSubnetClientAPI = (*network.RouteTableSubnetClient)(nil)
+
+// RouteTableDescriptionClientAPI contains the set of methods on the RouteTableDescriptionClient type.
+type RouteTableDescriptionClientAPI interface {
+	Update(ctx context.Context, routeTableNo string, parameters network.RouteTableDescriptionParameter) (result autorest.Response, err error)
+}
+
+var _ RouteTableDescriptionClientAPI = (*network.RouteTableDescriptionClient)(nil)

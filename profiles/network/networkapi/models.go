@@ -24,6 +24,7 @@ type InboundRuleClientAPI = original.InboundRuleClientAPI
 type NatGatewayClientAPI = original.NatGatewayClientAPI
 type OutboundRuleClientAPI = original.OutboundRuleClientAPI
 type RouteTableClientAPI = original.RouteTableClientAPI
+type RouteTableDescriptionClientAPI = original.RouteTableDescriptionClientAPI
 type RouteTableSubnetClientAPI = original.RouteTableSubnetClientAPI
 type RuleClientAPI = original.RuleClientAPI
 type SubnetClientAPI = original.SubnetClientAPI

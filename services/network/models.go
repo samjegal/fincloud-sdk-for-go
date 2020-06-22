@@ -377,6 +377,12 @@ type NatGatewaySearchParameter struct {
 	PageSizeNo *int32 `json:"pageSizeNo,omitempty"`
 }
 
+// RouteTableDescriptionParameter ...
+type RouteTableDescriptionParameter struct {
+	// Description - Route Table 설명
+	Description *string `json:"description,omitempty"`
+}
+
 // RouteTableEndpointsContentParameter ...
 type RouteTableEndpointsContentParameter struct {
 	// EndpointNo - Endpoint 번호

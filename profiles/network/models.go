@@ -110,6 +110,8 @@ type NatGatewaySearchParameter = original.NatGatewaySearchParameter
 type NatGatewayStatusName = original.NatGatewayStatusName
 type OutboundRuleClient = original.OutboundRuleClient
 type RouteTableClient = original.RouteTableClient
+type RouteTableDescriptionClient = original.RouteTableDescriptionClient
+type RouteTableDescriptionParameter = original.RouteTableDescriptionParameter
 type RouteTableEndpointTypesContentParameter = original.RouteTableEndpointTypesContentParameter
 type RouteTableEndpointTypesParameter = original.RouteTableEndpointTypesParameter
 type RouteTableEndpointsContentParameter = original.RouteTableEndpointsContentParameter
@@ -173,6 +175,12 @@ func NewRouteTableClient() RouteTableClient {
 }
 func NewRouteTableClientWithBaseURI(baseURI string) RouteTableClient {
 	return original.NewRouteTableClientWithBaseURI(baseURI)
+}
+func NewRouteTableDescriptionClient() RouteTableDescriptionClient {
+	return original.NewRouteTableDescriptionClient()
+}
+func NewRouteTableDescriptionClientWithBaseURI(baseURI string) RouteTableDescriptionClient {
+	return original.NewRouteTableDescriptionClientWithBaseURI(baseURI)
 }
 func NewRouteTableSubnetClient() RouteTableSubnetClient {
 	return original.NewRouteTableSubnetClient()
