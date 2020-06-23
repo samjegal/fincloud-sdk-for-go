@@ -94,3 +94,10 @@ type RouteTableDescriptionClientAPI interface {
 }
 
 var _ RouteTableDescriptionClientAPI = (*network.RouteTableDescriptionClient)(nil)
+
+// LoadBalancerClientAPI contains the set of methods on the LoadBalancerClient type.
+type LoadBalancerClientAPI interface {
+	Search(ctx context.Context, parameters network.LoadBalancerSearchParameter) (result network.LoadBalancerSearchListParameter, err error)
+}
+
+var _ LoadBalancerClientAPI = (*network.LoadBalancerClient)(nil)

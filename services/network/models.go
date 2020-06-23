@@ -9,6 +9,110 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/samjegal/fincloud-sdk-for-go/services/network"
 
+// LoadBalancerAlgorithmTypeCode enumerates the values for load balancer algorithm type code.
+type LoadBalancerAlgorithmTypeCode string
+
+const (
+	// MH ...
+	MH LoadBalancerAlgorithmTypeCode = "MH"
+)
+
+// PossibleLoadBalancerAlgorithmTypeCodeValues returns an array of possible values for the LoadBalancerAlgorithmTypeCode const type.
+func PossibleLoadBalancerAlgorithmTypeCodeValues() []LoadBalancerAlgorithmTypeCode {
+	return []LoadBalancerAlgorithmTypeCode{MH}
+}
+
+// LoadBalancerHealthCheckStatusCode enumerates the values for load balancer health check status code.
+type LoadBalancerHealthCheckStatusCode string
+
+const (
+	// AVAIL ...
+	AVAIL LoadBalancerHealthCheckStatusCode = "AVAIL"
+)
+
+// PossibleLoadBalancerHealthCheckStatusCodeValues returns an array of possible values for the LoadBalancerHealthCheckStatusCode const type.
+func PossibleLoadBalancerHealthCheckStatusCodeValues() []LoadBalancerHealthCheckStatusCode {
+	return []LoadBalancerHealthCheckStatusCode{AVAIL}
+}
+
+// LoadBalancerIPTypeCode enumerates the values for load balancer ip type code.
+type LoadBalancerIPTypeCode string
+
+const (
+	// PUBLIC ...
+	PUBLIC LoadBalancerIPTypeCode = "PUBLIC"
+)
+
+// PossibleLoadBalancerIPTypeCodeValues returns an array of possible values for the LoadBalancerIPTypeCode const type.
+func PossibleLoadBalancerIPTypeCodeValues() []LoadBalancerIPTypeCode {
+	return []LoadBalancerIPTypeCode{PUBLIC}
+}
+
+// LoadBalancerLayerTypeCode enumerates the values for load balancer layer type code.
+type LoadBalancerLayerTypeCode string
+
+const (
+	// NETWORK ...
+	NETWORK LoadBalancerLayerTypeCode = "NETWORK"
+)
+
+// PossibleLoadBalancerLayerTypeCodeValues returns an array of possible values for the LoadBalancerLayerTypeCode const type.
+func PossibleLoadBalancerLayerTypeCodeValues() []LoadBalancerLayerTypeCode {
+	return []LoadBalancerLayerTypeCode{NETWORK}
+}
+
+// LoadBalancerProtocolCode enumerates the values for load balancer protocol code.
+type LoadBalancerProtocolCode string
+
+const (
+	// TCP ...
+	TCP LoadBalancerProtocolCode = "TCP"
+)
+
+// PossibleLoadBalancerProtocolCodeValues returns an array of possible values for the LoadBalancerProtocolCode const type.
+func PossibleLoadBalancerProtocolCodeValues() []LoadBalancerProtocolCode {
+	return []LoadBalancerProtocolCode{TCP}
+}
+
+// LoadBalancerStatusCode enumerates the values for load balancer status code.
+type LoadBalancerStatusCode string
+
+const (
+	// USED ...
+	USED LoadBalancerStatusCode = "USED"
+)
+
+// PossibleLoadBalancerStatusCodeValues returns an array of possible values for the LoadBalancerStatusCode const type.
+func PossibleLoadBalancerStatusCodeValues() []LoadBalancerStatusCode {
+	return []LoadBalancerStatusCode{USED}
+}
+
+// LoadBalancerStatusName enumerates the values for load balancer status name.
+type LoadBalancerStatusName string
+
+const (
+	// 운영중 ...
+	운영중 LoadBalancerStatusName = "운영중"
+)
+
+// PossibleLoadBalancerStatusNameValues returns an array of possible values for the LoadBalancerStatusName const type.
+func PossibleLoadBalancerStatusNameValues() []LoadBalancerStatusName {
+	return []LoadBalancerStatusName{운영중}
+}
+
+// LoadBalancerThroughput enumerates the values for load balancer throughput.
+type LoadBalancerThroughput string
+
+const (
+	// SMALL ...
+	SMALL LoadBalancerThroughput = "SMALL"
+)
+
+// PossibleLoadBalancerThroughputValues returns an array of possible values for the LoadBalancerThroughput const type.
+func PossibleLoadBalancerThroughputValues() []LoadBalancerThroughput {
+	return []LoadBalancerThroughput{SMALL}
+}
+
 // NatGatewayStatusCode enumerates the values for nat gateway status code.
 type NatGatewayStatusCode string
 
@@ -30,34 +134,34 @@ func PossibleNatGatewayStatusCodeValues() []NatGatewayStatusCode {
 type NatGatewayStatusName string
 
 const (
-	// 삭제중 ...
-	삭제중 NatGatewayStatusName = "삭제중"
-	// 운영중 ...
-	운영중 NatGatewayStatusName = "운영중"
-	// 준비중 ...
-	준비중 NatGatewayStatusName = "준비중"
+	// NatGatewayStatusName삭제중 ...
+	NatGatewayStatusName삭제중 NatGatewayStatusName = "삭제중"
+	// NatGatewayStatusName운영중 ...
+	NatGatewayStatusName운영중 NatGatewayStatusName = "운영중"
+	// NatGatewayStatusName준비중 ...
+	NatGatewayStatusName준비중 NatGatewayStatusName = "준비중"
 )
 
 // PossibleNatGatewayStatusNameValues returns an array of possible values for the NatGatewayStatusName const type.
 func PossibleNatGatewayStatusNameValues() []NatGatewayStatusName {
-	return []NatGatewayStatusName{삭제중, 운영중, 준비중}
+	return []NatGatewayStatusName{NatGatewayStatusName삭제중, NatGatewayStatusName운영중, NatGatewayStatusName준비중}
 }
 
 // ProtocolTypeCode enumerates the values for protocol type code.
 type ProtocolTypeCode string
 
 const (
-	// ICMP ...
-	ICMP ProtocolTypeCode = "ICMP"
-	// TCP ...
-	TCP ProtocolTypeCode = "TCP"
-	// UDP ...
-	UDP ProtocolTypeCode = "UDP"
+	// ProtocolTypeCodeICMP ...
+	ProtocolTypeCodeICMP ProtocolTypeCode = "ICMP"
+	// ProtocolTypeCodeTCP ...
+	ProtocolTypeCodeTCP ProtocolTypeCode = "TCP"
+	// ProtocolTypeCodeUDP ...
+	ProtocolTypeCodeUDP ProtocolTypeCode = "UDP"
 )
 
 // PossibleProtocolTypeCodeValues returns an array of possible values for the ProtocolTypeCode const type.
 func PossibleProtocolTypeCodeValues() []ProtocolTypeCode {
-	return []ProtocolTypeCode{ICMP, TCP, UDP}
+	return []ProtocolTypeCode{ProtocolTypeCodeICMP, ProtocolTypeCodeTCP, ProtocolTypeCodeUDP}
 }
 
 // ProtocolTypeCode1 enumerates the values for protocol type code 1.
@@ -105,6 +209,19 @@ const (
 // PossibleRouteTableStatusNameValues returns an array of possible values for the RouteTableStatusName const type.
 func PossibleRouteTableStatusNameValues() []RouteTableStatusName {
 	return []RouteTableStatusName{RouteTableStatusName설정중, RouteTableStatusName운영중}
+}
+
+// ServerInstanceStatusCode enumerates the values for server instance status code.
+type ServerInstanceStatusCode string
+
+const (
+	// ServerInstanceStatusCodeRUN ...
+	ServerInstanceStatusCodeRUN ServerInstanceStatusCode = "RUN"
+)
+
+// PossibleServerInstanceStatusCodeValues returns an array of possible values for the ServerInstanceStatusCode const type.
+func PossibleServerInstanceStatusCodeValues() []ServerInstanceStatusCode {
+	return []ServerInstanceStatusCode{ServerInstanceStatusCodeRUN}
 }
 
 // SubnetStatusCode enumerates the values for subnet status code.
@@ -289,7 +406,7 @@ type ACLRuleProperties struct {
 	PortRange *string `json:"portRange,omitempty"`
 	// Priority - 우선순위 번호
 	Priority *int32 `json:"priority,omitempty"`
-	// ProtocolTypeCode - 프로토콜 타입 코드. Possible values include: 'ICMP', 'UDP', 'TCP'
+	// ProtocolTypeCode - 프로토콜 타입 코드. Possible values include: 'ProtocolTypeCodeICMP', 'ProtocolTypeCodeUDP', 'ProtocolTypeCodeTCP'
 	ProtocolTypeCode ProtocolTypeCode `json:"protocolTypeCode,omitempty"`
 	// IPBlock - ACL rule 정책 정보 (CIDR)
 	IPBlock *string `json:"ipBlock,omitempty"`
@@ -314,6 +431,135 @@ type ErrorMessageParameter struct {
 	autorest.Response `json:"-"`
 	// Error - 에러 상세정보
 	Error *ErrorMessage `json:"error,omitempty"`
+}
+
+// LoadBalancerRuleListParameter ...
+type LoadBalancerRuleListParameter struct {
+	// LoadBalancerPort - 로드밸런서 포트
+	LoadBalancerPort *int32 `json:"loadBalancerPort,omitempty"`
+	// ServerPort - 서버 리스닝 포트
+	ServerPort *int32 `json:"serverPort,omitempty"`
+	// ProtocolCode - 서버 프로토콜 코드. Possible values include: 'TCP'
+	ProtocolCode LoadBalancerProtocolCode `json:"protocolCode,omitempty"`
+}
+
+// LoadBalancerSearchContentParameter ...
+type LoadBalancerSearchContentParameter struct {
+	// InstanceNo - 로드밸런서 번호
+	InstanceNo *int32 `json:"instanceNo,omitempty"`
+	// InstanceUUID - 로드밸런서 UUID
+	InstanceUUID *string `json:"instanceUuid,omitempty"`
+	// InstanceStatusCode - 로드밸런서 상태 코드. Possible values include: 'USED'
+	InstanceStatusCode LoadBalancerStatusCode `json:"instanceStatusCode,omitempty"`
+	// OperationCode - 로드밸런서 동작 코드
+	OperationCode *string `json:"operationCode,omitempty"`
+	// InstanceStatusName - 로드밸런서 상태 이름. Possible values include: '운영중'
+	InstanceStatusName LoadBalancerStatusName `json:"instanceStatusName,omitempty"`
+	// MemberNo - 로드밸런서 멤버 번호
+	MemberNo *int32 `json:"memberNo,omitempty"`
+	// CreateYmdt - 로드밸런서 생성 일자
+	CreateYmdt *float64 `json:"createYmdt,omitempty"`
+	// OperationYmdt - 로드밸런서 운영 일자
+	OperationYmdt *float64 `json:"operationYmdt,omitempty"`
+	// LoadBalancerName - 로드밸런서 이름
+	LoadBalancerName *string `json:"loadBalancerName,omitempty"`
+	// LoadBalancerIP - 로드밸런서 IP 주소
+	LoadBalancerIP *string `json:"loadBalancerIp,omitempty"`
+	// LayerTypeCode - 로드밸런서 레이어 타입 코드. Possible values include: 'NETWORK'
+	LayerTypeCode LoadBalancerLayerTypeCode `json:"layerTypeCode,omitempty"`
+	// IPTypeCode - 로드밸런서 IP 타입 코드. Possible values include: 'PUBLIC'
+	IPTypeCode LoadBalancerIPTypeCode `json:"ipTypeCode,omitempty"`
+	// AlgorithmTypeCode - 로드밸런서 알고리즘 타입 코드. Possible values include: 'MH'
+	AlgorithmTypeCode LoadBalancerAlgorithmTypeCode `json:"algorithmTypeCode,omitempty"`
+	// Throughput - 로드밸런서 처리량. Possible values include: 'SMALL'
+	Throughput LoadBalancerThroughput `json:"throughput,omitempty"`
+	// VpcNo - VPC 번호
+	VpcNo *string `json:"vpcNo,omitempty"`
+	// VpcName - VPC 이름
+	VpcName *string `json:"vpcName,omitempty"`
+	// VpcIpv4Cidr - VPC IP 주소 CIDR
+	VpcIpv4Cidr *string `json:"vpcIpv4Cidr,omitempty"`
+	// RegionNo - 리전 번호
+	RegionNo *int32 `json:"regionNo,omitempty"`
+	// RegionName - 리전 이름
+	RegionName *string `json:"regionName,omitempty"`
+	// RegionCode - 리전 코드
+	RegionCode *string `json:"regionCode,omitempty"`
+	// ZoneList - 금융 존 리스트
+	ZoneList *[]LoadBalancerZoneListParameter `json:"zoneList,omitempty"`
+	// LoadBalancerRuleList - 로드밸런서 룰 리스트
+	LoadBalancerRuleList *[]LoadBalancerRuleListParameter `json:"loadBalancerRuleList,omitempty"`
+	// ServerInstanceList - 로드밸런서에 적용된 서버 인스턴스 리스트
+	ServerInstanceList *[]LoadBalancerServerInstanceListParameter `json:"serverInstanceList,omitempty"`
+}
+
+// LoadBalancerSearchListParameter ...
+type LoadBalancerSearchListParameter struct {
+	autorest.Response `json:"-"`
+	// Content - 로드밸런서 컨텐츠 리스트
+	Content *[]LoadBalancerSearchContentParameter `json:"content,omitempty"`
+	// Total - 전체 로드밸런서 개수
+	Total *int32 `json:"total,omitempty"`
+	// UserRequestID - 로드밸런서 UUID
+	UserRequestID *string `json:"userRequestId,omitempty"`
+}
+
+// LoadBalancerSearchParameter ...
+type LoadBalancerSearchParameter struct {
+	// PageNo - 검색할 로드밸런서 페이지 번호
+	PageNo *int32 `json:"pageNo,omitempty"`
+	// PageSizeNo - 한 페이지에 나올 로드밸런서 개수
+	PageSizeNo *int32 `json:"pageSizeNo,omitempty"`
+	// Sort - 페이지 정렬 방법
+	Sort *[]string `json:"sort,omitempty"`
+}
+
+// LoadBalancerServerInstanceListParameter ...
+type LoadBalancerServerInstanceListParameter struct {
+	// InstanceNo - 서버 번호
+	InstanceNo *int32 `json:"instanceNo,omitempty"`
+	// InstanceStatusCode - 서버 상태 코드. Possible values include: 'ServerInstanceStatusCodeRUN'
+	InstanceStatusCode ServerInstanceStatusCode `json:"instanceStatusCode,omitempty"`
+	// OperationCode - 서버 운영 코드
+	OperationCode *string `json:"operationCode,omitempty"`
+	// ServerName - 서버 이름
+	ServerName *string `json:"serverName,omitempty"`
+	// ServerIP - 서버 IP 주소
+	ServerIP *string `json:"serverIp,omitempty"`
+	// SubnetNo - 서브넷 번호
+	SubnetNo *string `json:"subnetNo,omitempty"`
+	// Subnet - 서브넷 IP 주소 CIDR
+	Subnet *string `json:"subnet,omitempty"`
+	// SubnetName - 서브넷 이름
+	SubnetName *string `json:"subnetName,omitempty"`
+	// ServerInstanceLoadBalancerRuleList - 서버 로드밸런서 리스너 룰 리스트
+	ServerInstanceLoadBalancerRuleList *[]LoadBalancerServerInstanceRuleList `json:"serverInstanceLoadBalancerRuleList,omitempty"`
+}
+
+// LoadBalancerServerInstanceRuleList ...
+type LoadBalancerServerInstanceRuleList struct {
+	// LoadBalancerPort - 로드밸런서 포트
+	LoadBalancerPort *int32 `json:"loadBalancerPort,omitempty"`
+	// ServerPort - 서버 포트
+	ServerPort *int32 `json:"serverPort,omitempty"`
+	// HealthCheckStatusCode - 상태 체크 코드. Possible values include: 'AVAIL'
+	HealthCheckStatusCode LoadBalancerHealthCheckStatusCode `json:"healthCheckStatusCode,omitempty"`
+	// ProtocolCode - 프로토콜 코드. Possible values include: 'TCP'
+	ProtocolCode LoadBalancerProtocolCode `json:"protocolCode,omitempty"`
+}
+
+// LoadBalancerZoneListParameter ...
+type LoadBalancerZoneListParameter struct {
+	// ZoneNo - 금융존 번호
+	ZoneNo *int32 `json:"zoneNo,omitempty"`
+	// SubnetNo - 서브넷 번호
+	SubnetNo *string `json:"subnetNo,omitempty"`
+	// ZoneName - 금융존 이름
+	ZoneName *string `json:"zoneName,omitempty"`
+	// SubnetName - 서브넷 이름
+	SubnetName *string `json:"subnetName,omitempty"`
+	// SubnetIpv4Cidr - 서브넷 IP 주소 CIDR
+	SubnetIpv4Cidr *string `json:"subnetIpv4Cidr,omitempty"`
 }
 
 // NatGatewayParameter ...
@@ -342,7 +588,7 @@ type NatGatewaySearchContentParameter struct {
 	PublicIP *string `json:"publicIp,omitempty"`
 	// StatusCode - NAT Gateway 상태 코드. Possible values include: 'INIT', 'RUN', 'TERMTING'
 	StatusCode NatGatewayStatusCode `json:"statusCode,omitempty"`
-	// StatusName - NAT Gateway 상태 이름. Possible values include: '준비중', '운영중', '삭제중'
+	// StatusName - NAT Gateway 상태 이름. Possible values include: 'NatGatewayStatusName준비중', 'NatGatewayStatusName운영중', 'NatGatewayStatusName삭제중'
 	StatusName NatGatewayStatusName `json:"statusName,omitempty"`
 	// CreatedYmdt - NAT Gateway 생성일자
 	CreatedYmdt *float64 `json:"createdYmdt,omitempty"`

@@ -23,6 +23,48 @@ const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
+type LoadBalancerAlgorithmTypeCode = original.LoadBalancerAlgorithmTypeCode
+
+const (
+	MH LoadBalancerAlgorithmTypeCode = original.MH
+)
+
+type LoadBalancerHealthCheckStatusCode = original.LoadBalancerHealthCheckStatusCode
+
+const (
+	AVAIL LoadBalancerHealthCheckStatusCode = original.AVAIL
+)
+
+type LoadBalancerIPTypeCode = original.LoadBalancerIPTypeCode
+
+const (
+	PUBLIC LoadBalancerIPTypeCode = original.PUBLIC
+)
+
+type LoadBalancerLayerTypeCode = original.LoadBalancerLayerTypeCode
+
+const (
+	NETWORK LoadBalancerLayerTypeCode = original.NETWORK
+)
+
+type LoadBalancerProtocolCode = original.LoadBalancerProtocolCode
+
+const (
+	TCP LoadBalancerProtocolCode = original.TCP
+)
+
+type LoadBalancerStatusCode = original.LoadBalancerStatusCode
+
+const (
+	USED LoadBalancerStatusCode = original.USED
+)
+
+type LoadBalancerThroughput = original.LoadBalancerThroughput
+
+const (
+	SMALL LoadBalancerThroughput = original.SMALL
+)
+
 type NatGatewayStatusCode = original.NatGatewayStatusCode
 
 const (
@@ -31,12 +73,20 @@ const (
 	TERMTING NatGatewayStatusCode = original.TERMTING
 )
 
+type NatGatewayStatusName = original.NatGatewayStatusName
+
+const (
+	NatGatewayStatusName삭제중 NatGatewayStatusName = original.NatGatewayStatusName삭제중
+	NatGatewayStatusName운영중 NatGatewayStatusName = original.NatGatewayStatusName운영중
+	NatGatewayStatusName준비중 NatGatewayStatusName = original.NatGatewayStatusName준비중
+)
+
 type ProtocolTypeCode = original.ProtocolTypeCode
 
 const (
-	ICMP ProtocolTypeCode = original.ICMP
-	TCP  ProtocolTypeCode = original.TCP
-	UDP  ProtocolTypeCode = original.UDP
+	ProtocolTypeCodeICMP ProtocolTypeCode = original.ProtocolTypeCodeICMP
+	ProtocolTypeCodeTCP  ProtocolTypeCode = original.ProtocolTypeCodeTCP
+	ProtocolTypeCodeUDP  ProtocolTypeCode = original.ProtocolTypeCodeUDP
 )
 
 type ProtocolTypeCode1 = original.ProtocolTypeCode1
@@ -59,6 +109,12 @@ type RouteTableStatusName = original.RouteTableStatusName
 const (
 	RouteTableStatusName설정중 RouteTableStatusName = original.RouteTableStatusName설정중
 	RouteTableStatusName운영중 RouteTableStatusName = original.RouteTableStatusName운영중
+)
+
+type ServerInstanceStatusCode = original.ServerInstanceStatusCode
+
+const (
+	ServerInstanceStatusCodeRUN ServerInstanceStatusCode = original.ServerInstanceStatusCodeRUN
 )
 
 type SubnetStatusCode = original.SubnetStatusCode
@@ -101,13 +157,21 @@ type BaseClient = original.BaseClient
 type ErrorMessage = original.ErrorMessage
 type ErrorMessageParameter = original.ErrorMessageParameter
 type InboundRuleClient = original.InboundRuleClient
+type LoadBalancerClient = original.LoadBalancerClient
+type LoadBalancerRuleListParameter = original.LoadBalancerRuleListParameter
+type LoadBalancerSearchContentParameter = original.LoadBalancerSearchContentParameter
+type LoadBalancerSearchListParameter = original.LoadBalancerSearchListParameter
+type LoadBalancerSearchParameter = original.LoadBalancerSearchParameter
+type LoadBalancerServerInstanceListParameter = original.LoadBalancerServerInstanceListParameter
+type LoadBalancerServerInstanceRuleList = original.LoadBalancerServerInstanceRuleList
+type LoadBalancerStatusName = original.LoadBalancerStatusName
+type LoadBalancerZoneListParameter = original.LoadBalancerZoneListParameter
 type NatGatewayClient = original.NatGatewayClient
 type NatGatewayParameter = original.NatGatewayParameter
 type NatGatewaySearchContentParameter = original.NatGatewaySearchContentParameter
 type NatGatewaySearchFilterParameter = original.NatGatewaySearchFilterParameter
 type NatGatewaySearchListParameter = original.NatGatewaySearchListParameter
 type NatGatewaySearchParameter = original.NatGatewaySearchParameter
-type NatGatewayStatusName = original.NatGatewayStatusName
 type OutboundRuleClient = original.OutboundRuleClient
 type RouteTableClient = original.RouteTableClient
 type RouteTableDescriptionClient = original.RouteTableDescriptionClient
@@ -157,6 +221,12 @@ func NewInboundRuleClient() InboundRuleClient {
 }
 func NewInboundRuleClientWithBaseURI(baseURI string) InboundRuleClient {
 	return original.NewInboundRuleClientWithBaseURI(baseURI)
+}
+func NewLoadBalancerClient() LoadBalancerClient {
+	return original.NewLoadBalancerClient()
+}
+func NewLoadBalancerClientWithBaseURI(baseURI string) LoadBalancerClient {
+	return original.NewLoadBalancerClientWithBaseURI(baseURI)
 }
 func NewNatGatewayClient() NatGatewayClient {
 	return original.NewNatGatewayClient()
@@ -209,6 +279,30 @@ func NewVirtualPrivateCloudClientWithBaseURI(baseURI string) VirtualPrivateCloud
 func NewWithBaseURI(baseURI string) BaseClient {
 	return original.NewWithBaseURI(baseURI)
 }
+func PossibleLoadBalancerAlgorithmTypeCodeValues() []LoadBalancerAlgorithmTypeCode {
+	return original.PossibleLoadBalancerAlgorithmTypeCodeValues()
+}
+func PossibleLoadBalancerHealthCheckStatusCodeValues() []LoadBalancerHealthCheckStatusCode {
+	return original.PossibleLoadBalancerHealthCheckStatusCodeValues()
+}
+func PossibleLoadBalancerIPTypeCodeValues() []LoadBalancerIPTypeCode {
+	return original.PossibleLoadBalancerIPTypeCodeValues()
+}
+func PossibleLoadBalancerLayerTypeCodeValues() []LoadBalancerLayerTypeCode {
+	return original.PossibleLoadBalancerLayerTypeCodeValues()
+}
+func PossibleLoadBalancerProtocolCodeValues() []LoadBalancerProtocolCode {
+	return original.PossibleLoadBalancerProtocolCodeValues()
+}
+func PossibleLoadBalancerStatusCodeValues() []LoadBalancerStatusCode {
+	return original.PossibleLoadBalancerStatusCodeValues()
+}
+func PossibleLoadBalancerStatusNameValues() []LoadBalancerStatusName {
+	return original.PossibleLoadBalancerStatusNameValues()
+}
+func PossibleLoadBalancerThroughputValues() []LoadBalancerThroughput {
+	return original.PossibleLoadBalancerThroughputValues()
+}
 func PossibleNatGatewayStatusCodeValues() []NatGatewayStatusCode {
 	return original.PossibleNatGatewayStatusCodeValues()
 }
@@ -226,6 +320,9 @@ func PossibleRouteTableStatusCodeValues() []RouteTableStatusCode {
 }
 func PossibleRouteTableStatusNameValues() []RouteTableStatusName {
 	return original.PossibleRouteTableStatusNameValues()
+}
+func PossibleServerInstanceStatusCodeValues() []ServerInstanceStatusCode {
+	return original.PossibleServerInstanceStatusCodeValues()
 }
 func PossibleSubnetStatusCodeValues() []SubnetStatusCode {
 	return original.PossibleSubnetStatusCodeValues()

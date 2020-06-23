@@ -21,6 +21,7 @@ import original "github.com/samjegal/fincloud-sdk-for-go/services/network/networ
 
 type ACLClientAPI = original.ACLClientAPI
 type InboundRuleClientAPI = original.InboundRuleClientAPI
+type LoadBalancerClientAPI = original.LoadBalancerClientAPI
 type NatGatewayClientAPI = original.NatGatewayClientAPI
 type OutboundRuleClientAPI = original.OutboundRuleClientAPI
 type RouteTableClientAPI = original.RouteTableClientAPI
