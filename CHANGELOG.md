@@ -1,3 +1,16 @@
+## 1.3.1 (Juen 25, 2020)
+
+### UPDATED SERVICES
+
+- Cloud Insight (Dimension Parameter)
+
+### WORKING SERVICES
+
+- Load Balancer
+  - Application Load Balancer
+  - Network Load Balancer
+  - Network Proxy Load Balancer
+
 ## 1.3.0 (May 22, 2020)
 
 ### UPDATED SERVICES
