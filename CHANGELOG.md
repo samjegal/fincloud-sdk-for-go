@@ -1,4 +1,13 @@
-## 1.3.1 (Juen 25, 2020)
+## 1.4.0 (June 25, 2020)
+
+### NEW SERVICES
+
+- Load Balancer
+  - Application Load Balancer
+  - Network Load Balancer
+  - Network Proxy Load Balancer
+
+## 1.3.1 (June 25, 2020)
 
 ### UPDATED SERVICES
 
@@ -7,9 +16,6 @@
 ### WORKING SERVICES
 
 - Load Balancer
-  - Application Load Balancer
-  - Network Load Balancer
-  - Network Proxy Load Balancer
 
 ## 1.3.0 (May 22, 2020)
 
