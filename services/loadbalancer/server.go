@@ -28,7 +28,7 @@ func NewServerClientWithBaseURI(baseURI string) ServerClient {
 // Update 로드밸런서 적용 서버 변경
 // Parameters:
 // parameters - 로드밸런서 적용 서버 데이터
-func (client ServerClient) Update(ctx context.Context, parameters interface{}) (result autorest.Response, err error) {
+func (client ServerClient) Update(ctx context.Context, parameters ServerParameter) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ServerClient.Update")
 		defer func() {
@@ -61,7 +61,7 @@ func (client ServerClient) Update(ctx context.Context, parameters interface{}) (
 }
 
 // UpdatePreparer prepares the Update request.
-func (client ServerClient) UpdatePreparer(ctx context.Context, parameters interface{}) (*http.Request, error) {
+func (client ServerClient) UpdatePreparer(ctx context.Context, parameters ServerParameter) (*http.Request, error) {
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json;charset=UTF-8"),
 		autorest.AsPut(),

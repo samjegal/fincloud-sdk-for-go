@@ -124,6 +124,21 @@ func PossibleServerInstanceStatusCodeValues() []ServerInstanceStatusCode {
 	return []ServerInstanceStatusCode{ServerInstanceStatusCodeCREAT, ServerInstanceStatusCodeINIT, ServerInstanceStatusCodeRUN, ServerInstanceStatusCodeSTOP}
 }
 
+// ServerProtocolCode enumerates the values for server protocol code.
+type ServerProtocolCode string
+
+const (
+	// HTTP ...
+	HTTP ServerProtocolCode = "HTTP"
+	// HTTPS ...
+	HTTPS ServerProtocolCode = "HTTPS"
+)
+
+// PossibleServerProtocolCodeValues returns an array of possible values for the ServerProtocolCode const type.
+func PossibleServerProtocolCodeValues() []ServerProtocolCode {
+	return []ServerProtocolCode{HTTP, HTTPS}
+}
+
 // StatusCode enumerates the values for status code.
 type StatusCode string
 
@@ -182,6 +197,50 @@ type CheckNameParameter struct {
 	Content *bool `json:"content,omitempty"`
 }
 
+// InstanceListParameter ...
+type InstanceListParameter struct {
+	// InstanceNoList - 로드밸런서 인스턴스 번호
+	InstanceNoList *[]int32 `json:"instanceNoList,omitempty"`
+}
+
+// InstanceParameter ...
+type InstanceParameter struct {
+	// ServerInstanceNoList - 서버 인스턴스 번호 리스트
+	ServerInstanceNoList *[]int32 `json:"serverInstanceNoList,omitempty"`
+	// IPTypeCode - 로드밸런서 IP 타입 코드. Possible values include: 'PUBLIC', 'PRIVATE'
+	IPTypeCode IPTypeCode `json:"ipTypeCode,omitempty"`
+	// LoadBalancerName - 로드밸런서 이름
+	LoadBalancerName *string `json:"loadBalancerName,omitempty"`
+	// LoadBalancerRuleList - 로드밸런서 룰 리스트
+	LoadBalancerRuleList *[]RuleListParameter `json:"loadBalancerRuleList,omitempty"`
+	// ZoneList - 금융존 리스트
+	ZoneList *[]ZoneListParameter `json:"zoneList,omitempty"`
+	// InstanceDescription - 로드밸런서 설명
+	InstanceDescription *string `json:"instanceDescription,omitempty"`
+	// Throughput - 로드밸런서 처리량. Possible values include: 'SMALL', 'MEDIUM', 'LARGE'
+	Throughput Throughput `json:"throughput,omitempty"`
+	// VpcNo - VPC 번호
+	VpcNo *string `json:"vpcNo,omitempty"`
+	// LayerTypeCode - 로드밸런서 레이어 타입 코드. Possible values include: 'NETWORK', 'APPLICATION', 'NETWORKPROXY'
+	LayerTypeCode LayerTypeCode `json:"layerTypeCode,omitempty"`
+	// AlgorithmTypeCode - 로드밸랜서 알고리즘 타입 코드. Possible values include: 'MH', 'RR'
+	AlgorithmTypeCode AlgorithmTypeCode `json:"algorithmTypeCode,omitempty"`
+	// HTTPKeepAliveTimeout - HTTP Keep Alive 타임아웃
+	HTTPKeepAliveTimeout *int32 `json:"httpKeepAliveTimeout,omitempty"`
+}
+
+// ListenerParameter ...
+type ListenerParameter struct {
+	// LoadBalancerRuleList - 로드밸런서 룰 리스트
+	LoadBalancerRuleList *[]RuleListParameter `json:"loadBalancerRuleList,omitempty"`
+	// InstanceNo - 서버 인스턴스 번호
+	InstanceNo *int32 `json:"instanceNo,omitempty"`
+	// AlgorithmTypeCode - 로드밸랜서 알고리즘 타입 코드. Possible values include: 'MH', 'RR'
+	AlgorithmTypeCode AlgorithmTypeCode `json:"algorithmTypeCode,omitempty"`
+	// HTTPKeepAliveTimeout - HTTP Keep Alive 타임아웃
+	HTTPKeepAliveTimeout *int32 `json:"httpKeepAliveTimeout,omitempty"`
+}
+
 // RuleListParameter ...
 type RuleListParameter struct {
 	// LoadBalancerPort - 로드밸런서 포트
@@ -190,6 +249,14 @@ type RuleListParameter struct {
 	ServerPort *int32 `json:"serverPort,omitempty"`
 	// ProtocolCode - 서버 프로토콜 코드. Possible values include: 'ICMP', 'UDP', 'TCP'
 	ProtocolCode ProtocolCode `json:"protocolCode,omitempty"`
+	// ServerProtocolCode - 서버 프로토콜 코드. Possible values include: 'HTTP', 'HTTPS'
+	ServerProtocolCode ServerProtocolCode `json:"serverProtocolCode,omitempty"`
+	// HealthCheckPath - Health Check 경로
+	HealthCheckPath *string `json:"healthCheckPath,omitempty"`
+	// HTTP2UseYn - HTTP/2.0 사용 유무
+	HTTP2UseYn *string `json:"http2UseYn,omitempty"`
+	// StickySessionUseYn - Sticky 세션 사용 유무
+	StickySessionUseYn *string `json:"stickySessionUseYn,omitempty"`
 }
 
 // SearchContentParameter ...
@@ -234,7 +301,7 @@ type SearchContentParameter struct {
 	RegionName *string `json:"regionName,omitempty"`
 	// RegionCode - 리전 코드
 	RegionCode *string `json:"regionCode,omitempty"`
-	// ZoneList - 금융 존 리스트
+	// ZoneList - 금융존 리스트
 	ZoneList *[]ZoneListParameter `json:"zoneList,omitempty"`
 	// LoadBalancerRuleList - 로드밸런서 룰 리스트
 	LoadBalancerRuleList *[]RuleListParameter `json:"loadBalancerRuleList,omitempty"`
@@ -306,6 +373,24 @@ type ServerInstanceRuleList struct {
 	HealthCheckStatusCode HealthCheckStatusCode `json:"healthCheckStatusCode,omitempty"`
 	// ProtocolCode - 프로토콜 코드. Possible values include: 'ICMP', 'UDP', 'TCP'
 	ProtocolCode ProtocolCode `json:"protocolCode,omitempty"`
+}
+
+// ServerParameter ...
+type ServerParameter struct {
+	// LbInstanceNo - 로드밸런서 인스턴스 번호
+	LbInstanceNo *int32 `json:"lbInstanceNo,omitempty"`
+	// ServerInstanceNoList - 로드밸런서 서버 인스턴스 번호 리스트
+	ServerInstanceNoList *[]int32 `json:"serverInstanceNoList,omitempty"`
+}
+
+// SettingParameter ...
+type SettingParameter struct {
+	// InstanceNo - 로드밸런서 인스턴스 번호
+	InstanceNo *int32 `json:"instanceNo,omitempty"`
+	// Throughput - 로드밸런서 처리량. Possible values include: 'SMALL', 'MEDIUM', 'LARGE'
+	Throughput Throughput `json:"throughput,omitempty"`
+	// InstanceDescription - 로드밸런서 인스턴스 설명
+	InstanceDescription *string `json:"instanceDescription,omitempty"`
 }
 
 // TargetServerInstanceListParameter ...

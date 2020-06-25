@@ -28,7 +28,7 @@ func NewListenerClientWithBaseURI(baseURI string) ListenerClient {
 // Update 로드밸런서 리스너 변경
 // Parameters:
 // parameters - 로드밸런서 리스너 룰 데이터
-func (client ListenerClient) Update(ctx context.Context, parameters interface{}) (result autorest.Response, err error) {
+func (client ListenerClient) Update(ctx context.Context, parameters ListenerParameter) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ListenerClient.Update")
 		defer func() {
@@ -61,7 +61,7 @@ func (client ListenerClient) Update(ctx context.Context, parameters interface{})
 }
 
 // UpdatePreparer prepares the Update request.
-func (client ListenerClient) UpdatePreparer(ctx context.Context, parameters interface{}) (*http.Request, error) {
+func (client ListenerClient) UpdatePreparer(ctx context.Context, parameters ListenerParameter) (*http.Request, error) {
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json;charset=UTF-8"),
 		autorest.AsPut(),

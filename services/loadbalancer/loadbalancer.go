@@ -97,7 +97,7 @@ func (client Client) CheckNameResponder(resp *http.Response) (result CheckNamePa
 // Create 로드밸런서 생성
 // Parameters:
 // parameters - 로드밸런서 생성 데이터
-func (client Client) Create(ctx context.Context, parameters interface{}) (result autorest.Response, err error) {
+func (client Client) Create(ctx context.Context, parameters InstanceParameter) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.Create")
 		defer func() {
@@ -130,7 +130,7 @@ func (client Client) Create(ctx context.Context, parameters interface{}) (result
 }
 
 // CreatePreparer prepares the Create request.
-func (client Client) CreatePreparer(ctx context.Context, parameters interface{}) (*http.Request, error) {
+func (client Client) CreatePreparer(ctx context.Context, parameters InstanceParameter) (*http.Request, error) {
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json;charset=UTF-8"),
 		autorest.AsPost(),
@@ -162,7 +162,7 @@ func (client Client) CreateResponder(resp *http.Response) (result autorest.Respo
 // Delete 로드밸런서 삭제
 // Parameters:
 // parameters - 로드밸런서 번호 정보
-func (client Client) Delete(ctx context.Context, parameters interface{}) (result autorest.Response, err error) {
+func (client Client) Delete(ctx context.Context, parameters InstanceListParameter) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.Delete")
 		defer func() {
@@ -195,7 +195,7 @@ func (client Client) Delete(ctx context.Context, parameters interface{}) (result
 }
 
 // DeletePreparer prepares the Delete request.
-func (client Client) DeletePreparer(ctx context.Context, parameters interface{}) (*http.Request, error) {
+func (client Client) DeletePreparer(ctx context.Context, parameters InstanceListParameter) (*http.Request, error) {
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json;charset=UTF-8"),
 		autorest.AsDelete(),
@@ -364,7 +364,7 @@ func (client Client) ServerInstanceResponder(resp *http.Response) (result Server
 // Update 로드밸런서 설정 변경
 // Parameters:
 // parameters - 로드밸런서 설정 데이터
-func (client Client) Update(ctx context.Context, parameters interface{}) (result autorest.Response, err error) {
+func (client Client) Update(ctx context.Context, parameters SettingParameter) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.Update")
 		defer func() {
@@ -397,7 +397,7 @@ func (client Client) Update(ctx context.Context, parameters interface{}) (result
 }
 
 // UpdatePreparer prepares the Update request.
-func (client Client) UpdatePreparer(ctx context.Context, parameters interface{}) (*http.Request, error) {
+func (client Client) UpdatePreparer(ctx context.Context, parameters SettingParameter) (*http.Request, error) {
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json;charset=UTF-8"),
 		autorest.AsPatch(),

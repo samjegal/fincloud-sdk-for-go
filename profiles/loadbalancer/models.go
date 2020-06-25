@@ -77,6 +77,13 @@ const (
 	ServerInstanceStatusCodeSTOP  ServerInstanceStatusCode = original.ServerInstanceStatusCodeSTOP
 )
 
+type ServerProtocolCode = original.ServerProtocolCode
+
+const (
+	HTTP  ServerProtocolCode = original.HTTP
+	HTTPS ServerProtocolCode = original.HTTPS
+)
+
 type StatusCode = original.StatusCode
 
 const (
@@ -95,7 +102,10 @@ const (
 type BaseClient = original.BaseClient
 type CheckNameParameter = original.CheckNameParameter
 type Client = original.Client
+type InstanceListParameter = original.InstanceListParameter
+type InstanceParameter = original.InstanceParameter
 type ListenerClient = original.ListenerClient
+type ListenerParameter = original.ListenerParameter
 type RuleListParameter = original.RuleListParameter
 type SearchContentParameter = original.SearchContentParameter
 type SearchListParameter = original.SearchListParameter
@@ -104,6 +114,8 @@ type ServerClient = original.ServerClient
 type ServerInstanceListParameter = original.ServerInstanceListParameter
 type ServerInstanceParameter = original.ServerInstanceParameter
 type ServerInstanceRuleList = original.ServerInstanceRuleList
+type ServerParameter = original.ServerParameter
+type SettingParameter = original.SettingParameter
 type StatusName = original.StatusName
 type TargetServerInstanceListParameter = original.TargetServerInstanceListParameter
 type TargetServerInstanceParameter = original.TargetServerInstanceParameter
@@ -155,6 +167,9 @@ func PossibleProtocolCodeValues() []ProtocolCode {
 }
 func PossibleServerInstanceStatusCodeValues() []ServerInstanceStatusCode {
 	return original.PossibleServerInstanceStatusCodeValues()
+}
+func PossibleServerProtocolCodeValues() []ServerProtocolCode {
+	return original.PossibleServerProtocolCodeValues()
 }
 func PossibleStatusCodeValues() []StatusCode {
 	return original.PossibleStatusCodeValues()
