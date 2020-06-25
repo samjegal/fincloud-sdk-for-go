@@ -23,10 +23,19 @@ const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
+type ACLRuleProtocolTypeCode = original.ACLRuleProtocolTypeCode
+
+const (
+	ICMP ACLRuleProtocolTypeCode = original.ICMP
+	TCP  ACLRuleProtocolTypeCode = original.TCP
+	UDP  ACLRuleProtocolTypeCode = original.UDP
+)
+
 type LoadBalancerAlgorithmTypeCode = original.LoadBalancerAlgorithmTypeCode
 
 const (
 	MH LoadBalancerAlgorithmTypeCode = original.MH
+	RR LoadBalancerAlgorithmTypeCode = original.RR
 )
 
 type LoadBalancerHealthCheckStatusCode = original.LoadBalancerHealthCheckStatusCode
@@ -38,39 +47,56 @@ const (
 type LoadBalancerIPTypeCode = original.LoadBalancerIPTypeCode
 
 const (
-	PUBLIC LoadBalancerIPTypeCode = original.PUBLIC
+	PRIVATE LoadBalancerIPTypeCode = original.PRIVATE
+	PUBLIC  LoadBalancerIPTypeCode = original.PUBLIC
 )
 
 type LoadBalancerLayerTypeCode = original.LoadBalancerLayerTypeCode
 
 const (
-	NETWORK LoadBalancerLayerTypeCode = original.NETWORK
+	APPLICATION  LoadBalancerLayerTypeCode = original.APPLICATION
+	NETWORK      LoadBalancerLayerTypeCode = original.NETWORK
+	NETWORKPROXY LoadBalancerLayerTypeCode = original.NETWORKPROXY
+)
+
+type LoadBalancerOperationCode = original.LoadBalancerOperationCode
+
+const (
+	CHANG LoadBalancerOperationCode = original.CHANG
+	CREAT LoadBalancerOperationCode = original.CREAT
+	NULL  LoadBalancerOperationCode = original.NULL
+	TERMT LoadBalancerOperationCode = original.TERMT
 )
 
 type LoadBalancerProtocolCode = original.LoadBalancerProtocolCode
 
 const (
-	TCP LoadBalancerProtocolCode = original.TCP
+	LoadBalancerProtocolCodeICMP LoadBalancerProtocolCode = original.LoadBalancerProtocolCodeICMP
+	LoadBalancerProtocolCodeTCP  LoadBalancerProtocolCode = original.LoadBalancerProtocolCodeTCP
+	LoadBalancerProtocolCodeUDP  LoadBalancerProtocolCode = original.LoadBalancerProtocolCodeUDP
 )
 
 type LoadBalancerStatusCode = original.LoadBalancerStatusCode
 
 const (
+	INIT LoadBalancerStatusCode = original.INIT
 	USED LoadBalancerStatusCode = original.USED
 )
 
 type LoadBalancerThroughput = original.LoadBalancerThroughput
 
 const (
-	SMALL LoadBalancerThroughput = original.SMALL
+	LARGE  LoadBalancerThroughput = original.LARGE
+	MEDIUM LoadBalancerThroughput = original.MEDIUM
+	SMALL  LoadBalancerThroughput = original.SMALL
 )
 
 type NatGatewayStatusCode = original.NatGatewayStatusCode
 
 const (
-	INIT     NatGatewayStatusCode = original.INIT
-	RUN      NatGatewayStatusCode = original.RUN
-	TERMTING NatGatewayStatusCode = original.TERMTING
+	NatGatewayStatusCodeINIT     NatGatewayStatusCode = original.NatGatewayStatusCodeINIT
+	NatGatewayStatusCodeRUN      NatGatewayStatusCode = original.NatGatewayStatusCodeRUN
+	NatGatewayStatusCodeTERMTING NatGatewayStatusCode = original.NatGatewayStatusCodeTERMTING
 )
 
 type NatGatewayStatusName = original.NatGatewayStatusName
@@ -81,27 +107,11 @@ const (
 	NatGatewayStatusName준비중 NatGatewayStatusName = original.NatGatewayStatusName준비중
 )
 
-type ProtocolTypeCode = original.ProtocolTypeCode
-
-const (
-	ProtocolTypeCodeICMP ProtocolTypeCode = original.ProtocolTypeCodeICMP
-	ProtocolTypeCodeTCP  ProtocolTypeCode = original.ProtocolTypeCodeTCP
-	ProtocolTypeCodeUDP  ProtocolTypeCode = original.ProtocolTypeCodeUDP
-)
-
-type ProtocolTypeCode1 = original.ProtocolTypeCode1
-
-const (
-	ProtocolTypeCode1ICMP ProtocolTypeCode1 = original.ProtocolTypeCode1ICMP
-	ProtocolTypeCode1TCP  ProtocolTypeCode1 = original.ProtocolTypeCode1TCP
-	ProtocolTypeCode1UDP  ProtocolTypeCode1 = original.ProtocolTypeCode1UDP
-)
-
 type RouteTableStatusCode = original.RouteTableStatusCode
 
 const (
-	RouteTableStatusCodeRUN RouteTableStatusCode = original.RouteTableStatusCodeRUN
-	RouteTableStatusCodeSET RouteTableStatusCode = original.RouteTableStatusCodeSET
+	RUN RouteTableStatusCode = original.RUN
+	SET RouteTableStatusCode = original.SET
 )
 
 type RouteTableStatusName = original.RouteTableStatusName
@@ -114,7 +124,10 @@ const (
 type ServerInstanceStatusCode = original.ServerInstanceStatusCode
 
 const (
-	ServerInstanceStatusCodeRUN ServerInstanceStatusCode = original.ServerInstanceStatusCodeRUN
+	ServerInstanceStatusCodeCREAT ServerInstanceStatusCode = original.ServerInstanceStatusCodeCREAT
+	ServerInstanceStatusCodeINIT  ServerInstanceStatusCode = original.ServerInstanceStatusCodeINIT
+	ServerInstanceStatusCodeRUN   ServerInstanceStatusCode = original.ServerInstanceStatusCodeRUN
+	ServerInstanceStatusCodeSTOP  ServerInstanceStatusCode = original.ServerInstanceStatusCodeSTOP
 )
 
 type SubnetStatusCode = original.SubnetStatusCode
@@ -157,15 +170,21 @@ type BaseClient = original.BaseClient
 type ErrorMessage = original.ErrorMessage
 type ErrorMessageParameter = original.ErrorMessageParameter
 type InboundRuleClient = original.InboundRuleClient
+type LoadBalancerCheckNameParameter = original.LoadBalancerCheckNameParameter
 type LoadBalancerClient = original.LoadBalancerClient
 type LoadBalancerRuleListParameter = original.LoadBalancerRuleListParameter
 type LoadBalancerSearchContentParameter = original.LoadBalancerSearchContentParameter
 type LoadBalancerSearchListParameter = original.LoadBalancerSearchListParameter
 type LoadBalancerSearchParameter = original.LoadBalancerSearchParameter
 type LoadBalancerServerInstanceListParameter = original.LoadBalancerServerInstanceListParameter
+type LoadBalancerServerInstanceParameter = original.LoadBalancerServerInstanceParameter
 type LoadBalancerServerInstanceRuleList = original.LoadBalancerServerInstanceRuleList
 type LoadBalancerStatusName = original.LoadBalancerStatusName
+type LoadBalancerTargetServerInstanceListParameter = original.LoadBalancerTargetServerInstanceListParameter
+type LoadBalancerTargetServerInstanceParameter = original.LoadBalancerTargetServerInstanceParameter
+type LoadBalancerZoneContentParameter = original.LoadBalancerZoneContentParameter
 type LoadBalancerZoneListParameter = original.LoadBalancerZoneListParameter
+type LoadBalancerZoneSubnetParameter = original.LoadBalancerZoneSubnetParameter
 type NatGatewayClient = original.NatGatewayClient
 type NatGatewayParameter = original.NatGatewayParameter
 type NatGatewaySearchContentParameter = original.NatGatewaySearchContentParameter
@@ -279,6 +298,9 @@ func NewVirtualPrivateCloudClientWithBaseURI(baseURI string) VirtualPrivateCloud
 func NewWithBaseURI(baseURI string) BaseClient {
 	return original.NewWithBaseURI(baseURI)
 }
+func PossibleACLRuleProtocolTypeCodeValues() []ACLRuleProtocolTypeCode {
+	return original.PossibleACLRuleProtocolTypeCodeValues()
+}
 func PossibleLoadBalancerAlgorithmTypeCodeValues() []LoadBalancerAlgorithmTypeCode {
 	return original.PossibleLoadBalancerAlgorithmTypeCodeValues()
 }
@@ -290,6 +312,9 @@ func PossibleLoadBalancerIPTypeCodeValues() []LoadBalancerIPTypeCode {
 }
 func PossibleLoadBalancerLayerTypeCodeValues() []LoadBalancerLayerTypeCode {
 	return original.PossibleLoadBalancerLayerTypeCodeValues()
+}
+func PossibleLoadBalancerOperationCodeValues() []LoadBalancerOperationCode {
+	return original.PossibleLoadBalancerOperationCodeValues()
 }
 func PossibleLoadBalancerProtocolCodeValues() []LoadBalancerProtocolCode {
 	return original.PossibleLoadBalancerProtocolCodeValues()
@@ -308,12 +333,6 @@ func PossibleNatGatewayStatusCodeValues() []NatGatewayStatusCode {
 }
 func PossibleNatGatewayStatusNameValues() []NatGatewayStatusName {
 	return original.PossibleNatGatewayStatusNameValues()
-}
-func PossibleProtocolTypeCode1Values() []ProtocolTypeCode1 {
-	return original.PossibleProtocolTypeCode1Values()
-}
-func PossibleProtocolTypeCodeValues() []ProtocolTypeCode {
-	return original.PossibleProtocolTypeCodeValues()
 }
 func PossibleRouteTableStatusCodeValues() []RouteTableStatusCode {
 	return original.PossibleRouteTableStatusCodeValues()

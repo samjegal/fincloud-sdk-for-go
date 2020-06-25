@@ -39,9 +39,9 @@ const (
 	Agent         DimensionType = original.Agent
 	CPU           DimensionType = original.CPU
 	Disk          DimensionType = original.Disk
-	Filesystem    DimensionType = original.Filesystem
+	Fs            DimensionType = original.Fs
 	Memory        DimensionType = original.Memory
-	Network       DimensionType = original.Network
+	Ntwk          DimensionType = original.Ntwk
 	PluginFile    DimensionType = original.PluginFile
 	PluginPort    DimensionType = original.PluginPort
 	PluginProcess DimensionType = original.PluginProcess

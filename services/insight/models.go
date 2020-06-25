@@ -40,12 +40,12 @@ const (
 	CPU DimensionType = "cpu"
 	// Disk ...
 	Disk DimensionType = "disk"
-	// Filesystem ...
-	Filesystem DimensionType = "file system"
+	// Fs ...
+	Fs DimensionType = "fs"
 	// Memory ...
 	Memory DimensionType = "memory"
-	// Network ...
-	Network DimensionType = "network"
+	// Ntwk ...
+	Ntwk DimensionType = "ntwk"
 	// PluginFile ...
 	PluginFile DimensionType = "plugin_file"
 	// PluginPort ...
@@ -60,7 +60,7 @@ const (
 
 // PossibleDimensionTypeValues returns an array of possible values for the DimensionType const type.
 func PossibleDimensionTypeValues() []DimensionType {
-	return []DimensionType{Agent, CPU, Disk, Filesystem, Memory, Network, PluginFile, PluginPort, PluginProcess, Process, Svr}
+	return []DimensionType{Agent, CPU, Disk, Fs, Memory, Ntwk, PluginFile, PluginPort, PluginProcess, Process, Svr}
 }
 
 // QueryAggregationType enumerates the values for query aggregation type.
@@ -157,7 +157,7 @@ type CloudInsightDataInfoParameter struct {
 
 // CloudInsightDimensionParameter ...
 type CloudInsightDimensionParameter struct {
-	// Type - Dimension 타입. Possible values include: 'Svr', 'CPU', 'Disk', 'Filesystem', 'Memory', 'Network', 'Process', 'PluginProcess', 'PluginFile', 'PluginPort', 'Agent'
+	// Type - Dimension 타입. Possible values include: 'CPU', 'Disk', 'Fs', 'Memory', 'Ntwk', 'Process', 'Svr', 'PluginProcess', 'PluginFile', 'PluginPort', 'Agent'
 	Type DimensionType `json:"type,omitempty"`
 	// InstanceNo - 서버 인스턴스
 	InstanceNo *string `json:"instanceNo,omitempty"`

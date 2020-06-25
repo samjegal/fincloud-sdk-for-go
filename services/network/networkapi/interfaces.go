@@ -97,7 +97,10 @@ var _ RouteTableDescriptionClientAPI = (*network.RouteTableDescriptionClient)(ni
 
 // LoadBalancerClientAPI contains the set of methods on the LoadBalancerClient type.
 type LoadBalancerClientAPI interface {
+	CheckName(ctx context.Context, loadBalancerName string) (result network.LoadBalancerCheckNameParameter, err error)
 	Search(ctx context.Context, parameters network.LoadBalancerSearchParameter) (result network.LoadBalancerSearchListParameter, err error)
+	ServerInstance(ctx context.Context, vpcNo string, layerTypeCode string) (result network.LoadBalancerServerInstanceListParameter, err error)
+	ZoneSubnet(ctx context.Context, vpcNo string) (result network.LoadBalancerZoneSubnetParameter, err error)
 }
 
 var _ LoadBalancerClientAPI = (*network.LoadBalancerClient)(nil)
