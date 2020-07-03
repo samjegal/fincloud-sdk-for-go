@@ -1,3 +1,9 @@
+## 1.4.1 (July 3, 2020)
+
+### UPDATED SERVICES
+
+- Cloud Insight (Dimension Parameter)
+
 ## 1.4.0 (June 25, 2020)
 
 ### NEW SERVICES
