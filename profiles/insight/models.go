@@ -86,6 +86,7 @@ type BaseClient = original.BaseClient
 type CloudInsightCollectorParameter = original.CloudInsightCollectorParameter
 type CloudInsightDataInfoParameter = original.CloudInsightDataInfoParameter
 type CloudInsightDimensionParameter = original.CloudInsightDimensionParameter
+type CloudInsightDimensionResultParameter = original.CloudInsightDimensionResultParameter
 type CloudInsightMetricInfoParameter = original.CloudInsightMetricInfoParameter
 type CloudInsightQueryMultipleParameter = original.CloudInsightQueryMultipleParameter
 type CloudInsightQueryParameter = original.CloudInsightQueryParameter

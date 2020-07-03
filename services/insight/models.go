@@ -145,8 +145,8 @@ type CloudInsightDataInfoParameter struct {
 	// Aggregation - 일괄 처리. Possible values include: 'MIN', 'MAX', 'SUM', 'COUNT', 'AVG'
 	Aggregation AggregationType `json:"aggregation,omitempty"`
 	// Dimensions - Query Dimension 데이터
-	Dimensions *CloudInsightDimensionParameter `json:"dimensions,omitempty"`
-	Dps        *[][]float64                    `json:"dps,omitempty"`
+	Dimensions *CloudInsightDimensionResultParameter `json:"dimensions,omitempty"`
+	Dps        *[][]float64                          `json:"dps,omitempty"`
 	// Interval - 조회 시간 간격. Possible values include: 'MIN1', 'MIN5', 'MIN30', 'HOUR2', 'DAY1'
 	Interval QueryIntervalTime `json:"interval,omitempty"`
 	// Metric - Metric 이름
@@ -163,6 +163,42 @@ type CloudInsightDimensionParameter struct {
 	InstanceNo *string `json:"instanceNo,omitempty"`
 	// CPUIdx - CPU 인덱스
 	CPUIdx *int32 `json:"cpu_idx,omitempty"`
+	// DiskIdx - 디스크 인덱스
+	DiskIdx *string `json:"disk_idx,omitempty"`
+	// MntNm - 파일시스템 마운트 정보
+	MntNm *string `json:"mnt_nm,omitempty"`
+	// NicDesc - 네트워크 인터페이스 정보
+	NicDesc *string `json:"nic_desc,omitempty"`
+	// ProcName - 프로세스 이름
+	ProcName *string `json:"proc_name,omitempty"`
+	// Path - 프로세스 경로
+	Path *string `json:"path,omitempty"`
+	// Port - 포트 번호
+	Port *int32 `json:"port,omitempty"`
+	// LoadBalancerAddress - 로드밸런서 주소
+	LoadBalancerAddress *string `json:"loadBalancerAddress,omitempty"`
+	// LoadBalancerPort - 로드밸런서 포트
+	LoadBalancerPort *string `json:"loadBalancerPort,omitempty"`
+	// InstanceID - 인스턴스 번호
+	InstanceID *string `json:"instanceId,omitempty"`
+	// LoadBalancerName - 로드밸런서 이름
+	LoadBalancerName *string `json:"loadBalancerName,omitempty"`
+	// NetworkType - 네트워크 타입
+	NetworkType *string `json:"networkType,omitempty"`
+	// LayerType - 로드밸런서 레이어 타입
+	LayerType *string `json:"layerType,omitempty"`
+	// AutoScalingGroupNo - 오토 스케일링 그룹 번호
+	AutoScalingGroupNo *int32 `json:"autoScalingGroupNo,omitempty"`
+}
+
+// CloudInsightDimensionResultParameter ...
+type CloudInsightDimensionResultParameter struct {
+	// Type - Dimension 타입. Possible values include: 'CPU', 'Disk', 'Fs', 'Memory', 'Ntwk', 'Process', 'Svr', 'PluginProcess', 'PluginFile', 'PluginPort', 'Agent'
+	Type DimensionType `json:"type,omitempty"`
+	// InstanceNo - 서버 인스턴스
+	InstanceNo *string `json:"instanceNo,omitempty"`
+	// CPUIdx - CPU 인덱스
+	CPUIdx *string `json:"cpu_idx,omitempty"`
 	// DiskIdx - 디스크 인덱스
 	DiskIdx *string `json:"disk_idx,omitempty"`
 	// MntNm - 파일시스템 마운트 정보
