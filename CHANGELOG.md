@@ -1,3 +1,14 @@
+## 1.5.0 (July 18, 2020)
+
+### NEW SERVICES
+
+- Webservice Monitoring System
+
+### UPDATED SERVICES
+
+- Cloud Insight
+  - Change package name to cloudinsight
+
 ## 1.4.1 (July 3, 2020)
 
 ### UPDATED SERVICES
