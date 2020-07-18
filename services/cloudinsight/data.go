@@ -1,4 +1,4 @@
-package insight
+package cloudinsight
 
 // FINCLOUD_APACHE_NO_VERSION
 
@@ -39,20 +39,20 @@ func (client DataClient) Preview(ctx context.Context) (result autorest.Response,
 	}
 	req, err := client.PreviewPreparer(ctx)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insight.DataClient", "Preview", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "cloudinsight.DataClient", "Preview", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.PreviewSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "insight.DataClient", "Preview", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cloudinsight.DataClient", "Preview", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.PreviewResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insight.DataClient", "Preview", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cloudinsight.DataClient", "Preview", resp, "Failure responding to request")
 	}
 
 	return
@@ -89,7 +89,7 @@ func (client DataClient) PreviewResponder(resp *http.Response) (result autorest.
 // Query get widget data preview for dashboard widget
 // Parameters:
 // parameters - cloud Insight Custom 메트릭 데이터
-func (client DataClient) Query(ctx context.Context, parameters CloudInsightQueryParameter) (result ListListFloat64, err error) {
+func (client DataClient) Query(ctx context.Context, parameters QueryParameter) (result ListListFloat64, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DataClient.Query")
 		defer func() {
@@ -102,27 +102,27 @@ func (client DataClient) Query(ctx context.Context, parameters CloudInsightQuery
 	}
 	req, err := client.QueryPreparer(ctx, parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insight.DataClient", "Query", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "cloudinsight.DataClient", "Query", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.QuerySender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "insight.DataClient", "Query", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cloudinsight.DataClient", "Query", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.QueryResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insight.DataClient", "Query", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cloudinsight.DataClient", "Query", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // QueryPreparer prepares the Query request.
-func (client DataClient) QueryPreparer(ctx context.Context, parameters CloudInsightQueryParameter) (*http.Request, error) {
+func (client DataClient) QueryPreparer(ctx context.Context, parameters QueryParameter) (*http.Request, error) {
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
@@ -155,7 +155,7 @@ func (client DataClient) QueryResponder(resp *http.Response) (result ListListFlo
 // QueryMultiple query multiple metric data for a specific product with specified criteria
 // Parameters:
 // parameters - cloud Insight Custom 메트릭 데이터
-func (client DataClient) QueryMultiple(ctx context.Context, parameters CloudInsightQueryMultipleParameter) (result ListCloudInsightDataInfoParameter, err error) {
+func (client DataClient) QueryMultiple(ctx context.Context, parameters QueryMultipleParameter) (result ListDataInfoParameter, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DataClient.QueryMultiple")
 		defer func() {
@@ -168,27 +168,27 @@ func (client DataClient) QueryMultiple(ctx context.Context, parameters CloudInsi
 	}
 	req, err := client.QueryMultiplePreparer(ctx, parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insight.DataClient", "QueryMultiple", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "cloudinsight.DataClient", "QueryMultiple", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.QueryMultipleSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "insight.DataClient", "QueryMultiple", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cloudinsight.DataClient", "QueryMultiple", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.QueryMultipleResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insight.DataClient", "QueryMultiple", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cloudinsight.DataClient", "QueryMultiple", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // QueryMultiplePreparer prepares the QueryMultiple request.
-func (client DataClient) QueryMultiplePreparer(ctx context.Context, parameters CloudInsightQueryMultipleParameter) (*http.Request, error) {
+func (client DataClient) QueryMultiplePreparer(ctx context.Context, parameters QueryMultipleParameter) (*http.Request, error) {
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
@@ -207,7 +207,7 @@ func (client DataClient) QueryMultipleSender(req *http.Request) (*http.Response,
 
 // QueryMultipleResponder handles the response to the QueryMultiple request. The method always
 // closes the http.Response Body.
-func (client DataClient) QueryMultipleResponder(resp *http.Response) (result ListCloudInsightDataInfoParameter, err error) {
+func (client DataClient) QueryMultipleResponder(resp *http.Response) (result ListDataInfoParameter, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

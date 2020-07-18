@@ -1,4 +1,4 @@
-package insight
+package cloudinsight
 
 // FINCLOUD_APACHE_NO_VERSION
 
@@ -39,20 +39,20 @@ func (client RuleClient) Create(ctx context.Context) (result autorest.Response, 
 	}
 	req, err := client.CreatePreparer(ctx)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insight.RuleClient", "Create", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "cloudinsight.RuleClient", "Create", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.CreateSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "insight.RuleClient", "Create", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cloudinsight.RuleClient", "Create", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.CreateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insight.RuleClient", "Create", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cloudinsight.RuleClient", "Create", resp, "Failure responding to request")
 	}
 
 	return
@@ -102,20 +102,20 @@ func (client RuleClient) Delete(ctx context.Context, ruleID string) (result auto
 	}
 	req, err := client.DeletePreparer(ctx, ruleID)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insight.RuleClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "cloudinsight.RuleClient", "Delete", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "insight.RuleClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cloudinsight.RuleClient", "Delete", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insight.RuleClient", "Delete", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cloudinsight.RuleClient", "Delete", resp, "Failure responding to request")
 	}
 
 	return
@@ -169,20 +169,20 @@ func (client RuleClient) Get(ctx context.Context, ruleID string) (result autores
 	}
 	req, err := client.GetPreparer(ctx, ruleID)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insight.RuleClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "cloudinsight.RuleClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "insight.RuleClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cloudinsight.RuleClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insight.RuleClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cloudinsight.RuleClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
@@ -237,20 +237,20 @@ func (client RuleClient) GetList(ctx context.Context, pageNum string, pageSize s
 	}
 	req, err := client.GetListPreparer(ctx, pageNum, pageSize)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insight.RuleClient", "GetList", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "cloudinsight.RuleClient", "GetList", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetListSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "insight.RuleClient", "GetList", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cloudinsight.RuleClient", "GetList", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insight.RuleClient", "GetList", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cloudinsight.RuleClient", "GetList", resp, "Failure responding to request")
 	}
 
 	return
@@ -305,20 +305,20 @@ func (client RuleClient) Update(ctx context.Context, ruleID string) (result auto
 	}
 	req, err := client.UpdatePreparer(ctx, ruleID)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insight.RuleClient", "Update", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "cloudinsight.RuleClient", "Update", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.UpdateSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "insight.RuleClient", "Update", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cloudinsight.RuleClient", "Update", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insight.RuleClient", "Update", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cloudinsight.RuleClient", "Update", resp, "Failure responding to request")
 	}
 
 	return

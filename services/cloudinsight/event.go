@@ -1,4 +1,4 @@
-package insight
+package cloudinsight
 
 // FINCLOUD_APACHE_NO_VERSION
 
@@ -39,20 +39,20 @@ func (client EventClient) SearchEventCount(ctx context.Context) (result autorest
 	}
 	req, err := client.SearchEventCountPreparer(ctx)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insight.EventClient", "SearchEventCount", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "cloudinsight.EventClient", "SearchEventCount", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.SearchEventCountSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "insight.EventClient", "SearchEventCount", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cloudinsight.EventClient", "SearchEventCount", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.SearchEventCountResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insight.EventClient", "SearchEventCount", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cloudinsight.EventClient", "SearchEventCount", resp, "Failure responding to request")
 	}
 
 	return

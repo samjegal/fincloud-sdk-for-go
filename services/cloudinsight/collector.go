@@ -1,4 +1,4 @@
-package insight
+package cloudinsight
 
 // FINCLOUD_APACHE_NO_VERSION
 
@@ -28,7 +28,7 @@ func NewCollectorClientWithBaseURI(baseURI string) CollectorClient {
 // Push collector API
 // Parameters:
 // parameters - cloud Insight Custom 메트릭 데이터
-func (client CollectorClient) Push(ctx context.Context, parameters CloudInsightCollectorParameter) (result autorest.Response, err error) {
+func (client CollectorClient) Push(ctx context.Context, parameters CollectorParameter) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/CollectorClient.Push")
 		defer func() {
@@ -41,27 +41,27 @@ func (client CollectorClient) Push(ctx context.Context, parameters CloudInsightC
 	}
 	req, err := client.PushPreparer(ctx, parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insight.CollectorClient", "Push", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "cloudinsight.CollectorClient", "Push", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.PushSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "insight.CollectorClient", "Push", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cloudinsight.CollectorClient", "Push", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.PushResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insight.CollectorClient", "Push", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cloudinsight.CollectorClient", "Push", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // PushPreparer prepares the Push request.
-func (client CollectorClient) PushPreparer(ctx context.Context, parameters CloudInsightCollectorParameter) (*http.Request, error) {
+func (client CollectorClient) PushPreparer(ctx context.Context, parameters CollectorParameter) (*http.Request, error) {
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),

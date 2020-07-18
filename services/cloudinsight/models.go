@@ -1,4 +1,4 @@
-package insight
+package cloudinsight
 
 // FINCLOUD_APACHE_NO_VERSION
 
@@ -7,7 +7,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/samjegal/fincloud-sdk-for-go/services/insight"
+const fqdn = "github.com/samjegal/fincloud-sdk-for-go/services/cloudinsight"
 
 // AggregationType enumerates the values for aggregation type.
 type AggregationType string
@@ -132,21 +132,21 @@ func PossibleSchemaDataTypeValues() []SchemaDataType {
 	return []SchemaDataType{FLOAT, INTEGER, LONG, STRING}
 }
 
-// CloudInsightCollectorParameter ...
-type CloudInsightCollectorParameter struct {
+// CollectorParameter ...
+type CollectorParameter struct {
 	// Data - 검색할 subnet 페이지 번호
 	Data interface{} `json:"data,omitempty"`
 	// CwKey - Schema 생성시 발급받은 키
 	CwKey *string `json:"cw_key,omitempty"`
 }
 
-// CloudInsightDataInfoParameter ...
-type CloudInsightDataInfoParameter struct {
+// DataInfoParameter ...
+type DataInfoParameter struct {
 	// Aggregation - 일괄 처리. Possible values include: 'MIN', 'MAX', 'SUM', 'COUNT', 'AVG'
 	Aggregation AggregationType `json:"aggregation,omitempty"`
 	// Dimensions - Query Dimension 데이터
-	Dimensions *CloudInsightDimensionResultParameter `json:"dimensions,omitempty"`
-	Dps        *[][]float64                          `json:"dps,omitempty"`
+	Dimensions *DimensionResultParameter `json:"dimensions,omitempty"`
+	Dps        *[][]float64              `json:"dps,omitempty"`
 	// Interval - 조회 시간 간격. Possible values include: 'MIN1', 'MIN5', 'MIN30', 'HOUR2', 'DAY1'
 	Interval QueryIntervalTime `json:"interval,omitempty"`
 	// Metric - Metric 이름
@@ -155,8 +155,8 @@ type CloudInsightDataInfoParameter struct {
 	ProductName *string `json:"productName,omitempty"`
 }
 
-// CloudInsightDimensionParameter ...
-type CloudInsightDimensionParameter struct {
+// DimensionParameter ...
+type DimensionParameter struct {
 	// Type - Dimension 타입. Possible values include: 'CPU', 'Disk', 'Fs', 'Memory', 'Ntwk', 'Process', 'Svr', 'PluginProcess', 'PluginFile', 'PluginPort', 'Agent'
 	Type DimensionType `json:"type,omitempty"`
 	// InstanceNo - 서버 인스턴스
@@ -191,8 +191,8 @@ type CloudInsightDimensionParameter struct {
 	AutoScalingGroupNo *int32 `json:"autoScalingGroupNo,omitempty"`
 }
 
-// CloudInsightDimensionResultParameter ...
-type CloudInsightDimensionResultParameter struct {
+// DimensionResultParameter ...
+type DimensionResultParameter struct {
 	// Type - Dimension 타입. Possible values include: 'CPU', 'Disk', 'Fs', 'Memory', 'Ntwk', 'Process', 'Svr', 'PluginProcess', 'PluginFile', 'PluginPort', 'Agent'
 	Type DimensionType `json:"type,omitempty"`
 	// InstanceNo - 서버 인스턴스
@@ -227,84 +227,10 @@ type CloudInsightDimensionResultParameter struct {
 	AutoScalingGroupNo *int32 `json:"autoScalingGroupNo,omitempty"`
 }
 
-// CloudInsightMetricInfoParameter ...
-type CloudInsightMetricInfoParameter struct {
-	// Prodkey - Schema 생성시 발급받은 키
-	Prodkey *string `json:"prodkey,omitempty"`
-	// ProductName - Product 이름
-	ProductName *string `json:"productName,omitempty"`
-	// Metric - Metric 이름
-	Metric *string `json:"metric,omitempty"`
-	// Interval - 조회 시간 간격. Possible values include: 'MIN1', 'MIN5', 'MIN30', 'HOUR2', 'DAY1'
-	Interval QueryIntervalTime `json:"interval,omitempty"`
-	// Aggregation - 일괄 처리. Possible values include: 'MIN', 'MAX', 'SUM', 'COUNT', 'AVG'
-	Aggregation AggregationType `json:"aggregation,omitempty"`
-	// QueryAggregation - Query 일괄 처리. Possible values include: 'QueryAggregationTypeAVG', 'QueryAggregationTypeCOUNT', 'QueryAggregationTypeMIN', 'QueryAggregationTypeMAX', 'QueryAggregationTypeNONE', 'QueryAggregationTypeSUM', 'QueryAggregationTypeFIRST', 'QueryAggregationTypeLAST', 'QueryAggregationTypeMULT'
-	QueryAggregation QueryAggregationType `json:"queryAggregation,omitempty"`
-	// Dimensions - Query Dimension 데이터
-	Dimensions *CloudInsightDimensionParameter `json:"dimensions,omitempty"`
-}
-
-// CloudInsightQueryMultipleParameter ...
-type CloudInsightQueryMultipleParameter struct {
-	// MetricInfoList - 요청할 Metric 정보
-	MetricInfoList *[]CloudInsightMetricInfoParameter `json:"metricInfoList,omitempty"`
-	// TimeStart - 최초 조회 시간
-	TimeStart *float64 `json:"timeStart,omitempty"`
-	// TimeEnd - 마지막 조회 시간
-	TimeEnd *float64 `json:"timeEnd,omitempty"`
-}
-
-// CloudInsightQueryParameter ...
-type CloudInsightQueryParameter struct {
-	// TimeEnd - 마지막 조회 시간
-	TimeEnd *float64 `json:"timeEnd,omitempty"`
-	// TimeStart - 최초 조회 시간
-	TimeStart *float64 `json:"timeStart,omitempty"`
-	// Metric - Metric 이름
-	Metric *string `json:"metric,omitempty"`
-	// Interval - 조회 시간 간격. Possible values include: 'MIN1', 'MIN5', 'MIN30', 'HOUR2', 'DAY1'
-	Interval QueryIntervalTime `json:"interval,omitempty"`
-	// Aggregation - 일괄 처리. Possible values include: 'MIN', 'MAX', 'SUM', 'COUNT', 'AVG'
-	Aggregation AggregationType `json:"aggregation,omitempty"`
-	// QueryAggregation - Query 일괄 처리. Possible values include: 'QueryAggregationTypeAVG', 'QueryAggregationTypeCOUNT', 'QueryAggregationTypeMIN', 'QueryAggregationTypeMAX', 'QueryAggregationTypeNONE', 'QueryAggregationTypeSUM', 'QueryAggregationTypeFIRST', 'QueryAggregationTypeLAST', 'QueryAggregationTypeMULT'
-	QueryAggregation QueryAggregationType `json:"queryAggregation,omitempty"`
-	// CwKey - Schema 생성시 발급받은 키
-	CwKey *string `json:"cw_key,omitempty"`
-	// ProductName - Product 이름
-	ProductName *string `json:"productName,omitempty"`
-	// Dimensions - Query Dimension 데이터
-	Dimensions *CloudInsightDimensionParameter `json:"dimensions,omitempty"`
-}
-
-// CloudInsightSchemaFieldsParameter ...
-type CloudInsightSchemaFieldsParameter struct {
-	// Metric - Metric 유무
-	Metric *bool `json:"metric,omitempty"`
-	// DataType - Metric 데이터 타입. Possible values include: 'STRING', 'INTEGER', 'LONG', 'FLOAT'
-	DataType SchemaDataType `json:"dataType,omitempty"`
-	// Name - Metric 이름
-	Name *string `json:"name,omitempty"`
-	// DefaultMetric - Metric 기본 유무
-	DefaultMetric *bool `json:"defaultMetric,omitempty"`
-	// Dimension - Dimension 설정
-	Dimension *bool `json:"dimension,omitempty"`
-	// Desc - Dimension 설명
-	Desc *string `json:"desc,omitempty"`
-}
-
-// CloudInsightSchemaParameter ...
-type CloudInsightSchemaParameter struct {
-	// ProdName - Metric Product 이름
-	ProdName *string `json:"prodName,omitempty"`
-	// Fields - Metric 필드 정의
-	Fields *[]CloudInsightSchemaFieldsParameter `json:"fields,omitempty"`
-}
-
-// ListCloudInsightDataInfoParameter ...
-type ListCloudInsightDataInfoParameter struct {
+// ListDataInfoParameter ...
+type ListDataInfoParameter struct {
 	autorest.Response `json:"-"`
-	Value             *[]CloudInsightDataInfoParameter `json:"value,omitempty"`
+	Value             *[]DataInfoParameter `json:"value,omitempty"`
 }
 
 // ListListFloat64 ...
@@ -325,6 +251,24 @@ type ListProcessPluginParameter struct {
 	Value             *[]ProcessPluginParameter `json:"value,omitempty"`
 }
 
+// MetricInfoParameter ...
+type MetricInfoParameter struct {
+	// Prodkey - Schema 생성시 발급받은 키
+	Prodkey *string `json:"prodkey,omitempty"`
+	// ProductName - Product 이름
+	ProductName *string `json:"productName,omitempty"`
+	// Metric - Metric 이름
+	Metric *string `json:"metric,omitempty"`
+	// Interval - 조회 시간 간격. Possible values include: 'MIN1', 'MIN5', 'MIN30', 'HOUR2', 'DAY1'
+	Interval QueryIntervalTime `json:"interval,omitempty"`
+	// Aggregation - 일괄 처리. Possible values include: 'MIN', 'MAX', 'SUM', 'COUNT', 'AVG'
+	Aggregation AggregationType `json:"aggregation,omitempty"`
+	// QueryAggregation - Query 일괄 처리. Possible values include: 'QueryAggregationTypeAVG', 'QueryAggregationTypeCOUNT', 'QueryAggregationTypeMIN', 'QueryAggregationTypeMAX', 'QueryAggregationTypeNONE', 'QueryAggregationTypeSUM', 'QueryAggregationTypeFIRST', 'QueryAggregationTypeLAST', 'QueryAggregationTypeMULT'
+	QueryAggregation QueryAggregationType `json:"queryAggregation,omitempty"`
+	// Dimensions - Query Dimension 데이터
+	Dimensions *DimensionParameter `json:"dimensions,omitempty"`
+}
+
 // PortPluginParameter ...
 type PortPluginParameter struct {
 	autorest.Response `json:"-"`
@@ -341,4 +285,60 @@ type ProcessPluginParameter struct {
 	ConfigList *[]string `json:"configList,omitempty"`
 	// InstanceNo - 서버 인스턴스 번호
 	InstanceNo *string `json:"instanceNo,omitempty"`
+}
+
+// QueryMultipleParameter ...
+type QueryMultipleParameter struct {
+	// MetricInfoList - 요청할 Metric 정보
+	MetricInfoList *[]MetricInfoParameter `json:"metricInfoList,omitempty"`
+	// TimeStart - 최초 조회 시간
+	TimeStart *float64 `json:"timeStart,omitempty"`
+	// TimeEnd - 마지막 조회 시간
+	TimeEnd *float64 `json:"timeEnd,omitempty"`
+}
+
+// QueryParameter ...
+type QueryParameter struct {
+	// TimeEnd - 마지막 조회 시간
+	TimeEnd *float64 `json:"timeEnd,omitempty"`
+	// TimeStart - 최초 조회 시간
+	TimeStart *float64 `json:"timeStart,omitempty"`
+	// Metric - Metric 이름
+	Metric *string `json:"metric,omitempty"`
+	// Interval - 조회 시간 간격. Possible values include: 'MIN1', 'MIN5', 'MIN30', 'HOUR2', 'DAY1'
+	Interval QueryIntervalTime `json:"interval,omitempty"`
+	// Aggregation - 일괄 처리. Possible values include: 'MIN', 'MAX', 'SUM', 'COUNT', 'AVG'
+	Aggregation AggregationType `json:"aggregation,omitempty"`
+	// QueryAggregation - Query 일괄 처리. Possible values include: 'QueryAggregationTypeAVG', 'QueryAggregationTypeCOUNT', 'QueryAggregationTypeMIN', 'QueryAggregationTypeMAX', 'QueryAggregationTypeNONE', 'QueryAggregationTypeSUM', 'QueryAggregationTypeFIRST', 'QueryAggregationTypeLAST', 'QueryAggregationTypeMULT'
+	QueryAggregation QueryAggregationType `json:"queryAggregation,omitempty"`
+	// CwKey - Schema 생성시 발급받은 키
+	CwKey *string `json:"cw_key,omitempty"`
+	// ProductName - Product 이름
+	ProductName *string `json:"productName,omitempty"`
+	// Dimensions - Query Dimension 데이터
+	Dimensions *DimensionParameter `json:"dimensions,omitempty"`
+}
+
+// SchemaFieldsParameter ...
+type SchemaFieldsParameter struct {
+	// Metric - Metric 유무
+	Metric *bool `json:"metric,omitempty"`
+	// DataType - Metric 데이터 타입. Possible values include: 'STRING', 'INTEGER', 'LONG', 'FLOAT'
+	DataType SchemaDataType `json:"dataType,omitempty"`
+	// Name - Metric 이름
+	Name *string `json:"name,omitempty"`
+	// DefaultMetric - Metric 기본 유무
+	DefaultMetric *bool `json:"defaultMetric,omitempty"`
+	// Dimension - Dimension 설정
+	Dimension *bool `json:"dimension,omitempty"`
+	// Desc - Dimension 설명
+	Desc *string `json:"desc,omitempty"`
+}
+
+// SchemaParameter ...
+type SchemaParameter struct {
+	// ProdName - Metric Product 이름
+	ProdName *string `json:"prodName,omitempty"`
+	// Fields - Metric 필드 정의
+	Fields *[]SchemaFieldsParameter `json:"fields,omitempty"`
 }

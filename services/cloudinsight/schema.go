@@ -1,4 +1,4 @@
-package insight
+package cloudinsight
 
 // FINCLOUD_APACHE_NO_VERSION
 
@@ -29,7 +29,7 @@ func NewSchemaClientWithBaseURI(baseURI string) SchemaClient {
 // Parameters:
 // parameters - cloud Insight Custom 메트릭 생성 데이터
 // prodName - product 이름
-func (client SchemaClient) Create(ctx context.Context, parameters CloudInsightSchemaParameter, prodName string) (result autorest.Response, err error) {
+func (client SchemaClient) Create(ctx context.Context, parameters SchemaParameter, prodName string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SchemaClient.Create")
 		defer func() {
@@ -42,27 +42,27 @@ func (client SchemaClient) Create(ctx context.Context, parameters CloudInsightSc
 	}
 	req, err := client.CreatePreparer(ctx, parameters, prodName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insight.SchemaClient", "Create", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "cloudinsight.SchemaClient", "Create", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.CreateSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "insight.SchemaClient", "Create", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cloudinsight.SchemaClient", "Create", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.CreateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insight.SchemaClient", "Create", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cloudinsight.SchemaClient", "Create", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // CreatePreparer prepares the Create request.
-func (client SchemaClient) CreatePreparer(ctx context.Context, parameters CloudInsightSchemaParameter, prodName string) (*http.Request, error) {
+func (client SchemaClient) CreatePreparer(ctx context.Context, parameters SchemaParameter, prodName string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{}
 	if len(prodName) > 0 {
 		queryParameters["prodName"] = autorest.Encode("query", prodName)
@@ -113,20 +113,20 @@ func (client SchemaClient) Delete(ctx context.Context, prodName string) (result 
 	}
 	req, err := client.DeletePreparer(ctx, prodName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insight.SchemaClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "cloudinsight.SchemaClient", "Delete", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "insight.SchemaClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cloudinsight.SchemaClient", "Delete", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insight.SchemaClient", "Delete", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cloudinsight.SchemaClient", "Delete", resp, "Failure responding to request")
 	}
 
 	return
@@ -183,20 +183,20 @@ func (client SchemaClient) Disable(ctx context.Context, cwKey string, instanceId
 	}
 	req, err := client.DisablePreparer(ctx, cwKey, instanceIds)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insight.SchemaClient", "Disable", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "cloudinsight.SchemaClient", "Disable", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.DisableSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "insight.SchemaClient", "Disable", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cloudinsight.SchemaClient", "Disable", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.DisableResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insight.SchemaClient", "Disable", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cloudinsight.SchemaClient", "Disable", resp, "Failure responding to request")
 	}
 
 	return
@@ -256,20 +256,20 @@ func (client SchemaClient) Enable(ctx context.Context, cwKey string, instanceIds
 	}
 	req, err := client.EnablePreparer(ctx, cwKey, instanceIds)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insight.SchemaClient", "Enable", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "cloudinsight.SchemaClient", "Enable", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.EnableSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "insight.SchemaClient", "Enable", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cloudinsight.SchemaClient", "Enable", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.EnableResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insight.SchemaClient", "Enable", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cloudinsight.SchemaClient", "Enable", resp, "Failure responding to request")
 	}
 
 	return
@@ -328,20 +328,20 @@ func (client SchemaClient) Get(ctx context.Context, prodName string) (result aut
 	}
 	req, err := client.GetPreparer(ctx, prodName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insight.SchemaClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "cloudinsight.SchemaClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "insight.SchemaClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cloudinsight.SchemaClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insight.SchemaClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cloudinsight.SchemaClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
@@ -395,20 +395,20 @@ func (client SchemaClient) GetList(ctx context.Context) (result autorest.Respons
 	}
 	req, err := client.GetListPreparer(ctx)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insight.SchemaClient", "GetList", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "cloudinsight.SchemaClient", "GetList", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetListSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "insight.SchemaClient", "GetList", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cloudinsight.SchemaClient", "GetList", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insight.SchemaClient", "GetList", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cloudinsight.SchemaClient", "GetList", resp, "Failure responding to request")
 	}
 
 	return
@@ -459,20 +459,20 @@ func (client SchemaClient) QueryStatus(ctx context.Context, cwKey string, instan
 	}
 	req, err := client.QueryStatusPreparer(ctx, cwKey, instanceIds)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insight.SchemaClient", "QueryStatus", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "cloudinsight.SchemaClient", "QueryStatus", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.QueryStatusSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "insight.SchemaClient", "QueryStatus", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cloudinsight.SchemaClient", "QueryStatus", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.QueryStatusResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insight.SchemaClient", "QueryStatus", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cloudinsight.SchemaClient", "QueryStatus", resp, "Failure responding to request")
 	}
 
 	return
@@ -531,20 +531,20 @@ func (client SchemaClient) Update(ctx context.Context, prodName string) (result 
 	}
 	req, err := client.UpdatePreparer(ctx, prodName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insight.SchemaClient", "Update", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "cloudinsight.SchemaClient", "Update", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.UpdateSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "insight.SchemaClient", "Update", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cloudinsight.SchemaClient", "Update", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insight.SchemaClient", "Update", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cloudinsight.SchemaClient", "Update", resp, "Failure responding to request")
 	}
 
 	return

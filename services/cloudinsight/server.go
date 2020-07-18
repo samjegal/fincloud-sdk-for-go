@@ -1,4 +1,4 @@
-package insight
+package cloudinsight
 
 // FINCLOUD_APACHE_NO_VERSION
 
@@ -41,20 +41,20 @@ func (client ServerClient) CreatTop(ctx context.Context, query string) (result a
 	}
 	req, err := client.CreatTopPreparer(ctx, query)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insight.ServerClient", "CreatTop", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "cloudinsight.ServerClient", "CreatTop", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.CreatTopSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "insight.ServerClient", "CreatTop", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cloudinsight.ServerClient", "CreatTop", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.CreatTopResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "insight.ServerClient", "CreatTop", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cloudinsight.ServerClient", "CreatTop", resp, "Failure responding to request")
 	}
 
 	return

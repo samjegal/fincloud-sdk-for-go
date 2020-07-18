@@ -1,7 +1,7 @@
-// Package insight implements the Azure ARM Insight service API version .
+// Package cloudinsight implements the Azure ARM Cloudinsight service API version .
 //
 // Cloud Insight Client
-package insight
+package cloudinsight
 
 // FINCLOUD_APACHE_NO_VERSION
 
@@ -10,11 +10,11 @@ import (
 )
 
 const (
-	// DefaultBaseURI is the default URI used for the service Insight
+	// DefaultBaseURI is the default URI used for the service Cloudinsight
 	DefaultBaseURI = "https://cw.apigw.fin-ntruss.com"
 )
 
-// BaseClient is the base client for Insight.
+// BaseClient is the base client for Cloudinsight.
 type BaseClient struct {
 	autorest.Client
 	BaseURI string
