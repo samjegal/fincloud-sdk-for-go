@@ -210,7 +210,7 @@ type DimensionResultParameter struct {
 	// Path - 프로세스 경로
 	Path *string `json:"path,omitempty"`
 	// Port - 포트 번호
-	Port *int32 `json:"port,omitempty"`
+	Port *string `json:"port,omitempty"`
 	// LoadBalancerAddress - 로드밸런서 주소
 	LoadBalancerAddress *string `json:"loadBalancerAddress,omitempty"`
 	// LoadBalancerPort - 로드밸런서 포트
@@ -224,7 +224,7 @@ type DimensionResultParameter struct {
 	// LayerType - 로드밸런서 레이어 타입
 	LayerType *string `json:"layerType,omitempty"`
 	// AutoScalingGroupNo - 오토 스케일링 그룹 번호
-	AutoScalingGroupNo *int32 `json:"autoScalingGroupNo,omitempty"`
+	AutoScalingGroupNo *string `json:"autoScalingGroupNo,omitempty"`
 }
 
 // ListDataInfoParameter ...
