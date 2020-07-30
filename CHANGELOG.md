@@ -1,3 +1,9 @@
+## 1.5.2 (July 31, 2020)
+
+### UPDATED SERVICES
+
+- Cloud Insight
+
 ## 1.5.1 (July 20, 2020)
 
 ### UPDATED SERVICES
