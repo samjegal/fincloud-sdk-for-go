@@ -63,14 +63,14 @@ type CollectorClientAPI interface {
 
 var _ CollectorClientAPI = (*cloudinsight.CollectorClient)(nil)
 
-// ProcessPluginClientAPI contains the set of methods on the ProcessPluginClient type.
-type ProcessPluginClientAPI interface {
-	Create(ctx context.Context, parameters cloudinsight.ProcessPluginParameter) (result autorest.Response, err error)
-	Get(ctx context.Context, instanceNo string) (result cloudinsight.ProcessPluginParameter, err error)
-	List(ctx context.Context) (result cloudinsight.ListProcessPluginParameter, err error)
+// PluginProcessClientAPI contains the set of methods on the PluginProcessClient type.
+type PluginProcessClientAPI interface {
+	Create(ctx context.Context, parameters cloudinsight.PluginProcessParameter) (result autorest.Response, err error)
+	Get(ctx context.Context, instanceNo string) (result cloudinsight.PluginProcessParameter, err error)
+	List(ctx context.Context) (result cloudinsight.ListPluginProcessParameter, err error)
 }
 
-var _ ProcessPluginClientAPI = (*cloudinsight.ProcessPluginClient)(nil)
+var _ PluginProcessClientAPI = (*cloudinsight.PluginProcessClient)(nil)
 
 // PortPluginClientAPI contains the set of methods on the PortPluginClient type.
 type PortPluginClientAPI interface {

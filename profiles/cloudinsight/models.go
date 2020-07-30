@@ -92,13 +92,13 @@ type DimensionResultParameter = original.DimensionResultParameter
 type EventClient = original.EventClient
 type ListDataInfoParameter = original.ListDataInfoParameter
 type ListListFloat64 = original.ListListFloat64
+type ListPluginProcessParameter = original.ListPluginProcessParameter
 type ListPortPluginParameter = original.ListPortPluginParameter
-type ListProcessPluginParameter = original.ListProcessPluginParameter
 type MetricInfoParameter = original.MetricInfoParameter
+type PluginProcessClient = original.PluginProcessClient
+type PluginProcessParameter = original.PluginProcessParameter
 type PortPluginClient = original.PortPluginClient
 type PortPluginParameter = original.PortPluginParameter
-type ProcessPluginClient = original.ProcessPluginClient
-type ProcessPluginParameter = original.ProcessPluginParameter
 type QueryMultipleParameter = original.QueryMultipleParameter
 type QueryParameter = original.QueryParameter
 type RuleClient = original.RuleClient
@@ -128,17 +128,17 @@ func NewEventClient() EventClient {
 func NewEventClientWithBaseURI(baseURI string) EventClient {
 	return original.NewEventClientWithBaseURI(baseURI)
 }
+func NewPluginProcessClient() PluginProcessClient {
+	return original.NewPluginProcessClient()
+}
+func NewPluginProcessClientWithBaseURI(baseURI string) PluginProcessClient {
+	return original.NewPluginProcessClientWithBaseURI(baseURI)
+}
 func NewPortPluginClient() PortPluginClient {
 	return original.NewPortPluginClient()
 }
 func NewPortPluginClientWithBaseURI(baseURI string) PortPluginClient {
 	return original.NewPortPluginClientWithBaseURI(baseURI)
-}
-func NewProcessPluginClient() ProcessPluginClient {
-	return original.NewProcessPluginClient()
-}
-func NewProcessPluginClientWithBaseURI(baseURI string) ProcessPluginClient {
-	return original.NewProcessPluginClientWithBaseURI(baseURI)
 }
 func NewRuleClient() RuleClient {
 	return original.NewRuleClient()

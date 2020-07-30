@@ -239,16 +239,16 @@ type ListListFloat64 struct {
 	Value             *[][]float64 `json:"value,omitempty"`
 }
 
+// ListPluginProcessParameter ...
+type ListPluginProcessParameter struct {
+	autorest.Response `json:"-"`
+	Value             *[]PluginProcessParameter `json:"value,omitempty"`
+}
+
 // ListPortPluginParameter ...
 type ListPortPluginParameter struct {
 	autorest.Response `json:"-"`
 	Value             *[]PortPluginParameter `json:"value,omitempty"`
-}
-
-// ListProcessPluginParameter ...
-type ListProcessPluginParameter struct {
-	autorest.Response `json:"-"`
-	Value             *[]ProcessPluginParameter `json:"value,omitempty"`
 }
 
 // MetricInfoParameter ...
@@ -269,20 +269,20 @@ type MetricInfoParameter struct {
 	Dimensions *DimensionParameter `json:"dimensions,omitempty"`
 }
 
+// PluginProcessParameter ...
+type PluginProcessParameter struct {
+	autorest.Response `json:"-"`
+	// ConfigList - 프로세스 이름
+	ConfigList *[]string `json:"configList,omitempty"`
+	// InstanceNo - 서버 인스턴스 번호
+	InstanceNo *string `json:"instanceNo,omitempty"`
+}
+
 // PortPluginParameter ...
 type PortPluginParameter struct {
 	autorest.Response `json:"-"`
 	// ConfigList - 포트 번호 리스트
 	ConfigList *[]int32 `json:"configList,omitempty"`
-	// InstanceNo - 서버 인스턴스 번호
-	InstanceNo *string `json:"instanceNo,omitempty"`
-}
-
-// ProcessPluginParameter ...
-type ProcessPluginParameter struct {
-	autorest.Response `json:"-"`
-	// ConfigList - 프로세스 이름
-	ConfigList *[]string `json:"configList,omitempty"`
 	// InstanceNo - 서버 인스턴스 번호
 	InstanceNo *string `json:"instanceNo,omitempty"`
 }
