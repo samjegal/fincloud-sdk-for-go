@@ -244,84 +244,84 @@ func PossibleSortingOrderValues() []SortingOrder {
 	return []SortingOrder{ASC, DESC}
 }
 
-// BaseBlockStorageDiskDetailTypeParameter ...
-type BaseBlockStorageDiskDetailTypeParameter struct {
+// BaseBlockStorageDiskDetailType ...
+type BaseBlockStorageDiskDetailType struct {
 	Code     *string `json:"code,omitempty"`
 	CodeName *string `json:"codeName,omitempty"`
 }
 
-// BaseBlockStorageDiskTypeParameter ...
-type BaseBlockStorageDiskTypeParameter struct {
+// BaseBlockStorageDiskType ...
+type BaseBlockStorageDiskType struct {
 	Code     *string `json:"code,omitempty"`
 	CodeName *string `json:"codeName,omitempty"`
 }
 
-// InstanceListParameter ...
-type InstanceListParameter struct {
-	ServerInstanceNo               *string                                  `json:"serverInstanceNo,omitempty"`
-	ServerName                     *string                                  `json:"serverName,omitempty"`
-	ServerDescription              *string                                  `json:"serverDescription,omitempty"`
-	CPUCount                       *int32                                   `json:"cpuCount,omitempty"`
-	MemorySize                     *float64                                 `json:"memorySize,omitempty"`
-	PlatformType                   *PlatformTypeParameter                   `json:"platformType,omitempty"`
-	LoginKeyName                   *string                                  `json:"loginKeyName,omitempty"`
-	PublicIPInstanceNo             *string                                  `json:"publicIpInstanceNo,omitempty"`
-	PublicIP                       *string                                  `json:"publicIp,omitempty"`
-	ServerInstanceStatus           *InstanceStatusParameter                 `json:"serverInstanceStatus,omitempty"`
-	ServerInstanceOperation        *InstanceOperationParameter              `json:"serverInstanceOperation,omitempty"`
-	ServerInstanceStatusName       *string                                  `json:"serverInstanceStatusName,omitempty"`
-	CreateDate                     *string                                  `json:"createDate,omitempty"`
-	Uptime                         *string                                  `json:"uptime,omitempty"`
-	ServerImageProductCode         *string                                  `json:"serverImageProductCode,omitempty"`
-	ServerProductCode              *string                                  `json:"serverProductCode,omitempty"`
-	IsProtectServerTermination     *bool                                    `json:"isProtectServerTermination,omitempty"`
-	ZoneCode                       *string                                  `json:"zoneCode,omitempty"`
-	RegionCode                     *string                                  `json:"regionCode,omitempty"`
-	VpcNo                          *string                                  `json:"vpcNo,omitempty"`
-	SubnetNo                       *string                                  `json:"subnetNo,omitempty"`
-	NetworkInterfaceNoList         *NetworkInterfaceNoListParameter         `json:"networkInterfaceNoList,omitempty"`
-	InitScriptNo                   *string                                  `json:"initScriptNo,omitempty"`
-	ServerInstanceType             *InstanceTypeParameter                   `json:"serverInstanceType,omitempty"`
-	BaseBlockStorageDiskType       *BaseBlockStorageDiskTypeParameter       `json:"baseBlockStorageDiskType,omitempty"`
-	BaseBlockStorageDiskDetailType *BaseBlockStorageDiskDetailTypeParameter `json:"baseBlockStorageDiskDetailType,omitempty"`
-	PlacementGroupNo               *string                                  `json:"placementGroupNo,omitempty"`
-	PlacementGroupName             *string                                  `json:"placementGroupName,omitempty"`
+// InstanceList ...
+type InstanceList struct {
+	ServerInstanceNo               *string                         `json:"serverInstanceNo,omitempty"`
+	ServerName                     *string                         `json:"serverName,omitempty"`
+	ServerDescription              *string                         `json:"serverDescription,omitempty"`
+	CPUCount                       *int32                          `json:"cpuCount,omitempty"`
+	MemorySize                     *float64                        `json:"memorySize,omitempty"`
+	PlatformType                   *PlatformType                   `json:"platformType,omitempty"`
+	LoginKeyName                   *string                         `json:"loginKeyName,omitempty"`
+	PublicIPInstanceNo             *string                         `json:"publicIpInstanceNo,omitempty"`
+	PublicIP                       *string                         `json:"publicIp,omitempty"`
+	ServerInstanceStatus           *InstanceStatus                 `json:"serverInstanceStatus,omitempty"`
+	ServerInstanceOperation        *InstanceOperation              `json:"serverInstanceOperation,omitempty"`
+	ServerInstanceStatusName       *string                         `json:"serverInstanceStatusName,omitempty"`
+	CreateDate                     *string                         `json:"createDate,omitempty"`
+	Uptime                         *string                         `json:"uptime,omitempty"`
+	ServerImageProductCode         *string                         `json:"serverImageProductCode,omitempty"`
+	ServerProductCode              *string                         `json:"serverProductCode,omitempty"`
+	IsProtectServerTermination     *bool                           `json:"isProtectServerTermination,omitempty"`
+	ZoneCode                       *string                         `json:"zoneCode,omitempty"`
+	RegionCode                     *string                         `json:"regionCode,omitempty"`
+	VpcNo                          *string                         `json:"vpcNo,omitempty"`
+	SubnetNo                       *string                         `json:"subnetNo,omitempty"`
+	NetworkInterfaceNoList         *NetworkInterfaceNoList         `json:"networkInterfaceNoList,omitempty"`
+	InitScriptNo                   *string                         `json:"initScriptNo,omitempty"`
+	ServerInstanceType             *InstanceType                   `json:"serverInstanceType,omitempty"`
+	BaseBlockStorageDiskType       *BaseBlockStorageDiskType       `json:"baseBlockStorageDiskType,omitempty"`
+	BaseBlockStorageDiskDetailType *BaseBlockStorageDiskDetailType `json:"baseBlockStorageDiskDetailType,omitempty"`
+	PlacementGroupNo               *string                         `json:"placementGroupNo,omitempty"`
+	PlacementGroupName             *string                         `json:"placementGroupName,omitempty"`
 }
 
-// InstanceListResponseParameter ...
-type InstanceListResponseParameter struct {
+// InstanceListResponse ...
+type InstanceListResponse struct {
 	autorest.Response  `json:"-"`
-	ReturnCode         *string                  `json:"returnCode,omitempty"`
-	ReturnMessage      *string                  `json:"returnMessage,omitempty"`
-	TotalRows          *int32                   `json:"totalRows,omitempty"`
-	ServerInstanceList *[]InstanceListParameter `json:"serverInstanceList,omitempty"`
+	ReturnCode         *string         `json:"returnCode,omitempty"`
+	ReturnMessage      *string         `json:"returnMessage,omitempty"`
+	TotalRows          *int32          `json:"totalRows,omitempty"`
+	ServerInstanceList *[]InstanceList `json:"serverInstanceList,omitempty"`
 }
 
-// InstanceOperationParameter ...
-type InstanceOperationParameter struct {
+// InstanceOperation ...
+type InstanceOperation struct {
 	Code     *string `json:"code,omitempty"`
 	CodeName *string `json:"codeName,omitempty"`
 }
 
-// InstanceStatusParameter ...
-type InstanceStatusParameter struct {
+// InstanceStatus ...
+type InstanceStatus struct {
 	Code     *string `json:"code,omitempty"`
 	CodeName *string `json:"codeName,omitempty"`
 }
 
-// InstanceTypeParameter ...
-type InstanceTypeParameter struct {
+// InstanceType ...
+type InstanceType struct {
 	Code     *string `json:"code,omitempty"`
 	CodeName *string `json:"codeName,omitempty"`
 }
 
-// NetworkInterfaceNoListParameter ...
-type NetworkInterfaceNoListParameter struct {
+// NetworkInterfaceNoList ...
+type NetworkInterfaceNoList struct {
 	NetworkInterfaceNo *string `json:"networkInterfaceNo,omitempty"`
 }
 
-// PlatformTypeParameter ...
-type PlatformTypeParameter struct {
+// PlatformType ...
+type PlatformType struct {
 	Code     *string `json:"code,omitempty"`
 	CodeName *string `json:"codeName,omitempty"`
 }

@@ -68,6 +68,16 @@ const (
 
 type BaseClient = original.BaseClient
 type Client = original.Client
+type VolumeAccessControlResponse = original.VolumeAccessControlResponse
+type VolumeAllotmentProtocolType = original.VolumeAllotmentProtocolType
+type VolumeInstanceDetailResponse = original.VolumeInstanceDetailResponse
+type VolumeInstanceList = original.VolumeInstanceList
+type VolumeInstanceListResponse = original.VolumeInstanceListResponse
+type VolumeInstanceOperation = original.VolumeInstanceOperation
+type VolumeInstanceStatus = original.VolumeInstanceStatus
+type VolumeInstancesResponse = original.VolumeInstancesResponse
+type VolumeServerInstanceNoList = original.VolumeServerInstanceNoList
+type VolumeSizeResponse = original.VolumeSizeResponse
 
 func New() BaseClient {
 	return original.New()

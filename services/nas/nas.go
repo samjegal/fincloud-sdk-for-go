@@ -31,13 +31,13 @@ func NewClientWithBaseURI(baseURI string) Client {
 // nasVolumeInstanceNo - NAS 볼륜 인스턴스 번호
 // serverInstanceNoListN - 서버 인스턴스 번호 리스트
 // regionCode - REGION 코드
-func (client Client) AddAccessControl(ctx context.Context, responseFormatType string, nasVolumeInstanceNo string, serverInstanceNoListN string, regionCode string) (result autorest.Response, err error) {
+func (client Client) AddAccessControl(ctx context.Context, responseFormatType string, nasVolumeInstanceNo string, serverInstanceNoListN string, regionCode string) (result VolumeAccessControlResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.AddAccessControl")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -50,7 +50,7 @@ func (client Client) AddAccessControl(ctx context.Context, responseFormatType st
 
 	resp, err := client.AddAccessControlSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "nas.Client", "AddAccessControl", resp, "Failure sending request")
 		return
 	}
@@ -93,13 +93,14 @@ func (client Client) AddAccessControlSender(req *http.Request) (*http.Response, 
 
 // AddAccessControlResponder handles the response to the AddAccessControl request. The method always
 // closes the http.Response Body.
-func (client Client) AddAccessControlResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client Client) AddAccessControlResponder(resp *http.Response) (result VolumeAccessControlResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -109,13 +110,13 @@ func (client Client) AddAccessControlResponder(resp *http.Response) (result auto
 // nasVolumeInstanceNo - NAS 볼륜 인스턴스 번호
 // volumeSize - 볼륨 사이즈
 // regionCode - REGION 코드
-func (client Client) ChangeSize(ctx context.Context, responseFormatType string, nasVolumeInstanceNo string, volumeSize string, regionCode string) (result autorest.Response, err error) {
+func (client Client) ChangeSize(ctx context.Context, responseFormatType string, nasVolumeInstanceNo string, volumeSize string, regionCode string) (result VolumeSizeResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.ChangeSize")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -128,7 +129,7 @@ func (client Client) ChangeSize(ctx context.Context, responseFormatType string, 
 
 	resp, err := client.ChangeSizeSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "nas.Client", "ChangeSize", resp, "Failure sending request")
 		return
 	}
@@ -171,13 +172,14 @@ func (client Client) ChangeSizeSender(req *http.Request) (*http.Response, error)
 
 // ChangeSizeResponder handles the response to the ChangeSize request. The method always
 // closes the http.Response Body.
-func (client Client) ChangeSizeResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client Client) ChangeSizeResponder(resp *http.Response) (result VolumeSizeResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -194,13 +196,13 @@ func (client Client) ChangeSizeResponder(resp *http.Response) (result autorest.R
 // cifsUserPassword - CIFS 유저 비밀번호
 // isEncryptedVolume - 볼륨 암호화 여부
 // nasVolumeDescription - NAS 볼륨 설명
-func (client Client) Create(ctx context.Context, responseFormatType string, volumeSize string, regionCode string, zoneCode string, volumeName string, volumeAllotmentProtocolTypeCode VolumeAllotmentProtocolTypeCode, serverInstanceNoListN string, cifsUserName string, cifsUserPassword string, isEncryptedVolume EncryptedVolume, nasVolumeDescription string) (result autorest.Response, err error) {
+func (client Client) Create(ctx context.Context, responseFormatType string, volumeSize string, regionCode string, zoneCode string, volumeName string, volumeAllotmentProtocolTypeCode VolumeAllotmentProtocolTypeCode, serverInstanceNoListN string, cifsUserName string, cifsUserPassword string, isEncryptedVolume EncryptedVolume, nasVolumeDescription string) (result VolumeInstancesResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.Create")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -213,7 +215,7 @@ func (client Client) Create(ctx context.Context, responseFormatType string, volu
 
 	resp, err := client.CreateSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "nas.Client", "Create", resp, "Failure sending request")
 		return
 	}
@@ -279,13 +281,14 @@ func (client Client) CreateSender(req *http.Request) (*http.Response, error) {
 
 // CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
-func (client Client) CreateResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client Client) CreateResponder(resp *http.Response) (result VolumeInstancesResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -294,13 +297,13 @@ func (client Client) CreateResponder(resp *http.Response) (result autorest.Respo
 // responseFormatType - 반환 데이터 포맷 타입
 // nasVolumeInstanceNoListN - NAS 볼륨 인스턴스 번호 리스트
 // regionCode - REGION 코드
-func (client Client) Delete(ctx context.Context, responseFormatType string, nasVolumeInstanceNoListN string, regionCode string) (result autorest.Response, err error) {
+func (client Client) Delete(ctx context.Context, responseFormatType string, nasVolumeInstanceNoListN string, regionCode string) (result VolumeInstancesResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.Delete")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -313,7 +316,7 @@ func (client Client) Delete(ctx context.Context, responseFormatType string, nasV
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "nas.Client", "Delete", resp, "Failure sending request")
 		return
 	}
@@ -355,13 +358,14 @@ func (client Client) DeleteSender(req *http.Request) (*http.Response, error) {
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client Client) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client Client) DeleteResponder(resp *http.Response) (result VolumeInstancesResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -370,13 +374,13 @@ func (client Client) DeleteResponder(resp *http.Response) (result autorest.Respo
 // responseFormatType - 반환 데이터 포맷 타입
 // nasVolumeInstanceNo - NAS 볼륜 인스턴스 번호
 // regionCode - REGION 코드
-func (client Client) GetDetail(ctx context.Context, responseFormatType string, nasVolumeInstanceNo string, regionCode string) (result autorest.Response, err error) {
+func (client Client) GetDetail(ctx context.Context, responseFormatType string, nasVolumeInstanceNo string, regionCode string) (result VolumeInstanceDetailResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.GetDetail")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -389,7 +393,7 @@ func (client Client) GetDetail(ctx context.Context, responseFormatType string, n
 
 	resp, err := client.GetDetailSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "nas.Client", "GetDetail", resp, "Failure sending request")
 		return
 	}
@@ -431,13 +435,14 @@ func (client Client) GetDetailSender(req *http.Request) (*http.Response, error) 
 
 // GetDetailResponder handles the response to the GetDetail request. The method always
 // closes the http.Response Body.
-func (client Client) GetDetailResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client Client) GetDetailResponder(resp *http.Response) (result VolumeInstanceDetailResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -455,13 +460,13 @@ func (client Client) GetDetailResponder(resp *http.Response) (result autorest.Re
 // volumeName - 볼륨 이름
 // sortedBy - 정렬 대상
 // sortingOrder - 정렬 순서
-func (client Client) GetList(ctx context.Context, responseFormatType string, regionCode string, volumeAllotmentProtocolTypeCode VolumeAllotmentProtocolTypeCode, isEventConfiguration EventConfiguration, isSnapshotConfiguration SnapshotConfiguration, nasVolumeInstanceNoListN string, zoneCode string, pageNo string, pageSize string, volumeName string, sortedBy SortedBy, sortingOrder SortingOrder) (result autorest.Response, err error) {
+func (client Client) GetList(ctx context.Context, responseFormatType string, regionCode string, volumeAllotmentProtocolTypeCode VolumeAllotmentProtocolTypeCode, isEventConfiguration EventConfiguration, isSnapshotConfiguration SnapshotConfiguration, nasVolumeInstanceNoListN string, zoneCode string, pageNo string, pageSize string, volumeName string, sortedBy SortedBy, sortingOrder SortingOrder) (result VolumeInstanceListResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.GetList")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -474,7 +479,7 @@ func (client Client) GetList(ctx context.Context, responseFormatType string, reg
 
 	resp, err := client.GetListSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "nas.Client", "GetList", resp, "Failure sending request")
 		return
 	}
@@ -545,13 +550,14 @@ func (client Client) GetListSender(req *http.Request) (*http.Response, error) {
 
 // GetListResponder handles the response to the GetList request. The method always
 // closes the http.Response Body.
-func (client Client) GetListResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client Client) GetListResponder(resp *http.Response) (result VolumeInstanceListResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -561,13 +567,13 @@ func (client Client) GetListResponder(resp *http.Response) (result autorest.Resp
 // nasVolumeInstanceNo - NAS 볼륜 인스턴스 번호
 // serverInstanceNoListN - 서버 인스턴스 번호 리스트
 // regionCode - REGION 코드
-func (client Client) RemoveAccessControl(ctx context.Context, responseFormatType string, nasVolumeInstanceNo string, serverInstanceNoListN string, regionCode string) (result autorest.Response, err error) {
+func (client Client) RemoveAccessControl(ctx context.Context, responseFormatType string, nasVolumeInstanceNo string, serverInstanceNoListN string, regionCode string) (result VolumeAccessControlResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.RemoveAccessControl")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -580,7 +586,7 @@ func (client Client) RemoveAccessControl(ctx context.Context, responseFormatType
 
 	resp, err := client.RemoveAccessControlSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "nas.Client", "RemoveAccessControl", resp, "Failure sending request")
 		return
 	}
@@ -623,13 +629,14 @@ func (client Client) RemoveAccessControlSender(req *http.Request) (*http.Respons
 
 // RemoveAccessControlResponder handles the response to the RemoveAccessControl request. The method always
 // closes the http.Response Body.
-func (client Client) RemoveAccessControlResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client Client) RemoveAccessControlResponder(resp *http.Response) (result VolumeAccessControlResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -639,13 +646,13 @@ func (client Client) RemoveAccessControlResponder(resp *http.Response) (result a
 // nasVolumeInstanceNo - NAS 볼륜 인스턴스 번호
 // regionCode - REGION 코드
 // serverInstanceNoListN - 서버 인스턴스 번호 리스트
-func (client Client) SetAccessControl(ctx context.Context, responseFormatType string, nasVolumeInstanceNo string, regionCode string, serverInstanceNoListN string) (result autorest.Response, err error) {
+func (client Client) SetAccessControl(ctx context.Context, responseFormatType string, nasVolumeInstanceNo string, regionCode string, serverInstanceNoListN string) (result VolumeAccessControlResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.SetAccessControl")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -658,7 +665,7 @@ func (client Client) SetAccessControl(ctx context.Context, responseFormatType st
 
 	resp, err := client.SetAccessControlSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "nas.Client", "SetAccessControl", resp, "Failure sending request")
 		return
 	}
@@ -703,12 +710,13 @@ func (client Client) SetAccessControlSender(req *http.Request) (*http.Response, 
 
 // SetAccessControlResponder handles the response to the SetAccessControl request. The method always
 // closes the http.Response Body.
-func (client Client) SetAccessControlResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client Client) SetAccessControlResponder(resp *http.Response) (result VolumeAccessControlResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }

@@ -340,7 +340,7 @@ func (client Client) GetDetailResponder(resp *http.Response) (result autorest.Re
 // sortedBy - 정렬 대상
 // sortingOrder - 정렬 순서
 // placementGroupNoListN - 물리 배치 그룹 번호 리스트
-func (client Client) GetInstanceList(ctx context.Context, responseFormatType string, regionCode string, serverInstanceNoListN string, vpcNo string, pageNo string, serverInstanceStatusCode string, baseBlockStorageDiskTypeCode string, baseBlockStorageDiskDetailTypeCode string, serverName string, IP string, sortedBy string, sortingOrder string, placementGroupNoListN string) (result InstanceListResponseParameter, err error) {
+func (client Client) GetInstanceList(ctx context.Context, responseFormatType string, regionCode string, serverInstanceNoListN string, vpcNo string, pageNo string, serverInstanceStatusCode string, baseBlockStorageDiskTypeCode string, baseBlockStorageDiskDetailTypeCode string, serverName string, IP string, sortedBy string, sortingOrder string, placementGroupNoListN string) (result InstanceListResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.GetInstanceList")
 		defer func() {
@@ -438,7 +438,7 @@ func (client Client) GetInstanceListSender(req *http.Request) (*http.Response, e
 
 // GetInstanceListResponder handles the response to the GetInstanceList request. The method always
 // closes the http.Response Body.
-func (client Client) GetInstanceListResponder(resp *http.Response) (result InstanceListResponseParameter, err error) {
+func (client Client) GetInstanceListResponder(resp *http.Response) (result InstanceListResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

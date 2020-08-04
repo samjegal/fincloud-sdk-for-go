@@ -6,29 +6,29 @@ package vpc
 // FINCLOUD_APACHE_NO_VERSION
 
 import (
-	"github.com/Azure/go-autorest/autorest"
+    "github.com/Azure/go-autorest/autorest"
 )
 
 const (
-	// DefaultBaseURI is the default URI used for the service Vpc
-	DefaultBaseURI = "https://fin-ncloud.apigw.fin-ntruss.com/vpc/v2"
-)
+// DefaultBaseURI is the default URI used for the service Vpc
+DefaultBaseURI = "https://fin-ncloud.apigw.fin-ntruss.com/vpc/v2")
 
 // BaseClient is the base client for Vpc.
 type BaseClient struct {
-	autorest.Client
-	BaseURI string
+    autorest.Client
+    BaseURI string
 }
 
 // New creates an instance of the BaseClient client.
-func New() BaseClient {
-	return NewWithBaseURI(DefaultBaseURI)
+func New()BaseClient {
+    return NewWithBaseURI(DefaultBaseURI, )
 }
 
 // NewWithBaseURI creates an instance of the BaseClient client.
-func NewWithBaseURI(baseURI string) BaseClient {
-	return BaseClient{
-		Client:  autorest.NewClientWithUserAgent(UserAgent()),
-		BaseURI: baseURI,
-	}
+func NewWithBaseURI(baseURI string, ) BaseClient {
+    return BaseClient{
+        Client: autorest.NewClientWithUserAgent(UserAgent()),
+        BaseURI: baseURI,
+    }
 }
+
