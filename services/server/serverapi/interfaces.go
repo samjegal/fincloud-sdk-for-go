@@ -124,22 +124,22 @@ var _ PublicIPClientAPI = (*server.PublicIPClient)(nil)
 
 // ClientAPI contains the set of methods on the Client type.
 type ClientAPI interface {
-	ChangeSpec(ctx context.Context, responseFormatType string, serverInstanceNo string, serverProductCode string, regionCode string) (result autorest.Response, err error)
-	Create(ctx context.Context, responseFormatType string, vpcNo string, subnetNo string, networkInterfaceListNnetworkInterfaceOrder string, networkInterfaceListNaccessControlGroupNoListN string, regionCode string, memberServerImageInstanceNo string, serverImageProductCode string, serverProductCode string, isEncryptedBaseBlockStorageVolume *bool, feeSystemTypeCode server.FeeSystemTypeCode, serverCreateCount string, serverCreateStartNo string, serverName string, networkInterfaceListNnetworkInterfaceNo string, networkInterfaceListNsubnetNo string, networkInterfaceListNip string, placementGroupNo string, isProtectServerTermination *bool, serverDescription string, initScriptNo string, loginKeyName string) (result autorest.Response, err error)
-	GetDetail(ctx context.Context, responseFormatType string, serverInstanceNo string, regionCode string) (result autorest.Response, err error)
+	ChangeSpec(ctx context.Context, responseFormatType string, serverInstanceNo string, serverProductCode string, regionCode string) (result server.InstanceSpecResponse, err error)
+	Create(ctx context.Context, responseFormatType string, vpcNo string, subnetNo string, networkInterfaceListNnetworkInterfaceOrder string, networkInterfaceListNaccessControlGroupNoListN string, regionCode string, memberServerImageInstanceNo string, serverImageProductCode string, serverProductCode string, isEncryptedBaseBlockStorageVolume *bool, feeSystemTypeCode server.FeeSystemTypeCode, serverCreateCount string, serverCreateStartNo string, serverName string, networkInterfaceListNnetworkInterfaceNo string, networkInterfaceListNsubnetNo string, networkInterfaceListNip string, placementGroupNo string, isProtectServerTermination *bool, serverDescription string, initScriptNo string, loginKeyName string) (result server.InstancesResponse, err error)
+	GetDetail(ctx context.Context, responseFormatType string, serverInstanceNo string, regionCode string) (result server.InstanceDetailResponse, err error)
 	GetInstanceList(ctx context.Context, responseFormatType string, regionCode string, serverInstanceNoListN string, vpcNo string, pageNo string, serverInstanceStatusCode string, baseBlockStorageDiskTypeCode string, baseBlockStorageDiskDetailTypeCode string, serverName string, IP string, sortedBy string, sortingOrder string, placementGroupNoListN string) (result server.InstanceListResponse, err error)
-	Reboot(ctx context.Context, responseFormatType string, serverInstanceNoListN string, regionCode string) (result autorest.Response, err error)
-	Start(ctx context.Context, responseFormatType string, serverInstanceNoListN string, regionCode string) (result autorest.Response, err error)
-	Stop(ctx context.Context, responseFormatType string, serverInstanceNoListN string, regionCode string) (result autorest.Response, err error)
-	Terminate(ctx context.Context, responseFormatType string, serverInstanceNoListN string, regionCode string) (result autorest.Response, err error)
+	Reboot(ctx context.Context, responseFormatType string, serverInstanceNoListN string, regionCode string) (result server.InstancesResponse, err error)
+	Start(ctx context.Context, responseFormatType string, serverInstanceNoListN string, regionCode string) (result server.InstancesResponse, err error)
+	Stop(ctx context.Context, responseFormatType string, serverInstanceNoListN string, regionCode string) (result server.InstancesResponse, err error)
+	Terminate(ctx context.Context, responseFormatType string, serverInstanceNoListN string, regionCode string) (result server.InstancesResponse, err error)
 }
 
 var _ ClientAPI = (*server.Client)(nil)
 
 // RootPasswordClientAPI contains the set of methods on the RootPasswordClient type.
 type RootPasswordClientAPI interface {
-	Get(ctx context.Context, responseFormatType string, serverInstanceNo string, regionCode string, privateKey string) (result autorest.Response, err error)
-	GetList(ctx context.Context, responseFormatType string, rootPasswordServerInstanceListNserverInstanceNo string, regionCode string, rootPasswordServerInstanceListNprivateKey string) (result autorest.Response, err error)
+	Get(ctx context.Context, responseFormatType string, serverInstanceNo string, regionCode string, privateKey string) (result server.RootPassword, err error)
+	GetList(ctx context.Context, responseFormatType string, rootPasswordServerInstanceListNserverInstanceNo string, regionCode string, rootPasswordServerInstanceListNprivateKey string) (result server.RootPasswordServerInstanceListResponse, err error)
 }
 
 var _ RootPasswordClientAPI = (*server.RootPasswordClient)(nil)

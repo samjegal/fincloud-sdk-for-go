@@ -31,13 +31,13 @@ func NewRootPasswordClientWithBaseURI(baseURI string) RootPasswordClient {
 // serverInstanceNo - 서버 인스턴스 번호
 // regionCode - REGION 코드
 // privateKey - 개인키
-func (client RootPasswordClient) Get(ctx context.Context, responseFormatType string, serverInstanceNo string, regionCode string, privateKey string) (result autorest.Response, err error) {
+func (client RootPasswordClient) Get(ctx context.Context, responseFormatType string, serverInstanceNo string, regionCode string, privateKey string) (result RootPassword, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/RootPasswordClient.Get")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -50,7 +50,7 @@ func (client RootPasswordClient) Get(ctx context.Context, responseFormatType str
 
 	resp, err := client.GetSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "server.RootPasswordClient", "Get", resp, "Failure sending request")
 		return
 	}
@@ -95,13 +95,14 @@ func (client RootPasswordClient) GetSender(req *http.Request) (*http.Response, e
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client RootPasswordClient) GetResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client RootPasswordClient) GetResponder(resp *http.Response) (result RootPassword, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -111,13 +112,13 @@ func (client RootPasswordClient) GetResponder(resp *http.Response) (result autor
 // rootPasswordServerInstanceListNserverInstanceNo - 서버 인스턴스 번호
 // regionCode - REGION 코드
 // rootPasswordServerInstanceListNprivateKey - 개인키
-func (client RootPasswordClient) GetList(ctx context.Context, responseFormatType string, rootPasswordServerInstanceListNserverInstanceNo string, regionCode string, rootPasswordServerInstanceListNprivateKey string) (result autorest.Response, err error) {
+func (client RootPasswordClient) GetList(ctx context.Context, responseFormatType string, rootPasswordServerInstanceListNserverInstanceNo string, regionCode string, rootPasswordServerInstanceListNprivateKey string) (result RootPasswordServerInstanceListResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/RootPasswordClient.GetList")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -130,7 +131,7 @@ func (client RootPasswordClient) GetList(ctx context.Context, responseFormatType
 
 	resp, err := client.GetListSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "server.RootPasswordClient", "GetList", resp, "Failure sending request")
 		return
 	}
@@ -175,12 +176,13 @@ func (client RootPasswordClient) GetListSender(req *http.Request) (*http.Respons
 
 // GetListResponder handles the response to the GetList request. The method always
 // closes the http.Response Body.
-func (client RootPasswordClient) GetListResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client RootPasswordClient) GetListResponder(resp *http.Response) (result RootPasswordServerInstanceListResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }

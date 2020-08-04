@@ -31,13 +31,13 @@ func NewClientWithBaseURI(baseURI string) Client {
 // serverInstanceNo - 서버 인스턴스 번호
 // serverProductCode - 서버 상품 코드
 // regionCode - REGION 코드
-func (client Client) ChangeSpec(ctx context.Context, responseFormatType string, serverInstanceNo string, serverProductCode string, regionCode string) (result autorest.Response, err error) {
+func (client Client) ChangeSpec(ctx context.Context, responseFormatType string, serverInstanceNo string, serverProductCode string, regionCode string) (result InstanceSpecResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.ChangeSpec")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -50,7 +50,7 @@ func (client Client) ChangeSpec(ctx context.Context, responseFormatType string, 
 
 	resp, err := client.ChangeSpecSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "server.Client", "ChangeSpec", resp, "Failure sending request")
 		return
 	}
@@ -93,13 +93,14 @@ func (client Client) ChangeSpecSender(req *http.Request) (*http.Response, error)
 
 // ChangeSpecResponder handles the response to the ChangeSpec request. The method always
 // closes the http.Response Body.
-func (client Client) ChangeSpecResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client Client) ChangeSpecResponder(resp *http.Response) (result InstanceSpecResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -127,13 +128,13 @@ func (client Client) ChangeSpecResponder(resp *http.Response) (result autorest.R
 // serverDescription - 서버 설명
 // initScriptNo - 초기화 스크립트 번호
 // loginKeyName - 로그인 키 이름
-func (client Client) Create(ctx context.Context, responseFormatType string, vpcNo string, subnetNo string, networkInterfaceListNnetworkInterfaceOrder string, networkInterfaceListNaccessControlGroupNoListN string, regionCode string, memberServerImageInstanceNo string, serverImageProductCode string, serverProductCode string, isEncryptedBaseBlockStorageVolume *bool, feeSystemTypeCode FeeSystemTypeCode, serverCreateCount string, serverCreateStartNo string, serverName string, networkInterfaceListNnetworkInterfaceNo string, networkInterfaceListNsubnetNo string, networkInterfaceListNip string, placementGroupNo string, isProtectServerTermination *bool, serverDescription string, initScriptNo string, loginKeyName string) (result autorest.Response, err error) {
+func (client Client) Create(ctx context.Context, responseFormatType string, vpcNo string, subnetNo string, networkInterfaceListNnetworkInterfaceOrder string, networkInterfaceListNaccessControlGroupNoListN string, regionCode string, memberServerImageInstanceNo string, serverImageProductCode string, serverProductCode string, isEncryptedBaseBlockStorageVolume *bool, feeSystemTypeCode FeeSystemTypeCode, serverCreateCount string, serverCreateStartNo string, serverName string, networkInterfaceListNnetworkInterfaceNo string, networkInterfaceListNsubnetNo string, networkInterfaceListNip string, placementGroupNo string, isProtectServerTermination *bool, serverDescription string, initScriptNo string, loginKeyName string) (result InstancesResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.Create")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -146,7 +147,7 @@ func (client Client) Create(ctx context.Context, responseFormatType string, vpcN
 
 	resp, err := client.CreateSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "server.Client", "Create", resp, "Failure sending request")
 		return
 	}
@@ -239,13 +240,14 @@ func (client Client) CreateSender(req *http.Request) (*http.Response, error) {
 
 // CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
-func (client Client) CreateResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client Client) CreateResponder(resp *http.Response) (result InstancesResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -254,13 +256,13 @@ func (client Client) CreateResponder(resp *http.Response) (result autorest.Respo
 // responseFormatType - 반환 데이터 포맷 타입
 // serverInstanceNo - 서버 인스턴스 번호
 // regionCode - REGION 코드
-func (client Client) GetDetail(ctx context.Context, responseFormatType string, serverInstanceNo string, regionCode string) (result autorest.Response, err error) {
+func (client Client) GetDetail(ctx context.Context, responseFormatType string, serverInstanceNo string, regionCode string) (result InstanceDetailResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.GetDetail")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -273,7 +275,7 @@ func (client Client) GetDetail(ctx context.Context, responseFormatType string, s
 
 	resp, err := client.GetDetailSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "server.Client", "GetDetail", resp, "Failure sending request")
 		return
 	}
@@ -315,13 +317,14 @@ func (client Client) GetDetailSender(req *http.Request) (*http.Response, error) 
 
 // GetDetailResponder handles the response to the GetDetail request. The method always
 // closes the http.Response Body.
-func (client Client) GetDetailResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client Client) GetDetailResponder(resp *http.Response) (result InstanceDetailResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -454,13 +457,13 @@ func (client Client) GetInstanceListResponder(resp *http.Response) (result Insta
 // responseFormatType - 반환 데이터 포맷 타입
 // serverInstanceNoListN - 서버 인스턴스 번호 리스트
 // regionCode - REGION 코드
-func (client Client) Reboot(ctx context.Context, responseFormatType string, serverInstanceNoListN string, regionCode string) (result autorest.Response, err error) {
+func (client Client) Reboot(ctx context.Context, responseFormatType string, serverInstanceNoListN string, regionCode string) (result InstancesResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.Reboot")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -473,7 +476,7 @@ func (client Client) Reboot(ctx context.Context, responseFormatType string, serv
 
 	resp, err := client.RebootSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "server.Client", "Reboot", resp, "Failure sending request")
 		return
 	}
@@ -515,13 +518,14 @@ func (client Client) RebootSender(req *http.Request) (*http.Response, error) {
 
 // RebootResponder handles the response to the Reboot request. The method always
 // closes the http.Response Body.
-func (client Client) RebootResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client Client) RebootResponder(resp *http.Response) (result InstancesResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -530,13 +534,13 @@ func (client Client) RebootResponder(resp *http.Response) (result autorest.Respo
 // responseFormatType - 반환 데이터 포맷 타입
 // serverInstanceNoListN - 서버 인스턴스 번호 리스트
 // regionCode - REGION 코드
-func (client Client) Start(ctx context.Context, responseFormatType string, serverInstanceNoListN string, regionCode string) (result autorest.Response, err error) {
+func (client Client) Start(ctx context.Context, responseFormatType string, serverInstanceNoListN string, regionCode string) (result InstancesResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.Start")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -549,7 +553,7 @@ func (client Client) Start(ctx context.Context, responseFormatType string, serve
 
 	resp, err := client.StartSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "server.Client", "Start", resp, "Failure sending request")
 		return
 	}
@@ -591,13 +595,14 @@ func (client Client) StartSender(req *http.Request) (*http.Response, error) {
 
 // StartResponder handles the response to the Start request. The method always
 // closes the http.Response Body.
-func (client Client) StartResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client Client) StartResponder(resp *http.Response) (result InstancesResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -606,13 +611,13 @@ func (client Client) StartResponder(resp *http.Response) (result autorest.Respon
 // responseFormatType - 반환 데이터 포맷 타입
 // serverInstanceNoListN - 서버 인스턴스 번호 리스트
 // regionCode - REGION 코드
-func (client Client) Stop(ctx context.Context, responseFormatType string, serverInstanceNoListN string, regionCode string) (result autorest.Response, err error) {
+func (client Client) Stop(ctx context.Context, responseFormatType string, serverInstanceNoListN string, regionCode string) (result InstancesResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.Stop")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -625,7 +630,7 @@ func (client Client) Stop(ctx context.Context, responseFormatType string, server
 
 	resp, err := client.StopSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "server.Client", "Stop", resp, "Failure sending request")
 		return
 	}
@@ -667,13 +672,14 @@ func (client Client) StopSender(req *http.Request) (*http.Response, error) {
 
 // StopResponder handles the response to the Stop request. The method always
 // closes the http.Response Body.
-func (client Client) StopResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client Client) StopResponder(resp *http.Response) (result InstancesResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -682,13 +688,13 @@ func (client Client) StopResponder(resp *http.Response) (result autorest.Respons
 // responseFormatType - 반환 데이터 포맷 타입
 // serverInstanceNoListN - 서버 인스턴스 번호 리스트
 // regionCode - REGION 코드
-func (client Client) Terminate(ctx context.Context, responseFormatType string, serverInstanceNoListN string, regionCode string) (result autorest.Response, err error) {
+func (client Client) Terminate(ctx context.Context, responseFormatType string, serverInstanceNoListN string, regionCode string) (result InstancesResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.Terminate")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -701,7 +707,7 @@ func (client Client) Terminate(ctx context.Context, responseFormatType string, s
 
 	resp, err := client.TerminateSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "server.Client", "Terminate", resp, "Failure sending request")
 		return
 	}
@@ -743,12 +749,13 @@ func (client Client) TerminateSender(req *http.Request) (*http.Response, error) 
 
 // TerminateResponder handles the response to the Terminate request. The method always
 // closes the http.Response Body.
-func (client Client) TerminateResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client Client) TerminateResponder(resp *http.Response) (result InstancesResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }

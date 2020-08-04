@@ -256,6 +256,15 @@ type BaseBlockStorageDiskType struct {
 	CodeName *string `json:"codeName,omitempty"`
 }
 
+// InstanceDetailResponse ...
+type InstanceDetailResponse struct {
+	autorest.Response  `json:"-"`
+	ReturnCode         *string         `json:"returnCode,omitempty"`
+	ReturnMessage      *string         `json:"returnMessage,omitempty"`
+	TotalRows          *int32          `json:"totalRows,omitempty"`
+	ServerInstanceList *[]InstanceList `json:"serverInstanceList,omitempty"`
+}
+
 // InstanceList ...
 type InstanceList struct {
 	ServerInstanceNo               *string                         `json:"serverInstanceNo,omitempty"`
@@ -303,6 +312,24 @@ type InstanceOperation struct {
 	CodeName *string `json:"codeName,omitempty"`
 }
 
+// InstanceSpecResponse ...
+type InstanceSpecResponse struct {
+	autorest.Response  `json:"-"`
+	ReturnCode         *string         `json:"returnCode,omitempty"`
+	ReturnMessage      *string         `json:"returnMessage,omitempty"`
+	TotalRows          *int32          `json:"totalRows,omitempty"`
+	ServerInstanceList *[]InstanceList `json:"serverInstanceList,omitempty"`
+}
+
+// InstancesResponse ...
+type InstancesResponse struct {
+	autorest.Response  `json:"-"`
+	ReturnCode         *string         `json:"returnCode,omitempty"`
+	ReturnMessage      *string         `json:"returnMessage,omitempty"`
+	TotalRows          *int32          `json:"totalRows,omitempty"`
+	ServerInstanceList *[]InstanceList `json:"serverInstanceList,omitempty"`
+}
+
 // InstanceStatus ...
 type InstanceStatus struct {
 	Code     *string `json:"code,omitempty"`
@@ -324,4 +351,28 @@ type NetworkInterfaceNoList struct {
 type PlatformType struct {
 	Code     *string `json:"code,omitempty"`
 	CodeName *string `json:"codeName,omitempty"`
+}
+
+// RootPassword ...
+type RootPassword struct {
+	autorest.Response `json:"-"`
+	ReturnCode        *string `json:"returnCode,omitempty"`
+	ReturnMessage     *string `json:"returnMessage,omitempty"`
+	TotalRows         *int32  `json:"totalRows,omitempty"`
+	RootPassword      *string `json:"rootPassword,omitempty"`
+}
+
+// RootPasswordServerInstanceList ...
+type RootPasswordServerInstanceList struct {
+	ServerInstanceNo *string `json:"serverInstanceNo,omitempty"`
+	RootPassword     *string `json:"rootPassword,omitempty"`
+}
+
+// RootPasswordServerInstanceListResponse ...
+type RootPasswordServerInstanceListResponse struct {
+	autorest.Response              `json:"-"`
+	ReturnCode                     *string                           `json:"returnCode,omitempty"`
+	ReturnMessage                  *string                           `json:"returnMessage,omitempty"`
+	TotalRows                      *int32                            `json:"totalRows,omitempty"`
+	RootPasswordServerInstanceList *[]RootPasswordServerInstanceList `json:"rootPasswordServerInstanceList,omitempty"`
 }
