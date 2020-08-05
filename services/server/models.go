@@ -1077,7 +1077,8 @@ type PlacementGroupList struct {
 	// PlacementGroupNo - 믈리 배치 그룹 번호
 	PlacementGroupNo *string `json:"placementGroupNo,omitempty"`
 	// PlacementGroupName - 물리 배치 이름
-	PlacementGroupName *string             `json:"placementGroupName,omitempty"`
+	PlacementGroupName *string `json:"placementGroupName,omitempty"`
+	// PlacementGroupType - 물리 배치 그룹 타입
 	PlacementGroupType *PlacementGroupType `json:"placementGroupType,omitempty"`
 }
 
