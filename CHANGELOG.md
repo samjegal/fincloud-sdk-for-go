@@ -1,3 +1,29 @@
+## 1.6.0 (August 5, 2020)
+
+### NEW SERVICES
+
+- VPC
+  - NAT Gateway
+  - Network ACL
+  - Route Table
+  - Subnet
+  - VPC
+  - VPC Peering
+
+- Server
+  - ACG
+  - Init Script
+  - Login Key
+  - Network Interface
+  - Placement Group
+  - Server
+  - Server Image
+  - Snapshot
+  - Storage
+
+- NAS
+  - NAS
+
 ## 1.5.2 (July 31, 2020)
 
 ### UPDATED SERVICES
