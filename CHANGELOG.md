@@ -1,3 +1,10 @@
+## 1.6.1 (August 5, 2020)
+
+### UPDATED SERVICES
+
+- Server
+  - Placement Group
+
 ## 1.6.0 (August 5, 2020)
 
 ### NEW SERVICES
