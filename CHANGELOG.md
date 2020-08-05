@@ -9,7 +9,6 @@
   - Subnet
   - VPC
   - VPC Peering
-
 - Server
   - ACG
   - Init Script
@@ -20,7 +19,6 @@
   - Server Image
   - Snapshot
   - Storage
-
 - NAS
   - NAS
 
