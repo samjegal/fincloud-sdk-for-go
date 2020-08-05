@@ -36,13 +36,13 @@ func NewACGOutboundClientWithBaseURI(baseURI string) ACGOutboundClient {
 // accessControlGroupRuleListNaccessControlGroupSequence - 접근 소스 ACG
 // accessControlGroupRuleListNportRange - 포트 범위
 // accessControlGroupRuleListNaccessControlGroupRuleDescription - ACG Rule 설명
-func (client ACGOutboundClient) AddRule(ctx context.Context, responseFormatType string, vpcNo string, accessControlGroupNo string, accessControlGroupRuleListNprotocolTypeCode ProtocolTypeCode, regionCode string, accessControlGroupRuleListNipBlock string, accessControlGroupRuleListNaccessControlGroupSequence string, accessControlGroupRuleListNportRange string, accessControlGroupRuleListNaccessControlGroupRuleDescription string) (result autorest.Response, err error) {
+func (client ACGOutboundClient) AddRule(ctx context.Context, responseFormatType string, vpcNo string, accessControlGroupNo string, accessControlGroupRuleListNprotocolTypeCode ProtocolTypeCode, regionCode string, accessControlGroupRuleListNipBlock string, accessControlGroupRuleListNaccessControlGroupSequence string, accessControlGroupRuleListNportRange string, accessControlGroupRuleListNaccessControlGroupRuleDescription string) (result AccessControlGroupOutboundRuleResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ACGOutboundClient.AddRule")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -55,7 +55,7 @@ func (client ACGOutboundClient) AddRule(ctx context.Context, responseFormatType 
 
 	resp, err := client.AddRuleSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "server.ACGOutboundClient", "AddRule", resp, "Failure sending request")
 		return
 	}
@@ -111,13 +111,14 @@ func (client ACGOutboundClient) AddRuleSender(req *http.Request) (*http.Response
 
 // AddRuleResponder handles the response to the AddRule request. The method always
 // closes the http.Response Body.
-func (client ACGOutboundClient) AddRuleResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client ACGOutboundClient) AddRuleResponder(resp *http.Response) (result AccessControlGroupOutboundRuleResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -131,13 +132,13 @@ func (client ACGOutboundClient) AddRuleResponder(resp *http.Response) (result au
 // accessControlGroupRuleListNipBlock - IP 블록
 // accessControlGroupRuleListNaccessControlGroupSequence - 접근 소스 ACG
 // accessControlGroupRuleListNportRange - 포트 범위
-func (client ACGOutboundClient) RemoveRule(ctx context.Context, responseFormatType string, vpcNo string, accessControlGroupNo string, accessControlGroupRuleListNprotocolTypeCode ProtocolTypeCode, regionCode string, accessControlGroupRuleListNipBlock string, accessControlGroupRuleListNaccessControlGroupSequence string, accessControlGroupRuleListNportRange string) (result autorest.Response, err error) {
+func (client ACGOutboundClient) RemoveRule(ctx context.Context, responseFormatType string, vpcNo string, accessControlGroupNo string, accessControlGroupRuleListNprotocolTypeCode ProtocolTypeCode, regionCode string, accessControlGroupRuleListNipBlock string, accessControlGroupRuleListNaccessControlGroupSequence string, accessControlGroupRuleListNportRange string) (result AccessControlGroupOutboundRuleResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ACGOutboundClient.RemoveRule")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -150,7 +151,7 @@ func (client ACGOutboundClient) RemoveRule(ctx context.Context, responseFormatTy
 
 	resp, err := client.RemoveRuleSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "server.ACGOutboundClient", "RemoveRule", resp, "Failure sending request")
 		return
 	}
@@ -203,12 +204,13 @@ func (client ACGOutboundClient) RemoveRuleSender(req *http.Request) (*http.Respo
 
 // RemoveRuleResponder handles the response to the RemoveRule request. The method always
 // closes the http.Response Body.
-func (client ACGOutboundClient) RemoveRuleResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client ACGOutboundClient) RemoveRuleResponder(resp *http.Response) (result AccessControlGroupOutboundRuleResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }

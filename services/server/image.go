@@ -32,13 +32,13 @@ func NewImageClientWithBaseURI(baseURI string) ImageClient {
 // regionCode - REGION 코드
 // memberServerImageName - 회원 서버 이미지 이름
 // memberServerImageDescription - 회원 서버 이미지 설명
-func (client ImageClient) Create(ctx context.Context, responseFormatType string, serverInstanceNo string, regionCode string, memberServerImageName string, memberServerImageDescription string) (result autorest.Response, err error) {
+func (client ImageClient) Create(ctx context.Context, responseFormatType string, serverInstanceNo string, regionCode string, memberServerImageName string, memberServerImageDescription string) (result MemberServerImageInstanceResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ImageClient.Create")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -51,7 +51,7 @@ func (client ImageClient) Create(ctx context.Context, responseFormatType string,
 
 	resp, err := client.CreateSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "server.ImageClient", "Create", resp, "Failure sending request")
 		return
 	}
@@ -99,13 +99,14 @@ func (client ImageClient) CreateSender(req *http.Request) (*http.Response, error
 
 // CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
-func (client ImageClient) CreateResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client ImageClient) CreateResponder(resp *http.Response) (result MemberServerImageInstanceResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -114,13 +115,13 @@ func (client ImageClient) CreateResponder(resp *http.Response) (result autorest.
 // responseFormatType - 반환 데이터 포맷 타입
 // regionCode - REGION 코드
 // memberServerImageInstanceNoListN - 회원 서버 이미지 인스턴스 번호 리스트
-func (client ImageClient) Delete(ctx context.Context, responseFormatType string, regionCode string, memberServerImageInstanceNoListN string) (result autorest.Response, err error) {
+func (client ImageClient) Delete(ctx context.Context, responseFormatType string, regionCode string, memberServerImageInstanceNoListN string) (result MemberServerImageInstanceResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ImageClient.Delete")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -133,7 +134,7 @@ func (client ImageClient) Delete(ctx context.Context, responseFormatType string,
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "server.ImageClient", "Delete", resp, "Failure sending request")
 		return
 	}
@@ -177,13 +178,14 @@ func (client ImageClient) DeleteSender(req *http.Request) (*http.Response, error
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client ImageClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client ImageClient) DeleteResponder(resp *http.Response) (result MemberServerImageInstanceResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -192,13 +194,13 @@ func (client ImageClient) DeleteResponder(resp *http.Response) (result autorest.
 // responseFormatType - 반환 데이터 포맷 타입
 // memberServerImageInstanceNo - 회원 서버 이미지 인스턴스 번호
 // regionCode - REGION 코드
-func (client ImageClient) GetDetail(ctx context.Context, responseFormatType string, memberServerImageInstanceNo string, regionCode string) (result autorest.Response, err error) {
+func (client ImageClient) GetDetail(ctx context.Context, responseFormatType string, memberServerImageInstanceNo string, regionCode string) (result MemberServerImageInstanceListResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ImageClient.GetDetail")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -211,7 +213,7 @@ func (client ImageClient) GetDetail(ctx context.Context, responseFormatType stri
 
 	resp, err := client.GetDetailSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "server.ImageClient", "GetDetail", resp, "Failure sending request")
 		return
 	}
@@ -253,13 +255,14 @@ func (client ImageClient) GetDetailSender(req *http.Request) (*http.Response, er
 
 // GetDetailResponder handles the response to the GetDetail request. The method always
 // closes the http.Response Body.
-func (client ImageClient) GetDetailResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client ImageClient) GetDetailResponder(resp *http.Response) (result MemberServerImageInstanceListResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -275,13 +278,13 @@ func (client ImageClient) GetDetailResponder(resp *http.Response) (result autore
 // pageSize - 페이지 사이즈
 // sortedBy - 정렬 대상
 // sortingOrder - 정렬 순서
-func (client ImageClient) GetList(ctx context.Context, responseFormatType string, regionCode string, memberServerImageName string, memberServerImageInstanceStatusCode MemberServerImageInstanceStatusCode, memberServerImageInstanceNoListN string, platformTypeCodeListN PlatformTypeCode, pageNo string, pageSize string, sortedBy string, sortingOrder SortingOrder) (result autorest.Response, err error) {
+func (client ImageClient) GetList(ctx context.Context, responseFormatType string, regionCode string, memberServerImageName string, memberServerImageInstanceStatusCode MemberServerImageInstanceStatusCode, memberServerImageInstanceNoListN string, platformTypeCodeListN PlatformTypeCode, pageNo string, pageSize string, sortedBy string, sortingOrder SortingOrder) (result MemberServerImageInstanceListResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ImageClient.GetList")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -294,7 +297,7 @@ func (client ImageClient) GetList(ctx context.Context, responseFormatType string
 
 	resp, err := client.GetListSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "server.ImageClient", "GetList", resp, "Failure sending request")
 		return
 	}
@@ -361,12 +364,13 @@ func (client ImageClient) GetListSender(req *http.Request) (*http.Response, erro
 
 // GetListResponder handles the response to the GetList request. The method always
 // closes the http.Response Body.
-func (client ImageClient) GetListResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client ImageClient) GetListResponder(resp *http.Response) (result MemberServerImageInstanceListResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }

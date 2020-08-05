@@ -32,13 +32,13 @@ func NewSnapshotClientWithBaseURI(baseURI string) SnapshotClient {
 // regionCode - REGION 코드
 // blockStorageSnapshotName - 블록스토리지 스냅샷 이름
 // blockStorageSnapshotDescription - 블록스토리지 스냅샷 설명
-func (client SnapshotClient) Create(ctx context.Context, responseFormatType string, originalBlockStorageInstanceNo string, regionCode string, blockStorageSnapshotName string, blockStorageSnapshotDescription string) (result autorest.Response, err error) {
+func (client SnapshotClient) Create(ctx context.Context, responseFormatType string, originalBlockStorageInstanceNo string, regionCode string, blockStorageSnapshotName string, blockStorageSnapshotDescription string) (result BlockStorageSnapshotInstanceResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SnapshotClient.Create")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -51,7 +51,7 @@ func (client SnapshotClient) Create(ctx context.Context, responseFormatType stri
 
 	resp, err := client.CreateSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "server.SnapshotClient", "Create", resp, "Failure sending request")
 		return
 	}
@@ -99,13 +99,14 @@ func (client SnapshotClient) CreateSender(req *http.Request) (*http.Response, er
 
 // CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
-func (client SnapshotClient) CreateResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client SnapshotClient) CreateResponder(resp *http.Response) (result BlockStorageSnapshotInstanceResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -114,13 +115,13 @@ func (client SnapshotClient) CreateResponder(resp *http.Response) (result autore
 // responseFormatType - 반환 데이터 포맷 타입
 // blockStorageSnapshotInstanceNoListN - 블록스토리지 스냅샷 인스턴스 번호 리스트
 // regionCode - REGION 코드
-func (client SnapshotClient) Delete(ctx context.Context, responseFormatType string, blockStorageSnapshotInstanceNoListN string, regionCode string) (result autorest.Response, err error) {
+func (client SnapshotClient) Delete(ctx context.Context, responseFormatType string, blockStorageSnapshotInstanceNoListN string, regionCode string) (result BlockStorageSnapshotInstanceResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SnapshotClient.Delete")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -133,7 +134,7 @@ func (client SnapshotClient) Delete(ctx context.Context, responseFormatType stri
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "server.SnapshotClient", "Delete", resp, "Failure sending request")
 		return
 	}
@@ -175,13 +176,14 @@ func (client SnapshotClient) DeleteSender(req *http.Request) (*http.Response, er
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client SnapshotClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client SnapshotClient) DeleteResponder(resp *http.Response) (result BlockStorageSnapshotInstanceResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -190,13 +192,13 @@ func (client SnapshotClient) DeleteResponder(resp *http.Response) (result autore
 // responseFormatType - 반환 데이터 포맷 타입
 // blockStorageSnapshotInstanceNo - 블록스토리지 스냅샷 인스턴스 번호
 // regionCode - REGION 코드
-func (client SnapshotClient) GetDetail(ctx context.Context, responseFormatType string, blockStorageSnapshotInstanceNo string, regionCode string) (result autorest.Response, err error) {
+func (client SnapshotClient) GetDetail(ctx context.Context, responseFormatType string, blockStorageSnapshotInstanceNo string, regionCode string) (result BlockStorageSnapshotInstanceDetailResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SnapshotClient.GetDetail")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -209,7 +211,7 @@ func (client SnapshotClient) GetDetail(ctx context.Context, responseFormatType s
 
 	resp, err := client.GetDetailSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "server.SnapshotClient", "GetDetail", resp, "Failure sending request")
 		return
 	}
@@ -251,13 +253,14 @@ func (client SnapshotClient) GetDetailSender(req *http.Request) (*http.Response,
 
 // GetDetailResponder handles the response to the GetDetail request. The method always
 // closes the http.Response Body.
-func (client SnapshotClient) GetDetailResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client SnapshotClient) GetDetailResponder(resp *http.Response) (result BlockStorageSnapshotInstanceDetailResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -275,13 +278,13 @@ func (client SnapshotClient) GetDetailResponder(resp *http.Response) (result aut
 // blockStorageSnapshotName - 블록스토리지 스냅샷 이름
 // sortedBy - 정렬 대상
 // sortingOrder - 정렬 순서
-func (client SnapshotClient) GetList(ctx context.Context, responseFormatType string, regionCode string, blockStorageSnapshotInstanceNoListN string, originalBlockStorageInstanceNoListN string, blockStorageSnapshotInstanceStatusCode BlockStorageSnapshotInstanceStatusCode, pageNo string, pageSize string, blockStorageSnapshotVolumeSize string, isEncryptedOriginalBlockStorageVolume *bool, blockStorageSnapshotName string, sortedBy string, sortingOrder SortingOrder) (result autorest.Response, err error) {
+func (client SnapshotClient) GetList(ctx context.Context, responseFormatType string, regionCode string, blockStorageSnapshotInstanceNoListN string, originalBlockStorageInstanceNoListN string, blockStorageSnapshotInstanceStatusCode BlockStorageSnapshotInstanceStatusCode, pageNo string, pageSize string, blockStorageSnapshotVolumeSize string, isEncryptedOriginalBlockStorageVolume *bool, blockStorageSnapshotName string, sortedBy string, sortingOrder SortingOrder) (result BlockStorageSnapshotInstanceListResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SnapshotClient.GetList")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -294,7 +297,7 @@ func (client SnapshotClient) GetList(ctx context.Context, responseFormatType str
 
 	resp, err := client.GetListSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "server.SnapshotClient", "GetList", resp, "Failure sending request")
 		return
 	}
@@ -365,12 +368,13 @@ func (client SnapshotClient) GetListSender(req *http.Request) (*http.Response, e
 
 // GetListResponder handles the response to the GetList request. The method always
 // closes the http.Response Body.
-func (client SnapshotClient) GetListResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client SnapshotClient) GetListResponder(resp *http.Response) (result BlockStorageSnapshotInstanceListResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }

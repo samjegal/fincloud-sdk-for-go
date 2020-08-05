@@ -31,13 +31,13 @@ func NewNetworkInterfaceClientWithBaseURI(baseURI string) NetworkInterfaceClient
 // networkInterfaceNo - 네트워크 인터페이스 번호
 // accessControlGroupNoListN - ACG 번호 리스트
 // regionCode - REGION 코드
-func (client NetworkInterfaceClient) AddACG(ctx context.Context, responseFormatType string, networkInterfaceNo string, accessControlGroupNoListN string, regionCode string) (result autorest.Response, err error) {
+func (client NetworkInterfaceClient) AddACG(ctx context.Context, responseFormatType string, networkInterfaceNo string, accessControlGroupNoListN string, regionCode string) (result NetworkInterfaceAccessControlGroupResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NetworkInterfaceClient.AddACG")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -50,7 +50,7 @@ func (client NetworkInterfaceClient) AddACG(ctx context.Context, responseFormatT
 
 	resp, err := client.AddACGSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "server.NetworkInterfaceClient", "AddACG", resp, "Failure sending request")
 		return
 	}
@@ -93,13 +93,14 @@ func (client NetworkInterfaceClient) AddACGSender(req *http.Request) (*http.Resp
 
 // AddACGResponder handles the response to the AddACG request. The method always
 // closes the http.Response Body.
-func (client NetworkInterfaceClient) AddACGResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client NetworkInterfaceClient) AddACGResponder(resp *http.Response) (result NetworkInterfaceAccessControlGroupResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -110,13 +111,13 @@ func (client NetworkInterfaceClient) AddACGResponder(resp *http.Response) (resul
 // networkInterfaceNo - 네트워크 인터페이스 번호
 // serverInstanceNo - 서버 인스턴스 번호
 // regionCode - REGION 코드
-func (client NetworkInterfaceClient) Attach(ctx context.Context, responseFormatType string, subnetNo string, networkInterfaceNo string, serverInstanceNo string, regionCode string) (result autorest.Response, err error) {
+func (client NetworkInterfaceClient) Attach(ctx context.Context, responseFormatType string, subnetNo string, networkInterfaceNo string, serverInstanceNo string, regionCode string) (result NetworkInterfaceResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NetworkInterfaceClient.Attach")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -129,7 +130,7 @@ func (client NetworkInterfaceClient) Attach(ctx context.Context, responseFormatT
 
 	resp, err := client.AttachSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "server.NetworkInterfaceClient", "Attach", resp, "Failure sending request")
 		return
 	}
@@ -173,13 +174,14 @@ func (client NetworkInterfaceClient) AttachSender(req *http.Request) (*http.Resp
 
 // AttachResponder handles the response to the Attach request. The method always
 // closes the http.Response Body.
-func (client NetworkInterfaceClient) AttachResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client NetworkInterfaceClient) AttachResponder(resp *http.Response) (result NetworkInterfaceResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -194,13 +196,13 @@ func (client NetworkInterfaceClient) AttachResponder(resp *http.Response) (resul
 // serverInstanceNo - 서버 인스턴스 번호
 // IP - IP 주소
 // networkInterfaceDescription - 네트워크 인터페이스 설명
-func (client NetworkInterfaceClient) Create(ctx context.Context, responseFormatType string, regionCode string, vpcNo string, subnetNo string, networkInterfaceName string, accessControlGroupNoListN string, serverInstanceNo string, IP string, networkInterfaceDescription string) (result autorest.Response, err error) {
+func (client NetworkInterfaceClient) Create(ctx context.Context, responseFormatType string, regionCode string, vpcNo string, subnetNo string, networkInterfaceName string, accessControlGroupNoListN string, serverInstanceNo string, IP string, networkInterfaceDescription string) (result NetworkInterfaceResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NetworkInterfaceClient.Create")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -213,7 +215,7 @@ func (client NetworkInterfaceClient) Create(ctx context.Context, responseFormatT
 
 	resp, err := client.CreateSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "server.NetworkInterfaceClient", "Create", resp, "Failure sending request")
 		return
 	}
@@ -275,28 +277,29 @@ func (client NetworkInterfaceClient) CreateSender(req *http.Request) (*http.Resp
 
 // CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
-func (client NetworkInterfaceClient) CreateResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client NetworkInterfaceClient) CreateResponder(resp *http.Response) (result NetworkInterfaceResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
-// Delete sends the delete request.
+// Delete 네트워크 인터페이스 삭제
 // Parameters:
 // responseFormatType - 반환 데이터 포맷 타입
 // regionCode - REGION 코드
 // networkInterfaceNo - 네트워크 인터페이스 번호
-func (client NetworkInterfaceClient) Delete(ctx context.Context, responseFormatType string, regionCode string, networkInterfaceNo string) (result autorest.Response, err error) {
+func (client NetworkInterfaceClient) Delete(ctx context.Context, responseFormatType string, regionCode string, networkInterfaceNo string) (result NetworkInterfaceResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NetworkInterfaceClient.Delete")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -309,7 +312,7 @@ func (client NetworkInterfaceClient) Delete(ctx context.Context, responseFormatT
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "server.NetworkInterfaceClient", "Delete", resp, "Failure sending request")
 		return
 	}
@@ -353,13 +356,14 @@ func (client NetworkInterfaceClient) DeleteSender(req *http.Request) (*http.Resp
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client NetworkInterfaceClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client NetworkInterfaceClient) DeleteResponder(resp *http.Response) (result NetworkInterfaceResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -370,13 +374,13 @@ func (client NetworkInterfaceClient) DeleteResponder(resp *http.Response) (resul
 // networkInterfaceNo - 네트워크 인터페이스 번호
 // serverInstanceNo - 서버 인스턴스 번호
 // regionCode - REGION 코드
-func (client NetworkInterfaceClient) Detach(ctx context.Context, responseFormatType string, subnetNo string, networkInterfaceNo string, serverInstanceNo string, regionCode string) (result autorest.Response, err error) {
+func (client NetworkInterfaceClient) Detach(ctx context.Context, responseFormatType string, subnetNo string, networkInterfaceNo string, serverInstanceNo string, regionCode string) (result NetworkInterfaceResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NetworkInterfaceClient.Detach")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -389,7 +393,7 @@ func (client NetworkInterfaceClient) Detach(ctx context.Context, responseFormatT
 
 	resp, err := client.DetachSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "server.NetworkInterfaceClient", "Detach", resp, "Failure sending request")
 		return
 	}
@@ -433,13 +437,14 @@ func (client NetworkInterfaceClient) DetachSender(req *http.Request) (*http.Resp
 
 // DetachResponder handles the response to the Detach request. The method always
 // closes the http.Response Body.
-func (client NetworkInterfaceClient) DetachResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client NetworkInterfaceClient) DetachResponder(resp *http.Response) (result NetworkInterfaceResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -448,13 +453,13 @@ func (client NetworkInterfaceClient) DetachResponder(resp *http.Response) (resul
 // responseFormatType - 반환 데이터 포맷 타입
 // networkInterfaceNo - 네트워크 인터페이스 번호
 // regionCode - REGION 코드
-func (client NetworkInterfaceClient) GetDetail(ctx context.Context, responseFormatType string, networkInterfaceNo string, regionCode string) (result autorest.Response, err error) {
+func (client NetworkInterfaceClient) GetDetail(ctx context.Context, responseFormatType string, networkInterfaceNo string, regionCode string) (result NetworkInterfaceDetailResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NetworkInterfaceClient.GetDetail")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -467,7 +472,7 @@ func (client NetworkInterfaceClient) GetDetail(ctx context.Context, responseForm
 
 	resp, err := client.GetDetailSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "server.NetworkInterfaceClient", "GetDetail", resp, "Failure sending request")
 		return
 	}
@@ -509,13 +514,14 @@ func (client NetworkInterfaceClient) GetDetailSender(req *http.Request) (*http.R
 
 // GetDetailResponder handles the response to the GetDetail request. The method always
 // closes the http.Response Body.
-func (client NetworkInterfaceClient) GetDetailResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client NetworkInterfaceClient) GetDetailResponder(resp *http.Response) (result NetworkInterfaceDetailResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -531,13 +537,13 @@ func (client NetworkInterfaceClient) GetDetailResponder(resp *http.Response) (re
 // pageNo - 페이지 번호
 // pageSize - 페이지 사이즈
 // networkInterfaceStatusCode - 네트워크 인터페이스 상태 코드
-func (client NetworkInterfaceClient) GetList(ctx context.Context, responseFormatType string, regionCode string, networkInterfaceNoListN string, IP string, networkInterfaceName string, serverInstanceName string, subnetName string, pageNo string, pageSize string, networkInterfaceStatusCode NetworkInterfaceStatusCode) (result autorest.Response, err error) {
+func (client NetworkInterfaceClient) GetList(ctx context.Context, responseFormatType string, regionCode string, networkInterfaceNoListN string, IP string, networkInterfaceName string, serverInstanceName string, subnetName string, pageNo string, pageSize string, networkInterfaceStatusCode NetworkInterfaceStatusCode) (result NetworkInterfaceListResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NetworkInterfaceClient.GetList")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -550,7 +556,7 @@ func (client NetworkInterfaceClient) GetList(ctx context.Context, responseFormat
 
 	resp, err := client.GetListSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "server.NetworkInterfaceClient", "GetList", resp, "Failure sending request")
 		return
 	}
@@ -615,13 +621,14 @@ func (client NetworkInterfaceClient) GetListSender(req *http.Request) (*http.Res
 
 // GetListResponder handles the response to the GetList request. The method always
 // closes the http.Response Body.
-func (client NetworkInterfaceClient) GetListResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client NetworkInterfaceClient) GetListResponder(resp *http.Response) (result NetworkInterfaceListResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -631,13 +638,13 @@ func (client NetworkInterfaceClient) GetListResponder(resp *http.Response) (resu
 // networkInterfaceNo - 네트워크 인터페이스 번호
 // accessControlGroupNoListN - ACG 번호 리스트
 // regionCode - REGION 코드
-func (client NetworkInterfaceClient) RemoveACG(ctx context.Context, responseFormatType string, networkInterfaceNo string, accessControlGroupNoListN string, regionCode string) (result autorest.Response, err error) {
+func (client NetworkInterfaceClient) RemoveACG(ctx context.Context, responseFormatType string, networkInterfaceNo string, accessControlGroupNoListN string, regionCode string) (result NetworkInterfaceAccessControlGroupResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NetworkInterfaceClient.RemoveACG")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -650,7 +657,7 @@ func (client NetworkInterfaceClient) RemoveACG(ctx context.Context, responseForm
 
 	resp, err := client.RemoveACGSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "server.NetworkInterfaceClient", "RemoveACG", resp, "Failure sending request")
 		return
 	}
@@ -693,12 +700,13 @@ func (client NetworkInterfaceClient) RemoveACGSender(req *http.Request) (*http.R
 
 // RemoveACGResponder handles the response to the RemoveACG request. The method always
 // closes the http.Response Body.
-func (client NetworkInterfaceClient) RemoveACGResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client NetworkInterfaceClient) RemoveACGResponder(resp *http.Response) (result NetworkInterfaceAccessControlGroupResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }

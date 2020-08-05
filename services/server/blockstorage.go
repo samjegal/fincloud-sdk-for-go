@@ -31,13 +31,13 @@ func NewBlockStorageClientWithBaseURI(baseURI string) BlockStorageClient {
 // blockStorageInstanceNo - 블록스토리지 인스턴스 번호
 // serverInstanceNo - 서버 인스턴스 번호
 // regionCode - REGION 코드
-func (client BlockStorageClient) Attach(ctx context.Context, responseFormatType string, blockStorageInstanceNo string, serverInstanceNo string, regionCode string) (result autorest.Response, err error) {
+func (client BlockStorageClient) Attach(ctx context.Context, responseFormatType string, blockStorageInstanceNo string, serverInstanceNo string, regionCode string) (result BlockStorageInstanceResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BlockStorageClient.Attach")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -50,7 +50,7 @@ func (client BlockStorageClient) Attach(ctx context.Context, responseFormatType 
 
 	resp, err := client.AttachSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "server.BlockStorageClient", "Attach", resp, "Failure sending request")
 		return
 	}
@@ -93,13 +93,14 @@ func (client BlockStorageClient) AttachSender(req *http.Request) (*http.Response
 
 // AttachResponder handles the response to the Attach request. The method always
 // closes the http.Response Body.
-func (client BlockStorageClient) AttachResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client BlockStorageClient) AttachResponder(resp *http.Response) (result BlockStorageInstanceResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -109,13 +110,13 @@ func (client BlockStorageClient) AttachResponder(resp *http.Response) (result au
 // blockStorageInstanceNo - 블록스토리지 인스턴스 번호
 // blockStorageSize - 블록스토리지 사이즈
 // regionCode - REGION 코드
-func (client BlockStorageClient) ChangeVolumeSize(ctx context.Context, responseFormatType string, blockStorageInstanceNo string, blockStorageSize string, regionCode string) (result autorest.Response, err error) {
+func (client BlockStorageClient) ChangeVolumeSize(ctx context.Context, responseFormatType string, blockStorageInstanceNo string, blockStorageSize string, regionCode string) (result BlockStorageVolumeSizeResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BlockStorageClient.ChangeVolumeSize")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -128,7 +129,7 @@ func (client BlockStorageClient) ChangeVolumeSize(ctx context.Context, responseF
 
 	resp, err := client.ChangeVolumeSizeSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "server.BlockStorageClient", "ChangeVolumeSize", resp, "Failure sending request")
 		return
 	}
@@ -171,13 +172,14 @@ func (client BlockStorageClient) ChangeVolumeSizeSender(req *http.Request) (*htt
 
 // ChangeVolumeSizeResponder handles the response to the ChangeVolumeSize request. The method always
 // closes the http.Response Body.
-func (client BlockStorageClient) ChangeVolumeSizeResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client BlockStorageClient) ChangeVolumeSizeResponder(resp *http.Response) (result BlockStorageVolumeSizeResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -192,13 +194,13 @@ func (client BlockStorageClient) ChangeVolumeSizeResponder(resp *http.Response) 
 // blockStorageSnapshotInstanceNo - 블록스토리지 스냅샷 인스턴스 번호
 // blockStorageSize - 블록스토리지 사이즈
 // blockStorageDescription - 블록스토리지 설명
-func (client BlockStorageClient) Create(ctx context.Context, responseFormatType string, serverInstanceNo string, regionCode string, zoneCode string, blockStorageName string, blockStorageDiskDetailTypeCode BlockStorageDiskDetailTypeCode, blockStorageSnapshotInstanceNo string, blockStorageSize string, blockStorageDescription string) (result autorest.Response, err error) {
+func (client BlockStorageClient) Create(ctx context.Context, responseFormatType string, serverInstanceNo string, regionCode string, zoneCode string, blockStorageName string, blockStorageDiskDetailTypeCode BlockStorageDiskDetailTypeCode, blockStorageSnapshotInstanceNo string, blockStorageSize string, blockStorageDescription string) (result BlockStorageInstanceResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BlockStorageClient.Create")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -211,7 +213,7 @@ func (client BlockStorageClient) Create(ctx context.Context, responseFormatType 
 
 	resp, err := client.CreateSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "server.BlockStorageClient", "Create", resp, "Failure sending request")
 		return
 	}
@@ -271,13 +273,14 @@ func (client BlockStorageClient) CreateSender(req *http.Request) (*http.Response
 
 // CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
-func (client BlockStorageClient) CreateResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client BlockStorageClient) CreateResponder(resp *http.Response) (result BlockStorageInstanceResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -286,13 +289,13 @@ func (client BlockStorageClient) CreateResponder(resp *http.Response) (result au
 // responseFormatType - 반환 데이터 포맷 타입
 // blockStorageInstanceNoListN - 블록스토리지 인스턴스 번호 리스트
 // regionCode - REGION 코드
-func (client BlockStorageClient) Delete(ctx context.Context, responseFormatType string, blockStorageInstanceNoListN string, regionCode string) (result autorest.Response, err error) {
+func (client BlockStorageClient) Delete(ctx context.Context, responseFormatType string, blockStorageInstanceNoListN string, regionCode string) (result BlockStorageInstanceResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BlockStorageClient.Delete")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -305,7 +308,7 @@ func (client BlockStorageClient) Delete(ctx context.Context, responseFormatType 
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "server.BlockStorageClient", "Delete", resp, "Failure sending request")
 		return
 	}
@@ -347,13 +350,14 @@ func (client BlockStorageClient) DeleteSender(req *http.Request) (*http.Response
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client BlockStorageClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client BlockStorageClient) DeleteResponder(resp *http.Response) (result BlockStorageInstanceResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -362,13 +366,13 @@ func (client BlockStorageClient) DeleteResponder(resp *http.Response) (result au
 // responseFormatType - 반환 데이터 포맷 타입
 // blockStorageInstanceNoListN - 블록스토리지 인스턴스 번호 리스트
 // regionCode - REGION 코드
-func (client BlockStorageClient) Detach(ctx context.Context, responseFormatType string, blockStorageInstanceNoListN string, regionCode string) (result autorest.Response, err error) {
+func (client BlockStorageClient) Detach(ctx context.Context, responseFormatType string, blockStorageInstanceNoListN string, regionCode string) (result BlockStorageInstanceResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BlockStorageClient.Detach")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -381,7 +385,7 @@ func (client BlockStorageClient) Detach(ctx context.Context, responseFormatType 
 
 	resp, err := client.DetachSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "server.BlockStorageClient", "Detach", resp, "Failure sending request")
 		return
 	}
@@ -423,13 +427,14 @@ func (client BlockStorageClient) DetachSender(req *http.Request) (*http.Response
 
 // DetachResponder handles the response to the Detach request. The method always
 // closes the http.Response Body.
-func (client BlockStorageClient) DetachResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client BlockStorageClient) DetachResponder(resp *http.Response) (result BlockStorageInstanceResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -438,13 +443,13 @@ func (client BlockStorageClient) DetachResponder(resp *http.Response) (result au
 // responseFormatType - 반환 데이터 포맷 타입
 // blockStorageInstanceNo - 블록스토리지 인스턴스 번호
 // regionCode - REGION 코드
-func (client BlockStorageClient) GetDetail(ctx context.Context, responseFormatType string, blockStorageInstanceNo string, regionCode string) (result autorest.Response, err error) {
+func (client BlockStorageClient) GetDetail(ctx context.Context, responseFormatType string, blockStorageInstanceNo string, regionCode string) (result BlockStorageInstanceDetailResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BlockStorageClient.GetDetail")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -457,7 +462,7 @@ func (client BlockStorageClient) GetDetail(ctx context.Context, responseFormatTy
 
 	resp, err := client.GetDetailSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "server.BlockStorageClient", "GetDetail", resp, "Failure sending request")
 		return
 	}
@@ -499,13 +504,14 @@ func (client BlockStorageClient) GetDetailSender(req *http.Request) (*http.Respo
 
 // GetDetailResponder handles the response to the GetDetail request. The method always
 // closes the http.Response Body.
-func (client BlockStorageClient) GetDetailResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client BlockStorageClient) GetDetailResponder(resp *http.Response) (result BlockStorageInstanceDetailResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -526,13 +532,13 @@ func (client BlockStorageClient) GetDetailResponder(resp *http.Response) (result
 // blockStorageDiskTypeCode - 블록스토리지 디스크 유형 코드
 // blockStorageDiskDetailTypeCode - 블록스토리지 디스크 상세 유형 코드
 // zoneCode - ZONE 코드
-func (client BlockStorageClient) GetList(ctx context.Context, responseFormatType string, regionCode string, serverInstanceNo string, blockStorageTypeCodeListN BlockStorageTypeCode, blockStorageInstanceStatusCode BlockStorageInstanceStatusCode, pageNo string, pageSize string, blockStorageSize string, blockStorageInstanceNoListN string, blockStorageName string, serverName string, connectionInfo string, blockStorageDiskTypeCode BlockStorageDiskTypeCode, blockStorageDiskDetailTypeCode BlockStorageDiskDetailTypeCode, zoneCode string) (result autorest.Response, err error) {
+func (client BlockStorageClient) GetList(ctx context.Context, responseFormatType string, regionCode string, serverInstanceNo string, blockStorageTypeCodeListN BlockStorageTypeCode, blockStorageInstanceStatusCode BlockStorageInstanceStatusCode, pageNo string, pageSize string, blockStorageSize string, blockStorageInstanceNoListN string, blockStorageName string, serverName string, connectionInfo string, blockStorageDiskTypeCode BlockStorageDiskTypeCode, blockStorageDiskDetailTypeCode BlockStorageDiskDetailTypeCode, zoneCode string) (result BlockStorageInstanceListResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BlockStorageClient.GetList")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -545,7 +551,7 @@ func (client BlockStorageClient) GetList(ctx context.Context, responseFormatType
 
 	resp, err := client.GetListSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "server.BlockStorageClient", "GetList", resp, "Failure sending request")
 		return
 	}
@@ -625,12 +631,13 @@ func (client BlockStorageClient) GetListSender(req *http.Request) (*http.Respons
 
 // GetListResponder handles the response to the GetList request. The method always
 // closes the http.Response Body.
-func (client BlockStorageClient) GetListResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client BlockStorageClient) GetListResponder(resp *http.Response) (result BlockStorageInstanceListResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }

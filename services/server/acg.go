@@ -32,13 +32,13 @@ func NewACGClientWithBaseURI(baseURI string) ACGClient {
 // regionCode - REGION 코드
 // accessControlGroupName - ACG 이름
 // accessControlGroupDescription - ACG 설명
-func (client ACGClient) Create(ctx context.Context, responseFormatType string, vpcNo string, regionCode string, accessControlGroupName string, accessControlGroupDescription string) (result autorest.Response, err error) {
+func (client ACGClient) Create(ctx context.Context, responseFormatType string, vpcNo string, regionCode string, accessControlGroupName string, accessControlGroupDescription string) (result AccessControlGroupResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ACGClient.Create")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -51,7 +51,7 @@ func (client ACGClient) Create(ctx context.Context, responseFormatType string, v
 
 	resp, err := client.CreateSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "server.ACGClient", "Create", resp, "Failure sending request")
 		return
 	}
@@ -99,13 +99,14 @@ func (client ACGClient) CreateSender(req *http.Request) (*http.Response, error) 
 
 // CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
-func (client ACGClient) CreateResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client ACGClient) CreateResponder(resp *http.Response) (result AccessControlGroupResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -115,13 +116,13 @@ func (client ACGClient) CreateResponder(resp *http.Response) (result autorest.Re
 // vpcNo - VPC 번호
 // accessControlGroupNo - ACG 번호
 // regionCode - REGION 코드
-func (client ACGClient) Delete(ctx context.Context, responseFormatType string, vpcNo string, accessControlGroupNo string, regionCode string) (result autorest.Response, err error) {
+func (client ACGClient) Delete(ctx context.Context, responseFormatType string, vpcNo string, accessControlGroupNo string, regionCode string) (result AccessControlGroupResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ACGClient.Delete")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -134,7 +135,7 @@ func (client ACGClient) Delete(ctx context.Context, responseFormatType string, v
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "server.ACGClient", "Delete", resp, "Failure sending request")
 		return
 	}
@@ -177,13 +178,14 @@ func (client ACGClient) DeleteSender(req *http.Request) (*http.Response, error) 
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client ACGClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client ACGClient) DeleteResponder(resp *http.Response) (result AccessControlGroupResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -192,13 +194,13 @@ func (client ACGClient) DeleteResponder(resp *http.Response) (result autorest.Re
 // responseFormatType - 반환 데이터 포맷 타입
 // accessControlGroupNo - ACG 번호
 // regionCode - REGION 코드
-func (client ACGClient) GetDetail(ctx context.Context, responseFormatType string, accessControlGroupNo string, regionCode string) (result autorest.Response, err error) {
+func (client ACGClient) GetDetail(ctx context.Context, responseFormatType string, accessControlGroupNo string, regionCode string) (result AccessControlGroupDetailResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ACGClient.GetDetail")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -211,7 +213,7 @@ func (client ACGClient) GetDetail(ctx context.Context, responseFormatType string
 
 	resp, err := client.GetDetailSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "server.ACGClient", "GetDetail", resp, "Failure sending request")
 		return
 	}
@@ -253,13 +255,14 @@ func (client ACGClient) GetDetailSender(req *http.Request) (*http.Response, erro
 
 // GetDetailResponder handles the response to the GetDetail request. The method always
 // closes the http.Response Body.
-func (client ACGClient) GetDetailResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client ACGClient) GetDetailResponder(resp *http.Response) (result AccessControlGroupDetailResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -273,13 +276,13 @@ func (client ACGClient) GetDetailResponder(resp *http.Response) (result autorest
 // pageNo - 페이지 번호
 // pageSize - 페이지 사이즈
 // vpcNo - VPC 번호
-func (client ACGClient) GetList(ctx context.Context, responseFormatType string, regionCode string, accessControlGroupNoListN string, accessControlGroupName string, accessControlGroupStatusCode AccessControlGroupStatusCode, pageNo string, pageSize string, vpcNo string) (result autorest.Response, err error) {
+func (client ACGClient) GetList(ctx context.Context, responseFormatType string, regionCode string, accessControlGroupNoListN string, accessControlGroupName string, accessControlGroupStatusCode AccessControlGroupStatusCode, pageNo string, pageSize string, vpcNo string) (result AccessControlGroupListResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ACGClient.GetList")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -292,7 +295,7 @@ func (client ACGClient) GetList(ctx context.Context, responseFormatType string, 
 
 	resp, err := client.GetListSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "server.ACGClient", "GetList", resp, "Failure sending request")
 		return
 	}
@@ -351,13 +354,14 @@ func (client ACGClient) GetListSender(req *http.Request) (*http.Response, error)
 
 // GetListResponder handles the response to the GetList request. The method always
 // closes the http.Response Body.
-func (client ACGClient) GetListResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client ACGClient) GetListResponder(resp *http.Response) (result AccessControlGroupListResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -367,13 +371,13 @@ func (client ACGClient) GetListResponder(resp *http.Response) (result autorest.R
 // accessControlGroupNo - ACG 번호
 // regionCode - REGION 코드
 // accessControlGroupRuleTypeCode - ACG Rule 유형 코드
-func (client ACGClient) GetRuleList(ctx context.Context, responseFormatType string, accessControlGroupNo string, regionCode string, accessControlGroupRuleTypeCode AccessControlGroupRuleTypeCode) (result autorest.Response, err error) {
+func (client ACGClient) GetRuleList(ctx context.Context, responseFormatType string, accessControlGroupNo string, regionCode string, accessControlGroupRuleTypeCode AccessControlGroupRuleTypeCode) (result AccessControlGroupRuleListResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ACGClient.GetRuleList")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -386,7 +390,7 @@ func (client ACGClient) GetRuleList(ctx context.Context, responseFormatType stri
 
 	resp, err := client.GetRuleListSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "server.ACGClient", "GetRuleList", resp, "Failure sending request")
 		return
 	}
@@ -431,12 +435,13 @@ func (client ACGClient) GetRuleListSender(req *http.Request) (*http.Response, er
 
 // GetRuleListResponder handles the response to the GetRuleList request. The method always
 // closes the http.Response Body.
-func (client ACGClient) GetRuleListResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client ACGClient) GetRuleListResponder(resp *http.Response) (result AccessControlGroupRuleListResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }

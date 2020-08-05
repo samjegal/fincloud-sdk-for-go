@@ -33,13 +33,13 @@ func NewInitScriptClientWithBaseURI(baseURI string) InitScriptClient {
 // osTypeCode - OS 유형 코드
 // initScriptName - 초기화 스크립트 이름
 // initScriptDescription - 초기화 스크립트 설명
-func (client InitScriptClient) Create(ctx context.Context, responseFormatType string, initScriptContent string, regionCode string, osTypeCode OsTypeCode, initScriptName string, initScriptDescription string) (result autorest.Response, err error) {
+func (client InitScriptClient) Create(ctx context.Context, responseFormatType string, initScriptContent string, regionCode string, osTypeCode OsTypeCode, initScriptName string, initScriptDescription string) (result InitScriptResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/InitScriptClient.Create")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -52,7 +52,7 @@ func (client InitScriptClient) Create(ctx context.Context, responseFormatType st
 
 	resp, err := client.CreateSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "server.InitScriptClient", "Create", resp, "Failure sending request")
 		return
 	}
@@ -103,13 +103,14 @@ func (client InitScriptClient) CreateSender(req *http.Request) (*http.Response, 
 
 // CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
-func (client InitScriptClient) CreateResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client InitScriptClient) CreateResponder(resp *http.Response) (result InitScriptResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -118,13 +119,13 @@ func (client InitScriptClient) CreateResponder(resp *http.Response) (result auto
 // responseFormatType - 반환 데이터 포맷 타입
 // regionCode - REGION 코드
 // initScriptNoListN - 초기화 스크립트 번호 리스트
-func (client InitScriptClient) Delete(ctx context.Context, responseFormatType string, regionCode string, initScriptNoListN string) (result autorest.Response, err error) {
+func (client InitScriptClient) Delete(ctx context.Context, responseFormatType string, regionCode string, initScriptNoListN string) (result InitScriptResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/InitScriptClient.Delete")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -137,7 +138,7 @@ func (client InitScriptClient) Delete(ctx context.Context, responseFormatType st
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "server.InitScriptClient", "Delete", resp, "Failure sending request")
 		return
 	}
@@ -181,13 +182,14 @@ func (client InitScriptClient) DeleteSender(req *http.Request) (*http.Response, 
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client InitScriptClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client InitScriptClient) DeleteResponder(resp *http.Response) (result InitScriptResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -196,13 +198,13 @@ func (client InitScriptClient) DeleteResponder(resp *http.Response) (result auto
 // responseFormatType - 반환 데이터 포맷 타입
 // regionCode - REGION 코드
 // initScriptNo - 초기화 스크립트 번호
-func (client InitScriptClient) GetDetail(ctx context.Context, responseFormatType string, regionCode string, initScriptNo string) (result autorest.Response, err error) {
+func (client InitScriptClient) GetDetail(ctx context.Context, responseFormatType string, regionCode string, initScriptNo string) (result InitScriptDetailResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/InitScriptClient.GetDetail")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -215,7 +217,7 @@ func (client InitScriptClient) GetDetail(ctx context.Context, responseFormatType
 
 	resp, err := client.GetDetailSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "server.InitScriptClient", "GetDetail", resp, "Failure sending request")
 		return
 	}
@@ -259,13 +261,14 @@ func (client InitScriptClient) GetDetailSender(req *http.Request) (*http.Respons
 
 // GetDetailResponder handles the response to the GetDetail request. The method always
 // closes the http.Response Body.
-func (client InitScriptClient) GetDetailResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client InitScriptClient) GetDetailResponder(resp *http.Response) (result InitScriptDetailResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -280,13 +283,13 @@ func (client InitScriptClient) GetDetailResponder(resp *http.Response) (result a
 // sortingOrder - 정렬 순서
 // initScriptName - 초기화 스크립트 이름
 // initScriptNoListN - 초기화 스크립트 번호 리스트
-func (client InitScriptClient) GetList(ctx context.Context, responseFormatType string, regionCode string, osTypeCode OsTypeCode, pageNo string, pageSize string, sortedBy string, sortingOrder SortingOrder, initScriptName string, initScriptNoListN string) (result autorest.Response, err error) {
+func (client InitScriptClient) GetList(ctx context.Context, responseFormatType string, regionCode string, osTypeCode OsTypeCode, pageNo string, pageSize string, sortedBy string, sortingOrder SortingOrder, initScriptName string, initScriptNoListN string) (result InitScriptListResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/InitScriptClient.GetList")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -299,7 +302,7 @@ func (client InitScriptClient) GetList(ctx context.Context, responseFormatType s
 
 	resp, err := client.GetListSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "server.InitScriptClient", "GetList", resp, "Failure sending request")
 		return
 	}
@@ -361,12 +364,13 @@ func (client InitScriptClient) GetListSender(req *http.Request) (*http.Response,
 
 // GetListResponder handles the response to the GetList request. The method always
 // closes the http.Response Body.
-func (client InitScriptClient) GetListResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client InitScriptClient) GetListResponder(resp *http.Response) (result InitScriptListResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }

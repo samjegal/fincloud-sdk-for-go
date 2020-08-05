@@ -33,13 +33,13 @@ func NewImageProductClientWithBaseURI(baseURI string) ImageProductClient {
 // exclusionProductCode - 제외할 상품 코드
 // productCode - 조회할 상품 코드
 // platformTypeCodeListN - 플랫폼 유형 코드 리스트
-func (client ImageProductClient) GetList(ctx context.Context, responseFormatType string, regionCode string, blockStorageSize string, exclusionProductCode string, productCode string, platformTypeCodeListN PlatformTypeCode) (result autorest.Response, err error) {
+func (client ImageProductClient) GetList(ctx context.Context, responseFormatType string, regionCode string, blockStorageSize string, exclusionProductCode string, productCode string, platformTypeCodeListN PlatformTypeCode) (result ImageProductListResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ImageProductClient.GetList")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -52,7 +52,7 @@ func (client ImageProductClient) GetList(ctx context.Context, responseFormatType
 
 	resp, err := client.GetListSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "server.ImageProductClient", "GetList", resp, "Failure sending request")
 		return
 	}
@@ -105,12 +105,13 @@ func (client ImageProductClient) GetListSender(req *http.Request) (*http.Respons
 
 // GetListResponder handles the response to the GetList request. The method always
 // closes the http.Response Body.
-func (client ImageProductClient) GetListResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client ImageProductClient) GetListResponder(resp *http.Response) (result ImageProductListResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }

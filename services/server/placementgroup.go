@@ -31,13 +31,13 @@ func NewPlacementGroupClientWithBaseURI(baseURI string) PlacementGroupClient {
 // placementGroupNo - 물리 배치 그룹 번호
 // serverInstanceNo - 서버 인스턴스 번호
 // regionCode - REGION 코드
-func (client PlacementGroupClient) Add(ctx context.Context, responseFormatType string, placementGroupNo string, serverInstanceNo string, regionCode string) (result autorest.Response, err error) {
+func (client PlacementGroupClient) Add(ctx context.Context, responseFormatType string, placementGroupNo string, serverInstanceNo string, regionCode string) (result PlacementGroupServerInstanceResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PlacementGroupClient.Add")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -50,7 +50,7 @@ func (client PlacementGroupClient) Add(ctx context.Context, responseFormatType s
 
 	resp, err := client.AddSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "server.PlacementGroupClient", "Add", resp, "Failure sending request")
 		return
 	}
@@ -93,13 +93,14 @@ func (client PlacementGroupClient) AddSender(req *http.Request) (*http.Response,
 
 // AddResponder handles the response to the Add request. The method always
 // closes the http.Response Body.
-func (client PlacementGroupClient) AddResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client PlacementGroupClient) AddResponder(resp *http.Response) (result PlacementGroupServerInstanceResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -109,13 +110,13 @@ func (client PlacementGroupClient) AddResponder(resp *http.Response) (result aut
 // regionCode - REGION 코드
 // placementGroupName - 물리 배치 그룹 이름
 // placementGroupTypeCode - 물리 배치 그룹 유형 코드
-func (client PlacementGroupClient) Create(ctx context.Context, responseFormatType string, regionCode string, placementGroupName string, placementGroupTypeCode string) (result autorest.Response, err error) {
+func (client PlacementGroupClient) Create(ctx context.Context, responseFormatType string, regionCode string, placementGroupName string, placementGroupTypeCode string) (result PlacementGroupResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PlacementGroupClient.Create")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -128,7 +129,7 @@ func (client PlacementGroupClient) Create(ctx context.Context, responseFormatTyp
 
 	resp, err := client.CreateSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "server.PlacementGroupClient", "Create", resp, "Failure sending request")
 		return
 	}
@@ -175,13 +176,14 @@ func (client PlacementGroupClient) CreateSender(req *http.Request) (*http.Respon
 
 // CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
-func (client PlacementGroupClient) CreateResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client PlacementGroupClient) CreateResponder(resp *http.Response) (result PlacementGroupResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -190,13 +192,13 @@ func (client PlacementGroupClient) CreateResponder(resp *http.Response) (result 
 // responseFormatType - 반환 데이터 포맷 타입
 // placementGroupNo - 물리 배치 그룹 번호
 // regionCode - REGION 코드
-func (client PlacementGroupClient) Delete(ctx context.Context, responseFormatType string, placementGroupNo string, regionCode string) (result autorest.Response, err error) {
+func (client PlacementGroupClient) Delete(ctx context.Context, responseFormatType string, placementGroupNo string, regionCode string) (result PlacementGroupResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PlacementGroupClient.Delete")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -209,7 +211,7 @@ func (client PlacementGroupClient) Delete(ctx context.Context, responseFormatTyp
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "server.PlacementGroupClient", "Delete", resp, "Failure sending request")
 		return
 	}
@@ -251,13 +253,14 @@ func (client PlacementGroupClient) DeleteSender(req *http.Request) (*http.Respon
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client PlacementGroupClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client PlacementGroupClient) DeleteResponder(resp *http.Response) (result PlacementGroupResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -266,13 +269,13 @@ func (client PlacementGroupClient) DeleteResponder(resp *http.Response) (result 
 // responseFormatType - 반환 데이터 포맷 타입
 // regionCode - REGION 코드
 // placementGroupNo - 물리 배치 그룹 번호
-func (client PlacementGroupClient) GetDetail(ctx context.Context, responseFormatType string, regionCode string, placementGroupNo string) (result autorest.Response, err error) {
+func (client PlacementGroupClient) GetDetail(ctx context.Context, responseFormatType string, regionCode string, placementGroupNo string) (result PlacementGroupDetailResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PlacementGroupClient.GetDetail")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -285,7 +288,7 @@ func (client PlacementGroupClient) GetDetail(ctx context.Context, responseFormat
 
 	resp, err := client.GetDetailSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "server.PlacementGroupClient", "GetDetail", resp, "Failure sending request")
 		return
 	}
@@ -329,29 +332,30 @@ func (client PlacementGroupClient) GetDetailSender(req *http.Request) (*http.Res
 
 // GetDetailResponder handles the response to the GetDetail request. The method always
 // closes the http.Response Body.
-func (client PlacementGroupClient) GetDetailResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client PlacementGroupClient) GetDetailResponder(resp *http.Response) (result PlacementGroupDetailResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
-// GetList 물리 배치 그룹 리스트를 조회
+// GetList 치 그룹 리스트를 조회
 // Parameters:
 // responseFormatType - 반환 데이터 포맷 타입
 // regionCode - REGION 코드
 // placementGroupName - 물리 배치 그룹 이름
 // placementGroupNoListN - 물리 배치 그룹 번호 리스트
-func (client PlacementGroupClient) GetList(ctx context.Context, responseFormatType string, regionCode string, placementGroupName string, placementGroupNoListN string) (result autorest.Response, err error) {
+func (client PlacementGroupClient) GetList(ctx context.Context, responseFormatType string, regionCode string, placementGroupName string, placementGroupNoListN string) (result PlacementGroupListResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PlacementGroupClient.GetList")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -364,7 +368,7 @@ func (client PlacementGroupClient) GetList(ctx context.Context, responseFormatTy
 
 	resp, err := client.GetListSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "server.PlacementGroupClient", "GetList", resp, "Failure sending request")
 		return
 	}
@@ -411,13 +415,14 @@ func (client PlacementGroupClient) GetListSender(req *http.Request) (*http.Respo
 
 // GetListResponder handles the response to the GetList request. The method always
 // closes the http.Response Body.
-func (client PlacementGroupClient) GetListResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client PlacementGroupClient) GetListResponder(resp *http.Response) (result PlacementGroupListResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -427,13 +432,13 @@ func (client PlacementGroupClient) GetListResponder(resp *http.Response) (result
 // placementGroupNo - 물리 배치 그룹 번호
 // serverInstanceNo - 서버 인스턴스 번호
 // regionCode - REGION 코드
-func (client PlacementGroupClient) Remove(ctx context.Context, responseFormatType string, placementGroupNo string, serverInstanceNo string, regionCode string) (result autorest.Response, err error) {
+func (client PlacementGroupClient) Remove(ctx context.Context, responseFormatType string, placementGroupNo string, serverInstanceNo string, regionCode string) (result PlacementGroupServerInstanceResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PlacementGroupClient.Remove")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -446,7 +451,7 @@ func (client PlacementGroupClient) Remove(ctx context.Context, responseFormatTyp
 
 	resp, err := client.RemoveSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "server.PlacementGroupClient", "Remove", resp, "Failure sending request")
 		return
 	}
@@ -489,12 +494,13 @@ func (client PlacementGroupClient) RemoveSender(req *http.Request) (*http.Respon
 
 // RemoveResponder handles the response to the Remove request. The method always
 // closes the http.Response Body.
-func (client PlacementGroupClient) RemoveResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client PlacementGroupClient) RemoveResponder(resp *http.Response) (result PlacementGroupServerInstanceResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }

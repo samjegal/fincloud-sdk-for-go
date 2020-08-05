@@ -103,24 +103,32 @@ func PossibleVolumeAllotmentProtocolTypeCodeValues() []VolumeAllotmentProtocolTy
 
 // VolumeAccessControlResponse ...
 type VolumeAccessControlResponse struct {
-	autorest.Response     `json:"-"`
-	ReturnCode            *string               `json:"returnCode,omitempty"`
-	ReturnMessage         *string               `json:"returnMessage,omitempty"`
+	autorest.Response `json:"-"`
+	// ReturnCode - 리턴 코드
+	ReturnCode *string `json:"returnCode,omitempty"`
+	// ReturnMessage - 리턴 메시지
+	ReturnMessage *string `json:"returnMessage,omitempty"`
+	// TotalRows - 총 행 개수
 	TotalRows             *int32                `json:"totalRows,omitempty"`
 	NasVolumeInstanceList *[]VolumeInstanceList `json:"nasVolumeInstanceList,omitempty"`
 }
 
 // VolumeAllotmentProtocolType ...
 type VolumeAllotmentProtocolType struct {
-	Code     *string `json:"code,omitempty"`
+	// Code - 상태 코드
+	Code *string `json:"code,omitempty"`
+	// CodeName - 상태 코드 이름
 	CodeName *string `json:"codeName,omitempty"`
 }
 
 // VolumeInstanceDetailResponse ...
 type VolumeInstanceDetailResponse struct {
-	autorest.Response     `json:"-"`
-	ReturnCode            *string               `json:"returnCode,omitempty"`
-	ReturnMessage         *string               `json:"returnMessage,omitempty"`
+	autorest.Response `json:"-"`
+	// ReturnCode - 리턴 코드
+	ReturnCode *string `json:"returnCode,omitempty"`
+	// ReturnMessage - 리턴 메시지
+	ReturnMessage *string `json:"returnMessage,omitempty"`
+	// TotalRows - 총 행 개수
 	TotalRows             *int32                `json:"totalRows,omitempty"`
 	NasVolumeInstanceList *[]VolumeInstanceList `json:"nasVolumeInstanceList,omitempty"`
 }
@@ -154,31 +162,41 @@ type VolumeInstanceList struct {
 
 // VolumeInstanceListResponse ...
 type VolumeInstanceListResponse struct {
-	autorest.Response     `json:"-"`
-	ReturnCode            *string               `json:"returnCode,omitempty"`
-	ReturnMessage         *string               `json:"returnMessage,omitempty"`
+	autorest.Response `json:"-"`
+	// ReturnCode - 리턴 코드
+	ReturnCode *string `json:"returnCode,omitempty"`
+	// ReturnMessage - 리턴 메시지
+	ReturnMessage *string `json:"returnMessage,omitempty"`
+	// TotalRows - 총 행 개수
 	TotalRows             *int32                `json:"totalRows,omitempty"`
 	NasVolumeInstanceList *[]VolumeInstanceList `json:"nasVolumeInstanceList,omitempty"`
 }
 
 // VolumeInstanceOperation ...
 type VolumeInstanceOperation struct {
-	Code     *string `json:"code,omitempty"`
+	// Code - 상태 코드
+	Code *string `json:"code,omitempty"`
+	// CodeName - 상태 코드 이름
 	CodeName *string `json:"codeName,omitempty"`
 }
 
 // VolumeInstancesResponse ...
 type VolumeInstancesResponse struct {
-	autorest.Response     `json:"-"`
-	ReturnCode            *string               `json:"returnCode,omitempty"`
-	ReturnMessage         *string               `json:"returnMessage,omitempty"`
+	autorest.Response `json:"-"`
+	// ReturnCode - 리턴 코드
+	ReturnCode *string `json:"returnCode,omitempty"`
+	// ReturnMessage - 리턴 메시지
+	ReturnMessage *string `json:"returnMessage,omitempty"`
+	// TotalRows - 총 행 개수
 	TotalRows             *int32                `json:"totalRows,omitempty"`
 	NasVolumeInstanceList *[]VolumeInstanceList `json:"nasVolumeInstanceList,omitempty"`
 }
 
 // VolumeInstanceStatus ...
 type VolumeInstanceStatus struct {
-	Code     *string `json:"code,omitempty"`
+	// Code - 상태 코드
+	Code *string `json:"code,omitempty"`
+	// CodeName - 상태 코드 이름
 	CodeName *string `json:"codeName,omitempty"`
 }
 
@@ -189,9 +207,12 @@ type VolumeServerInstanceNoList struct {
 
 // VolumeSizeResponse ...
 type VolumeSizeResponse struct {
-	autorest.Response     `json:"-"`
-	ReturnCode            *string               `json:"returnCode,omitempty"`
-	ReturnMessage         *string               `json:"returnMessage,omitempty"`
+	autorest.Response `json:"-"`
+	// ReturnCode - 리턴 코드
+	ReturnCode *string `json:"returnCode,omitempty"`
+	// ReturnMessage - 리턴 메시지
+	ReturnMessage *string `json:"returnMessage,omitempty"`
+	// TotalRows - 총 행 개수
 	TotalRows             *int32                `json:"totalRows,omitempty"`
 	NasVolumeInstanceList *[]VolumeInstanceList `json:"nasVolumeInstanceList,omitempty"`
 }

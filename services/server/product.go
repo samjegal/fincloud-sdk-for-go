@@ -34,13 +34,13 @@ func NewProductClientWithBaseURI(baseURI string) ProductClient {
 // exclusionProductCode - 제외할 상품 코드
 // productCode - 조회할 상품 코드
 // generationCode - 세대 코드
-func (client ProductClient) GetList(ctx context.Context, responseFormatType string, serverImageProductCode string, regionCode string, zoneCode string, exclusionProductCode string, productCode string, generationCode string) (result autorest.Response, err error) {
+func (client ProductClient) GetList(ctx context.Context, responseFormatType string, serverImageProductCode string, regionCode string, zoneCode string, exclusionProductCode string, productCode string, generationCode string) (result ProductListResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ProductClient.GetList")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -53,7 +53,7 @@ func (client ProductClient) GetList(ctx context.Context, responseFormatType stri
 
 	resp, err := client.GetListSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "server.ProductClient", "GetList", resp, "Failure sending request")
 		return
 	}
@@ -107,12 +107,13 @@ func (client ProductClient) GetListSender(req *http.Request) (*http.Response, er
 
 // GetListResponder handles the response to the GetList request. The method always
 // closes the http.Response Body.
-func (client ProductClient) GetListResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client ProductClient) GetListResponder(resp *http.Response) (result ProductListResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }

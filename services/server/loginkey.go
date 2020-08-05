@@ -29,13 +29,13 @@ func NewLoginKeyClientWithBaseURI(baseURI string) LoginKeyClient {
 // Parameters:
 // responseFormatType - 반환 데이터 포맷 타입
 // keyName - 키 이름
-func (client LoginKeyClient) Create(ctx context.Context, responseFormatType string, keyName string) (result autorest.Response, err error) {
+func (client LoginKeyClient) Create(ctx context.Context, responseFormatType string, keyName string) (result CreateLoginKeyResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/LoginKeyClient.Create")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -48,7 +48,7 @@ func (client LoginKeyClient) Create(ctx context.Context, responseFormatType stri
 
 	resp, err := client.CreateSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "server.LoginKeyClient", "Create", resp, "Failure sending request")
 		return
 	}
@@ -87,13 +87,14 @@ func (client LoginKeyClient) CreateSender(req *http.Request) (*http.Response, er
 
 // CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
-func (client LoginKeyClient) CreateResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client LoginKeyClient) CreateResponder(resp *http.Response) (result CreateLoginKeyResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -101,13 +102,13 @@ func (client LoginKeyClient) CreateResponder(resp *http.Response) (result autore
 // Parameters:
 // responseFormatType - 반환 데이터 포맷 타입
 // keyNameListN - 키 이름 리스트
-func (client LoginKeyClient) Delete(ctx context.Context, responseFormatType string, keyNameListN string) (result autorest.Response, err error) {
+func (client LoginKeyClient) Delete(ctx context.Context, responseFormatType string, keyNameListN string) (result DeleteLoginKeysResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/LoginKeyClient.Delete")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -120,7 +121,7 @@ func (client LoginKeyClient) Delete(ctx context.Context, responseFormatType stri
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "server.LoginKeyClient", "Delete", resp, "Failure sending request")
 		return
 	}
@@ -157,13 +158,14 @@ func (client LoginKeyClient) DeleteSender(req *http.Request) (*http.Response, er
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client LoginKeyClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client LoginKeyClient) DeleteResponder(resp *http.Response) (result DeleteLoginKeysResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -172,13 +174,13 @@ func (client LoginKeyClient) DeleteResponder(resp *http.Response) (result autore
 // responseFormatType - 반환 데이터 포맷 타입
 // pageNo - 페이지 번호
 // pageSize - 페이지 사이즈
-func (client LoginKeyClient) GetList(ctx context.Context, responseFormatType string, pageNo string, pageSize string) (result autorest.Response, err error) {
+func (client LoginKeyClient) GetList(ctx context.Context, responseFormatType string, pageNo string, pageSize string) (result LoginKeyListResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/LoginKeyClient.GetList")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -191,7 +193,7 @@ func (client LoginKeyClient) GetList(ctx context.Context, responseFormatType str
 
 	resp, err := client.GetListSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "server.LoginKeyClient", "GetList", resp, "Failure sending request")
 		return
 	}
@@ -233,13 +235,14 @@ func (client LoginKeyClient) GetListSender(req *http.Request) (*http.Response, e
 
 // GetListResponder handles the response to the GetList request. The method always
 // closes the http.Response Body.
-func (client LoginKeyClient) GetListResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client LoginKeyClient) GetListResponder(resp *http.Response) (result LoginKeyListResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -248,13 +251,13 @@ func (client LoginKeyClient) GetListResponder(resp *http.Response) (result autor
 // responseFormatType - 반환 데이터 포맷 타입
 // publicKey - 공개키
 // keyName - 키 이름
-func (client LoginKeyClient) Import(ctx context.Context, responseFormatType string, publicKey string, keyName string) (result autorest.Response, err error) {
+func (client LoginKeyClient) Import(ctx context.Context, responseFormatType string, publicKey string, keyName string) (result LoginKeyResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/LoginKeyClient.Import")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -267,7 +270,7 @@ func (client LoginKeyClient) Import(ctx context.Context, responseFormatType stri
 
 	resp, err := client.ImportSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "server.LoginKeyClient", "Import", resp, "Failure sending request")
 		return
 	}
@@ -307,12 +310,13 @@ func (client LoginKeyClient) ImportSender(req *http.Request) (*http.Response, er
 
 // ImportResponder handles the response to the Import request. The method always
 // closes the http.Response Body.
-func (client LoginKeyClient) ImportResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client LoginKeyClient) ImportResponder(resp *http.Response) (result LoginKeyResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }

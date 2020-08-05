@@ -31,13 +31,13 @@ func NewPublicIPClientWithBaseURI(baseURI string) PublicIPClient {
 // publicIPInstanceNo - 공인 IP 인스턴스 번호
 // serverInstanceNo - 서버 인스턴스 번호
 // regionCode - REGION 코드
-func (client PublicIPClient) Associate(ctx context.Context, responseFormatType string, publicIPInstanceNo string, serverInstanceNo string, regionCode string) (result autorest.Response, err error) {
+func (client PublicIPClient) Associate(ctx context.Context, responseFormatType string, publicIPInstanceNo string, serverInstanceNo string, regionCode string) (result PublicIPWithServerInstanceResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PublicIPClient.Associate")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -50,7 +50,7 @@ func (client PublicIPClient) Associate(ctx context.Context, responseFormatType s
 
 	resp, err := client.AssociateSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "server.PublicIPClient", "Associate", resp, "Failure sending request")
 		return
 	}
@@ -93,13 +93,14 @@ func (client PublicIPClient) AssociateSender(req *http.Request) (*http.Response,
 
 // AssociateResponder handles the response to the Associate request. The method always
 // closes the http.Response Body.
-func (client PublicIPClient) AssociateResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client PublicIPClient) AssociateResponder(resp *http.Response) (result PublicIPWithServerInstanceResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -109,13 +110,13 @@ func (client PublicIPClient) AssociateResponder(resp *http.Response) (result aut
 // regionCode - REGION 코드
 // serverInstanceNo - 서버 인스턴스 번호
 // publicIPDescription - 공인 IP 설명
-func (client PublicIPClient) Create(ctx context.Context, responseFormatType string, regionCode string, serverInstanceNo string, publicIPDescription string) (result autorest.Response, err error) {
+func (client PublicIPClient) Create(ctx context.Context, responseFormatType string, regionCode string, serverInstanceNo string, publicIPDescription string) (result PublicIPInstanceResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PublicIPClient.Create")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -128,7 +129,7 @@ func (client PublicIPClient) Create(ctx context.Context, responseFormatType stri
 
 	resp, err := client.CreateSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "server.PublicIPClient", "Create", resp, "Failure sending request")
 		return
 	}
@@ -175,13 +176,14 @@ func (client PublicIPClient) CreateSender(req *http.Request) (*http.Response, er
 
 // CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
-func (client PublicIPClient) CreateResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client PublicIPClient) CreateResponder(resp *http.Response) (result PublicIPInstanceResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -190,13 +192,13 @@ func (client PublicIPClient) CreateResponder(resp *http.Response) (result autore
 // responseFormatType - 반환 데이터 포맷 타입
 // publicIPInstanceNo - 공인 IP 인스턴스 번호
 // regionCode - REGION 코드
-func (client PublicIPClient) Delete(ctx context.Context, responseFormatType string, publicIPInstanceNo string, regionCode string) (result autorest.Response, err error) {
+func (client PublicIPClient) Delete(ctx context.Context, responseFormatType string, publicIPInstanceNo string, regionCode string) (result PublicIPInstanceResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PublicIPClient.Delete")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -209,7 +211,7 @@ func (client PublicIPClient) Delete(ctx context.Context, responseFormatType stri
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "server.PublicIPClient", "Delete", resp, "Failure sending request")
 		return
 	}
@@ -251,13 +253,14 @@ func (client PublicIPClient) DeleteSender(req *http.Request) (*http.Response, er
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client PublicIPClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client PublicIPClient) DeleteResponder(resp *http.Response) (result PublicIPInstanceResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -267,13 +270,13 @@ func (client PublicIPClient) DeleteResponder(resp *http.Response) (result autore
 // regionCode - REGION 코드
 // publicIPInstanceNo - 공인 IP 인스턴스 번호
 // serverInstanceNo - 서버 인스턴스 번호
-func (client PublicIPClient) Disassociate(ctx context.Context, responseFormatType string, regionCode string, publicIPInstanceNo string, serverInstanceNo string) (result autorest.Response, err error) {
+func (client PublicIPClient) Disassociate(ctx context.Context, responseFormatType string, regionCode string, publicIPInstanceNo string, serverInstanceNo string) (result PublicIPFromServerInstanceResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PublicIPClient.Disassociate")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -286,7 +289,7 @@ func (client PublicIPClient) Disassociate(ctx context.Context, responseFormatTyp
 
 	resp, err := client.DisassociateSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "server.PublicIPClient", "Disassociate", resp, "Failure sending request")
 		return
 	}
@@ -333,13 +336,14 @@ func (client PublicIPClient) DisassociateSender(req *http.Request) (*http.Respon
 
 // DisassociateResponder handles the response to the Disassociate request. The method always
 // closes the http.Response Body.
-func (client PublicIPClient) DisassociateResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client PublicIPClient) DisassociateResponder(resp *http.Response) (result PublicIPFromServerInstanceResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -348,13 +352,13 @@ func (client PublicIPClient) DisassociateResponder(resp *http.Response) (result 
 // responseFormatType - 반환 데이터 포맷 타입
 // publicIPInstanceNo - 공인 IP 인스턴스 번호
 // regionCode - REGION 코드
-func (client PublicIPClient) GetDetail(ctx context.Context, responseFormatType string, publicIPInstanceNo string, regionCode string) (result autorest.Response, err error) {
+func (client PublicIPClient) GetDetail(ctx context.Context, responseFormatType string, publicIPInstanceNo string, regionCode string) (result PublicIPInstanceDetailResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PublicIPClient.GetDetail")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -367,7 +371,7 @@ func (client PublicIPClient) GetDetail(ctx context.Context, responseFormatType s
 
 	resp, err := client.GetDetailSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "server.PublicIPClient", "GetDetail", resp, "Failure sending request")
 		return
 	}
@@ -409,13 +413,14 @@ func (client PublicIPClient) GetDetailSender(req *http.Request) (*http.Response,
 
 // GetDetailResponder handles the response to the GetDetail request. The method always
 // closes the http.Response Body.
-func (client PublicIPClient) GetDetailResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client PublicIPClient) GetDetailResponder(resp *http.Response) (result PublicIPInstanceDetailResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -427,13 +432,13 @@ func (client PublicIPClient) GetDetailResponder(resp *http.Response) (result aut
 // publicIP - 공인 IP 주소
 // privateIP - 비공인 IP 주소
 // isAssociated - 할당 여부
-func (client PublicIPClient) GetList(ctx context.Context, responseFormatType string, regionCode string, publicIPInstanceNoListN string, publicIP string, privateIP string, isAssociated *bool) (result autorest.Response, err error) {
+func (client PublicIPClient) GetList(ctx context.Context, responseFormatType string, regionCode string, publicIPInstanceNoListN string, publicIP string, privateIP string, isAssociated *bool) (result PublicIPInstanceListResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PublicIPClient.GetList")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -446,7 +451,7 @@ func (client PublicIPClient) GetList(ctx context.Context, responseFormatType str
 
 	resp, err := client.GetListSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "server.PublicIPClient", "GetList", resp, "Failure sending request")
 		return
 	}
@@ -499,13 +504,14 @@ func (client PublicIPClient) GetListSender(req *http.Request) (*http.Response, e
 
 // GetListResponder handles the response to the GetList request. The method always
 // closes the http.Response Body.
-func (client PublicIPClient) GetListResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client PublicIPClient) GetListResponder(resp *http.Response) (result PublicIPInstanceListResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -515,13 +521,13 @@ func (client PublicIPClient) GetListResponder(resp *http.Response) (result autor
 // publicIPInstanceNo - 공인 IP 인스턴스 번호
 // serverInstanceNo - 서버 인스턴스 번호
 // regionCode - REGION 코드
-func (client PublicIPClient) GetTargetList(ctx context.Context, responseFormatType string, publicIPInstanceNo string, serverInstanceNo string, regionCode string) (result autorest.Response, err error) {
+func (client PublicIPClient) GetTargetList(ctx context.Context, responseFormatType string, publicIPInstanceNo string, serverInstanceNo string, regionCode string) (result PublicIPTargetServerInstanceListResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PublicIPClient.GetTargetList")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -534,7 +540,7 @@ func (client PublicIPClient) GetTargetList(ctx context.Context, responseFormatTy
 
 	resp, err := client.GetTargetListSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "server.PublicIPClient", "GetTargetList", resp, "Failure sending request")
 		return
 	}
@@ -577,12 +583,13 @@ func (client PublicIPClient) GetTargetListSender(req *http.Request) (*http.Respo
 
 // GetTargetListResponder handles the response to the GetTargetList request. The method always
 // closes the http.Response Body.
-func (client PublicIPClient) GetTargetListResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client PublicIPClient) GetTargetListResponder(resp *http.Response) (result PublicIPTargetServerInstanceListResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
