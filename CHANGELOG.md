@@ -1,3 +1,11 @@
+## 1.7.0 (August 6, 2020)
+
+### NEW SERVICES
+
+- KMS
+- Container Registry
+- GeoLocation
+
 ## 1.6.1 (August 5, 2020)
 
 ### UPDATED SERVICES
