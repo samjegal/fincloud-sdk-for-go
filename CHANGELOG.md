@@ -1,3 +1,9 @@
+## 1.8.0 (August 7, 2020)
+
+### NEW SERVICES
+
+- Partner (Billing)
+
 ## 1.7.0 (August 6, 2020)
 
 ### NEW SERVICES
