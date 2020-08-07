@@ -1,3 +1,9 @@
+## 1.8.1 (August 7, 2020)
+
+### UPDATED SERVICES
+
+- Partner
+
 ## 1.8.0 (August 7, 2020)
 
 ### NEW SERVICES
