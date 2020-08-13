@@ -20,7 +20,8 @@ func NewNetworkACLClient() NetworkACLClient {
 	return NewNetworkACLClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewNetworkACLClientWithBaseURI creates an instance of the NetworkACLClient client.
+// NewNetworkACLClientWithBaseURI creates an instance of the NetworkACLClient client using a custom endpoint.  Use this
+// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewNetworkACLClientWithBaseURI(baseURI string) NetworkACLClient {
 	return NetworkACLClient{NewWithBaseURI(baseURI)}
 }
@@ -93,7 +94,7 @@ func (client NetworkACLClient) AddInboundRulePreparer(ctx context.Context, respo
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/addNetworkAclInboundRule"),
+		autorest.WithPath("/vpc/v2/addNetworkAclInboundRule"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -101,8 +102,7 @@ func (client NetworkACLClient) AddInboundRulePreparer(ctx context.Context, respo
 // AddInboundRuleSender sends the AddInboundRule request. The method will close the
 // http.Response Body if it receives an error.
 func (client NetworkACLClient) AddInboundRuleSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // AddInboundRuleResponder handles the response to the AddInboundRule request. The method always
@@ -110,7 +110,6 @@ func (client NetworkACLClient) AddInboundRuleSender(req *http.Request) (*http.Re
 func (client NetworkACLClient) AddInboundRuleResponder(resp *http.Response) (result NetworkACLInboundRuleResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -186,7 +185,7 @@ func (client NetworkACLClient) AddOutboundRulePreparer(ctx context.Context, resp
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/addNetworkAclOutboundRule"),
+		autorest.WithPath("/vpc/v2/addNetworkAclOutboundRule"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -194,8 +193,7 @@ func (client NetworkACLClient) AddOutboundRulePreparer(ctx context.Context, resp
 // AddOutboundRuleSender sends the AddOutboundRule request. The method will close the
 // http.Response Body if it receives an error.
 func (client NetworkACLClient) AddOutboundRuleSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // AddOutboundRuleResponder handles the response to the AddOutboundRule request. The method always
@@ -203,7 +201,6 @@ func (client NetworkACLClient) AddOutboundRuleSender(req *http.Request) (*http.R
 func (client NetworkACLClient) AddOutboundRuleResponder(resp *http.Response) (result NetworkACLOutboundRuleResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -271,7 +268,7 @@ func (client NetworkACLClient) CreatePreparer(ctx context.Context, responseForma
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/createNetworkAcl"),
+		autorest.WithPath("/vpc/v2/createNetworkAcl"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -279,8 +276,7 @@ func (client NetworkACLClient) CreatePreparer(ctx context.Context, responseForma
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
 func (client NetworkACLClient) CreateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CreateResponder handles the response to the Create request. The method always
@@ -288,7 +284,6 @@ func (client NetworkACLClient) CreateSender(req *http.Request) (*http.Response, 
 func (client NetworkACLClient) CreateResponder(resp *http.Response) (result NetworkACLResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -348,7 +343,7 @@ func (client NetworkACLClient) DeletePreparer(ctx context.Context, responseForma
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/deleteNetworkAcl"),
+		autorest.WithPath("/vpc/v2/deleteNetworkAcl"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -356,8 +351,7 @@ func (client NetworkACLClient) DeletePreparer(ctx context.Context, responseForma
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client NetworkACLClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -365,7 +359,6 @@ func (client NetworkACLClient) DeleteSender(req *http.Request) (*http.Response, 
 func (client NetworkACLClient) DeleteResponder(resp *http.Response) (result NetworkACLResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -425,7 +418,7 @@ func (client NetworkACLClient) GetDetailPreparer(ctx context.Context, responseFo
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/getNetworkAclDetail"),
+		autorest.WithPath("/vpc/v2/getNetworkAclDetail"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -433,8 +426,7 @@ func (client NetworkACLClient) GetDetailPreparer(ctx context.Context, responseFo
 // GetDetailSender sends the GetDetail request. The method will close the
 // http.Response Body if it receives an error.
 func (client NetworkACLClient) GetDetailSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetDetailResponder handles the response to the GetDetail request. The method always
@@ -442,7 +434,6 @@ func (client NetworkACLClient) GetDetailSender(req *http.Request) (*http.Respons
 func (client NetworkACLClient) GetDetailResponder(resp *http.Response) (result NetworkACLDetailResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -524,7 +515,7 @@ func (client NetworkACLClient) GetListPreparer(ctx context.Context, responseForm
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/getNetworkAclList"),
+		autorest.WithPath("/vpc/v2/getNetworkAclList"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -532,8 +523,7 @@ func (client NetworkACLClient) GetListPreparer(ctx context.Context, responseForm
 // GetListSender sends the GetList request. The method will close the
 // http.Response Body if it receives an error.
 func (client NetworkACLClient) GetListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetListResponder handles the response to the GetList request. The method always
@@ -541,7 +531,6 @@ func (client NetworkACLClient) GetListSender(req *http.Request) (*http.Response,
 func (client NetworkACLClient) GetListResponder(resp *http.Response) (result NetworkACLListResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -605,7 +594,7 @@ func (client NetworkACLClient) GetRuleListPreparer(ctx context.Context, response
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/getNetworkAclRuleList"),
+		autorest.WithPath("/vpc/v2/getNetworkAclRuleList"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -613,8 +602,7 @@ func (client NetworkACLClient) GetRuleListPreparer(ctx context.Context, response
 // GetRuleListSender sends the GetRuleList request. The method will close the
 // http.Response Body if it receives an error.
 func (client NetworkACLClient) GetRuleListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetRuleListResponder handles the response to the GetRuleList request. The method always
@@ -622,7 +610,6 @@ func (client NetworkACLClient) GetRuleListSender(req *http.Request) (*http.Respo
 func (client NetworkACLClient) GetRuleListResponder(resp *http.Response) (result NetworkACLRuleListResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -694,7 +681,7 @@ func (client NetworkACLClient) RemoveInboundRulePreparer(ctx context.Context, re
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/removeNetworkAclInboundRule"),
+		autorest.WithPath("/vpc/v2/removeNetworkAclInboundRule"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -702,8 +689,7 @@ func (client NetworkACLClient) RemoveInboundRulePreparer(ctx context.Context, re
 // RemoveInboundRuleSender sends the RemoveInboundRule request. The method will close the
 // http.Response Body if it receives an error.
 func (client NetworkACLClient) RemoveInboundRuleSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // RemoveInboundRuleResponder handles the response to the RemoveInboundRule request. The method always
@@ -711,7 +697,6 @@ func (client NetworkACLClient) RemoveInboundRuleSender(req *http.Request) (*http
 func (client NetworkACLClient) RemoveInboundRuleResponder(resp *http.Response) (result NetworkACLInboundRuleResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -783,7 +768,7 @@ func (client NetworkACLClient) RemoveOutboundRulePreparer(ctx context.Context, r
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/removeNetworkAclOutboundRule"),
+		autorest.WithPath("/vpc/v2/removeNetworkAclOutboundRule"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -791,8 +776,7 @@ func (client NetworkACLClient) RemoveOutboundRulePreparer(ctx context.Context, r
 // RemoveOutboundRuleSender sends the RemoveOutboundRule request. The method will close the
 // http.Response Body if it receives an error.
 func (client NetworkACLClient) RemoveOutboundRuleSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // RemoveOutboundRuleResponder handles the response to the RemoveOutboundRule request. The method always
@@ -800,7 +784,6 @@ func (client NetworkACLClient) RemoveOutboundRuleSender(req *http.Request) (*htt
 func (client NetworkACLClient) RemoveOutboundRuleResponder(resp *http.Response) (result NetworkACLOutboundRuleResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -862,7 +845,7 @@ func (client NetworkACLClient) SetSubnetPreparer(ctx context.Context, responseFo
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/setSubnetNetworkAcl"),
+		autorest.WithPath("/vpc/v2/setSubnetNetworkAcl"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -870,8 +853,7 @@ func (client NetworkACLClient) SetSubnetPreparer(ctx context.Context, responseFo
 // SetSubnetSender sends the SetSubnet request. The method will close the
 // http.Response Body if it receives an error.
 func (client NetworkACLClient) SetSubnetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // SetSubnetResponder handles the response to the SetSubnet request. The method always
@@ -879,7 +861,6 @@ func (client NetworkACLClient) SetSubnetSender(req *http.Request) (*http.Respons
 func (client NetworkACLClient) SetSubnetResponder(resp *http.Response) (result SubnetNetworkACLResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

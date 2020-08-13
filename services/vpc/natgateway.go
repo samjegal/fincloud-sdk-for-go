@@ -20,7 +20,8 @@ func NewNatGatewayClient() NatGatewayClient {
 	return NewNatGatewayClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewNatGatewayClientWithBaseURI creates an instance of the NatGatewayClient client.
+// NewNatGatewayClientWithBaseURI creates an instance of the NatGatewayClient client using a custom endpoint.  Use this
+// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewNatGatewayClientWithBaseURI(baseURI string) NatGatewayClient {
 	return NatGatewayClient{NewWithBaseURI(baseURI)}
 }
@@ -87,7 +88,7 @@ func (client NatGatewayClient) CreatePreparer(ctx context.Context, responseForma
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/createNatGatewayInstance"),
+		autorest.WithPath("/vpc/v2/createNatGatewayInstance"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -95,8 +96,7 @@ func (client NatGatewayClient) CreatePreparer(ctx context.Context, responseForma
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
 func (client NatGatewayClient) CreateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CreateResponder handles the response to the Create request. The method always
@@ -104,7 +104,6 @@ func (client NatGatewayClient) CreateSender(req *http.Request) (*http.Response, 
 func (client NatGatewayClient) CreateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -163,7 +162,7 @@ func (client NatGatewayClient) DeletePreparer(ctx context.Context, responseForma
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/deleteNatGatewayInstance"),
+		autorest.WithPath("/vpc/v2/deleteNatGatewayInstance"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -171,8 +170,7 @@ func (client NatGatewayClient) DeletePreparer(ctx context.Context, responseForma
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client NatGatewayClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -180,7 +178,6 @@ func (client NatGatewayClient) DeleteSender(req *http.Request) (*http.Response, 
 func (client NatGatewayClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -239,7 +236,7 @@ func (client NatGatewayClient) GetDetailPreparer(ctx context.Context, responseFo
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/getNatGatewayInstanceDetail"),
+		autorest.WithPath("/vpc/v2/getNatGatewayInstanceDetail"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -247,8 +244,7 @@ func (client NatGatewayClient) GetDetailPreparer(ctx context.Context, responseFo
 // GetDetailSender sends the GetDetail request. The method will close the
 // http.Response Body if it receives an error.
 func (client NatGatewayClient) GetDetailSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetDetailResponder handles the response to the GetDetail request. The method always
@@ -256,7 +252,6 @@ func (client NatGatewayClient) GetDetailSender(req *http.Request) (*http.Respons
 func (client NatGatewayClient) GetDetailResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -341,7 +336,7 @@ func (client NatGatewayClient) GetListPreparer(ctx context.Context, responseForm
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/getNatGatewayInstanceList"),
+		autorest.WithPath("/vpc/v2/getNatGatewayInstanceList"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -349,8 +344,7 @@ func (client NatGatewayClient) GetListPreparer(ctx context.Context, responseForm
 // GetListSender sends the GetList request. The method will close the
 // http.Response Body if it receives an error.
 func (client NatGatewayClient) GetListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetListResponder handles the response to the GetList request. The method always
@@ -358,7 +352,6 @@ func (client NatGatewayClient) GetListSender(req *http.Request) (*http.Response,
 func (client NatGatewayClient) GetListResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp

@@ -20,7 +20,9 @@ func NewNetworkInterfaceClient() NetworkInterfaceClient {
 	return NewNetworkInterfaceClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewNetworkInterfaceClientWithBaseURI creates an instance of the NetworkInterfaceClient client.
+// NewNetworkInterfaceClientWithBaseURI creates an instance of the NetworkInterfaceClient client using a custom
+// endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
+// stack).
 func NewNetworkInterfaceClientWithBaseURI(baseURI string) NetworkInterfaceClient {
 	return NetworkInterfaceClient{NewWithBaseURI(baseURI)}
 }
@@ -79,7 +81,7 @@ func (client NetworkInterfaceClient) AddACGPreparer(ctx context.Context, respons
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/addNetworkInterfaceAccessControlGroup"),
+		autorest.WithPath("/vserver/v2/addNetworkInterfaceAccessControlGroup"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -87,8 +89,7 @@ func (client NetworkInterfaceClient) AddACGPreparer(ctx context.Context, respons
 // AddACGSender sends the AddACG request. The method will close the
 // http.Response Body if it receives an error.
 func (client NetworkInterfaceClient) AddACGSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // AddACGResponder handles the response to the AddACG request. The method always
@@ -96,7 +97,6 @@ func (client NetworkInterfaceClient) AddACGSender(req *http.Request) (*http.Resp
 func (client NetworkInterfaceClient) AddACGResponder(resp *http.Response) (result NetworkInterfaceAccessControlGroupResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -160,7 +160,7 @@ func (client NetworkInterfaceClient) AttachPreparer(ctx context.Context, respons
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/attachNetworkInterface"),
+		autorest.WithPath("/vserver/v2/attachNetworkInterface"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -168,8 +168,7 @@ func (client NetworkInterfaceClient) AttachPreparer(ctx context.Context, respons
 // AttachSender sends the Attach request. The method will close the
 // http.Response Body if it receives an error.
 func (client NetworkInterfaceClient) AttachSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // AttachResponder handles the response to the Attach request. The method always
@@ -177,7 +176,6 @@ func (client NetworkInterfaceClient) AttachSender(req *http.Request) (*http.Resp
 func (client NetworkInterfaceClient) AttachResponder(resp *http.Response) (result NetworkInterfaceResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -263,7 +261,7 @@ func (client NetworkInterfaceClient) CreatePreparer(ctx context.Context, respons
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/createNetworkInterface"),
+		autorest.WithPath("/vserver/v2/createNetworkInterface"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -271,8 +269,7 @@ func (client NetworkInterfaceClient) CreatePreparer(ctx context.Context, respons
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
 func (client NetworkInterfaceClient) CreateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CreateResponder handles the response to the Create request. The method always
@@ -280,7 +277,6 @@ func (client NetworkInterfaceClient) CreateSender(req *http.Request) (*http.Resp
 func (client NetworkInterfaceClient) CreateResponder(resp *http.Response) (result NetworkInterfaceResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -342,7 +338,7 @@ func (client NetworkInterfaceClient) DeletePreparer(ctx context.Context, respons
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/deleteNetworkInterface"),
+		autorest.WithPath("/vserver/v2/deleteNetworkInterface"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -350,8 +346,7 @@ func (client NetworkInterfaceClient) DeletePreparer(ctx context.Context, respons
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client NetworkInterfaceClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -359,7 +354,6 @@ func (client NetworkInterfaceClient) DeleteSender(req *http.Request) (*http.Resp
 func (client NetworkInterfaceClient) DeleteResponder(resp *http.Response) (result NetworkInterfaceResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -423,7 +417,7 @@ func (client NetworkInterfaceClient) DetachPreparer(ctx context.Context, respons
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/detachNetworkInterface"),
+		autorest.WithPath("/vserver/v2/detachNetworkInterface"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -431,8 +425,7 @@ func (client NetworkInterfaceClient) DetachPreparer(ctx context.Context, respons
 // DetachSender sends the Detach request. The method will close the
 // http.Response Body if it receives an error.
 func (client NetworkInterfaceClient) DetachSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DetachResponder handles the response to the Detach request. The method always
@@ -440,7 +433,6 @@ func (client NetworkInterfaceClient) DetachSender(req *http.Request) (*http.Resp
 func (client NetworkInterfaceClient) DetachResponder(resp *http.Response) (result NetworkInterfaceResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -500,7 +492,7 @@ func (client NetworkInterfaceClient) GetDetailPreparer(ctx context.Context, resp
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/getNetworkInterfaceDetail"),
+		autorest.WithPath("/vserver/v2/getNetworkInterfaceDetail"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -508,8 +500,7 @@ func (client NetworkInterfaceClient) GetDetailPreparer(ctx context.Context, resp
 // GetDetailSender sends the GetDetail request. The method will close the
 // http.Response Body if it receives an error.
 func (client NetworkInterfaceClient) GetDetailSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetDetailResponder handles the response to the GetDetail request. The method always
@@ -517,7 +508,6 @@ func (client NetworkInterfaceClient) GetDetailSender(req *http.Request) (*http.R
 func (client NetworkInterfaceClient) GetDetailResponder(resp *http.Response) (result NetworkInterfaceDetailResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -607,7 +597,7 @@ func (client NetworkInterfaceClient) GetListPreparer(ctx context.Context, respon
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/getNetworkInterfaceList"),
+		autorest.WithPath("/vserver/v2/getNetworkInterfaceList"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -615,8 +605,7 @@ func (client NetworkInterfaceClient) GetListPreparer(ctx context.Context, respon
 // GetListSender sends the GetList request. The method will close the
 // http.Response Body if it receives an error.
 func (client NetworkInterfaceClient) GetListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetListResponder handles the response to the GetList request. The method always
@@ -624,7 +613,6 @@ func (client NetworkInterfaceClient) GetListSender(req *http.Request) (*http.Res
 func (client NetworkInterfaceClient) GetListResponder(resp *http.Response) (result NetworkInterfaceListResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -686,7 +674,7 @@ func (client NetworkInterfaceClient) RemoveACGPreparer(ctx context.Context, resp
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/removeNetworkInterfaceAccessControlGroup"),
+		autorest.WithPath("/vserver/v2/removeNetworkInterfaceAccessControlGroup"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -694,8 +682,7 @@ func (client NetworkInterfaceClient) RemoveACGPreparer(ctx context.Context, resp
 // RemoveACGSender sends the RemoveACG request. The method will close the
 // http.Response Body if it receives an error.
 func (client NetworkInterfaceClient) RemoveACGSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // RemoveACGResponder handles the response to the RemoveACG request. The method always
@@ -703,7 +690,6 @@ func (client NetworkInterfaceClient) RemoveACGSender(req *http.Request) (*http.R
 func (client NetworkInterfaceClient) RemoveACGResponder(resp *http.Response) (result NetworkInterfaceAccessControlGroupResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

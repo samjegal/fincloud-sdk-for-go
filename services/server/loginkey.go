@@ -20,7 +20,8 @@ func NewLoginKeyClient() LoginKeyClient {
 	return NewLoginKeyClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewLoginKeyClientWithBaseURI creates an instance of the LoginKeyClient client.
+// NewLoginKeyClientWithBaseURI creates an instance of the LoginKeyClient client using a custom endpoint.  Use this
+// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewLoginKeyClientWithBaseURI(baseURI string) LoginKeyClient {
 	return LoginKeyClient{NewWithBaseURI(baseURI)}
 }
@@ -73,7 +74,7 @@ func (client LoginKeyClient) CreatePreparer(ctx context.Context, responseFormatT
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/createLoginKey"),
+		autorest.WithPath("/vserver/v2/createLoginKey"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -81,8 +82,7 @@ func (client LoginKeyClient) CreatePreparer(ctx context.Context, responseFormatT
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
 func (client LoginKeyClient) CreateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CreateResponder handles the response to the Create request. The method always
@@ -90,7 +90,6 @@ func (client LoginKeyClient) CreateSender(req *http.Request) (*http.Response, er
 func (client LoginKeyClient) CreateResponder(resp *http.Response) (result CreateLoginKeyResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -144,7 +143,7 @@ func (client LoginKeyClient) DeletePreparer(ctx context.Context, responseFormatT
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/deleteLoginKeys"),
+		autorest.WithPath("/vserver/v2/deleteLoginKeys"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -152,8 +151,7 @@ func (client LoginKeyClient) DeletePreparer(ctx context.Context, responseFormatT
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client LoginKeyClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -161,7 +159,6 @@ func (client LoginKeyClient) DeleteSender(req *http.Request) (*http.Response, er
 func (client LoginKeyClient) DeleteResponder(resp *http.Response) (result DeleteLoginKeysResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -221,7 +218,7 @@ func (client LoginKeyClient) GetListPreparer(ctx context.Context, responseFormat
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/getLoginKeyList"),
+		autorest.WithPath("/vserver/v2/getLoginKeyList"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -229,8 +226,7 @@ func (client LoginKeyClient) GetListPreparer(ctx context.Context, responseFormat
 // GetListSender sends the GetList request. The method will close the
 // http.Response Body if it receives an error.
 func (client LoginKeyClient) GetListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetListResponder handles the response to the GetList request. The method always
@@ -238,7 +234,6 @@ func (client LoginKeyClient) GetListSender(req *http.Request) (*http.Response, e
 func (client LoginKeyClient) GetListResponder(resp *http.Response) (result LoginKeyListResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -296,7 +291,7 @@ func (client LoginKeyClient) ImportPreparer(ctx context.Context, responseFormatT
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/importLoginKey"),
+		autorest.WithPath("/vserver/v2/importLoginKey"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -304,8 +299,7 @@ func (client LoginKeyClient) ImportPreparer(ctx context.Context, responseFormatT
 // ImportSender sends the Import request. The method will close the
 // http.Response Body if it receives an error.
 func (client LoginKeyClient) ImportSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ImportResponder handles the response to the Import request. The method always
@@ -313,7 +307,6 @@ func (client LoginKeyClient) ImportSender(req *http.Request) (*http.Response, er
 func (client LoginKeyClient) ImportResponder(resp *http.Response) (result LoginKeyResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

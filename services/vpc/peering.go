@@ -20,7 +20,8 @@ func NewPeeringClient() PeeringClient {
 	return NewPeeringClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewPeeringClientWithBaseURI creates an instance of the PeeringClient client.
+// NewPeeringClientWithBaseURI creates an instance of the PeeringClient client using a custom endpoint.  Use this when
+// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewPeeringClientWithBaseURI(baseURI string) PeeringClient {
 	return PeeringClient{NewWithBaseURI(baseURI)}
 }
@@ -79,7 +80,7 @@ func (client PeeringClient) AcceptOrRejectPreparer(ctx context.Context, response
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/acceptOrRejectVpcPeering"),
+		autorest.WithPath("/vpc/v2/acceptOrRejectVpcPeering"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -87,8 +88,7 @@ func (client PeeringClient) AcceptOrRejectPreparer(ctx context.Context, response
 // AcceptOrRejectSender sends the AcceptOrReject request. The method will close the
 // http.Response Body if it receives an error.
 func (client PeeringClient) AcceptOrRejectSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // AcceptOrRejectResponder handles the response to the AcceptOrReject request. The method always
@@ -96,7 +96,6 @@ func (client PeeringClient) AcceptOrRejectSender(req *http.Request) (*http.Respo
 func (client PeeringClient) AcceptOrRejectResponder(resp *http.Response) (result PeeringInstanceResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -174,7 +173,7 @@ func (client PeeringClient) CreatePreparer(ctx context.Context, responseFormatTy
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/createVpcPeeringInstance"),
+		autorest.WithPath("/vpc/v2/createVpcPeeringInstance"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -182,8 +181,7 @@ func (client PeeringClient) CreatePreparer(ctx context.Context, responseFormatTy
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
 func (client PeeringClient) CreateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CreateResponder handles the response to the Create request. The method always
@@ -191,7 +189,6 @@ func (client PeeringClient) CreateSender(req *http.Request) (*http.Response, err
 func (client PeeringClient) CreateResponder(resp *http.Response) (result PeeringInstanceResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -251,7 +248,7 @@ func (client PeeringClient) DeletePreparer(ctx context.Context, responseFormatTy
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/deleteVpcPeeringInstance"),
+		autorest.WithPath("/vpc/v2/deleteVpcPeeringInstance"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -259,8 +256,7 @@ func (client PeeringClient) DeletePreparer(ctx context.Context, responseFormatTy
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client PeeringClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -268,7 +264,6 @@ func (client PeeringClient) DeleteSender(req *http.Request) (*http.Response, err
 func (client PeeringClient) DeleteResponder(resp *http.Response) (result PeeringInstanceResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -328,7 +323,7 @@ func (client PeeringClient) GetDetailPreparer(ctx context.Context, responseForma
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/getVpcPeeringInstanceDetail"),
+		autorest.WithPath("/vpc/v2/getVpcPeeringInstanceDetail"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -336,8 +331,7 @@ func (client PeeringClient) GetDetailPreparer(ctx context.Context, responseForma
 // GetDetailSender sends the GetDetail request. The method will close the
 // http.Response Body if it receives an error.
 func (client PeeringClient) GetDetailSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetDetailResponder handles the response to the GetDetail request. The method always
@@ -345,7 +339,6 @@ func (client PeeringClient) GetDetailSender(req *http.Request) (*http.Response, 
 func (client PeeringClient) GetDetailResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -438,7 +431,7 @@ func (client PeeringClient) GetListPreparer(ctx context.Context, responseFormatT
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/getVpcPeeringInstanceList"),
+		autorest.WithPath("/vpc/v2/getVpcPeeringInstanceList"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -446,8 +439,7 @@ func (client PeeringClient) GetListPreparer(ctx context.Context, responseFormatT
 // GetListSender sends the GetList request. The method will close the
 // http.Response Body if it receives an error.
 func (client PeeringClient) GetListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetListResponder handles the response to the GetList request. The method always
@@ -455,7 +447,6 @@ func (client PeeringClient) GetListSender(req *http.Request) (*http.Response, er
 func (client PeeringClient) GetListResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp

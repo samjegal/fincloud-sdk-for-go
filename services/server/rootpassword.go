@@ -20,7 +20,8 @@ func NewRootPasswordClient() RootPasswordClient {
 	return NewRootPasswordClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewRootPasswordClientWithBaseURI creates an instance of the RootPasswordClient client.
+// NewRootPasswordClientWithBaseURI creates an instance of the RootPasswordClient client using a custom endpoint.  Use
+// this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewRootPasswordClientWithBaseURI(baseURI string) RootPasswordClient {
 	return RootPasswordClient{NewWithBaseURI(baseURI)}
 }
@@ -81,7 +82,7 @@ func (client RootPasswordClient) GetPreparer(ctx context.Context, responseFormat
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/getRootPassword"),
+		autorest.WithPath("/vserver/v2/getRootPassword"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -89,8 +90,7 @@ func (client RootPasswordClient) GetPreparer(ctx context.Context, responseFormat
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client RootPasswordClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -98,7 +98,6 @@ func (client RootPasswordClient) GetSender(req *http.Request) (*http.Response, e
 func (client RootPasswordClient) GetResponder(resp *http.Response) (result RootPassword, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -162,7 +161,7 @@ func (client RootPasswordClient) GetListPreparer(ctx context.Context, responseFo
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/getRootPasswordServerInstanceList"),
+		autorest.WithPath("/vserver/v2/getRootPasswordServerInstanceList"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -170,8 +169,7 @@ func (client RootPasswordClient) GetListPreparer(ctx context.Context, responseFo
 // GetListSender sends the GetList request. The method will close the
 // http.Response Body if it receives an error.
 func (client RootPasswordClient) GetListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetListResponder handles the response to the GetList request. The method always
@@ -179,7 +177,6 @@ func (client RootPasswordClient) GetListSender(req *http.Request) (*http.Respons
 func (client RootPasswordClient) GetListResponder(resp *http.Response) (result RootPasswordServerInstanceListResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

@@ -20,7 +20,8 @@ func NewProductClient() ProductClient {
 	return NewProductClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewProductClientWithBaseURI creates an instance of the ProductClient client.
+// NewProductClientWithBaseURI creates an instance of the ProductClient client using a custom endpoint.  Use this when
+// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewProductClientWithBaseURI(baseURI string) ProductClient {
 	return ProductClient{NewWithBaseURI(baseURI)}
 }
@@ -93,7 +94,7 @@ func (client ProductClient) GetListPreparer(ctx context.Context, responseFormatT
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/getServerProductList"),
+		autorest.WithPath("/vserver/v2/getServerProductList"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -101,8 +102,7 @@ func (client ProductClient) GetListPreparer(ctx context.Context, responseFormatT
 // GetListSender sends the GetList request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProductClient) GetListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetListResponder handles the response to the GetList request. The method always
@@ -110,7 +110,6 @@ func (client ProductClient) GetListSender(req *http.Request) (*http.Response, er
 func (client ProductClient) GetListResponder(resp *http.Response) (result ProductListResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

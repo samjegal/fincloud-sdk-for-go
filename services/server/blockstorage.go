@@ -20,7 +20,8 @@ func NewBlockStorageClient() BlockStorageClient {
 	return NewBlockStorageClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewBlockStorageClientWithBaseURI creates an instance of the BlockStorageClient client.
+// NewBlockStorageClientWithBaseURI creates an instance of the BlockStorageClient client using a custom endpoint.  Use
+// this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewBlockStorageClientWithBaseURI(baseURI string) BlockStorageClient {
 	return BlockStorageClient{NewWithBaseURI(baseURI)}
 }
@@ -79,7 +80,7 @@ func (client BlockStorageClient) AttachPreparer(ctx context.Context, responseFor
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/attachBlockStorageInstance"),
+		autorest.WithPath("/vserver/v2/attachBlockStorageInstance"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -87,8 +88,7 @@ func (client BlockStorageClient) AttachPreparer(ctx context.Context, responseFor
 // AttachSender sends the Attach request. The method will close the
 // http.Response Body if it receives an error.
 func (client BlockStorageClient) AttachSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // AttachResponder handles the response to the Attach request. The method always
@@ -96,7 +96,6 @@ func (client BlockStorageClient) AttachSender(req *http.Request) (*http.Response
 func (client BlockStorageClient) AttachResponder(resp *http.Response) (result BlockStorageInstanceResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -158,7 +157,7 @@ func (client BlockStorageClient) ChangeVolumeSizePreparer(ctx context.Context, r
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/changeBlockStorageVolumeSize"),
+		autorest.WithPath("/vserver/v2/changeBlockStorageVolumeSize"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -166,8 +165,7 @@ func (client BlockStorageClient) ChangeVolumeSizePreparer(ctx context.Context, r
 // ChangeVolumeSizeSender sends the ChangeVolumeSize request. The method will close the
 // http.Response Body if it receives an error.
 func (client BlockStorageClient) ChangeVolumeSizeSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ChangeVolumeSizeResponder handles the response to the ChangeVolumeSize request. The method always
@@ -175,7 +173,6 @@ func (client BlockStorageClient) ChangeVolumeSizeSender(req *http.Request) (*htt
 func (client BlockStorageClient) ChangeVolumeSizeResponder(resp *http.Response) (result BlockStorageVolumeSizeResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -259,7 +256,7 @@ func (client BlockStorageClient) CreatePreparer(ctx context.Context, responseFor
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/createBlockStorageInstance"),
+		autorest.WithPath("/vserver/v2/createBlockStorageInstance"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -267,8 +264,7 @@ func (client BlockStorageClient) CreatePreparer(ctx context.Context, responseFor
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
 func (client BlockStorageClient) CreateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CreateResponder handles the response to the Create request. The method always
@@ -276,7 +272,6 @@ func (client BlockStorageClient) CreateSender(req *http.Request) (*http.Response
 func (client BlockStorageClient) CreateResponder(resp *http.Response) (result BlockStorageInstanceResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -336,7 +331,7 @@ func (client BlockStorageClient) DeletePreparer(ctx context.Context, responseFor
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/deleteBlockStorageInstances"),
+		autorest.WithPath("/vserver/v2/deleteBlockStorageInstances"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -344,8 +339,7 @@ func (client BlockStorageClient) DeletePreparer(ctx context.Context, responseFor
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client BlockStorageClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -353,7 +347,6 @@ func (client BlockStorageClient) DeleteSender(req *http.Request) (*http.Response
 func (client BlockStorageClient) DeleteResponder(resp *http.Response) (result BlockStorageInstanceResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -413,7 +406,7 @@ func (client BlockStorageClient) DetachPreparer(ctx context.Context, responseFor
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/detachBlockStorageInstances"),
+		autorest.WithPath("/vserver/v2/detachBlockStorageInstances"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -421,8 +414,7 @@ func (client BlockStorageClient) DetachPreparer(ctx context.Context, responseFor
 // DetachSender sends the Detach request. The method will close the
 // http.Response Body if it receives an error.
 func (client BlockStorageClient) DetachSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DetachResponder handles the response to the Detach request. The method always
@@ -430,7 +422,6 @@ func (client BlockStorageClient) DetachSender(req *http.Request) (*http.Response
 func (client BlockStorageClient) DetachResponder(resp *http.Response) (result BlockStorageInstanceResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -490,7 +481,7 @@ func (client BlockStorageClient) GetDetailPreparer(ctx context.Context, response
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/getBlockStorageInstanceDetail"),
+		autorest.WithPath("/vserver/v2/getBlockStorageInstanceDetail"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -498,8 +489,7 @@ func (client BlockStorageClient) GetDetailPreparer(ctx context.Context, response
 // GetDetailSender sends the GetDetail request. The method will close the
 // http.Response Body if it receives an error.
 func (client BlockStorageClient) GetDetailSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetDetailResponder handles the response to the GetDetail request. The method always
@@ -507,7 +497,6 @@ func (client BlockStorageClient) GetDetailSender(req *http.Request) (*http.Respo
 func (client BlockStorageClient) GetDetailResponder(resp *http.Response) (result BlockStorageInstanceDetailResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -617,7 +606,7 @@ func (client BlockStorageClient) GetListPreparer(ctx context.Context, responseFo
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/getBlockStorageInstanceList"),
+		autorest.WithPath("/vserver/v2/getBlockStorageInstanceList"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -625,8 +614,7 @@ func (client BlockStorageClient) GetListPreparer(ctx context.Context, responseFo
 // GetListSender sends the GetList request. The method will close the
 // http.Response Body if it receives an error.
 func (client BlockStorageClient) GetListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetListResponder handles the response to the GetList request. The method always
@@ -634,7 +622,6 @@ func (client BlockStorageClient) GetListSender(req *http.Request) (*http.Respons
 func (client BlockStorageClient) GetListResponder(resp *http.Response) (result BlockStorageInstanceListResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

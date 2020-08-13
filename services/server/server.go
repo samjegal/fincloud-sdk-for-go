@@ -20,7 +20,8 @@ func NewClient() Client {
 	return NewClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewClientWithBaseURI creates an instance of the Client client.
+// NewClientWithBaseURI creates an instance of the Client client using a custom endpoint.  Use this when interacting
+// with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewClientWithBaseURI(baseURI string) Client {
 	return Client{NewWithBaseURI(baseURI)}
 }
@@ -79,7 +80,7 @@ func (client Client) ChangeSpecPreparer(ctx context.Context, responseFormatType 
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/changeServerInstanceSpec"),
+		autorest.WithPath("/vserver/v2/changeServerInstanceSpec"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -87,8 +88,7 @@ func (client Client) ChangeSpecPreparer(ctx context.Context, responseFormatType 
 // ChangeSpecSender sends the ChangeSpec request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) ChangeSpecSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ChangeSpecResponder handles the response to the ChangeSpec request. The method always
@@ -96,7 +96,6 @@ func (client Client) ChangeSpecSender(req *http.Request) (*http.Response, error)
 func (client Client) ChangeSpecResponder(resp *http.Response) (result InstanceSpecResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -226,7 +225,7 @@ func (client Client) CreatePreparer(ctx context.Context, responseFormatType stri
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/createServerInstances"),
+		autorest.WithPath("/vserver/v2/createServerInstances"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -234,8 +233,7 @@ func (client Client) CreatePreparer(ctx context.Context, responseFormatType stri
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) CreateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CreateResponder handles the response to the Create request. The method always
@@ -243,7 +241,6 @@ func (client Client) CreateSender(req *http.Request) (*http.Response, error) {
 func (client Client) CreateResponder(resp *http.Response) (result InstancesResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -303,7 +300,7 @@ func (client Client) GetDetailPreparer(ctx context.Context, responseFormatType s
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/getServerInstanceDetail"),
+		autorest.WithPath("/vserver/v2/getServerInstanceDetail"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -311,8 +308,7 @@ func (client Client) GetDetailPreparer(ctx context.Context, responseFormatType s
 // GetDetailSender sends the GetDetail request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) GetDetailSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetDetailResponder handles the response to the GetDetail request. The method always
@@ -320,7 +316,6 @@ func (client Client) GetDetailSender(req *http.Request) (*http.Response, error) 
 func (client Client) GetDetailResponder(resp *http.Response) (result InstanceDetailResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -427,7 +422,7 @@ func (client Client) GetInstanceListPreparer(ctx context.Context, responseFormat
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/getServerInstanceList"),
+		autorest.WithPath("/vserver/v2/getServerInstanceList"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -435,8 +430,7 @@ func (client Client) GetInstanceListPreparer(ctx context.Context, responseFormat
 // GetInstanceListSender sends the GetInstanceList request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) GetInstanceListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetInstanceListResponder handles the response to the GetInstanceList request. The method always
@@ -444,7 +438,6 @@ func (client Client) GetInstanceListSender(req *http.Request) (*http.Response, e
 func (client Client) GetInstanceListResponder(resp *http.Response) (result InstanceListResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -504,7 +497,7 @@ func (client Client) RebootPreparer(ctx context.Context, responseFormatType stri
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/rebootServerInstances"),
+		autorest.WithPath("/vserver/v2/rebootServerInstances"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -512,8 +505,7 @@ func (client Client) RebootPreparer(ctx context.Context, responseFormatType stri
 // RebootSender sends the Reboot request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) RebootSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // RebootResponder handles the response to the Reboot request. The method always
@@ -521,7 +513,6 @@ func (client Client) RebootSender(req *http.Request) (*http.Response, error) {
 func (client Client) RebootResponder(resp *http.Response) (result InstancesResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -581,7 +572,7 @@ func (client Client) StartPreparer(ctx context.Context, responseFormatType strin
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/startServerInstances"),
+		autorest.WithPath("/vserver/v2/startServerInstances"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -589,8 +580,7 @@ func (client Client) StartPreparer(ctx context.Context, responseFormatType strin
 // StartSender sends the Start request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) StartSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // StartResponder handles the response to the Start request. The method always
@@ -598,7 +588,6 @@ func (client Client) StartSender(req *http.Request) (*http.Response, error) {
 func (client Client) StartResponder(resp *http.Response) (result InstancesResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -658,7 +647,7 @@ func (client Client) StopPreparer(ctx context.Context, responseFormatType string
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/stopServerInstances"),
+		autorest.WithPath("/vserver/v2/stopServerInstances"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -666,8 +655,7 @@ func (client Client) StopPreparer(ctx context.Context, responseFormatType string
 // StopSender sends the Stop request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) StopSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // StopResponder handles the response to the Stop request. The method always
@@ -675,7 +663,6 @@ func (client Client) StopSender(req *http.Request) (*http.Response, error) {
 func (client Client) StopResponder(resp *http.Response) (result InstancesResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -735,7 +722,7 @@ func (client Client) TerminatePreparer(ctx context.Context, responseFormatType s
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/terminateServerInstances"),
+		autorest.WithPath("/vserver/v2/terminateServerInstances"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -743,8 +730,7 @@ func (client Client) TerminatePreparer(ctx context.Context, responseFormatType s
 // TerminateSender sends the Terminate request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) TerminateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // TerminateResponder handles the response to the Terminate request. The method always
@@ -752,7 +738,6 @@ func (client Client) TerminateSender(req *http.Request) (*http.Response, error) 
 func (client Client) TerminateResponder(resp *http.Response) (result InstancesResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

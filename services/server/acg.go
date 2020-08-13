@@ -20,7 +20,8 @@ func NewACGClient() ACGClient {
 	return NewACGClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewACGClientWithBaseURI creates an instance of the ACGClient client.
+// NewACGClientWithBaseURI creates an instance of the ACGClient client using a custom endpoint.  Use this when
+// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewACGClientWithBaseURI(baseURI string) ACGClient {
 	return ACGClient{NewWithBaseURI(baseURI)}
 }
@@ -85,7 +86,7 @@ func (client ACGClient) CreatePreparer(ctx context.Context, responseFormatType s
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/createAccessControlGroup"),
+		autorest.WithPath("/vserver/v2/createAccessControlGroup"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -93,8 +94,7 @@ func (client ACGClient) CreatePreparer(ctx context.Context, responseFormatType s
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
 func (client ACGClient) CreateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CreateResponder handles the response to the Create request. The method always
@@ -102,7 +102,6 @@ func (client ACGClient) CreateSender(req *http.Request) (*http.Response, error) 
 func (client ACGClient) CreateResponder(resp *http.Response) (result AccessControlGroupResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -164,7 +163,7 @@ func (client ACGClient) DeletePreparer(ctx context.Context, responseFormatType s
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/deleteAccessControlGroup"),
+		autorest.WithPath("/vserver/v2/deleteAccessControlGroup"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -172,8 +171,7 @@ func (client ACGClient) DeletePreparer(ctx context.Context, responseFormatType s
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client ACGClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -181,7 +179,6 @@ func (client ACGClient) DeleteSender(req *http.Request) (*http.Response, error) 
 func (client ACGClient) DeleteResponder(resp *http.Response) (result AccessControlGroupResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -241,7 +238,7 @@ func (client ACGClient) GetDetailPreparer(ctx context.Context, responseFormatTyp
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/getAccessControlGroupDetail"),
+		autorest.WithPath("/vserver/v2/getAccessControlGroupDetail"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -249,8 +246,7 @@ func (client ACGClient) GetDetailPreparer(ctx context.Context, responseFormatTyp
 // GetDetailSender sends the GetDetail request. The method will close the
 // http.Response Body if it receives an error.
 func (client ACGClient) GetDetailSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetDetailResponder handles the response to the GetDetail request. The method always
@@ -258,7 +254,6 @@ func (client ACGClient) GetDetailSender(req *http.Request) (*http.Response, erro
 func (client ACGClient) GetDetailResponder(resp *http.Response) (result AccessControlGroupDetailResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -340,7 +335,7 @@ func (client ACGClient) GetListPreparer(ctx context.Context, responseFormatType 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/getAccessControlGroupList"),
+		autorest.WithPath("/vserver/v2/getAccessControlGroupList"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -348,8 +343,7 @@ func (client ACGClient) GetListPreparer(ctx context.Context, responseFormatType 
 // GetListSender sends the GetList request. The method will close the
 // http.Response Body if it receives an error.
 func (client ACGClient) GetListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetListResponder handles the response to the GetList request. The method always
@@ -357,7 +351,6 @@ func (client ACGClient) GetListSender(req *http.Request) (*http.Response, error)
 func (client ACGClient) GetListResponder(resp *http.Response) (result AccessControlGroupListResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -421,7 +414,7 @@ func (client ACGClient) GetRuleListPreparer(ctx context.Context, responseFormatT
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/getAccessControlGroupRuleList"),
+		autorest.WithPath("/vserver/v2/getAccessControlGroupRuleList"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -429,8 +422,7 @@ func (client ACGClient) GetRuleListPreparer(ctx context.Context, responseFormatT
 // GetRuleListSender sends the GetRuleList request. The method will close the
 // http.Response Body if it receives an error.
 func (client ACGClient) GetRuleListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetRuleListResponder handles the response to the GetRuleList request. The method always
@@ -438,7 +430,6 @@ func (client ACGClient) GetRuleListSender(req *http.Request) (*http.Response, er
 func (client ACGClient) GetRuleListResponder(resp *http.Response) (result AccessControlGroupRuleListResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

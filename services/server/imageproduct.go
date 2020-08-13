@@ -20,7 +20,8 @@ func NewImageProductClient() ImageProductClient {
 	return NewImageProductClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewImageProductClientWithBaseURI creates an instance of the ImageProductClient client.
+// NewImageProductClientWithBaseURI creates an instance of the ImageProductClient client using a custom endpoint.  Use
+// this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewImageProductClientWithBaseURI(baseURI string) ImageProductClient {
 	return ImageProductClient{NewWithBaseURI(baseURI)}
 }
@@ -91,7 +92,7 @@ func (client ImageProductClient) GetListPreparer(ctx context.Context, responseFo
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/getServerImageProductList"),
+		autorest.WithPath("/vserver/v2/getServerImageProductList"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -99,8 +100,7 @@ func (client ImageProductClient) GetListPreparer(ctx context.Context, responseFo
 // GetListSender sends the GetList request. The method will close the
 // http.Response Body if it receives an error.
 func (client ImageProductClient) GetListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetListResponder handles the response to the GetList request. The method always
@@ -108,7 +108,6 @@ func (client ImageProductClient) GetListSender(req *http.Request) (*http.Respons
 func (client ImageProductClient) GetListResponder(resp *http.Response) (result ImageProductListResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

@@ -20,7 +20,9 @@ func NewRouteTableSubnetClient() RouteTableSubnetClient {
 	return NewRouteTableSubnetClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewRouteTableSubnetClientWithBaseURI creates an instance of the RouteTableSubnetClient client.
+// NewRouteTableSubnetClientWithBaseURI creates an instance of the RouteTableSubnetClient client using a custom
+// endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
+// stack).
 func NewRouteTableSubnetClientWithBaseURI(baseURI string) RouteTableSubnetClient {
 	return RouteTableSubnetClient{NewWithBaseURI(baseURI)}
 }
@@ -81,7 +83,7 @@ func (client RouteTableSubnetClient) AddPreparer(ctx context.Context, responseFo
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/addRouteTableSubnet"),
+		autorest.WithPath("/vpc/v2/addRouteTableSubnet"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -89,8 +91,7 @@ func (client RouteTableSubnetClient) AddPreparer(ctx context.Context, responseFo
 // AddSender sends the Add request. The method will close the
 // http.Response Body if it receives an error.
 func (client RouteTableSubnetClient) AddSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // AddResponder handles the response to the Add request. The method always
@@ -98,7 +99,6 @@ func (client RouteTableSubnetClient) AddSender(req *http.Request) (*http.Respons
 func (client RouteTableSubnetClient) AddResponder(resp *http.Response) (result RouteTableSubnetResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -158,7 +158,7 @@ func (client RouteTableSubnetClient) GetListPreparer(ctx context.Context, respon
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/getRouteTableSubnetList"),
+		autorest.WithPath("/vpc/v2/getRouteTableSubnetList"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -166,8 +166,7 @@ func (client RouteTableSubnetClient) GetListPreparer(ctx context.Context, respon
 // GetListSender sends the GetList request. The method will close the
 // http.Response Body if it receives an error.
 func (client RouteTableSubnetClient) GetListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetListResponder handles the response to the GetList request. The method always
@@ -175,7 +174,6 @@ func (client RouteTableSubnetClient) GetListSender(req *http.Request) (*http.Res
 func (client RouteTableSubnetClient) GetListResponder(resp *http.Response) (result RouteTableSubnetListResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -239,7 +237,7 @@ func (client RouteTableSubnetClient) RemovePreparer(ctx context.Context, respons
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/removeRouteTableSubnet"),
+		autorest.WithPath("/vpc/v2/removeRouteTableSubnet"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -247,8 +245,7 @@ func (client RouteTableSubnetClient) RemovePreparer(ctx context.Context, respons
 // RemoveSender sends the Remove request. The method will close the
 // http.Response Body if it receives an error.
 func (client RouteTableSubnetClient) RemoveSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // RemoveResponder handles the response to the Remove request. The method always
@@ -256,7 +253,6 @@ func (client RouteTableSubnetClient) RemoveSender(req *http.Request) (*http.Resp
 func (client RouteTableSubnetClient) RemoveResponder(resp *http.Response) (result RouteTableSubnetResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

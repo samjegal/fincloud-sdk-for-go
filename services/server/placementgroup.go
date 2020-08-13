@@ -20,7 +20,8 @@ func NewPlacementGroupClient() PlacementGroupClient {
 	return NewPlacementGroupClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewPlacementGroupClientWithBaseURI creates an instance of the PlacementGroupClient client.
+// NewPlacementGroupClientWithBaseURI creates an instance of the PlacementGroupClient client using a custom endpoint.
+// Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewPlacementGroupClientWithBaseURI(baseURI string) PlacementGroupClient {
 	return PlacementGroupClient{NewWithBaseURI(baseURI)}
 }
@@ -79,7 +80,7 @@ func (client PlacementGroupClient) AddPreparer(ctx context.Context, responseForm
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/addPlacementGroupServerInstance"),
+		autorest.WithPath("/vserver/v2/addPlacementGroupServerInstance"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -87,8 +88,7 @@ func (client PlacementGroupClient) AddPreparer(ctx context.Context, responseForm
 // AddSender sends the Add request. The method will close the
 // http.Response Body if it receives an error.
 func (client PlacementGroupClient) AddSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // AddResponder handles the response to the Add request. The method always
@@ -96,7 +96,6 @@ func (client PlacementGroupClient) AddSender(req *http.Request) (*http.Response,
 func (client PlacementGroupClient) AddResponder(resp *http.Response) (result PlacementGroupServerInstanceResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -162,7 +161,7 @@ func (client PlacementGroupClient) CreatePreparer(ctx context.Context, responseF
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/createPlacementGroup"),
+		autorest.WithPath("/vserver/v2/createPlacementGroup"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -170,8 +169,7 @@ func (client PlacementGroupClient) CreatePreparer(ctx context.Context, responseF
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
 func (client PlacementGroupClient) CreateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CreateResponder handles the response to the Create request. The method always
@@ -179,7 +177,6 @@ func (client PlacementGroupClient) CreateSender(req *http.Request) (*http.Respon
 func (client PlacementGroupClient) CreateResponder(resp *http.Response) (result PlacementGroupResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -239,7 +236,7 @@ func (client PlacementGroupClient) DeletePreparer(ctx context.Context, responseF
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/deletePlacementGroup"),
+		autorest.WithPath("/vserver/v2/deletePlacementGroup"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -247,8 +244,7 @@ func (client PlacementGroupClient) DeletePreparer(ctx context.Context, responseF
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client PlacementGroupClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -256,7 +252,6 @@ func (client PlacementGroupClient) DeleteSender(req *http.Request) (*http.Respon
 func (client PlacementGroupClient) DeleteResponder(resp *http.Response) (result PlacementGroupResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -318,7 +313,7 @@ func (client PlacementGroupClient) GetDetailPreparer(ctx context.Context, respon
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/getPlacementGroupDetail"),
+		autorest.WithPath("/vserver/v2/getPlacementGroupDetail"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -326,8 +321,7 @@ func (client PlacementGroupClient) GetDetailPreparer(ctx context.Context, respon
 // GetDetailSender sends the GetDetail request. The method will close the
 // http.Response Body if it receives an error.
 func (client PlacementGroupClient) GetDetailSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetDetailResponder handles the response to the GetDetail request. The method always
@@ -335,7 +329,6 @@ func (client PlacementGroupClient) GetDetailSender(req *http.Request) (*http.Res
 func (client PlacementGroupClient) GetDetailResponder(resp *http.Response) (result PlacementGroupDetailResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -401,7 +394,7 @@ func (client PlacementGroupClient) GetListPreparer(ctx context.Context, response
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/getPlacementGroupList"),
+		autorest.WithPath("/vserver/v2/getPlacementGroupList"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -409,8 +402,7 @@ func (client PlacementGroupClient) GetListPreparer(ctx context.Context, response
 // GetListSender sends the GetList request. The method will close the
 // http.Response Body if it receives an error.
 func (client PlacementGroupClient) GetListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetListResponder handles the response to the GetList request. The method always
@@ -418,7 +410,6 @@ func (client PlacementGroupClient) GetListSender(req *http.Request) (*http.Respo
 func (client PlacementGroupClient) GetListResponder(resp *http.Response) (result PlacementGroupListResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -480,7 +471,7 @@ func (client PlacementGroupClient) RemovePreparer(ctx context.Context, responseF
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/removePlacementGroupServerInstance"),
+		autorest.WithPath("/vserver/v2/removePlacementGroupServerInstance"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -488,8 +479,7 @@ func (client PlacementGroupClient) RemovePreparer(ctx context.Context, responseF
 // RemoveSender sends the Remove request. The method will close the
 // http.Response Body if it receives an error.
 func (client PlacementGroupClient) RemoveSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // RemoveResponder handles the response to the Remove request. The method always
@@ -497,7 +487,6 @@ func (client PlacementGroupClient) RemoveSender(req *http.Request) (*http.Respon
 func (client PlacementGroupClient) RemoveResponder(resp *http.Response) (result PlacementGroupServerInstanceResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

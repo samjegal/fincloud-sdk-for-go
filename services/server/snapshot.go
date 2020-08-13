@@ -20,7 +20,8 @@ func NewSnapshotClient() SnapshotClient {
 	return NewSnapshotClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewSnapshotClientWithBaseURI creates an instance of the SnapshotClient client.
+// NewSnapshotClientWithBaseURI creates an instance of the SnapshotClient client using a custom endpoint.  Use this
+// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewSnapshotClientWithBaseURI(baseURI string) SnapshotClient {
 	return SnapshotClient{NewWithBaseURI(baseURI)}
 }
@@ -85,7 +86,7 @@ func (client SnapshotClient) CreatePreparer(ctx context.Context, responseFormatT
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/createBlockStorageSnapshotInstance"),
+		autorest.WithPath("/vserver/v2/createBlockStorageSnapshotInstance"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -93,8 +94,7 @@ func (client SnapshotClient) CreatePreparer(ctx context.Context, responseFormatT
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
 func (client SnapshotClient) CreateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CreateResponder handles the response to the Create request. The method always
@@ -102,7 +102,6 @@ func (client SnapshotClient) CreateSender(req *http.Request) (*http.Response, er
 func (client SnapshotClient) CreateResponder(resp *http.Response) (result BlockStorageSnapshotInstanceResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -162,7 +161,7 @@ func (client SnapshotClient) DeletePreparer(ctx context.Context, responseFormatT
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/deleteBlockStorageSnapshotInstances"),
+		autorest.WithPath("/vserver/v2/deleteBlockStorageSnapshotInstances"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -170,8 +169,7 @@ func (client SnapshotClient) DeletePreparer(ctx context.Context, responseFormatT
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client SnapshotClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -179,7 +177,6 @@ func (client SnapshotClient) DeleteSender(req *http.Request) (*http.Response, er
 func (client SnapshotClient) DeleteResponder(resp *http.Response) (result BlockStorageSnapshotInstanceResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -239,7 +236,7 @@ func (client SnapshotClient) GetDetailPreparer(ctx context.Context, responseForm
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/getBlockStorageSnapshotInstanceDetail"),
+		autorest.WithPath("/vserver/v2/getBlockStorageSnapshotInstanceDetail"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -247,8 +244,7 @@ func (client SnapshotClient) GetDetailPreparer(ctx context.Context, responseForm
 // GetDetailSender sends the GetDetail request. The method will close the
 // http.Response Body if it receives an error.
 func (client SnapshotClient) GetDetailSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetDetailResponder handles the response to the GetDetail request. The method always
@@ -256,7 +252,6 @@ func (client SnapshotClient) GetDetailSender(req *http.Request) (*http.Response,
 func (client SnapshotClient) GetDetailResponder(resp *http.Response) (result BlockStorageSnapshotInstanceDetailResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -354,7 +349,7 @@ func (client SnapshotClient) GetListPreparer(ctx context.Context, responseFormat
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/getBlockStorageSnapshotInstanceList"),
+		autorest.WithPath("/vserver/v2/getBlockStorageSnapshotInstanceList"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -362,8 +357,7 @@ func (client SnapshotClient) GetListPreparer(ctx context.Context, responseFormat
 // GetListSender sends the GetList request. The method will close the
 // http.Response Body if it receives an error.
 func (client SnapshotClient) GetListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetListResponder handles the response to the GetList request. The method always
@@ -371,7 +365,6 @@ func (client SnapshotClient) GetListSender(req *http.Request) (*http.Response, e
 func (client SnapshotClient) GetListResponder(resp *http.Response) (result BlockStorageSnapshotInstanceListResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

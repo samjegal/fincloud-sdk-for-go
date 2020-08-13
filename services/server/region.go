@@ -20,7 +20,8 @@ func NewRegionClient() RegionClient {
 	return NewRegionClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewRegionClientWithBaseURI creates an instance of the RegionClient client.
+// NewRegionClientWithBaseURI creates an instance of the RegionClient client using a custom endpoint.  Use this when
+// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewRegionClientWithBaseURI(baseURI string) RegionClient {
 	return RegionClient{NewWithBaseURI(baseURI)}
 }
@@ -69,7 +70,7 @@ func (client RegionClient) GetListPreparer(ctx context.Context, responseFormatTy
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/getRegionList"),
+		autorest.WithPath("/vserver/v2/getRegionList"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -77,8 +78,7 @@ func (client RegionClient) GetListPreparer(ctx context.Context, responseFormatTy
 // GetListSender sends the GetList request. The method will close the
 // http.Response Body if it receives an error.
 func (client RegionClient) GetListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetListResponder handles the response to the GetList request. The method always
@@ -86,7 +86,6 @@ func (client RegionClient) GetListSender(req *http.Request) (*http.Response, err
 func (client RegionClient) GetListResponder(resp *http.Response) (result RegionListResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

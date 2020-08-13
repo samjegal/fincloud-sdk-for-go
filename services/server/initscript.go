@@ -20,7 +20,8 @@ func NewInitScriptClient() InitScriptClient {
 	return NewInitScriptClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewInitScriptClientWithBaseURI creates an instance of the InitScriptClient client.
+// NewInitScriptClientWithBaseURI creates an instance of the InitScriptClient client using a custom endpoint.  Use this
+// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewInitScriptClientWithBaseURI(baseURI string) InitScriptClient {
 	return InitScriptClient{NewWithBaseURI(baseURI)}
 }
@@ -89,7 +90,7 @@ func (client InitScriptClient) CreatePreparer(ctx context.Context, responseForma
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/createInitScript"),
+		autorest.WithPath("/vserver/v2/createInitScript"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -97,8 +98,7 @@ func (client InitScriptClient) CreatePreparer(ctx context.Context, responseForma
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
 func (client InitScriptClient) CreateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CreateResponder handles the response to the Create request. The method always
@@ -106,7 +106,6 @@ func (client InitScriptClient) CreateSender(req *http.Request) (*http.Response, 
 func (client InitScriptClient) CreateResponder(resp *http.Response) (result InitScriptResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -168,7 +167,7 @@ func (client InitScriptClient) DeletePreparer(ctx context.Context, responseForma
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/deleteInitScripts"),
+		autorest.WithPath("/vserver/v2/deleteInitScripts"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -176,8 +175,7 @@ func (client InitScriptClient) DeletePreparer(ctx context.Context, responseForma
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client InitScriptClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -185,7 +183,6 @@ func (client InitScriptClient) DeleteSender(req *http.Request) (*http.Response, 
 func (client InitScriptClient) DeleteResponder(resp *http.Response) (result InitScriptResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -247,7 +244,7 @@ func (client InitScriptClient) GetDetailPreparer(ctx context.Context, responseFo
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/getInitScriptDetail"),
+		autorest.WithPath("/vserver/v2/getInitScriptDetail"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -255,8 +252,7 @@ func (client InitScriptClient) GetDetailPreparer(ctx context.Context, responseFo
 // GetDetailSender sends the GetDetail request. The method will close the
 // http.Response Body if it receives an error.
 func (client InitScriptClient) GetDetailSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetDetailResponder handles the response to the GetDetail request. The method always
@@ -264,7 +260,6 @@ func (client InitScriptClient) GetDetailSender(req *http.Request) (*http.Respons
 func (client InitScriptClient) GetDetailResponder(resp *http.Response) (result InitScriptDetailResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -350,7 +345,7 @@ func (client InitScriptClient) GetListPreparer(ctx context.Context, responseForm
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/getInitScriptList"),
+		autorest.WithPath("/vserver/v2/getInitScriptList"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -358,8 +353,7 @@ func (client InitScriptClient) GetListPreparer(ctx context.Context, responseForm
 // GetListSender sends the GetList request. The method will close the
 // http.Response Body if it receives an error.
 func (client InitScriptClient) GetListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetListResponder handles the response to the GetList request. The method always
@@ -367,7 +361,6 @@ func (client InitScriptClient) GetListSender(req *http.Request) (*http.Response,
 func (client InitScriptClient) GetListResponder(resp *http.Response) (result InitScriptListResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

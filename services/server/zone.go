@@ -20,7 +20,8 @@ func NewZoneClient() ZoneClient {
 	return NewZoneClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewZoneClientWithBaseURI creates an instance of the ZoneClient client.
+// NewZoneClientWithBaseURI creates an instance of the ZoneClient client using a custom endpoint.  Use this when
+// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewZoneClientWithBaseURI(baseURI string) ZoneClient {
 	return ZoneClient{NewWithBaseURI(baseURI)}
 }
@@ -75,7 +76,7 @@ func (client ZoneClient) GetListPreparer(ctx context.Context, responseFormatType
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/getZoneList"),
+		autorest.WithPath("/vserver/v2/getZoneList"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -83,8 +84,7 @@ func (client ZoneClient) GetListPreparer(ctx context.Context, responseFormatType
 // GetListSender sends the GetList request. The method will close the
 // http.Response Body if it receives an error.
 func (client ZoneClient) GetListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetListResponder handles the response to the GetList request. The method always
@@ -92,7 +92,6 @@ func (client ZoneClient) GetListSender(req *http.Request) (*http.Response, error
 func (client ZoneClient) GetListResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp

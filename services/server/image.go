@@ -20,7 +20,8 @@ func NewImageClient() ImageClient {
 	return NewImageClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewImageClientWithBaseURI creates an instance of the ImageClient client.
+// NewImageClientWithBaseURI creates an instance of the ImageClient client using a custom endpoint.  Use this when
+// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewImageClientWithBaseURI(baseURI string) ImageClient {
 	return ImageClient{NewWithBaseURI(baseURI)}
 }
@@ -85,7 +86,7 @@ func (client ImageClient) CreatePreparer(ctx context.Context, responseFormatType
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/createMemberServerImageInstance"),
+		autorest.WithPath("/vserver/v2/createMemberServerImageInstance"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -93,8 +94,7 @@ func (client ImageClient) CreatePreparer(ctx context.Context, responseFormatType
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
 func (client ImageClient) CreateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CreateResponder handles the response to the Create request. The method always
@@ -102,7 +102,6 @@ func (client ImageClient) CreateSender(req *http.Request) (*http.Response, error
 func (client ImageClient) CreateResponder(resp *http.Response) (result MemberServerImageInstanceResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -164,7 +163,7 @@ func (client ImageClient) DeletePreparer(ctx context.Context, responseFormatType
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/deleteMemberServerImageInstances"),
+		autorest.WithPath("/vserver/v2/deleteMemberServerImageInstances"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -172,8 +171,7 @@ func (client ImageClient) DeletePreparer(ctx context.Context, responseFormatType
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client ImageClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -181,7 +179,6 @@ func (client ImageClient) DeleteSender(req *http.Request) (*http.Response, error
 func (client ImageClient) DeleteResponder(resp *http.Response) (result MemberServerImageInstanceResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -241,7 +238,7 @@ func (client ImageClient) GetDetailPreparer(ctx context.Context, responseFormatT
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/getMemberServerImageInstanceDetail"),
+		autorest.WithPath("/vserver/v2/getMemberServerImageInstanceDetail"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -249,8 +246,7 @@ func (client ImageClient) GetDetailPreparer(ctx context.Context, responseFormatT
 // GetDetailSender sends the GetDetail request. The method will close the
 // http.Response Body if it receives an error.
 func (client ImageClient) GetDetailSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetDetailResponder handles the response to the GetDetail request. The method always
@@ -258,7 +254,6 @@ func (client ImageClient) GetDetailSender(req *http.Request) (*http.Response, er
 func (client ImageClient) GetDetailResponder(resp *http.Response) (result MemberServerImageInstanceListResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -350,7 +345,7 @@ func (client ImageClient) GetListPreparer(ctx context.Context, responseFormatTyp
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/getMemberServerImageInstanceList"),
+		autorest.WithPath("/vserver/v2/getMemberServerImageInstanceList"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -358,8 +353,7 @@ func (client ImageClient) GetListPreparer(ctx context.Context, responseFormatTyp
 // GetListSender sends the GetList request. The method will close the
 // http.Response Body if it receives an error.
 func (client ImageClient) GetListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetListResponder handles the response to the GetList request. The method always
@@ -367,7 +361,6 @@ func (client ImageClient) GetListSender(req *http.Request) (*http.Response, erro
 func (client ImageClient) GetListResponder(resp *http.Response) (result MemberServerImageInstanceListResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

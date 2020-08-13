@@ -20,7 +20,8 @@ func NewSubnetClient() SubnetClient {
 	return NewSubnetClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewSubnetClientWithBaseURI creates an instance of the SubnetClient client.
+// NewSubnetClientWithBaseURI creates an instance of the SubnetClient client using a custom endpoint.  Use this when
+// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewSubnetClientWithBaseURI(baseURI string) SubnetClient {
 	return SubnetClient{NewWithBaseURI(baseURI)}
 }
@@ -93,7 +94,7 @@ func (client SubnetClient) CreatePreparer(ctx context.Context, responseFormatTyp
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/createSubnet"),
+		autorest.WithPath("/vpc/v2/createSubnet"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -101,8 +102,7 @@ func (client SubnetClient) CreatePreparer(ctx context.Context, responseFormatTyp
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
 func (client SubnetClient) CreateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CreateResponder handles the response to the Create request. The method always
@@ -110,7 +110,6 @@ func (client SubnetClient) CreateSender(req *http.Request) (*http.Response, erro
 func (client SubnetClient) CreateResponder(resp *http.Response) (result SubnetResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -170,7 +169,7 @@ func (client SubnetClient) DeletePreparer(ctx context.Context, responseFormatTyp
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/deleteSubnet"),
+		autorest.WithPath("/vpc/v2/deleteSubnet"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -178,8 +177,7 @@ func (client SubnetClient) DeletePreparer(ctx context.Context, responseFormatTyp
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client SubnetClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -187,7 +185,6 @@ func (client SubnetClient) DeleteSender(req *http.Request) (*http.Response, erro
 func (client SubnetClient) DeleteResponder(resp *http.Response) (result SubnetResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -247,7 +244,7 @@ func (client SubnetClient) GetDetailPreparer(ctx context.Context, responseFormat
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/getSubnetDetail"),
+		autorest.WithPath("/vpc/v2/getSubnetDetail"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -255,8 +252,7 @@ func (client SubnetClient) GetDetailPreparer(ctx context.Context, responseFormat
 // GetDetailSender sends the GetDetail request. The method will close the
 // http.Response Body if it receives an error.
 func (client SubnetClient) GetDetailSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetDetailResponder handles the response to the GetDetail request. The method always
@@ -264,7 +260,6 @@ func (client SubnetClient) GetDetailSender(req *http.Request) (*http.Response, e
 func (client SubnetClient) GetDetailResponder(resp *http.Response) (result SubnetDetailResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -366,7 +361,7 @@ func (client SubnetClient) GetListPreparer(ctx context.Context, responseFormatTy
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/getSubnetList"),
+		autorest.WithPath("/vpc/v2/getSubnetList"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -374,8 +369,7 @@ func (client SubnetClient) GetListPreparer(ctx context.Context, responseFormatTy
 // GetListSender sends the GetList request. The method will close the
 // http.Response Body if it receives an error.
 func (client SubnetClient) GetListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetListResponder handles the response to the GetList request. The method always
@@ -383,7 +377,6 @@ func (client SubnetClient) GetListSender(req *http.Request) (*http.Response, err
 func (client SubnetClient) GetListResponder(resp *http.Response) (result SubnetListResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

@@ -20,7 +20,8 @@ func NewACGOutboundClient() ACGOutboundClient {
 	return NewACGOutboundClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewACGOutboundClientWithBaseURI creates an instance of the ACGOutboundClient client.
+// NewACGOutboundClientWithBaseURI creates an instance of the ACGOutboundClient client using a custom endpoint.  Use
+// this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewACGOutboundClientWithBaseURI(baseURI string) ACGOutboundClient {
 	return ACGOutboundClient{NewWithBaseURI(baseURI)}
 }
@@ -97,7 +98,7 @@ func (client ACGOutboundClient) AddRulePreparer(ctx context.Context, responseFor
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/addAccessControlGroupOutboundRule"),
+		autorest.WithPath("/vserver/v2/addAccessControlGroupOutboundRule"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -105,8 +106,7 @@ func (client ACGOutboundClient) AddRulePreparer(ctx context.Context, responseFor
 // AddRuleSender sends the AddRule request. The method will close the
 // http.Response Body if it receives an error.
 func (client ACGOutboundClient) AddRuleSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // AddRuleResponder handles the response to the AddRule request. The method always
@@ -114,7 +114,6 @@ func (client ACGOutboundClient) AddRuleSender(req *http.Request) (*http.Response
 func (client ACGOutboundClient) AddRuleResponder(resp *http.Response) (result AccessControlGroupOutboundRuleResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -190,7 +189,7 @@ func (client ACGOutboundClient) RemoveRulePreparer(ctx context.Context, response
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/removeAccessControlGroupOutboundRule"),
+		autorest.WithPath("/vserver/v2/removeAccessControlGroupOutboundRule"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -198,8 +197,7 @@ func (client ACGOutboundClient) RemoveRulePreparer(ctx context.Context, response
 // RemoveRuleSender sends the RemoveRule request. The method will close the
 // http.Response Body if it receives an error.
 func (client ACGOutboundClient) RemoveRuleSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // RemoveRuleResponder handles the response to the RemoveRule request. The method always
@@ -207,7 +205,6 @@ func (client ACGOutboundClient) RemoveRuleSender(req *http.Request) (*http.Respo
 func (client ACGOutboundClient) RemoveRuleResponder(resp *http.Response) (result AccessControlGroupOutboundRuleResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

@@ -20,7 +20,8 @@ func NewPublicIPClient() PublicIPClient {
 	return NewPublicIPClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewPublicIPClientWithBaseURI creates an instance of the PublicIPClient client.
+// NewPublicIPClientWithBaseURI creates an instance of the PublicIPClient client using a custom endpoint.  Use this
+// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewPublicIPClientWithBaseURI(baseURI string) PublicIPClient {
 	return PublicIPClient{NewWithBaseURI(baseURI)}
 }
@@ -79,7 +80,7 @@ func (client PublicIPClient) AssociatePreparer(ctx context.Context, responseForm
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/associatePublicIpWithServerInstance"),
+		autorest.WithPath("/vserver/v2/associatePublicIpWithServerInstance"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -87,8 +88,7 @@ func (client PublicIPClient) AssociatePreparer(ctx context.Context, responseForm
 // AssociateSender sends the Associate request. The method will close the
 // http.Response Body if it receives an error.
 func (client PublicIPClient) AssociateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // AssociateResponder handles the response to the Associate request. The method always
@@ -96,7 +96,6 @@ func (client PublicIPClient) AssociateSender(req *http.Request) (*http.Response,
 func (client PublicIPClient) AssociateResponder(resp *http.Response) (result PublicIPWithServerInstanceResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -162,7 +161,7 @@ func (client PublicIPClient) CreatePreparer(ctx context.Context, responseFormatT
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/createPublicIpInstance"),
+		autorest.WithPath("/vserver/v2/createPublicIpInstance"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -170,8 +169,7 @@ func (client PublicIPClient) CreatePreparer(ctx context.Context, responseFormatT
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
 func (client PublicIPClient) CreateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CreateResponder handles the response to the Create request. The method always
@@ -179,7 +177,6 @@ func (client PublicIPClient) CreateSender(req *http.Request) (*http.Response, er
 func (client PublicIPClient) CreateResponder(resp *http.Response) (result PublicIPInstanceResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -239,7 +236,7 @@ func (client PublicIPClient) DeletePreparer(ctx context.Context, responseFormatT
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/deletePublicIpInstance"),
+		autorest.WithPath("/vserver/v2/deletePublicIpInstance"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -247,8 +244,7 @@ func (client PublicIPClient) DeletePreparer(ctx context.Context, responseFormatT
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client PublicIPClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -256,7 +252,6 @@ func (client PublicIPClient) DeleteSender(req *http.Request) (*http.Response, er
 func (client PublicIPClient) DeleteResponder(resp *http.Response) (result PublicIPInstanceResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -322,7 +317,7 @@ func (client PublicIPClient) DisassociatePreparer(ctx context.Context, responseF
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/disassociatePublicIpFromServerInstance"),
+		autorest.WithPath("/vserver/v2/disassociatePublicIpFromServerInstance"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -330,8 +325,7 @@ func (client PublicIPClient) DisassociatePreparer(ctx context.Context, responseF
 // DisassociateSender sends the Disassociate request. The method will close the
 // http.Response Body if it receives an error.
 func (client PublicIPClient) DisassociateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DisassociateResponder handles the response to the Disassociate request. The method always
@@ -339,7 +333,6 @@ func (client PublicIPClient) DisassociateSender(req *http.Request) (*http.Respon
 func (client PublicIPClient) DisassociateResponder(resp *http.Response) (result PublicIPFromServerInstanceResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -399,7 +392,7 @@ func (client PublicIPClient) GetDetailPreparer(ctx context.Context, responseForm
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/getPublicIpInstanceDetail"),
+		autorest.WithPath("/vserver/v2/getPublicIpInstanceDetail"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -407,8 +400,7 @@ func (client PublicIPClient) GetDetailPreparer(ctx context.Context, responseForm
 // GetDetailSender sends the GetDetail request. The method will close the
 // http.Response Body if it receives an error.
 func (client PublicIPClient) GetDetailSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetDetailResponder handles the response to the GetDetail request. The method always
@@ -416,7 +408,6 @@ func (client PublicIPClient) GetDetailSender(req *http.Request) (*http.Response,
 func (client PublicIPClient) GetDetailResponder(resp *http.Response) (result PublicIPInstanceDetailResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -490,7 +481,7 @@ func (client PublicIPClient) GetListPreparer(ctx context.Context, responseFormat
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/getPublicIpInstanceList"),
+		autorest.WithPath("/vserver/v2/getPublicIpInstanceList"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -498,8 +489,7 @@ func (client PublicIPClient) GetListPreparer(ctx context.Context, responseFormat
 // GetListSender sends the GetList request. The method will close the
 // http.Response Body if it receives an error.
 func (client PublicIPClient) GetListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetListResponder handles the response to the GetList request. The method always
@@ -507,7 +497,6 @@ func (client PublicIPClient) GetListSender(req *http.Request) (*http.Response, e
 func (client PublicIPClient) GetListResponder(resp *http.Response) (result PublicIPInstanceListResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -569,7 +558,7 @@ func (client PublicIPClient) GetTargetListPreparer(ctx context.Context, response
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/getPublicIpTargetServerInstanceList"),
+		autorest.WithPath("/vserver/v2/getPublicIpTargetServerInstanceList"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -577,8 +566,7 @@ func (client PublicIPClient) GetTargetListPreparer(ctx context.Context, response
 // GetTargetListSender sends the GetTargetList request. The method will close the
 // http.Response Body if it receives an error.
 func (client PublicIPClient) GetTargetListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetTargetListResponder handles the response to the GetTargetList request. The method always
@@ -586,7 +574,6 @@ func (client PublicIPClient) GetTargetListSender(req *http.Request) (*http.Respo
 func (client PublicIPClient) GetTargetListResponder(resp *http.Response) (result PublicIPTargetServerInstanceListResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

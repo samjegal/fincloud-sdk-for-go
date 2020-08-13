@@ -20,7 +20,8 @@ func NewRouteClient() RouteClient {
 	return NewRouteClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewRouteClientWithBaseURI creates an instance of the RouteClient client.
+// NewRouteClientWithBaseURI creates an instance of the RouteClient client using a custom endpoint.  Use this when
+// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewRouteClientWithBaseURI(baseURI string) RouteClient {
 	return RouteClient{NewWithBaseURI(baseURI)}
 }
@@ -87,7 +88,7 @@ func (client RouteClient) AddPreparer(ctx context.Context, responseFormatType st
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/addRoute"),
+		autorest.WithPath("/vpc/v2/addRoute"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -95,8 +96,7 @@ func (client RouteClient) AddPreparer(ctx context.Context, responseFormatType st
 // AddSender sends the Add request. The method will close the
 // http.Response Body if it receives an error.
 func (client RouteClient) AddSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // AddResponder handles the response to the Add request. The method always
@@ -104,7 +104,6 @@ func (client RouteClient) AddSender(req *http.Request) (*http.Response, error) {
 func (client RouteClient) AddResponder(resp *http.Response) (result RouteResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -166,7 +165,7 @@ func (client RouteClient) GetListPreparer(ctx context.Context, responseFormatTyp
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/getRouteList"),
+		autorest.WithPath("/vpc/v2/getRouteList"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -174,8 +173,7 @@ func (client RouteClient) GetListPreparer(ctx context.Context, responseFormatTyp
 // GetListSender sends the GetList request. The method will close the
 // http.Response Body if it receives an error.
 func (client RouteClient) GetListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetListResponder handles the response to the GetList request. The method always
@@ -183,7 +181,6 @@ func (client RouteClient) GetListSender(req *http.Request) (*http.Response, erro
 func (client RouteClient) GetListResponder(resp *http.Response) (result RouteListResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -253,7 +250,7 @@ func (client RouteClient) RemovePreparer(ctx context.Context, responseFormatType
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/removeRoute"),
+		autorest.WithPath("/vpc/v2/removeRoute"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -261,8 +258,7 @@ func (client RouteClient) RemovePreparer(ctx context.Context, responseFormatType
 // RemoveSender sends the Remove request. The method will close the
 // http.Response Body if it receives an error.
 func (client RouteClient) RemoveSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // RemoveResponder handles the response to the Remove request. The method always
@@ -270,7 +266,6 @@ func (client RouteClient) RemoveSender(req *http.Request) (*http.Response, error
 func (client RouteClient) RemoveResponder(resp *http.Response) (result RouteResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
