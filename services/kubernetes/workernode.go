@@ -20,7 +20,8 @@ func NewWorkerNodeClient() WorkerNodeClient {
 	return NewWorkerNodeClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewWorkerNodeClientWithBaseURI creates an instance of the WorkerNodeClient client.
+// NewWorkerNodeClientWithBaseURI creates an instance of the WorkerNodeClient client using a custom endpoint.  Use this
+// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewWorkerNodeClientWithBaseURI(baseURI string) WorkerNodeClient {
 	return WorkerNodeClient{NewWithBaseURI(baseURI)}
 }
@@ -69,15 +70,14 @@ func (client WorkerNodeClient) GetPreparer(ctx context.Context, UUID string) (*h
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/clusters/{uuid}/nodes", pathParameters))
+		autorest.WithPathParameters("/nks/v2/clusters/{uuid}/nodes", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client WorkerNodeClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -85,7 +85,6 @@ func (client WorkerNodeClient) GetSender(req *http.Request) (*http.Response, err
 func (client WorkerNodeClient) GetResponder(resp *http.Response) (result WorkerNodeResponseParameter, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusNotFound, http.StatusInternalServerError),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

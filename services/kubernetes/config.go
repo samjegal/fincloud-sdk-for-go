@@ -20,7 +20,8 @@ func NewConfigClient() ConfigClient {
 	return NewConfigClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewConfigClientWithBaseURI creates an instance of the ConfigClient client.
+// NewConfigClientWithBaseURI creates an instance of the ConfigClient client using a custom endpoint.  Use this when
+// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewConfigClientWithBaseURI(baseURI string) ConfigClient {
 	return ConfigClient{NewWithBaseURI(baseURI)}
 }
@@ -69,15 +70,14 @@ func (client ConfigClient) GetPreparer(ctx context.Context, UUID string) (*http.
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/clusters/{uuid}/kubeconfig", pathParameters))
+		autorest.WithPathParameters("/nks/v2/clusters/{uuid}/kubeconfig", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client ConfigClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -85,7 +85,6 @@ func (client ConfigClient) GetSender(req *http.Request) (*http.Response, error) 
 func (client ConfigClient) GetResponder(resp *http.Response) (result ConfigParameter, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusNotFound, http.StatusInternalServerError),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -137,15 +136,14 @@ func (client ConfigClient) ResetPreparer(ctx context.Context, UUID string) (*htt
 	preparer := autorest.CreatePreparer(
 		autorest.AsPatch(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/clusters/{uuid}/kubeconfig/reset", pathParameters))
+		autorest.WithPathParameters("/nks/v2/clusters/{uuid}/kubeconfig/reset", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // ResetSender sends the Reset request. The method will close the
 // http.Response Body if it receives an error.
 func (client ConfigClient) ResetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ResetResponder handles the response to the Reset request. The method always
@@ -153,7 +151,6 @@ func (client ConfigClient) ResetSender(req *http.Request) (*http.Response, error
 func (client ConfigClient) ResetResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusNotFound, http.StatusInternalServerError),
 		autorest.ByClosing())
 	result.Response = resp

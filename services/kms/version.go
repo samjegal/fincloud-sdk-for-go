@@ -4,7 +4,7 @@ package kms
 
 // UserAgent returns the UserAgent string to use when sending http.Requests.
 func UserAgent() string {
-	return "Azure-SDK-For-Go/v0.0.1 kms/1.0.0"
+	return "Azure-SDK-For-Go/" + Version() + " kms/1.0.0"
 }
 
 // Version returns the semantic version (see http://semver.org) of the client.

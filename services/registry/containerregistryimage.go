@@ -20,7 +20,9 @@ func NewContainerRegistryImageClient() ContainerRegistryImageClient {
 	return NewContainerRegistryImageClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewContainerRegistryImageClientWithBaseURI creates an instance of the ContainerRegistryImageClient client.
+// NewContainerRegistryImageClientWithBaseURI creates an instance of the ContainerRegistryImageClient client using a
+// custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds,
+// Azure stack).
 func NewContainerRegistryImageClientWithBaseURI(baseURI string) ContainerRegistryImageClient {
 	return ContainerRegistryImageClient{NewWithBaseURI(baseURI)}
 }
@@ -81,7 +83,7 @@ func (client ContainerRegistryImageClient) GetTagListPreparer(ctx context.Contex
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/v2/repositories/{registry}/{imageName}/tags", pathParameters),
+		autorest.WithPathParameters("/ncr/api/v2/repositories/{registry}/{imageName}/tags", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -89,8 +91,7 @@ func (client ContainerRegistryImageClient) GetTagListPreparer(ctx context.Contex
 // GetTagListSender sends the GetTagList request. The method will close the
 // http.Response Body if it receives an error.
 func (client ContainerRegistryImageClient) GetTagListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetTagListResponder handles the response to the GetTagList request. The method always
@@ -98,7 +99,6 @@ func (client ContainerRegistryImageClient) GetTagListSender(req *http.Request) (
 func (client ContainerRegistryImageClient) GetTagListResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusInternalServerError),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -154,15 +154,14 @@ func (client ContainerRegistryImageClient) GetTagReferencePreparer(ctx context.C
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/v2/repositories/{registry}/{imageName}/tags/{reference}", pathParameters))
+		autorest.WithPathParameters("/ncr/api/v2/repositories/{registry}/{imageName}/tags/{reference}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // GetTagReferenceSender sends the GetTagReference request. The method will close the
 // http.Response Body if it receives an error.
 func (client ContainerRegistryImageClient) GetTagReferenceSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetTagReferenceResponder handles the response to the GetTagReference request. The method always
@@ -170,7 +169,6 @@ func (client ContainerRegistryImageClient) GetTagReferenceSender(req *http.Reque
 func (client ContainerRegistryImageClient) GetTagReferenceResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusInternalServerError),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())

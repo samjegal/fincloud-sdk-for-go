@@ -20,7 +20,8 @@ func NewClient() Client {
 	return NewClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewClientWithBaseURI creates an instance of the Client client.
+// NewClientWithBaseURI creates an instance of the Client client using a custom endpoint.  Use this when interacting
+// with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewClientWithBaseURI(baseURI string) Client {
 	return Client{NewWithBaseURI(baseURI)}
 }
@@ -89,7 +90,7 @@ func (client Client) GetContractProductDemandListPreparer(ctx context.Context, r
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/getContractProductDemandList"),
+		autorest.WithPath("/billing/v2/getContractProductDemandList"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -97,8 +98,7 @@ func (client Client) GetContractProductDemandListPreparer(ctx context.Context, r
 // GetContractProductDemandListSender sends the GetContractProductDemandList request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) GetContractProductDemandListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetContractProductDemandListResponder handles the response to the GetContractProductDemandList request. The method always
@@ -106,7 +106,6 @@ func (client Client) GetContractProductDemandListSender(req *http.Request) (*htt
 func (client Client) GetContractProductDemandListResponder(resp *http.Response) (result ContractProductDemandListResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -178,7 +177,7 @@ func (client Client) GetDemandListPreparer(ctx context.Context, responseFormatTy
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/getDemandList"),
+		autorest.WithPath("/billing/v2/getDemandList"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -186,8 +185,7 @@ func (client Client) GetDemandListPreparer(ctx context.Context, responseFormatTy
 // GetDemandListSender sends the GetDemandList request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) GetDemandListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetDemandListResponder handles the response to the GetDemandList request. The method always
@@ -195,7 +193,6 @@ func (client Client) GetDemandListSender(req *http.Request) (*http.Response, err
 func (client Client) GetDemandListResponder(resp *http.Response) (result DemandListResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -267,7 +264,7 @@ func (client Client) GetDemandProductListPreparer(ctx context.Context, responseF
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/getDemandProductList"),
+		autorest.WithPath("/billing/v2/getDemandProductList"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -275,8 +272,7 @@ func (client Client) GetDemandProductListPreparer(ctx context.Context, responseF
 // GetDemandProductListSender sends the GetDemandProductList request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) GetDemandProductListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetDemandProductListResponder handles the response to the GetDemandProductList request. The method always
@@ -284,7 +280,6 @@ func (client Client) GetDemandProductListSender(req *http.Request) (*http.Respon
 func (client Client) GetDemandProductListResponder(resp *http.Response) (result DemandProductListResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -356,7 +351,7 @@ func (client Client) GetPartnerDemandListPreparer(ctx context.Context, responseF
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/getPartnerDemandList"),
+		autorest.WithPath("/billing/v2/getPartnerDemandList"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -364,8 +359,7 @@ func (client Client) GetPartnerDemandListPreparer(ctx context.Context, responseF
 // GetPartnerDemandListSender sends the GetPartnerDemandList request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) GetPartnerDemandListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetPartnerDemandListResponder handles the response to the GetPartnerDemandList request. The method always
@@ -373,7 +367,6 @@ func (client Client) GetPartnerDemandListSender(req *http.Request) (*http.Respon
 func (client Client) GetPartnerDemandListResponder(resp *http.Response) (result DemandListResponseType, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

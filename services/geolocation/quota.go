@@ -20,7 +20,8 @@ func NewQuotaClient() QuotaClient {
 	return NewQuotaClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewQuotaClientWithBaseURI creates an instance of the QuotaClient client.
+// NewQuotaClientWithBaseURI creates an instance of the QuotaClient client using a custom endpoint.  Use this when
+// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewQuotaClientWithBaseURI(baseURI string) QuotaClient {
 	return QuotaClient{NewWithBaseURI(baseURI)}
 }
@@ -63,15 +64,14 @@ func (client QuotaClient) GetPreparer(ctx context.Context) (*http.Request, error
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/quota"))
+		autorest.WithPath("/geolocation/v2/quota"))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client QuotaClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -79,7 +79,6 @@ func (client QuotaClient) GetSender(req *http.Request) (*http.Response, error) {
 func (client QuotaClient) GetResponder(resp *http.Response) (result QuotaParameter, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent, http.StatusNotFound, http.StatusInternalServerError),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -131,7 +130,7 @@ func (client QuotaClient) SetPreparer(ctx context.Context, quota string) (*http.
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/quota"),
+		autorest.WithPath("/geolocation/v2/quota"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -139,8 +138,7 @@ func (client QuotaClient) SetPreparer(ctx context.Context, quota string) (*http.
 // SetSender sends the Set request. The method will close the
 // http.Response Body if it receives an error.
 func (client QuotaClient) SetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // SetResponder handles the response to the Set request. The method always
@@ -148,7 +146,6 @@ func (client QuotaClient) SetSender(req *http.Request) (*http.Response, error) {
 func (client QuotaClient) SetResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent, http.StatusNotFound, http.StatusInternalServerError),
 		autorest.ByClosing())
 	result.Response = resp

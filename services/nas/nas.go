@@ -20,7 +20,8 @@ func NewClient() Client {
 	return NewClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewClientWithBaseURI creates an instance of the Client client.
+// NewClientWithBaseURI creates an instance of the Client client using a custom endpoint.  Use this when interacting
+// with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewClientWithBaseURI(baseURI string) Client {
 	return Client{NewWithBaseURI(baseURI)}
 }
@@ -79,7 +80,7 @@ func (client Client) AddAccessControlPreparer(ctx context.Context, responseForma
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/addNasVolumeAccessControl"),
+		autorest.WithPath("/vnas/v2/addNasVolumeAccessControl"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -87,8 +88,7 @@ func (client Client) AddAccessControlPreparer(ctx context.Context, responseForma
 // AddAccessControlSender sends the AddAccessControl request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) AddAccessControlSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // AddAccessControlResponder handles the response to the AddAccessControl request. The method always
@@ -96,7 +96,6 @@ func (client Client) AddAccessControlSender(req *http.Request) (*http.Response, 
 func (client Client) AddAccessControlResponder(resp *http.Response) (result VolumeAccessControlResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -158,7 +157,7 @@ func (client Client) ChangeSizePreparer(ctx context.Context, responseFormatType 
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/changeNasVolumeSize"),
+		autorest.WithPath("/vnas/v2/changeNasVolumeSize"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -166,8 +165,7 @@ func (client Client) ChangeSizePreparer(ctx context.Context, responseFormatType 
 // ChangeSizeSender sends the ChangeSize request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) ChangeSizeSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ChangeSizeResponder handles the response to the ChangeSize request. The method always
@@ -175,7 +173,6 @@ func (client Client) ChangeSizeSender(req *http.Request) (*http.Response, error)
 func (client Client) ChangeSizeResponder(resp *http.Response) (result VolumeSizeResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -267,7 +264,7 @@ func (client Client) CreatePreparer(ctx context.Context, responseFormatType stri
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/createNasVolumeInstance"),
+		autorest.WithPath("/vnas/v2/createNasVolumeInstance"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -275,8 +272,7 @@ func (client Client) CreatePreparer(ctx context.Context, responseFormatType stri
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) CreateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CreateResponder handles the response to the Create request. The method always
@@ -284,7 +280,6 @@ func (client Client) CreateSender(req *http.Request) (*http.Response, error) {
 func (client Client) CreateResponder(resp *http.Response) (result VolumeInstancesResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -344,7 +339,7 @@ func (client Client) DeletePreparer(ctx context.Context, responseFormatType stri
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/deleteNasVolumeInstances"),
+		autorest.WithPath("/vnas/v2/deleteNasVolumeInstances"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -352,8 +347,7 @@ func (client Client) DeletePreparer(ctx context.Context, responseFormatType stri
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) DeleteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -361,7 +355,6 @@ func (client Client) DeleteSender(req *http.Request) (*http.Response, error) {
 func (client Client) DeleteResponder(resp *http.Response) (result VolumeInstancesResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -421,7 +414,7 @@ func (client Client) GetDetailPreparer(ctx context.Context, responseFormatType s
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/getNasVolumeInstanceDetail"),
+		autorest.WithPath("/vnas/v2/getNasVolumeInstanceDetail"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -429,8 +422,7 @@ func (client Client) GetDetailPreparer(ctx context.Context, responseFormatType s
 // GetDetailSender sends the GetDetail request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) GetDetailSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetDetailResponder handles the response to the GetDetail request. The method always
@@ -438,7 +430,6 @@ func (client Client) GetDetailSender(req *http.Request) (*http.Response, error) 
 func (client Client) GetDetailResponder(resp *http.Response) (result VolumeInstanceDetailResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -536,7 +527,7 @@ func (client Client) GetListPreparer(ctx context.Context, responseFormatType str
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/getNasVolumeInstanceList"),
+		autorest.WithPath("/vnas/v2/getNasVolumeInstanceList"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -544,8 +535,7 @@ func (client Client) GetListPreparer(ctx context.Context, responseFormatType str
 // GetListSender sends the GetList request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) GetListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetListResponder handles the response to the GetList request. The method always
@@ -553,7 +543,6 @@ func (client Client) GetListSender(req *http.Request) (*http.Response, error) {
 func (client Client) GetListResponder(resp *http.Response) (result VolumeInstanceListResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -615,7 +604,7 @@ func (client Client) RemoveAccessControlPreparer(ctx context.Context, responseFo
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/removeNasVolumeAccessControl"),
+		autorest.WithPath("/vnas/v2/removeNasVolumeAccessControl"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -623,8 +612,7 @@ func (client Client) RemoveAccessControlPreparer(ctx context.Context, responseFo
 // RemoveAccessControlSender sends the RemoveAccessControl request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) RemoveAccessControlSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // RemoveAccessControlResponder handles the response to the RemoveAccessControl request. The method always
@@ -632,7 +620,6 @@ func (client Client) RemoveAccessControlSender(req *http.Request) (*http.Respons
 func (client Client) RemoveAccessControlResponder(resp *http.Response) (result VolumeAccessControlResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -696,7 +683,7 @@ func (client Client) SetAccessControlPreparer(ctx context.Context, responseForma
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/setNasVolumeAccessControl"),
+		autorest.WithPath("/vnas/v2/setNasVolumeAccessControl"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -704,8 +691,7 @@ func (client Client) SetAccessControlPreparer(ctx context.Context, responseForma
 // SetAccessControlSender sends the SetAccessControl request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) SetAccessControlSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // SetAccessControlResponder handles the response to the SetAccessControl request. The method always
@@ -713,7 +699,6 @@ func (client Client) SetAccessControlSender(req *http.Request) (*http.Response, 
 func (client Client) SetAccessControlResponder(resp *http.Response) (result VolumeAccessControlResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

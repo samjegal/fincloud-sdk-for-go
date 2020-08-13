@@ -21,7 +21,8 @@ func NewFileClient() FileClient {
 	return NewFileClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewFileClientWithBaseURI creates an instance of the FileClient client.
+// NewFileClientWithBaseURI creates an instance of the FileClient client using a custom endpoint.  Use this when
+// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewFileClientWithBaseURI(baseURI string) FileClient {
 	return FileClient{NewWithBaseURI(baseURI)}
 }
@@ -71,7 +72,7 @@ func (client FileClient) CreatePreparer(ctx context.Context, fileList io.ReadClo
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/files"),
+		autorest.WithPath("/api/v1/files"),
 		autorest.WithMultiPartFormData(formDataParameters))
 	if len(xNCPLANG) > 0 {
 		preparer = autorest.DecoratePreparer(preparer,
@@ -83,8 +84,7 @@ func (client FileClient) CreatePreparer(ctx context.Context, fileList io.ReadClo
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
 func (client FileClient) CreateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CreateResponder handles the response to the Create request. The method always
@@ -92,7 +92,6 @@ func (client FileClient) CreateSender(req *http.Request) (*http.Response, error)
 func (client FileClient) CreateResponder(resp *http.Response) (result FileUploadResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -145,7 +144,7 @@ func (client FileClient) DeletePreparer(ctx context.Context, tempRequestID strin
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/files/{tempRequestId}", pathParameters))
+		autorest.WithPathParameters("/api/v1/files/{tempRequestId}", pathParameters))
 	if len(xNCPLANG) > 0 {
 		preparer = autorest.DecoratePreparer(preparer,
 			autorest.WithHeader("X-NCP-LANG", autorest.String(xNCPLANG)))
@@ -156,8 +155,7 @@ func (client FileClient) DeletePreparer(ctx context.Context, tempRequestID strin
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client FileClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -165,7 +163,6 @@ func (client FileClient) DeleteSender(req *http.Request) (*http.Response, error)
 func (client FileClient) DeleteResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusForbidden, http.StatusMethodNotAllowed, http.StatusUnsupportedMediaType, http.StatusInternalServerError),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -218,7 +215,7 @@ func (client FileClient) GetPreparer(ctx context.Context, tempRequestID string, 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/files/{tempRequestId}", pathParameters))
+		autorest.WithPathParameters("/api/v1/files/{tempRequestId}", pathParameters))
 	if len(xNCPLANG) > 0 {
 		preparer = autorest.DecoratePreparer(preparer,
 			autorest.WithHeader("X-NCP-LANG", autorest.String(xNCPLANG)))
@@ -229,8 +226,7 @@ func (client FileClient) GetPreparer(ctx context.Context, tempRequestID string, 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client FileClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -238,7 +234,6 @@ func (client FileClient) GetSender(req *http.Request) (*http.Response, error) {
 func (client FileClient) GetResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusForbidden, http.StatusMethodNotAllowed, http.StatusUnsupportedMediaType, http.StatusInternalServerError),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())

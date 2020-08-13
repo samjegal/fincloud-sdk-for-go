@@ -21,7 +21,8 @@ func NewNodePoolClient() NodePoolClient {
 	return NewNodePoolClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewNodePoolClientWithBaseURI creates an instance of the NodePoolClient client.
+// NewNodePoolClientWithBaseURI creates an instance of the NodePoolClient client using a custom endpoint.  Use this
+// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewNodePoolClientWithBaseURI(baseURI string) NodePoolClient {
 	return NodePoolClient{NewWithBaseURI(baseURI)}
 }
@@ -80,7 +81,7 @@ func (client NodePoolClient) CreatePreparer(ctx context.Context, UUID string, pa
 		autorest.AsContentType("application/json;charset=UTF-8"),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/clusters/{uuid}/node-pool", pathParameters),
+		autorest.WithPathParameters("/nks/v2/clusters/{uuid}/node-pool", pathParameters),
 		autorest.WithJSON(parameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -88,8 +89,7 @@ func (client NodePoolClient) CreatePreparer(ctx context.Context, UUID string, pa
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
 func (client NodePoolClient) CreateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CreateResponder handles the response to the Create request. The method always
@@ -97,7 +97,6 @@ func (client NodePoolClient) CreateSender(req *http.Request) (*http.Response, er
 func (client NodePoolClient) CreateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusNotFound, http.StatusInternalServerError),
 		autorest.ByClosing())
 	result.Response = resp
@@ -150,15 +149,14 @@ func (client NodePoolClient) DeletePreparer(ctx context.Context, UUID string, in
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/clusters/{uuid}/node-pool/{instanceNo}", pathParameters))
+		autorest.WithPathParameters("/nks/v2/clusters/{uuid}/node-pool/{instanceNo}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client NodePoolClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -166,7 +164,6 @@ func (client NodePoolClient) DeleteSender(req *http.Request) (*http.Response, er
 func (client NodePoolClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusNotFound, http.StatusInternalServerError),
 		autorest.ByClosing())
 	result.Response = resp
@@ -217,15 +214,14 @@ func (client NodePoolClient) GetPreparer(ctx context.Context, UUID string) (*htt
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/clusters/{uuid}/node-pool", pathParameters))
+		autorest.WithPathParameters("/nks/v2/clusters/{uuid}/node-pool", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client NodePoolClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -233,7 +229,6 @@ func (client NodePoolClient) GetSender(req *http.Request) (*http.Response, error
 func (client NodePoolClient) GetResponder(resp *http.Response) (result NodePoolResponseParameter, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusNotFound, http.StatusInternalServerError),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -289,7 +284,7 @@ func (client NodePoolClient) UpdatePreparer(ctx context.Context, UUID string, in
 		autorest.AsContentType("application/json;charset=UTF-8"),
 		autorest.AsPatch(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/clusters/{uuid}/node-pool/{instanceNo}", pathParameters),
+		autorest.WithPathParameters("/nks/v2/clusters/{uuid}/node-pool/{instanceNo}", pathParameters),
 		autorest.WithJSON(parameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -297,8 +292,7 @@ func (client NodePoolClient) UpdatePreparer(ctx context.Context, UUID string, in
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
 func (client NodePoolClient) UpdateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UpdateResponder handles the response to the Update request. The method always
@@ -306,7 +300,6 @@ func (client NodePoolClient) UpdateSender(req *http.Request) (*http.Response, er
 func (client NodePoolClient) UpdateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusNotFound, http.StatusInternalServerError),
 		autorest.ByClosing())
 	result.Response = resp

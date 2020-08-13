@@ -404,11 +404,11 @@ type RecipientForRequest struct {
 	Name *string `json:"name,omitempty"`
 	// Type - 수신자 유형 (R: 수신자, C: 참조인, B: 숨은참조)
 	Type *string `json:"type,omitempty"`
-	// Parameters - 치환 파라미터 (수신자별로 적용), '치환 ID' 를 key로, '치환 ID에 맵핑되는 값' 을 value로 가지는 Map 형��의 Object
+	// Parameters - 치환 파라미터 (수신자별로 적용), '치환 ID' 를 key로, '치환 ID에 맵핑되는 값' 을 value로 가지는 Map 형태의 Object
 	Parameters *RecipientForRequestParameters `json:"parameters,omitempty"`
 }
 
-// RecipientForRequestParameters 치환 파라미터 (수신자별로 적용), '치환 ID' 를 key로, '치환 ID에 맵핑되는 값' 을 value로 가지는 Map 형��의
+// RecipientForRequestParameters 치환 파라미터 (수신자별로 적용), '치환 ID' 를 key로, '치환 ID에 맵핑되는 값' 을 value로 가지는 Map 형태의
 // Object
 type RecipientForRequestParameters struct {
 	// CustomerName - 고객 이름

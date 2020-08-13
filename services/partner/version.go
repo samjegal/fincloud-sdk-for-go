@@ -4,7 +4,7 @@ package partner
 
 // UserAgent returns the UserAgent string to use when sending http.Requests.
 func UserAgent() string {
-	return "Azure-SDK-For-Go/v0.0.1 partner/1.0.0"
+	return "Azure-SDK-For-Go/" + Version() + " partner/1.0.0"
 }
 
 // Version returns the semantic version (see http://semver.org) of the client.

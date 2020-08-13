@@ -4,7 +4,7 @@ package outboundmailer
 
 // UserAgent returns the UserAgent string to use when sending http.Requests.
 func UserAgent() string {
-	return "Azure-SDK-For-Go/v0.0.1 outboundmailer/0.0.1"
+	return "Azure-SDK-For-Go/" + Version() + " outboundmailer/0.0.1"
 }
 
 // Version returns the semantic version (see http://semver.org) of the client.

@@ -21,7 +21,8 @@ func NewClient() Client {
 	return NewClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewClientWithBaseURI creates an instance of the Client client.
+// NewClientWithBaseURI creates an instance of the Client client using a custom endpoint.  Use this when interacting
+// with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewClientWithBaseURI(baseURI string) Client {
 	return Client{NewWithBaseURI(baseURI)}
 }
@@ -78,7 +79,7 @@ func (client Client) CreateCustomKeyPreparer(ctx context.Context, keyTag string,
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{keyTag}/createCustomKey", pathParameters),
+		autorest.WithPathParameters("/key/v1/{keyTag}/createCustomKey", pathParameters),
 		autorest.WithJSON(parameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -86,8 +87,7 @@ func (client Client) CreateCustomKeyPreparer(ctx context.Context, keyTag string,
 // CreateCustomKeySender sends the CreateCustomKey request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) CreateCustomKeySender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CreateCustomKeyResponder handles the response to the CreateCustomKey request. The method always
@@ -95,7 +95,6 @@ func (client Client) CreateCustomKeySender(req *http.Request) (*http.Response, e
 func (client Client) CreateCustomKeyResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -154,7 +153,7 @@ func (client Client) DescryptPreparer(ctx context.Context, keyTag string, parame
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{keyTag}/decrypt", pathParameters),
+		autorest.WithPathParameters("/key/v1/{keyTag}/decrypt", pathParameters),
 		autorest.WithJSON(parameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -162,8 +161,7 @@ func (client Client) DescryptPreparer(ctx context.Context, keyTag string, parame
 // DescryptSender sends the Descrypt request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) DescryptSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DescryptResponder handles the response to the Descrypt request. The method always
@@ -171,7 +169,6 @@ func (client Client) DescryptSender(req *http.Request) (*http.Response, error) {
 func (client Client) DescryptResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -230,7 +227,7 @@ func (client Client) EncryptPreparer(ctx context.Context, keyTag string, paramet
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{keyTag}/encrypt", pathParameters),
+		autorest.WithPathParameters("/key/v1/{keyTag}/encrypt", pathParameters),
 		autorest.WithJSON(parameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -238,8 +235,7 @@ func (client Client) EncryptPreparer(ctx context.Context, keyTag string, paramet
 // EncryptSender sends the Encrypt request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) EncryptSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // EncryptResponder handles the response to the Encrypt request. The method always
@@ -247,7 +243,6 @@ func (client Client) EncryptSender(req *http.Request) (*http.Response, error) {
 func (client Client) EncryptResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -306,7 +301,7 @@ func (client Client) ReencryptPreparer(ctx context.Context, keyTag string, param
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{keyTag}/reencrypt", pathParameters),
+		autorest.WithPathParameters("/key/v1/{keyTag}/reencrypt", pathParameters),
 		autorest.WithJSON(parameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -314,8 +309,7 @@ func (client Client) ReencryptPreparer(ctx context.Context, keyTag string, param
 // ReencryptSender sends the Reencrypt request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) ReencryptSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ReencryptResponder handles the response to the Reencrypt request. The method always
@@ -323,7 +317,6 @@ func (client Client) ReencryptSender(req *http.Request) (*http.Response, error) 
 func (client Client) ReencryptResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -382,7 +375,7 @@ func (client Client) SignPreparer(ctx context.Context, keyTag string, parameters
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{keyTag}/sign", pathParameters),
+		autorest.WithPathParameters("/key/v1/{keyTag}/sign", pathParameters),
 		autorest.WithJSON(parameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -390,8 +383,7 @@ func (client Client) SignPreparer(ctx context.Context, keyTag string, parameters
 // SignSender sends the Sign request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) SignSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // SignResponder handles the response to the Sign request. The method always
@@ -399,7 +391,6 @@ func (client Client) SignSender(req *http.Request) (*http.Response, error) {
 func (client Client) SignResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -459,7 +450,7 @@ func (client Client) VerifyPreparer(ctx context.Context, keyTag string, paramete
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{keyTag}/verify", pathParameters),
+		autorest.WithPathParameters("/key/v1/{keyTag}/verify", pathParameters),
 		autorest.WithJSON(parameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -467,8 +458,7 @@ func (client Client) VerifyPreparer(ctx context.Context, keyTag string, paramete
 // VerifySender sends the Verify request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) VerifySender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // VerifyResponder handles the response to the Verify request. The method always
@@ -476,7 +466,6 @@ func (client Client) VerifySender(req *http.Request) (*http.Response, error) {
 func (client Client) VerifyResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp

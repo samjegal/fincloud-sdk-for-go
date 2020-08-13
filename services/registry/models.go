@@ -9,21 +9,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/samjegal/fincloud-sdk-for-go/services/registry"
 
-// RepositoryStatus enumerates the values for repository status.
-type RepositoryStatus string
-
-const (
-	// Disconnected ...
-	Disconnected RepositoryStatus = "disconnected"
-	// Running ...
-	Running RepositoryStatus = "running"
-)
-
-// PossibleRepositoryStatusValues returns an array of possible values for the RepositoryStatus const type.
-func PossibleRepositoryStatusValues() []RepositoryStatus {
-	return []RepositoryStatus{Disconnected, Running}
-}
-
 // ImageTagResultImagesItem ...
 type ImageTagResultImagesItem struct {
 	// Size - 이미지 사이즈

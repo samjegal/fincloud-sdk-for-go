@@ -11,7 +11,7 @@ import (
 
 const (
 	// DefaultBaseURI is the default URI used for the service Kubernetes
-	DefaultBaseURI = "https://nks.apigw.fin-ntruss.com/nks/v2"
+	DefaultBaseURI = "https://nks.apigw.fin-ntruss.com"
 )
 
 // BaseClient is the base client for Kubernetes.
@@ -25,7 +25,8 @@ func New() BaseClient {
 	return NewWithBaseURI(DefaultBaseURI)
 }
 
-// NewWithBaseURI creates an instance of the BaseClient client.
+// NewWithBaseURI creates an instance of the BaseClient client using a custom endpoint.  Use this when interacting with
+// an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewWithBaseURI(baseURI string) BaseClient {
 	return BaseClient{
 		Client:  autorest.NewClientWithUserAgent(UserAgent()),

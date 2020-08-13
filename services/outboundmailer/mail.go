@@ -21,7 +21,8 @@ func NewMailClient() MailClient {
 	return NewMailClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewMailClientWithBaseURI creates an instance of the MailClient client.
+// NewMailClientWithBaseURI creates an instance of the MailClient client using a custom endpoint.  Use this when
+// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewMailClientWithBaseURI(baseURI string) MailClient {
 	return MailClient{NewWithBaseURI(baseURI)}
 }
@@ -76,7 +77,7 @@ func (client MailClient) CreatePreparer(ctx context.Context, parameter MailReque
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/mails"),
+		autorest.WithPath("/api/v1/mails"),
 		autorest.WithJSON(parameter))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -84,8 +85,7 @@ func (client MailClient) CreatePreparer(ctx context.Context, parameter MailReque
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
 func (client MailClient) CreateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CreateResponder handles the response to the Create request. The method always
@@ -93,7 +93,6 @@ func (client MailClient) CreateSender(req *http.Request) (*http.Response, error)
 func (client MailClient) CreateResponder(resp *http.Response) (result MailResponseParameter, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusBadRequest, http.StatusInternalServerError),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -146,7 +145,7 @@ func (client MailClient) GetPreparer(ctx context.Context, mailID string, xNCPLAN
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/mails/{mailId}", pathParameters))
+		autorest.WithPathParameters("/api/v1/mails/{mailId}", pathParameters))
 	if len(xNCPLANG) > 0 {
 		preparer = autorest.DecoratePreparer(preparer,
 			autorest.WithHeader("X-NCP-LANG", autorest.String(xNCPLANG)))
@@ -157,8 +156,7 @@ func (client MailClient) GetPreparer(ctx context.Context, mailID string, xNCPLAN
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client MailClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -166,7 +164,6 @@ func (client MailClient) GetSender(req *http.Request) (*http.Response, error) {
 func (client MailClient) GetResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusForbidden, http.StatusMethodNotAllowed, http.StatusUnsupportedMediaType, http.StatusInternalServerError),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -250,7 +247,7 @@ func (client MailClient) GetListByRequestIDPreparer(ctx context.Context, request
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/mails/requests/{requestId}/mails", pathParameters),
+		autorest.WithPathParameters("/api/v1/mails/requests/{requestId}/mails", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	if len(xNCPLANG) > 0 {
 		preparer = autorest.DecoratePreparer(preparer,
@@ -262,8 +259,7 @@ func (client MailClient) GetListByRequestIDPreparer(ctx context.Context, request
 // GetListByRequestIDSender sends the GetListByRequestID request. The method will close the
 // http.Response Body if it receives an error.
 func (client MailClient) GetListByRequestIDSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetListByRequestIDResponder handles the response to the GetListByRequestID request. The method always
@@ -271,7 +267,6 @@ func (client MailClient) GetListByRequestIDSender(req *http.Request) (*http.Resp
 func (client MailClient) GetListByRequestIDResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusForbidden, http.StatusMethodNotAllowed, http.StatusUnsupportedMediaType, http.StatusInternalServerError),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -381,7 +376,7 @@ func (client MailClient) GetRequestListPreparer(ctx context.Context, xNCPLANG st
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/mails/requests"),
+		autorest.WithPath("/api/v1/mails/requests"),
 		autorest.WithQueryParameters(queryParameters))
 	if len(xNCPLANG) > 0 {
 		preparer = autorest.DecoratePreparer(preparer,
@@ -393,8 +388,7 @@ func (client MailClient) GetRequestListPreparer(ctx context.Context, xNCPLANG st
 // GetRequestListSender sends the GetRequestList request. The method will close the
 // http.Response Body if it receives an error.
 func (client MailClient) GetRequestListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetRequestListResponder handles the response to the GetRequestList request. The method always
@@ -402,7 +396,6 @@ func (client MailClient) GetRequestListSender(req *http.Request) (*http.Response
 func (client MailClient) GetRequestListResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusForbidden, http.StatusMethodNotAllowed, http.StatusUnsupportedMediaType, http.StatusInternalServerError),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -486,7 +479,7 @@ func (client MailClient) GetStatusByRequestIDPreparer(ctx context.Context, reque
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/mails/requests/{requestId}/status", pathParameters),
+		autorest.WithPathParameters("/api/v1/mails/requests/{requestId}/status", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	if len(xNCPLANG) > 0 {
 		preparer = autorest.DecoratePreparer(preparer,
@@ -498,8 +491,7 @@ func (client MailClient) GetStatusByRequestIDPreparer(ctx context.Context, reque
 // GetStatusByRequestIDSender sends the GetStatusByRequestID request. The method will close the
 // http.Response Body if it receives an error.
 func (client MailClient) GetStatusByRequestIDSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetStatusByRequestIDResponder handles the response to the GetStatusByRequestID request. The method always
@@ -507,7 +499,6 @@ func (client MailClient) GetStatusByRequestIDSender(req *http.Request) (*http.Re
 func (client MailClient) GetStatusByRequestIDResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusForbidden, http.StatusMethodNotAllowed, http.StatusUnsupportedMediaType, http.StatusInternalServerError),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())

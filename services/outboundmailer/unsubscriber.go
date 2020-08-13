@@ -20,7 +20,8 @@ func NewUnsubscriberClient() UnsubscriberClient {
 	return NewUnsubscriberClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewUnsubscriberClientWithBaseURI creates an instance of the UnsubscriberClient client.
+// NewUnsubscriberClientWithBaseURI creates an instance of the UnsubscriberClient client using a custom endpoint.  Use
+// this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewUnsubscriberClientWithBaseURI(baseURI string) UnsubscriberClient {
 	return UnsubscriberClient{NewWithBaseURI(baseURI)}
 }
@@ -106,7 +107,7 @@ func (client UnsubscriberClient) GetPreparer(ctx context.Context, xNCPLANG strin
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/unsubscribers"),
+		autorest.WithPath("/api/v1/unsubscribers"),
 		autorest.WithQueryParameters(queryParameters))
 	if len(xNCPLANG) > 0 {
 		preparer = autorest.DecoratePreparer(preparer,
@@ -118,8 +119,7 @@ func (client UnsubscriberClient) GetPreparer(ctx context.Context, xNCPLANG strin
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client UnsubscriberClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -127,7 +127,6 @@ func (client UnsubscriberClient) GetSender(req *http.Request) (*http.Response, e
 func (client UnsubscriberClient) GetResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusForbidden, http.StatusMethodNotAllowed, http.StatusUnsupportedMediaType, http.StatusInternalServerError),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())

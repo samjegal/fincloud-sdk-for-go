@@ -21,7 +21,8 @@ func NewAddressBookClient() AddressBookClient {
 	return NewAddressBookClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewAddressBookClientWithBaseURI creates an instance of the AddressBookClient client.
+// NewAddressBookClientWithBaseURI creates an instance of the AddressBookClient client using a custom endpoint.  Use
+// this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewAddressBookClientWithBaseURI(baseURI string) AddressBookClient {
 	return AddressBookClient{NewWithBaseURI(baseURI)}
 }
@@ -74,7 +75,7 @@ func (client AddressBookClient) CreatePreparer(ctx context.Context, requestBody 
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/address-book"),
+		autorest.WithPath("/api/v1/address-book"),
 		autorest.WithJSON(requestBody))
 	if len(xNCPLANG) > 0 {
 		preparer = autorest.DecoratePreparer(preparer,
@@ -86,8 +87,7 @@ func (client AddressBookClient) CreatePreparer(ctx context.Context, requestBody 
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
 func (client AddressBookClient) CreateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CreateResponder handles the response to the Create request. The method always
@@ -95,7 +95,6 @@ func (client AddressBookClient) CreateSender(req *http.Request) (*http.Response,
 func (client AddressBookClient) CreateResponder(resp *http.Response) (result AddressBookResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -143,7 +142,7 @@ func (client AddressBookClient) DeletePreparer(ctx context.Context, xNCPLANG str
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/address-book"))
+		autorest.WithPath("/api/v1/address-book"))
 	if len(xNCPLANG) > 0 {
 		preparer = autorest.DecoratePreparer(preparer,
 			autorest.WithHeader("X-NCP-LANG", autorest.String(xNCPLANG)))
@@ -154,8 +153,7 @@ func (client AddressBookClient) DeletePreparer(ctx context.Context, xNCPLANG str
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client AddressBookClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -163,7 +161,6 @@ func (client AddressBookClient) DeleteSender(req *http.Request) (*http.Response,
 func (client AddressBookClient) DeleteResponder(resp *http.Response) (result AddressBookInitResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -219,7 +216,7 @@ func (client AddressBookClient) DeleteAddressPreparer(ctx context.Context, reque
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/address-book/address"),
+		autorest.WithPath("/api/v1/address-book/address"),
 		autorest.WithJSON(requestBody))
 	if len(xNCPLANG) > 0 {
 		preparer = autorest.DecoratePreparer(preparer,
@@ -231,8 +228,7 @@ func (client AddressBookClient) DeleteAddressPreparer(ctx context.Context, reque
 // DeleteAddressSender sends the DeleteAddress request. The method will close the
 // http.Response Body if it receives an error.
 func (client AddressBookClient) DeleteAddressSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteAddressResponder handles the response to the DeleteAddress request. The method always
@@ -240,7 +236,6 @@ func (client AddressBookClient) DeleteAddressSender(req *http.Request) (*http.Re
 func (client AddressBookClient) DeleteAddressResponder(resp *http.Response) (result AddressBookResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -293,7 +288,7 @@ func (client AddressBookClient) DeleteEmptyRecipientGroupPreparer(ctx context.Co
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/address-book/recipient-groups/address/empty"),
+		autorest.WithPath("/api/v1/address-book/recipient-groups/address/empty"),
 		autorest.WithQueryParameters(queryParameters))
 	if len(xNCPLANG) > 0 {
 		preparer = autorest.DecoratePreparer(preparer,
@@ -305,8 +300,7 @@ func (client AddressBookClient) DeleteEmptyRecipientGroupPreparer(ctx context.Co
 // DeleteEmptyRecipientGroupSender sends the DeleteEmptyRecipientGroup request. The method will close the
 // http.Response Body if it receives an error.
 func (client AddressBookClient) DeleteEmptyRecipientGroupSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteEmptyRecipientGroupResponder handles the response to the DeleteEmptyRecipientGroup request. The method always
@@ -314,7 +308,6 @@ func (client AddressBookClient) DeleteEmptyRecipientGroupSender(req *http.Reques
 func (client AddressBookClient) DeleteEmptyRecipientGroupResponder(resp *http.Response) (result AddressBookResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -367,7 +360,7 @@ func (client AddressBookClient) DeleteRecipientGroupPreparer(ctx context.Context
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/address-book/recipient-groups"),
+		autorest.WithPath("/api/v1/address-book/recipient-groups"),
 		autorest.WithQueryParameters(queryParameters))
 	if len(xNCPLANG) > 0 {
 		preparer = autorest.DecoratePreparer(preparer,
@@ -379,8 +372,7 @@ func (client AddressBookClient) DeleteRecipientGroupPreparer(ctx context.Context
 // DeleteRecipientGroupSender sends the DeleteRecipientGroup request. The method will close the
 // http.Response Body if it receives an error.
 func (client AddressBookClient) DeleteRecipientGroupSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteRecipientGroupResponder handles the response to the DeleteRecipientGroup request. The method always
@@ -388,7 +380,6 @@ func (client AddressBookClient) DeleteRecipientGroupSender(req *http.Request) (*
 func (client AddressBookClient) DeleteRecipientGroupResponder(resp *http.Response) (result AddressBookResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -445,7 +436,7 @@ func (client AddressBookClient) DeleteRecipientGroupByAddressPreparer(ctx contex
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/address-book/recipient-groups/address"),
+		autorest.WithPath("/api/v1/address-book/recipient-groups/address"),
 		autorest.WithJSON(requestBody))
 	if len(xNCPLANG) > 0 {
 		preparer = autorest.DecoratePreparer(preparer,
@@ -457,8 +448,7 @@ func (client AddressBookClient) DeleteRecipientGroupByAddressPreparer(ctx contex
 // DeleteRecipientGroupByAddressSender sends the DeleteRecipientGroupByAddress request. The method will close the
 // http.Response Body if it receives an error.
 func (client AddressBookClient) DeleteRecipientGroupByAddressSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteRecipientGroupByAddressResponder handles the response to the DeleteRecipientGroupByAddress request. The method always
@@ -466,7 +456,6 @@ func (client AddressBookClient) DeleteRecipientGroupByAddressSender(req *http.Re
 func (client AddressBookClient) DeleteRecipientGroupByAddressResponder(resp *http.Response) (result AddressBookResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -514,7 +503,7 @@ func (client AddressBookClient) GetPreparer(ctx context.Context, xNCPLANG string
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/address-book"))
+		autorest.WithPath("/api/v1/address-book"))
 	if len(xNCPLANG) > 0 {
 		preparer = autorest.DecoratePreparer(preparer,
 			autorest.WithHeader("X-NCP-LANG", autorest.String(xNCPLANG)))
@@ -525,8 +514,7 @@ func (client AddressBookClient) GetPreparer(ctx context.Context, xNCPLANG string
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client AddressBookClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -534,7 +522,6 @@ func (client AddressBookClient) GetSender(req *http.Request) (*http.Response, er
 func (client AddressBookClient) GetResponder(resp *http.Response) (result AddressBookResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

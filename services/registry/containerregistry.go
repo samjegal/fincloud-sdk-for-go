@@ -21,7 +21,9 @@ func NewContainerRegistryClient() ContainerRegistryClient {
 	return NewContainerRegistryClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewContainerRegistryClientWithBaseURI creates an instance of the ContainerRegistryClient client.
+// NewContainerRegistryClientWithBaseURI creates an instance of the ContainerRegistryClient client using a custom
+// endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
+// stack).
 func NewContainerRegistryClientWithBaseURI(baseURI string) ContainerRegistryClient {
 	return ContainerRegistryClient{NewWithBaseURI(baseURI)}
 }
@@ -78,7 +80,7 @@ func (client ContainerRegistryClient) CreatePreparer(ctx context.Context, regist
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/v2/repositories/{registry}", pathParameters),
+		autorest.WithPathParameters("/ncr/api/v2/repositories/{registry}", pathParameters),
 		autorest.WithJSON(parameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -86,8 +88,7 @@ func (client ContainerRegistryClient) CreatePreparer(ctx context.Context, regist
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
 func (client ContainerRegistryClient) CreateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CreateResponder handles the response to the Create request. The method always
@@ -95,7 +96,6 @@ func (client ContainerRegistryClient) CreateSender(req *http.Request) (*http.Res
 func (client ContainerRegistryClient) CreateResponder(resp *http.Response) (result MessageResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusConflict, http.StatusInternalServerError),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -147,15 +147,14 @@ func (client ContainerRegistryClient) DeletePreparer(ctx context.Context, regist
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/v2/repositories/{registry}", pathParameters))
+		autorest.WithPathParameters("/ncr/api/v2/repositories/{registry}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client ContainerRegistryClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -163,7 +162,6 @@ func (client ContainerRegistryClient) DeleteSender(req *http.Request) (*http.Res
 func (client ContainerRegistryClient) DeleteResponder(resp *http.Response) (result MessageResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusNotFound, http.StatusInternalServerError),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -217,15 +215,14 @@ func (client ContainerRegistryClient) DeleteImagePreparer(ctx context.Context, r
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/v2/repositories/{registry}/{imageName}", pathParameters))
+		autorest.WithPathParameters("/ncr/api/v2/repositories/{registry}/{imageName}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // DeleteImageSender sends the DeleteImage request. The method will close the
 // http.Response Body if it receives an error.
 func (client ContainerRegistryClient) DeleteImageSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteImageResponder handles the response to the DeleteImage request. The method always
@@ -233,7 +230,6 @@ func (client ContainerRegistryClient) DeleteImageSender(req *http.Request) (*htt
 func (client ContainerRegistryClient) DeleteImageResponder(resp *http.Response) (result MessageResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusInternalServerError),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -289,15 +285,14 @@ func (client ContainerRegistryClient) DeleteTagReferencePreparer(ctx context.Con
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/v2/repositories/{registry}/{imageName}/tags/{reference}", pathParameters))
+		autorest.WithPathParameters("/ncr/api/v2/repositories/{registry}/{imageName}/tags/{reference}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // DeleteTagReferenceSender sends the DeleteTagReference request. The method will close the
 // http.Response Body if it receives an error.
 func (client ContainerRegistryClient) DeleteTagReferenceSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteTagReferenceResponder handles the response to the DeleteTagReference request. The method always
@@ -305,7 +300,6 @@ func (client ContainerRegistryClient) DeleteTagReferenceSender(req *http.Request
 func (client ContainerRegistryClient) DeleteTagReferenceResponder(resp *http.Response) (result MessageResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusInternalServerError),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -359,15 +353,14 @@ func (client ContainerRegistryClient) GetImageDetailPreparer(ctx context.Context
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/v2/repositories/{registry}/{imageName}", pathParameters))
+		autorest.WithPathParameters("/ncr/api/v2/repositories/{registry}/{imageName}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // GetImageDetailSender sends the GetImageDetail request. The method will close the
 // http.Response Body if it receives an error.
 func (client ContainerRegistryClient) GetImageDetailSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetImageDetailResponder handles the response to the GetImageDetail request. The method always
@@ -375,7 +368,6 @@ func (client ContainerRegistryClient) GetImageDetailSender(req *http.Request) (*
 func (client ContainerRegistryClient) GetImageDetailResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusNotFound, http.StatusInternalServerError),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -437,7 +429,7 @@ func (client ContainerRegistryClient) GetImageListPreparer(ctx context.Context, 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/v2/repositories/{registry}", pathParameters),
+		autorest.WithPathParameters("/ncr/api/v2/repositories/{registry}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -445,8 +437,7 @@ func (client ContainerRegistryClient) GetImageListPreparer(ctx context.Context, 
 // GetImageListSender sends the GetImageList request. The method will close the
 // http.Response Body if it receives an error.
 func (client ContainerRegistryClient) GetImageListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetImageListResponder handles the response to the GetImageList request. The method always
@@ -454,7 +445,6 @@ func (client ContainerRegistryClient) GetImageListSender(req *http.Request) (*ht
 func (client ContainerRegistryClient) GetImageListResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusNotFound, http.StatusInternalServerError),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -511,7 +501,7 @@ func (client ContainerRegistryClient) GetListPreparer(ctx context.Context, page 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/v2/repositories"),
+		autorest.WithPath("/ncr/api/v2/repositories"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -519,8 +509,7 @@ func (client ContainerRegistryClient) GetListPreparer(ctx context.Context, page 
 // GetListSender sends the GetList request. The method will close the
 // http.Response Body if it receives an error.
 func (client ContainerRegistryClient) GetListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetListResponder handles the response to the GetList request. The method always
@@ -528,7 +517,6 @@ func (client ContainerRegistryClient) GetListSender(req *http.Request) (*http.Re
 func (client ContainerRegistryClient) GetListResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusInternalServerError),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -584,7 +572,7 @@ func (client ContainerRegistryClient) UpdateImagePreparer(ctx context.Context, r
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/v2/repositories/{registry}/{imageName}", pathParameters),
+		autorest.WithPathParameters("/ncr/api/v2/repositories/{registry}/{imageName}", pathParameters),
 		autorest.WithJSON(parameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -592,8 +580,7 @@ func (client ContainerRegistryClient) UpdateImagePreparer(ctx context.Context, r
 // UpdateImageSender sends the UpdateImage request. The method will close the
 // http.Response Body if it receives an error.
 func (client ContainerRegistryClient) UpdateImageSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UpdateImageResponder handles the response to the UpdateImage request. The method always
@@ -601,7 +588,6 @@ func (client ContainerRegistryClient) UpdateImageSender(req *http.Request) (*htt
 func (client ContainerRegistryClient) UpdateImageResponder(resp *http.Response) (result MessageResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusInternalServerError),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
