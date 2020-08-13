@@ -1,3 +1,16 @@
+## 1.8.3 (August 13, 2020)
+
+### UPDATED SERVICES
+
+- GeoLocation
+- KMS
+- Kubernetes
+- NAS
+- Outbound Mailer
+- Partner
+- Container Registry
+- WMS
+
 ## 1.8.2 (August 13, 2020)
 
 ### UPDATED SERVICES
