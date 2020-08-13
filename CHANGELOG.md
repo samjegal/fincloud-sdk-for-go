@@ -1,3 +1,11 @@
+## 1.8.2 (August 13, 2020)
+
+### UPDATED SERVICES
+
+- VPC
+- Server
+- NAS
+
 ## 1.8.1 (August 7, 2020)
 
 ### UPDATED SERVICES
