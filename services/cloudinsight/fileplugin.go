@@ -10,28 +10,28 @@ import (
 	"net/http"
 )
 
-// PortPluginClient is the cloud Insight Client
-type PortPluginClient struct {
+// FilePluginClient is the cloud Insight Client
+type FilePluginClient struct {
 	BaseClient
 }
 
-// NewPortPluginClient creates an instance of the PortPluginClient client.
-func NewPortPluginClient() PortPluginClient {
-	return NewPortPluginClientWithBaseURI(DefaultBaseURI)
+// NewFilePluginClient creates an instance of the FilePluginClient client.
+func NewFilePluginClient() FilePluginClient {
+	return NewFilePluginClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewPortPluginClientWithBaseURI creates an instance of the PortPluginClient client using a custom endpoint.  Use this
+// NewFilePluginClientWithBaseURI creates an instance of the FilePluginClient client using a custom endpoint.  Use this
 // when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewPortPluginClientWithBaseURI(baseURI string) PortPluginClient {
-	return PortPluginClient{NewWithBaseURI(baseURI)}
+func NewFilePluginClientWithBaseURI(baseURI string) FilePluginClient {
+	return FilePluginClient{NewWithBaseURI(baseURI)}
 }
 
-// Create port Plugin을 설정
+// Create plugin에 설정할 File 정보
 // Parameters:
-// parameters - plugin에 설정할 Port 정보
-func (client PortPluginClient) Create(ctx context.Context, parameters PortPluginRequest) (result autorest.Response, err error) {
+// parameters - plugin에 설정할 File 정보
+func (client FilePluginClient) Create(ctx context.Context, parameters FilePluginRequest) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/PortPluginClient.Create")
+		ctx = tracing.StartSpan(ctx, fqdn+"/FilePluginClient.Create")
 		defer func() {
 			sc := -1
 			if result.Response != nil {
@@ -42,45 +42,45 @@ func (client PortPluginClient) Create(ctx context.Context, parameters PortPlugin
 	}
 	req, err := client.CreatePreparer(ctx, parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cloudinsight.PortPluginClient", "Create", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "cloudinsight.FilePluginClient", "Create", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.CreateSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "cloudinsight.PortPluginClient", "Create", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cloudinsight.FilePluginClient", "Create", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.CreateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cloudinsight.PortPluginClient", "Create", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cloudinsight.FilePluginClient", "Create", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // CreatePreparer prepares the Create request.
-func (client PortPluginClient) CreatePreparer(ctx context.Context, parameters PortPluginRequest) (*http.Request, error) {
+func (client FilePluginClient) CreatePreparer(ctx context.Context, parameters FilePluginRequest) (*http.Request, error) {
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/cw_server/real/api/plugin/port"),
+		autorest.WithPath("/cw_server/real/api/plugin/file"),
 		autorest.WithJSON(parameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
-func (client PortPluginClient) CreateSender(req *http.Request) (*http.Response, error) {
+func (client FilePluginClient) CreateSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
-func (client PortPluginClient) CreateResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client FilePluginClient) CreateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusUnauthorized, http.StatusInternalServerError),
@@ -89,12 +89,12 @@ func (client PortPluginClient) CreateResponder(resp *http.Response) (result auto
 	return
 }
 
-// Get 서버 인스턴스에 적용된 Port Plugin 설정을 조회
+// Get 서버 인스턴스에 적용된 File Plugin 설정을 조회
 // Parameters:
 // instanceNo - 인스턴스 번호
-func (client PortPluginClient) Get(ctx context.Context, instanceNo string) (result PortPluginDetailResponse, err error) {
+func (client FilePluginClient) Get(ctx context.Context, instanceNo string) (result FilePluginDetailResponse, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/PortPluginClient.Get")
+		ctx = tracing.StartSpan(ctx, fqdn+"/FilePluginClient.Get")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -105,27 +105,27 @@ func (client PortPluginClient) Get(ctx context.Context, instanceNo string) (resu
 	}
 	req, err := client.GetPreparer(ctx, instanceNo)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cloudinsight.PortPluginClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "cloudinsight.FilePluginClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "cloudinsight.PortPluginClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cloudinsight.FilePluginClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cloudinsight.PortPluginClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cloudinsight.FilePluginClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetPreparer prepares the Get request.
-func (client PortPluginClient) GetPreparer(ctx context.Context, instanceNo string) (*http.Request, error) {
+func (client FilePluginClient) GetPreparer(ctx context.Context, instanceNo string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"instanceNo": autorest.Encode("path", instanceNo),
 	}
@@ -133,19 +133,19 @@ func (client PortPluginClient) GetPreparer(ctx context.Context, instanceNo strin
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/cw_server/real/api/plugin/port/instanceNo/{instanceNo}", pathParameters))
+		autorest.WithPathParameters("/cw_server/real/api/plugin/file/instanceNo/{instanceNo}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client PortPluginClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client FilePluginClient) GetSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client PortPluginClient) GetResponder(resp *http.Response) (result PortPluginDetailResponse, err error) {
+func (client FilePluginClient) GetResponder(resp *http.Response) (result FilePluginDetailResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusUnauthorized, http.StatusInternalServerError),
@@ -155,10 +155,10 @@ func (client PortPluginClient) GetResponder(resp *http.Response) (result PortPlu
 	return
 }
 
-// List 사용자의 Port Plugin 설정을 조회
-func (client PortPluginClient) List(ctx context.Context) (result ListPortPluginParameter, err error) {
+// List 사용자의 File Plugin 설정을 조회
+func (client FilePluginClient) List(ctx context.Context) (result ListFilePluginParameter, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/PortPluginClient.List")
+		ctx = tracing.StartSpan(ctx, fqdn+"/FilePluginClient.List")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -169,43 +169,43 @@ func (client PortPluginClient) List(ctx context.Context) (result ListPortPluginP
 	}
 	req, err := client.ListPreparer(ctx)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cloudinsight.PortPluginClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "cloudinsight.FilePluginClient", "List", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "cloudinsight.PortPluginClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cloudinsight.FilePluginClient", "List", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cloudinsight.PortPluginClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cloudinsight.FilePluginClient", "List", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client PortPluginClient) ListPreparer(ctx context.Context) (*http.Request, error) {
+func (client FilePluginClient) ListPreparer(ctx context.Context) (*http.Request, error) {
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/cw_server/real/api/plugin/port"))
+		autorest.WithPath("/cw_server/real/api/plugin/file"))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client PortPluginClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client FilePluginClient) ListSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client PortPluginClient) ListResponder(resp *http.Response) (result ListPortPluginParameter, err error) {
+func (client FilePluginClient) ListResponder(resp *http.Response) (result ListFilePluginParameter, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusUnauthorized, http.StatusInternalServerError),

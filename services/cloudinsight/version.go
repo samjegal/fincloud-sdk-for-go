@@ -4,7 +4,7 @@ package cloudinsight
 
 // UserAgent returns the UserAgent string to use when sending http.Requests.
 func UserAgent() string {
-	return "Azure-SDK-For-Go/v0.0.1 cloudinsight/services"
+	return "Azure-SDK-For-Go/" + Version() + " cloudinsight/0.0.1"
 }
 
 // Version returns the semantic version (see http://semver.org) of the client.

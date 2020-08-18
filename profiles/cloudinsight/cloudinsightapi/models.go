@@ -19,11 +19,17 @@ package cloudinsightapi
 
 import original "github.com/samjegal/fincloud-sdk-for-go/services/cloudinsight/cloudinsightapi"
 
+type ChartClientAPI = original.ChartClientAPI
 type CollectorClientAPI = original.CollectorClientAPI
 type DataClientAPI = original.DataClientAPI
 type EventClientAPI = original.EventClientAPI
-type PluginProcessClientAPI = original.PluginProcessClientAPI
+type ExtendedClientAPI = original.ExtendedClientAPI
+type FilePluginClientAPI = original.FilePluginClientAPI
+type MetricClientAPI = original.MetricClientAPI
+type MonitorClientAPI = original.MonitorClientAPI
+type NotificationClientAPI = original.NotificationClientAPI
 type PortPluginClientAPI = original.PortPluginClientAPI
-type RuleClientAPI = original.RuleClientAPI
+type ProcessPluginClientAPI = original.ProcessPluginClientAPI
+type RuleGroupClientAPI = original.RuleGroupClientAPI
 type SchemaClientAPI = original.SchemaClientAPI
 type ServerClientAPI = original.ServerClientAPI

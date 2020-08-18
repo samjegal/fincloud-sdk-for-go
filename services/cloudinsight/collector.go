@@ -20,48 +20,49 @@ func NewCollectorClient() CollectorClient {
 	return NewCollectorClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewCollectorClientWithBaseURI creates an instance of the CollectorClient client.
+// NewCollectorClientWithBaseURI creates an instance of the CollectorClient client using a custom endpoint.  Use this
+// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewCollectorClientWithBaseURI(baseURI string) CollectorClient {
 	return CollectorClient{NewWithBaseURI(baseURI)}
 }
 
-// Push collector API
+// SendMethod JSON 데이터를 Cloud Insight Collector로 보냅니다.
 // Parameters:
 // parameters - cloud Insight Custom 메트릭 데이터
-func (client CollectorClient) Push(ctx context.Context, parameters CollectorParameter) (result autorest.Response, err error) {
+func (client CollectorClient) SendMethod(ctx context.Context, parameters CollectorRequest) (result CollectorResponse, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/CollectorClient.Push")
+		ctx = tracing.StartSpan(ctx, fqdn+"/CollectorClient.SendMethod")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.PushPreparer(ctx, parameters)
+	req, err := client.SendMethodPreparer(ctx, parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cloudinsight.CollectorClient", "Push", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "cloudinsight.CollectorClient", "SendMethod", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.PushSender(req)
+	resp, err := client.SendMethodSender(req)
 	if err != nil {
-		result.Response = resp
-		err = autorest.NewErrorWithError(err, "cloudinsight.CollectorClient", "Push", resp, "Failure sending request")
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "cloudinsight.CollectorClient", "SendMethod", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.PushResponder(resp)
+	result, err = client.SendMethodResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cloudinsight.CollectorClient", "Push", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cloudinsight.CollectorClient", "SendMethod", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// PushPreparer prepares the Push request.
-func (client CollectorClient) PushPreparer(ctx context.Context, parameters CollectorParameter) (*http.Request, error) {
+// SendMethodPreparer prepares the SendMethod request.
+func (client CollectorClient) SendMethodPreparer(ctx context.Context, parameters CollectorRequest) (*http.Request, error) {
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
@@ -71,21 +72,20 @@ func (client CollectorClient) PushPreparer(ctx context.Context, parameters Colle
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// PushSender sends the Push request. The method will close the
+// SendMethodSender sends the SendMethod request. The method will close the
 // http.Response Body if it receives an error.
-func (client CollectorClient) PushSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+func (client CollectorClient) SendMethodSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
-// PushResponder handles the response to the Push request. The method always
+// SendMethodResponder handles the response to the SendMethod request. The method always
 // closes the http.Response Body.
-func (client CollectorClient) PushResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client CollectorClient) SendMethodResponder(resp *http.Response) (result CollectorResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }

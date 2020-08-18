@@ -33,6 +33,48 @@ const (
 	SUM   AggregationType = original.SUM
 )
 
+type ChartDataWidgetInfoOption = original.ChartDataWidgetInfoOption
+
+const (
+	ChartDataWidgetInfoOptionAVG     ChartDataWidgetInfoOption = original.ChartDataWidgetInfoOptionAVG
+	ChartDataWidgetInfoOptionCOUNT   ChartDataWidgetInfoOption = original.ChartDataWidgetInfoOptionCOUNT
+	ChartDataWidgetInfoOptionCOUNTER ChartDataWidgetInfoOption = original.ChartDataWidgetInfoOptionCOUNTER
+	ChartDataWidgetInfoOptionMAX     ChartDataWidgetInfoOption = original.ChartDataWidgetInfoOptionMAX
+	ChartDataWidgetInfoOptionMIN     ChartDataWidgetInfoOption = original.ChartDataWidgetInfoOptionMIN
+	ChartDataWidgetInfoOptionSUM     ChartDataWidgetInfoOption = original.ChartDataWidgetInfoOptionSUM
+)
+
+type ChartDataWidgetInfoPeriod = original.ChartDataWidgetInfoPeriod
+
+const (
+	Day1  ChartDataWidgetInfoPeriod = original.Day1
+	Hour2 ChartDataWidgetInfoPeriod = original.Hour2
+	Min1  ChartDataWidgetInfoPeriod = original.Min1
+	Min30 ChartDataWidgetInfoPeriod = original.Min30
+	Min5  ChartDataWidgetInfoPeriod = original.Min5
+)
+
+type ChartDataWidgetInfoStatistic = original.ChartDataWidgetInfoStatistic
+
+const (
+	ChartDataWidgetInfoStatisticAVG     ChartDataWidgetInfoStatistic = original.ChartDataWidgetInfoStatisticAVG
+	ChartDataWidgetInfoStatisticCOUNT   ChartDataWidgetInfoStatistic = original.ChartDataWidgetInfoStatisticCOUNT
+	ChartDataWidgetInfoStatisticCOUNTER ChartDataWidgetInfoStatistic = original.ChartDataWidgetInfoStatisticCOUNTER
+	ChartDataWidgetInfoStatisticMAX     ChartDataWidgetInfoStatistic = original.ChartDataWidgetInfoStatisticMAX
+	ChartDataWidgetInfoStatisticMIN     ChartDataWidgetInfoStatistic = original.ChartDataWidgetInfoStatisticMIN
+	ChartDataWidgetInfoStatisticSUM     ChartDataWidgetInfoStatistic = original.ChartDataWidgetInfoStatisticSUM
+)
+
+type ChartDataWidgetType = original.ChartDataWidgetType
+
+const (
+	Area  ChartDataWidgetType = original.Area
+	Index ChartDataWidgetType = original.Index
+	Line  ChartDataWidgetType = original.Line
+	Table ChartDataWidgetType = original.Table
+	Text  ChartDataWidgetType = original.Text
+)
+
 type DimensionType = original.DimensionType
 
 const (
@@ -73,42 +115,197 @@ const (
 	MIN5  QueryIntervalTime = original.MIN5
 )
 
-type SchemaDataType = original.SchemaDataType
+type RecipientNotificationNotifyType = original.RecipientNotificationNotifyType
 
 const (
-	FLOAT   SchemaDataType = original.FLOAT
-	INTEGER SchemaDataType = original.INTEGER
-	LONG    SchemaDataType = original.LONG
-	STRING  SchemaDataType = original.STRING
+	EMAIL RecipientNotificationNotifyType = original.EMAIL
+	SMS   RecipientNotificationNotifyType = original.SMS
 )
 
+type RuleGroupProductDataStatus = original.RuleGroupProductDataStatus
+
+const (
+	CREATED RuleGroupProductDataStatus = original.CREATED
+	DELETED RuleGroupProductDataStatus = original.DELETED
+	UPDATED RuleGroupProductDataStatus = original.UPDATED
+)
+
+type RuleGroupStatus = original.RuleGroupStatus
+
+const (
+	INSUFFICIENT RuleGroupStatus = original.INSUFFICIENT
+	OK           RuleGroupStatus = original.OK
+	VIOLATED     RuleGroupStatus = original.VIOLATED
+)
+
+type RuleGroupVersion = original.RuleGroupVersion
+
+const (
+	V1 RuleGroupVersion = original.V1
+	V2 RuleGroupVersion = original.V2
+)
+
+type SchemaFieldDataType = original.SchemaFieldDataType
+
+const (
+	ARRAY     SchemaFieldDataType = original.ARRAY
+	FLOAT     SchemaFieldDataType = original.FLOAT
+	INTEGER   SchemaFieldDataType = original.INTEGER
+	LONG      SchemaFieldDataType = original.LONG
+	STRING    SchemaFieldDataType = original.STRING
+	TIMESTAMP SchemaFieldDataType = original.TIMESTAMP
+)
+
+type SchemaFieldDimensionType = original.SchemaFieldDimensionType
+
+const (
+	CUSTOM  SchemaFieldDimensionType = original.CUSTOM
+	DEFAULT SchemaFieldDimensionType = original.DEFAULT
+)
+
+type SchemaFieldMetricType = original.SchemaFieldMetricType
+
+const (
+	SchemaFieldMetricTypeBASIC    SchemaFieldMetricType = original.SchemaFieldMetricTypeBASIC
+	SchemaFieldMetricTypeCUSTOM   SchemaFieldMetricType = original.SchemaFieldMetricTypeCUSTOM
+	SchemaFieldMetricTypeEXTENDED SchemaFieldMetricType = original.SchemaFieldMetricTypeEXTENDED
+)
+
+type SchemaFieldaAggregation = original.SchemaFieldaAggregation
+
+const (
+	SchemaFieldaAggregationAVG     SchemaFieldaAggregation = original.SchemaFieldaAggregationAVG
+	SchemaFieldaAggregationCOUNT   SchemaFieldaAggregation = original.SchemaFieldaAggregationCOUNT
+	SchemaFieldaAggregationCOUNTER SchemaFieldaAggregation = original.SchemaFieldaAggregationCOUNTER
+	SchemaFieldaAggregationMAX     SchemaFieldaAggregation = original.SchemaFieldaAggregationMAX
+	SchemaFieldaAggregationMIN     SchemaFieldaAggregation = original.SchemaFieldaAggregationMIN
+	SchemaFieldaAggregationSUM     SchemaFieldaAggregation = original.SchemaFieldaAggregationSUM
+)
+
+type SeverTargetMetric = original.SeverTargetMetric
+
+const (
+	AvgCPUUsedRto SeverTargetMetric = original.AvgCPUUsedRto
+	AvgFsUsert    SeverTargetMetric = original.AvgFsUsert
+	MemUsert      SeverTargetMetric = original.MemUsert
+)
+
+type WidgetMetricInfoPeriod = original.WidgetMetricInfoPeriod
+
+const (
+	WidgetMetricInfoPeriodDay1  WidgetMetricInfoPeriod = original.WidgetMetricInfoPeriodDay1
+	WidgetMetricInfoPeriodHour2 WidgetMetricInfoPeriod = original.WidgetMetricInfoPeriodHour2
+	WidgetMetricInfoPeriodMin1  WidgetMetricInfoPeriod = original.WidgetMetricInfoPeriodMin1
+	WidgetMetricInfoPeriodMin30 WidgetMetricInfoPeriod = original.WidgetMetricInfoPeriodMin30
+	WidgetMetricInfoPeriodMin5  WidgetMetricInfoPeriod = original.WidgetMetricInfoPeriodMin5
+)
+
+type WidgetMetricInfoQueryAggregation = original.WidgetMetricInfoQueryAggregation
+
+const (
+	WidgetMetricInfoQueryAggregationAVG    WidgetMetricInfoQueryAggregation = original.WidgetMetricInfoQueryAggregationAVG
+	WidgetMetricInfoQueryAggregationCOUNT  WidgetMetricInfoQueryAggregation = original.WidgetMetricInfoQueryAggregationCOUNT
+	WidgetMetricInfoQueryAggregationFIRST  WidgetMetricInfoQueryAggregation = original.WidgetMetricInfoQueryAggregationFIRST
+	WidgetMetricInfoQueryAggregationLAST   WidgetMetricInfoQueryAggregation = original.WidgetMetricInfoQueryAggregationLAST
+	WidgetMetricInfoQueryAggregationMAX    WidgetMetricInfoQueryAggregation = original.WidgetMetricInfoQueryAggregationMAX
+	WidgetMetricInfoQueryAggregationMIMMAX WidgetMetricInfoQueryAggregation = original.WidgetMetricInfoQueryAggregationMIMMAX
+	WidgetMetricInfoQueryAggregationMIMMIN WidgetMetricInfoQueryAggregation = original.WidgetMetricInfoQueryAggregationMIMMIN
+	WidgetMetricInfoQueryAggregationMIN    WidgetMetricInfoQueryAggregation = original.WidgetMetricInfoQueryAggregationMIN
+	WidgetMetricInfoQueryAggregationMULT   WidgetMetricInfoQueryAggregation = original.WidgetMetricInfoQueryAggregationMULT
+	WidgetMetricInfoQueryAggregationNONE   WidgetMetricInfoQueryAggregation = original.WidgetMetricInfoQueryAggregationNONE
+	WidgetMetricInfoQueryAggregationSUM    WidgetMetricInfoQueryAggregation = original.WidgetMetricInfoQueryAggregationSUM
+	WidgetMetricInfoQueryAggregationZIMSUM WidgetMetricInfoQueryAggregation = original.WidgetMetricInfoQueryAggregationZIMSUM
+)
+
+type WidgetMetricInfoStatistic = original.WidgetMetricInfoStatistic
+
+const (
+	WidgetMetricInfoStatisticAVG     WidgetMetricInfoStatistic = original.WidgetMetricInfoStatisticAVG
+	WidgetMetricInfoStatisticCOUNT   WidgetMetricInfoStatistic = original.WidgetMetricInfoStatisticCOUNT
+	WidgetMetricInfoStatisticCOUNTER WidgetMetricInfoStatistic = original.WidgetMetricInfoStatisticCOUNTER
+	WidgetMetricInfoStatisticMAX     WidgetMetricInfoStatistic = original.WidgetMetricInfoStatisticMAX
+	WidgetMetricInfoStatisticMIN     WidgetMetricInfoStatistic = original.WidgetMetricInfoStatisticMIN
+	WidgetMetricInfoStatisticSUM     WidgetMetricInfoStatistic = original.WidgetMetricInfoStatisticSUM
+)
+
+type AsgPolicyParameter = original.AsgPolicyParameter
 type BaseClient = original.BaseClient
+type ChartClient = original.ChartClient
+type ChartDataWidgetRequest = original.ChartDataWidgetRequest
 type CollectorClient = original.CollectorClient
-type CollectorParameter = original.CollectorParameter
+type CollectorRequest = original.CollectorRequest
+type CollectorResponse = original.CollectorResponse
 type DataClient = original.DataClient
-type DataInfoParameter = original.DataInfoParameter
 type DimensionParameter = original.DimensionParameter
 type DimensionResultParameter = original.DimensionResultParameter
 type EventClient = original.EventClient
-type ListDataInfoParameter = original.ListDataInfoParameter
+type EventRuleResponse = original.EventRuleResponse
+type EventSearchDimensionParameter = original.EventSearchDimensionParameter
+type EventSearchRequest = original.EventSearchRequest
+type EventSearchResultParameter = original.EventSearchResultParameter
+type ExtendedClient = original.ExtendedClient
+type FilePluginClient = original.FilePluginClient
+type FilePluginDetailResponse = original.FilePluginDetailResponse
+type FilePluginParameter = original.FilePluginParameter
+type FilePluginRequest = original.FilePluginRequest
+type Int64 = original.Int64
+type ListEventSearchResultParameter = original.ListEventSearchResultParameter
+type ListFilePluginParameter = original.ListFilePluginParameter
 type ListListFloat64 = original.ListListFloat64
-type ListPluginProcessParameter = original.ListPluginProcessParameter
+type ListMultipleDataParameter = original.ListMultipleDataParameter
 type ListPortPluginParameter = original.ListPortPluginParameter
+type ListProcessPluginParameter = original.ListProcessPluginParameter
+type ListSchemaExtendedStatusParameter = original.ListSchemaExtendedStatusParameter
+type ListServerTopMetricParameter = original.ListServerTopMetricParameter
+type ListString = original.ListString
+type MetricClient = original.MetricClient
 type MetricInfoParameter = original.MetricInfoParameter
-type PluginProcessClient = original.PluginProcessClient
-type PluginProcessParameter = original.PluginProcessParameter
+type MonitorClient = original.MonitorClient
+type MonitorGroupItemParameter = original.MonitorGroupItemParameter
+type MonitorGroupRequest = original.MonitorGroupRequest
+type MultipleDataParameter = original.MultipleDataParameter
+type NotificationClient = original.NotificationClient
 type PortPluginClient = original.PortPluginClient
+type PortPluginDetailResponse = original.PortPluginDetailResponse
 type PortPluginParameter = original.PortPluginParameter
-type QueryMultipleParameter = original.QueryMultipleParameter
-type QueryParameter = original.QueryParameter
-type RuleClient = original.RuleClient
+type PortPluginRequest = original.PortPluginRequest
+type ProcessPluginClient = original.ProcessPluginClient
+type ProcessPluginDetailResponse = original.ProcessPluginDetailResponse
+type ProcessPluginParameter = original.ProcessPluginParameter
+type ProcessPluginRequest = original.ProcessPluginRequest
+type QueryMultipleRequest = original.QueryMultipleRequest
+type QueryRequest = original.QueryRequest
+type RecipientNotificationParameter = original.RecipientNotificationParameter
+type RuleGroup = original.RuleGroup
+type RuleGroupClient = original.RuleGroupClient
+type RuleGroupRequest = original.RuleGroupRequest
+type ScehmaUpdateResponse = original.ScehmaUpdateResponse
 type SchemaClient = original.SchemaClient
-type SchemaFieldsParameter = original.SchemaFieldsParameter
-type SchemaParameter = original.SchemaParameter
+type SchemaExtendedDisableResponse = original.SchemaExtendedDisableResponse
+type SchemaExtendedEnableResponse = original.SchemaExtendedEnableResponse
+type SchemaExtendedStatusParameter = original.SchemaExtendedStatusParameter
+type SchemaFieldParameter = original.SchemaFieldParameter
+type SchemaFieldRequestParameter = original.SchemaFieldRequestParameter
+type SchemaRegisterResponse = original.SchemaRegisterResponse
+type SchemaRequest = original.SchemaRequest
+type SchemaResponse = original.SchemaResponse
+type SearchEventCountConsoleRequest = original.SearchEventCountConsoleRequest
+type SearchEventCountConsoleResponse = original.SearchEventCountConsoleResponse
 type ServerClient = original.ServerClient
+type ServerTopMetricParameter = original.ServerTopMetricParameter
+type String = original.String
+type SuspendRuleItemParameter = original.SuspendRuleItemParameter
+type WidgetMetricInfoParameter = original.WidgetMetricInfoParameter
+type WidgetMetricInfoResponse = original.WidgetMetricInfoResponse
 
 func New() BaseClient {
 	return original.New()
+}
+func NewChartClient() ChartClient {
+	return original.NewChartClient()
+}
+func NewChartClientWithBaseURI(baseURI string) ChartClient {
+	return original.NewChartClientWithBaseURI(baseURI)
 }
 func NewCollectorClient() CollectorClient {
 	return original.NewCollectorClient()
@@ -128,11 +325,35 @@ func NewEventClient() EventClient {
 func NewEventClientWithBaseURI(baseURI string) EventClient {
 	return original.NewEventClientWithBaseURI(baseURI)
 }
-func NewPluginProcessClient() PluginProcessClient {
-	return original.NewPluginProcessClient()
+func NewExtendedClient() ExtendedClient {
+	return original.NewExtendedClient()
 }
-func NewPluginProcessClientWithBaseURI(baseURI string) PluginProcessClient {
-	return original.NewPluginProcessClientWithBaseURI(baseURI)
+func NewExtendedClientWithBaseURI(baseURI string) ExtendedClient {
+	return original.NewExtendedClientWithBaseURI(baseURI)
+}
+func NewFilePluginClient() FilePluginClient {
+	return original.NewFilePluginClient()
+}
+func NewFilePluginClientWithBaseURI(baseURI string) FilePluginClient {
+	return original.NewFilePluginClientWithBaseURI(baseURI)
+}
+func NewMetricClient() MetricClient {
+	return original.NewMetricClient()
+}
+func NewMetricClientWithBaseURI(baseURI string) MetricClient {
+	return original.NewMetricClientWithBaseURI(baseURI)
+}
+func NewMonitorClient() MonitorClient {
+	return original.NewMonitorClient()
+}
+func NewMonitorClientWithBaseURI(baseURI string) MonitorClient {
+	return original.NewMonitorClientWithBaseURI(baseURI)
+}
+func NewNotificationClient() NotificationClient {
+	return original.NewNotificationClient()
+}
+func NewNotificationClientWithBaseURI(baseURI string) NotificationClient {
+	return original.NewNotificationClientWithBaseURI(baseURI)
 }
 func NewPortPluginClient() PortPluginClient {
 	return original.NewPortPluginClient()
@@ -140,11 +361,17 @@ func NewPortPluginClient() PortPluginClient {
 func NewPortPluginClientWithBaseURI(baseURI string) PortPluginClient {
 	return original.NewPortPluginClientWithBaseURI(baseURI)
 }
-func NewRuleClient() RuleClient {
-	return original.NewRuleClient()
+func NewProcessPluginClient() ProcessPluginClient {
+	return original.NewProcessPluginClient()
 }
-func NewRuleClientWithBaseURI(baseURI string) RuleClient {
-	return original.NewRuleClientWithBaseURI(baseURI)
+func NewProcessPluginClientWithBaseURI(baseURI string) ProcessPluginClient {
+	return original.NewProcessPluginClientWithBaseURI(baseURI)
+}
+func NewRuleGroupClient() RuleGroupClient {
+	return original.NewRuleGroupClient()
+}
+func NewRuleGroupClientWithBaseURI(baseURI string) RuleGroupClient {
+	return original.NewRuleGroupClientWithBaseURI(baseURI)
 }
 func NewSchemaClient() SchemaClient {
 	return original.NewSchemaClient()
@@ -164,6 +391,18 @@ func NewWithBaseURI(baseURI string) BaseClient {
 func PossibleAggregationTypeValues() []AggregationType {
 	return original.PossibleAggregationTypeValues()
 }
+func PossibleChartDataWidgetInfoOptionValues() []ChartDataWidgetInfoOption {
+	return original.PossibleChartDataWidgetInfoOptionValues()
+}
+func PossibleChartDataWidgetInfoPeriodValues() []ChartDataWidgetInfoPeriod {
+	return original.PossibleChartDataWidgetInfoPeriodValues()
+}
+func PossibleChartDataWidgetInfoStatisticValues() []ChartDataWidgetInfoStatistic {
+	return original.PossibleChartDataWidgetInfoStatisticValues()
+}
+func PossibleChartDataWidgetTypeValues() []ChartDataWidgetType {
+	return original.PossibleChartDataWidgetTypeValues()
+}
 func PossibleDimensionTypeValues() []DimensionType {
 	return original.PossibleDimensionTypeValues()
 }
@@ -173,8 +412,41 @@ func PossibleQueryAggregationTypeValues() []QueryAggregationType {
 func PossibleQueryIntervalTimeValues() []QueryIntervalTime {
 	return original.PossibleQueryIntervalTimeValues()
 }
-func PossibleSchemaDataTypeValues() []SchemaDataType {
-	return original.PossibleSchemaDataTypeValues()
+func PossibleRecipientNotificationNotifyTypeValues() []RecipientNotificationNotifyType {
+	return original.PossibleRecipientNotificationNotifyTypeValues()
+}
+func PossibleRuleGroupProductDataStatusValues() []RuleGroupProductDataStatus {
+	return original.PossibleRuleGroupProductDataStatusValues()
+}
+func PossibleRuleGroupStatusValues() []RuleGroupStatus {
+	return original.PossibleRuleGroupStatusValues()
+}
+func PossibleRuleGroupVersionValues() []RuleGroupVersion {
+	return original.PossibleRuleGroupVersionValues()
+}
+func PossibleSchemaFieldDataTypeValues() []SchemaFieldDataType {
+	return original.PossibleSchemaFieldDataTypeValues()
+}
+func PossibleSchemaFieldDimensionTypeValues() []SchemaFieldDimensionType {
+	return original.PossibleSchemaFieldDimensionTypeValues()
+}
+func PossibleSchemaFieldMetricTypeValues() []SchemaFieldMetricType {
+	return original.PossibleSchemaFieldMetricTypeValues()
+}
+func PossibleSchemaFieldaAggregationValues() []SchemaFieldaAggregation {
+	return original.PossibleSchemaFieldaAggregationValues()
+}
+func PossibleSeverTargetMetricValues() []SeverTargetMetric {
+	return original.PossibleSeverTargetMetricValues()
+}
+func PossibleWidgetMetricInfoPeriodValues() []WidgetMetricInfoPeriod {
+	return original.PossibleWidgetMetricInfoPeriodValues()
+}
+func PossibleWidgetMetricInfoQueryAggregationValues() []WidgetMetricInfoQueryAggregation {
+	return original.PossibleWidgetMetricInfoQueryAggregationValues()
+}
+func PossibleWidgetMetricInfoStatisticValues() []WidgetMetricInfoStatistic {
+	return original.PossibleWidgetMetricInfoStatisticValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"

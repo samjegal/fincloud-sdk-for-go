@@ -20,51 +20,51 @@ func NewServerClient() ServerClient {
 	return NewServerClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewServerClientWithBaseURI creates an instance of the ServerClient client.
+// NewServerClientWithBaseURI creates an instance of the ServerClient client using a custom endpoint.  Use this when
+// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewServerClientWithBaseURI(baseURI string) ServerClient {
 	return ServerClient{NewWithBaseURI(baseURI)}
 }
 
-// CreatTop target metric (mem_usert/avg_cpu_user_rto/fs_usert)
+// GetTop 사용자의 Server 중 CPU, Memory, File system 별 사용량 top5에 해당하는 server를 조회합니다.
 // Parameters:
 // query - target metric (mem_usert/avg_cpu_user_rto/fs_usert)
-func (client ServerClient) CreatTop(ctx context.Context, query string) (result autorest.Response, err error) {
+func (client ServerClient) GetTop(ctx context.Context, query SeverTargetMetric) (result ListServerTopMetricParameter, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/ServerClient.CreatTop")
+		ctx = tracing.StartSpan(ctx, fqdn+"/ServerClient.GetTop")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.CreatTopPreparer(ctx, query)
+	req, err := client.GetTopPreparer(ctx, query)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cloudinsight.ServerClient", "CreatTop", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "cloudinsight.ServerClient", "GetTop", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.CreatTopSender(req)
+	resp, err := client.GetTopSender(req)
 	if err != nil {
-		result.Response = resp
-		err = autorest.NewErrorWithError(err, "cloudinsight.ServerClient", "CreatTop", resp, "Failure sending request")
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "cloudinsight.ServerClient", "GetTop", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.CreatTopResponder(resp)
+	result, err = client.GetTopResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cloudinsight.ServerClient", "CreatTop", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cloudinsight.ServerClient", "GetTop", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// CreatTopPreparer prepares the CreatTop request.
-func (client ServerClient) CreatTopPreparer(ctx context.Context, query string) (*http.Request, error) {
-	queryParameters := map[string]interface{}{}
-	if len(query) > 0 {
-		queryParameters["query"] = autorest.Encode("query", query)
+// GetTopPreparer prepares the GetTop request.
+func (client ServerClient) GetTopPreparer(ctx context.Context, query SeverTargetMetric) (*http.Request, error) {
+	queryParameters := map[string]interface{}{
+		"query": autorest.Encode("query", query),
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -75,21 +75,20 @@ func (client ServerClient) CreatTopPreparer(ctx context.Context, query string) (
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// CreatTopSender sends the CreatTop request. The method will close the
+// GetTopSender sends the GetTop request. The method will close the
 // http.Response Body if it receives an error.
-func (client ServerClient) CreatTopSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+func (client ServerClient) GetTopSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
-// CreatTopResponder handles the response to the CreatTop request. The method always
+// GetTopResponder handles the response to the GetTop request. The method always
 // closes the http.Response Body.
-func (client ServerClient) CreatTopResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client ServerClient) GetTopResponder(resp *http.Response) (result ListServerTopMetricParameter, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusUnauthorized, http.StatusInternalServerError),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }

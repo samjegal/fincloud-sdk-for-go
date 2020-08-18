@@ -6,6 +6,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
 	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
@@ -20,24 +21,105 @@ func NewEventClient() EventClient {
 	return NewEventClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewEventClientWithBaseURI creates an instance of the EventClient client.
+// NewEventClientWithBaseURI creates an instance of the EventClient client using a custom endpoint.  Use this when
+// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewEventClientWithBaseURI(baseURI string) EventClient {
 	return EventClient{NewWithBaseURI(baseURI)}
 }
 
-// SearchEventCount search event count console
-func (client EventClient) SearchEventCount(ctx context.Context) (result autorest.Response, err error) {
+// SearchByID event id와 Rule id로 Event를 상세 조회합니다.
+// Parameters:
+// parameters - event search criteria
+func (client EventClient) SearchByID(ctx context.Context, parameters EventSearchRequest) (result ListEventSearchResultParameter, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/EventClient.SearchEventCount")
+		ctx = tracing.StartSpan(ctx, fqdn+"/EventClient.SearchByID")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.SearchEventCountPreparer(ctx)
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: parameters,
+			Constraints: []validation.Constraint{{Target: "parameters.RuleID", Name: validation.Null, Rule: true, Chain: nil},
+				{Target: "parameters.EventID", Name: validation.Null, Rule: true, Chain: nil},
+				{Target: "parameters.StartTime", Name: validation.Null, Rule: true, Chain: nil},
+				{Target: "parameters.EndTime", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("cloudinsight.EventClient", "SearchByID", err.Error())
+	}
+
+	req, err := client.SearchByIDPreparer(ctx, parameters)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "cloudinsight.EventClient", "SearchByID", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.SearchByIDSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "cloudinsight.EventClient", "SearchByID", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.SearchByIDResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "cloudinsight.EventClient", "SearchByID", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// SearchByIDPreparer prepares the SearchByID request.
+func (client EventClient) SearchByIDPreparer(ctx context.Context, parameters EventSearchRequest) (*http.Request, error) {
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/cw/api/event/searchById"),
+		autorest.WithJSON(parameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// SearchByIDSender sends the SearchByID request. The method will close the
+// http.Response Body if it receives an error.
+func (client EventClient) SearchByIDSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// SearchByIDResponder handles the response to the SearchByID request. The method always
+// closes the http.Response Body.
+func (client EventClient) SearchByIDResponder(resp *http.Response) (result ListEventSearchResultParameter, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusInternalServerError),
+		autorest.ByUnmarshallingJSON(&result.Value),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// SearchEventCount search event count console
+func (client EventClient) SearchEventCount(ctx context.Context, parameters SearchEventCountConsoleRequest) (result SearchEventCountConsoleResponse, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/EventClient.SearchEventCount")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: parameters,
+			Constraints: []validation.Constraint{{Target: "parameters.StartTime", Name: validation.Null, Rule: true, Chain: nil},
+				{Target: "parameters.EndTime", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("cloudinsight.EventClient", "SearchEventCount", err.Error())
+	}
+
+	req, err := client.SearchEventCountPreparer(ctx, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "cloudinsight.EventClient", "SearchEventCount", nil, "Failure preparing request")
 		return
@@ -45,7 +127,7 @@ func (client EventClient) SearchEventCount(ctx context.Context) (result autorest
 
 	resp, err := client.SearchEventCountSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "cloudinsight.EventClient", "SearchEventCount", resp, "Failure sending request")
 		return
 	}
@@ -59,29 +141,30 @@ func (client EventClient) SearchEventCount(ctx context.Context) (result autorest
 }
 
 // SearchEventCountPreparer prepares the SearchEventCount request.
-func (client EventClient) SearchEventCountPreparer(ctx context.Context) (*http.Request, error) {
+func (client EventClient) SearchEventCountPreparer(ctx context.Context, parameters SearchEventCountConsoleRequest) (*http.Request, error) {
 	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/cw_fea/real/cw/api/event/searchEventCountConsole"))
+		autorest.WithPath("/cw_fea/real/cw/api/event/searchEventCountConsole"),
+		autorest.WithJSON(parameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // SearchEventCountSender sends the SearchEventCount request. The method will close the
 // http.Response Body if it receives an error.
 func (client EventClient) SearchEventCountSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // SearchEventCountResponder handles the response to the SearchEventCount request. The method always
 // closes the http.Response Body.
-func (client EventClient) SearchEventCountResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client EventClient) SearchEventCountResponder(resp *http.Response) (result SearchEventCountConsoleResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusInternalServerError),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
