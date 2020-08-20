@@ -144,6 +144,71 @@ func PossibleDimensionTypeValues() []DimensionType {
 	return []DimensionType{Agent, CPU, Disk, Fs, Memory, Ntwk, PluginFile, PluginPort, PluginProcess, Process, Svr}
 }
 
+// MetricsGroupItemCalculation enumerates the values for metrics group item calculation.
+type MetricsGroupItemCalculation string
+
+const (
+	// MetricsGroupItemCalculationAVG ...
+	MetricsGroupItemCalculationAVG MetricsGroupItemCalculation = "AVG"
+	// MetricsGroupItemCalculationCOUNT ...
+	MetricsGroupItemCalculationCOUNT MetricsGroupItemCalculation = "COUNT"
+	// MetricsGroupItemCalculationCOUNTER ...
+	MetricsGroupItemCalculationCOUNTER MetricsGroupItemCalculation = "COUNTER"
+	// MetricsGroupItemCalculationMAX ...
+	MetricsGroupItemCalculationMAX MetricsGroupItemCalculation = "MAX"
+	// MetricsGroupItemCalculationMIN ...
+	MetricsGroupItemCalculationMIN MetricsGroupItemCalculation = "MIN"
+	// MetricsGroupItemCalculationSUM ...
+	MetricsGroupItemCalculationSUM MetricsGroupItemCalculation = "SUM"
+)
+
+// PossibleMetricsGroupItemCalculationValues returns an array of possible values for the MetricsGroupItemCalculation const type.
+func PossibleMetricsGroupItemCalculationValues() []MetricsGroupItemCalculation {
+	return []MetricsGroupItemCalculation{MetricsGroupItemCalculationAVG, MetricsGroupItemCalculationCOUNT, MetricsGroupItemCalculationCOUNTER, MetricsGroupItemCalculationMAX, MetricsGroupItemCalculationMIN, MetricsGroupItemCalculationSUM}
+}
+
+// MetricsGroupItemCondition enumerates the values for metrics group item condition.
+type MetricsGroupItemCondition string
+
+const (
+	// EQ ...
+	EQ MetricsGroupItemCondition = "EQ"
+	// EXP ...
+	EXP MetricsGroupItemCondition = "EXP"
+	// GE ...
+	GE MetricsGroupItemCondition = "GE"
+	// GT ...
+	GT MetricsGroupItemCondition = "GT"
+	// LE ...
+	LE MetricsGroupItemCondition = "LE"
+	// LT ...
+	LT MetricsGroupItemCondition = "LT"
+	// NE ...
+	NE MetricsGroupItemCondition = "NE"
+)
+
+// PossibleMetricsGroupItemConditionValues returns an array of possible values for the MetricsGroupItemCondition const type.
+func PossibleMetricsGroupItemConditionValues() []MetricsGroupItemCondition {
+	return []MetricsGroupItemCondition{EQ, EXP, GE, GT, LE, LT, NE}
+}
+
+// MetricsGroupItemEventLevel enumerates the values for metrics group item event level.
+type MetricsGroupItemEventLevel string
+
+const (
+	// CRITICAL ...
+	CRITICAL MetricsGroupItemEventLevel = "CRITICAL"
+	// INFO ...
+	INFO MetricsGroupItemEventLevel = "INFO"
+	// WARNING ...
+	WARNING MetricsGroupItemEventLevel = "WARNING"
+)
+
+// PossibleMetricsGroupItemEventLevelValues returns an array of possible values for the MetricsGroupItemEventLevel const type.
+func PossibleMetricsGroupItemEventLevelValues() []MetricsGroupItemEventLevel {
+	return []MetricsGroupItemEventLevel{CRITICAL, INFO, WARNING}
+}
+
 // QueryAggregationType enumerates the values for query aggregation type.
 type QueryAggregationType string
 

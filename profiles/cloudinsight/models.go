@@ -91,6 +91,37 @@ const (
 	Svr           DimensionType = original.Svr
 )
 
+type MetricsGroupItemCalculation = original.MetricsGroupItemCalculation
+
+const (
+	MetricsGroupItemCalculationAVG     MetricsGroupItemCalculation = original.MetricsGroupItemCalculationAVG
+	MetricsGroupItemCalculationCOUNT   MetricsGroupItemCalculation = original.MetricsGroupItemCalculationCOUNT
+	MetricsGroupItemCalculationCOUNTER MetricsGroupItemCalculation = original.MetricsGroupItemCalculationCOUNTER
+	MetricsGroupItemCalculationMAX     MetricsGroupItemCalculation = original.MetricsGroupItemCalculationMAX
+	MetricsGroupItemCalculationMIN     MetricsGroupItemCalculation = original.MetricsGroupItemCalculationMIN
+	MetricsGroupItemCalculationSUM     MetricsGroupItemCalculation = original.MetricsGroupItemCalculationSUM
+)
+
+type MetricsGroupItemCondition = original.MetricsGroupItemCondition
+
+const (
+	EQ  MetricsGroupItemCondition = original.EQ
+	EXP MetricsGroupItemCondition = original.EXP
+	GE  MetricsGroupItemCondition = original.GE
+	GT  MetricsGroupItemCondition = original.GT
+	LE  MetricsGroupItemCondition = original.LE
+	LT  MetricsGroupItemCondition = original.LT
+	NE  MetricsGroupItemCondition = original.NE
+)
+
+type MetricsGroupItemEventLevel = original.MetricsGroupItemEventLevel
+
+const (
+	CRITICAL MetricsGroupItemEventLevel = original.CRITICAL
+	INFO     MetricsGroupItemEventLevel = original.INFO
+	WARNING  MetricsGroupItemEventLevel = original.WARNING
+)
+
 type QueryAggregationType = original.QueryAggregationType
 
 const (
@@ -236,8 +267,10 @@ type CollectorClient = original.CollectorClient
 type CollectorRequest = original.CollectorRequest
 type CollectorResponse = original.CollectorResponse
 type DataClient = original.DataClient
+type DimensionItemParameter = original.DimensionItemParameter
 type DimensionParameter = original.DimensionParameter
 type DimensionResultParameter = original.DimensionResultParameter
+type DirectRuleGroupCreateRequest = original.DirectRuleGroupCreateRequest
 type EventClient = original.EventClient
 type EventRuleResponse = original.EventRuleResponse
 type EventSearchDimensionParameter = original.EventSearchDimensionParameter
@@ -251,17 +284,30 @@ type FilePluginRequest = original.FilePluginRequest
 type Int64 = original.Int64
 type ListEventSearchResultParameter = original.ListEventSearchResultParameter
 type ListFilePluginParameter = original.ListFilePluginParameter
+type ListInt64 = original.ListInt64
 type ListListFloat64 = original.ListListFloat64
+type ListMonitorGroupParameter = original.ListMonitorGroupParameter
 type ListMultipleDataParameter = original.ListMultipleDataParameter
 type ListPortPluginParameter = original.ListPortPluginParameter
 type ListProcessPluginParameter = original.ListProcessPluginParameter
+type ListRuleGroupItemListParameter = original.ListRuleGroupItemListParameter
 type ListSchemaExtendedStatusParameter = original.ListSchemaExtendedStatusParameter
 type ListServerTopMetricParameter = original.ListServerTopMetricParameter
+type ListSetObject = original.ListSetObject
 type ListString = original.ListString
 type MetricClient = original.MetricClient
+type MetricGroupClient = original.MetricGroupClient
+type MetricGroupListResponse = original.MetricGroupListResponse
 type MetricInfoParameter = original.MetricInfoParameter
+type MetricListRequest = original.MetricListRequest
+type MetricsGroupCreateorUpdateParameter = original.MetricsGroupCreateorUpdateParameter
+type MetricsGroupItemParameter = original.MetricsGroupItemParameter
+type MetricsGroupParameter = original.MetricsGroupParameter
+type MetricsGroupRequest = original.MetricsGroupRequest
 type MonitorClient = original.MonitorClient
+type MonitorGroupClient = original.MonitorGroupClient
 type MonitorGroupItemParameter = original.MonitorGroupItemParameter
+type MonitorGroupParameter = original.MonitorGroupParameter
 type MonitorGroupRequest = original.MonitorGroupRequest
 type MultipleDataParameter = original.MultipleDataParameter
 type NotificationClient = original.NotificationClient
@@ -276,8 +322,18 @@ type ProcessPluginRequest = original.ProcessPluginRequest
 type QueryMultipleRequest = original.QueryMultipleRequest
 type QueryRequest = original.QueryRequest
 type RecipientNotificationParameter = original.RecipientNotificationParameter
+type RemoveResourceFromRulesParameter = original.RemoveResourceFromRulesParameter
 type RuleGroup = original.RuleGroup
 type RuleGroupClient = original.RuleGroupClient
+type RuleGroupCopyForAsgGroupRequest = original.RuleGroupCopyForAsgGroupRequest
+type RuleGroupCopySettingRequest = original.RuleGroupCopySettingRequest
+type RuleGroupDeleteItemParameter = original.RuleGroupDeleteItemParameter
+type RuleGroupDeleteRequest = original.RuleGroupDeleteRequest
+type RuleGroupItemListParameter = original.RuleGroupItemListParameter
+type RuleGroupItemParameter = original.RuleGroupItemParameter
+type RuleGroupListQueryRequest = original.RuleGroupListQueryRequest
+type RuleGroupListQueryResponse = original.RuleGroupListQueryResponse
+type RuleGroupParameter = original.RuleGroupParameter
 type RuleGroupRequest = original.RuleGroupRequest
 type ScehmaUpdateResponse = original.ScehmaUpdateResponse
 type SchemaClient = original.SchemaClient
@@ -295,6 +351,7 @@ type ServerClient = original.ServerClient
 type ServerTopMetricParameter = original.ServerTopMetricParameter
 type String = original.String
 type SuspendRuleItemParameter = original.SuspendRuleItemParameter
+type TypeGroupRelatedRuleParameter = original.TypeGroupRelatedRuleParameter
 type WidgetMetricInfoParameter = original.WidgetMetricInfoParameter
 type WidgetMetricInfoResponse = original.WidgetMetricInfoResponse
 
@@ -343,11 +400,23 @@ func NewMetricClient() MetricClient {
 func NewMetricClientWithBaseURI(baseURI string) MetricClient {
 	return original.NewMetricClientWithBaseURI(baseURI)
 }
+func NewMetricGroupClient() MetricGroupClient {
+	return original.NewMetricGroupClient()
+}
+func NewMetricGroupClientWithBaseURI(baseURI string) MetricGroupClient {
+	return original.NewMetricGroupClientWithBaseURI(baseURI)
+}
 func NewMonitorClient() MonitorClient {
 	return original.NewMonitorClient()
 }
 func NewMonitorClientWithBaseURI(baseURI string) MonitorClient {
 	return original.NewMonitorClientWithBaseURI(baseURI)
+}
+func NewMonitorGroupClient() MonitorGroupClient {
+	return original.NewMonitorGroupClient()
+}
+func NewMonitorGroupClientWithBaseURI(baseURI string) MonitorGroupClient {
+	return original.NewMonitorGroupClientWithBaseURI(baseURI)
 }
 func NewNotificationClient() NotificationClient {
 	return original.NewNotificationClient()
@@ -405,6 +474,15 @@ func PossibleChartDataWidgetTypeValues() []ChartDataWidgetType {
 }
 func PossibleDimensionTypeValues() []DimensionType {
 	return original.PossibleDimensionTypeValues()
+}
+func PossibleMetricsGroupItemCalculationValues() []MetricsGroupItemCalculation {
+	return original.PossibleMetricsGroupItemCalculationValues()
+}
+func PossibleMetricsGroupItemConditionValues() []MetricsGroupItemCondition {
+	return original.PossibleMetricsGroupItemConditionValues()
+}
+func PossibleMetricsGroupItemEventLevelValues() []MetricsGroupItemEventLevel {
+	return original.PossibleMetricsGroupItemEventLevelValues()
 }
 func PossibleQueryAggregationTypeValues() []QueryAggregationType {
 	return original.PossibleQueryAggregationTypeValues()

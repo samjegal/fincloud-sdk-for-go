@@ -41,9 +41,51 @@ var _ NotificationClientAPI = (*cloudinsight.NotificationClient)(nil)
 // MetricClientAPI contains the set of methods on the MetricClient type.
 type MetricClientAPI interface {
 	GetGroupItemsID(ctx context.Context, count int32) (result cloudinsight.ListString, err error)
+	SearchList(ctx context.Context, parameters cloudinsight.MetricListRequest) (result autorest.Response, err error)
 }
 
 var _ MetricClientAPI = (*cloudinsight.MetricClient)(nil)
+
+// RuleGroupClientAPI contains the set of methods on the RuleGroupClient type.
+type RuleGroupClientAPI interface {
+	Copy(ctx context.Context, ID string) (result cloudinsight.String, err error)
+	CopyAsgGroup(ctx context.Context, parameters cloudinsight.RuleGroupCopyForAsgGroupRequest) (result cloudinsight.ListSetObject, err error)
+	CopySettings(ctx context.Context, parameters cloudinsight.RuleGroupCopySettingRequest) (result cloudinsight.ListInt64, err error)
+	Create(ctx context.Context, parameters cloudinsight.RuleGroupRequest) (result cloudinsight.Int64, err error)
+	CreateDirectly(ctx context.Context, parameters cloudinsight.DirectRuleGroupCreateRequest) (result cloudinsight.String, err error)
+	Delete(ctx context.Context, parameters cloudinsight.RuleGroupDeleteRequest) (result autorest.Response, err error)
+	DeleteByProdKeyAndID(ctx context.Context, prodKey string, ID string) (result autorest.Response, err error)
+	GetByMonitorGroupIds(ctx context.Context, prodKey string, parameters []string) (result cloudinsight.ListRuleGroupItemListParameter, err error)
+	Query(ctx context.Context, parameters cloudinsight.RuleGroupListQueryRequest) (result cloudinsight.RuleGroupListQueryResponse, err error)
+	QueryByProdKeyAndID(ctx context.Context, prodKey string, ID string) (result cloudinsight.RuleGroupParameter, err error)
+	Update(ctx context.Context, parameters cloudinsight.RuleGroupRequest) (result autorest.Response, err error)
+}
+
+var _ RuleGroupClientAPI = (*cloudinsight.RuleGroupClient)(nil)
+
+// MonitorGroupClientAPI contains the set of methods on the MonitorGroupClient type.
+type MonitorGroupClientAPI interface {
+	DeleteForce(ctx context.Context, prodKey string, parameters []cloudinsight.TypeGroupRelatedRuleParameter) (result autorest.Response, err error)
+	DeleteForce1(ctx context.Context, prodKey string, parameters []cloudinsight.TypeGroupRelatedRuleParameter) (result cloudinsight.String, err error)
+	Get(ctx context.Context, prodKey string, ID string) (result cloudinsight.MonitorGroupParameter, err error)
+	GetByMonitorGroupIds(ctx context.Context, prodKey string, parameters []string) (result cloudinsight.String, err error)
+	List(ctx context.Context, prodKey string) (result cloudinsight.ListMonitorGroupParameter, err error)
+	RemoveResourceFromRules(ctx context.Context, parameters cloudinsight.RemoveResourceFromRulesParameter) (result autorest.Response, err error)
+}
+
+var _ MonitorGroupClientAPI = (*cloudinsight.MonitorGroupClient)(nil)
+
+// MetricGroupClientAPI contains the set of methods on the MetricGroupClient type.
+type MetricGroupClientAPI interface {
+	Create(ctx context.Context, parameters cloudinsight.MetricsGroupRequest) (result cloudinsight.String, err error)
+	Delete(ctx context.Context, prodKey string, parameters []string) (result autorest.Response, err error)
+	DeleteByProdKeyAndID(ctx context.Context, prodKey string, ID string) (result autorest.Response, err error)
+	Get(ctx context.Context, prodKey string, ID string) (result cloudinsight.MetricsGroupParameter, err error)
+	List(ctx context.Context, prodKey string) (result cloudinsight.MetricGroupListResponse, err error)
+	Update(ctx context.Context, parameters cloudinsight.MetricsGroupRequest) (result autorest.Response, err error)
+}
+
+var _ MetricGroupClientAPI = (*cloudinsight.MetricGroupClient)(nil)
 
 // MonitorClientAPI contains the set of methods on the MonitorClient type.
 type MonitorClientAPI interface {
@@ -51,13 +93,6 @@ type MonitorClientAPI interface {
 }
 
 var _ MonitorClientAPI = (*cloudinsight.MonitorClient)(nil)
-
-// RuleGroupClientAPI contains the set of methods on the RuleGroupClient type.
-type RuleGroupClientAPI interface {
-	Create(ctx context.Context, parameters cloudinsight.RuleGroupRequest) (result cloudinsight.Int64, err error)
-}
-
-var _ RuleGroupClientAPI = (*cloudinsight.RuleGroupClient)(nil)
 
 // SchemaClientAPI contains the set of methods on the SchemaClient type.
 type SchemaClientAPI interface {

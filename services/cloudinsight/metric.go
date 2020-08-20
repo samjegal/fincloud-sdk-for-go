@@ -92,3 +92,66 @@ func (client MetricClient) GetGroupItemsIDResponder(resp *http.Response) (result
 	result.Response = autorest.Response{Response: resp}
 	return
 }
+
+// SearchList 감시대상 그룹에서 조회가능한 항목(metric) 리스트를 조회합니다.
+// Parameters:
+// parameters - search metric list
+func (client MetricClient) SearchList(ctx context.Context, parameters MetricListRequest) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/MetricClient.SearchList")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.SearchListPreparer(ctx, parameters)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "cloudinsight.MetricClient", "SearchList", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.SearchListSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "cloudinsight.MetricClient", "SearchList", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.SearchListResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "cloudinsight.MetricClient", "SearchList", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// SearchListPreparer prepares the SearchList request.
+func (client MetricClient) SearchListPreparer(ctx context.Context, parameters MetricListRequest) (*http.Request, error) {
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/cw_fea/real/cw/api/rule/group/metric/search"),
+		autorest.WithJSON(parameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// SearchListSender sends the SearchList request. The method will close the
+// http.Response Body if it receives an error.
+func (client MetricClient) SearchListSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// SearchListResponder handles the response to the SearchList request. The method always
+// closes the http.Response Body.
+func (client MetricClient) SearchListResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusNotFound, http.StatusInternalServerError),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}

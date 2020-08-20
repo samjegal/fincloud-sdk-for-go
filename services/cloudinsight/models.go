@@ -51,6 +51,14 @@ type CollectorResponse struct {
 	Message *string `json:"message,omitempty"`
 }
 
+// DimensionItemParameter dimension object
+type DimensionItemParameter struct {
+	// Name - Dimension name
+	Name *string `json:"name,omitempty"`
+	// Value - Dimension value
+	Value *string `json:"value,omitempty"`
+}
+
 // DimensionParameter ...
 type DimensionParameter struct {
 	// Type - Dimension 타입. Possible values include: 'CPU', 'Disk', 'Fs', 'Memory', 'Ntwk', 'Process', 'Svr', 'PluginProcess', 'PluginFile', 'PluginPort', 'Agent'
@@ -121,6 +129,25 @@ type DimensionResultParameter struct {
 	LayerType *string `json:"layerType,omitempty"`
 	// AutoScalingGroupNo - 오토 스케일링 그룹 번호
 	AutoScalingGroupNo *string `json:"autoScalingGroupNo,omitempty"`
+}
+
+// DirectRuleGroupCreateRequest 감시 대상 그룹, 감시 항목 그룹 생성 없이 Event Rule 생성
+type DirectRuleGroupCreateRequest struct {
+	// AsgPolicys - Auto Scaling Group Policy, 여러개 입력 가능
+	AsgPolicys *[]AsgPolicyParameter `json:"asgPolicys,omitempty"`
+	CfTriggers *[]string             `json:"cfTriggers,omitempty"`
+	// GroupDesc - Event Rule 설명
+	GroupDesc *string `json:"groupDesc,omitempty"`
+	// GroupName - Event Rule 이름
+	GroupName *string `json:"groupName,omitempty"`
+	// MetricsGroup - 감시 항목 설정
+	MetricsGroup *MetricsGroupCreateorUpdateParameter `json:"metricsGroup,omitempty"`
+	// MonitorGroup - 감시 대상 설정
+	MonitorGroup *MonitorGroupParameter `json:"monitorGroup,omitempty"`
+	// ProdKey - 상품의 cw_key
+	ProdKey *string `json:"prodKey,omitempty"`
+	// RecipientNotifications - 통보대상그룹, 여러개 입력 가능
+	RecipientNotifications *[]RecipientNotificationParameter `json:"recipientNotifications,omitempty"`
 }
 
 // EventRuleResponse event rule search response, used by NAP to check whether the given Notification GroupNo
@@ -241,10 +268,22 @@ type ListFilePluginParameter struct {
 	Value             *[]FilePluginParameter `json:"value,omitempty"`
 }
 
+// ListInt64 ...
+type ListInt64 struct {
+	autorest.Response `json:"-"`
+	Value             *[]int64 `json:"value,omitempty"`
+}
+
 // ListListFloat64 ...
 type ListListFloat64 struct {
 	autorest.Response `json:"-"`
 	Value             *[][]float64 `json:"value,omitempty"`
+}
+
+// ListMonitorGroupParameter ...
+type ListMonitorGroupParameter struct {
+	autorest.Response `json:"-"`
+	Value             *[]MonitorGroupParameter `json:"value,omitempty"`
 }
 
 // ListMultipleDataParameter ...
@@ -265,6 +304,12 @@ type ListProcessPluginParameter struct {
 	Value             *[]ProcessPluginParameter `json:"value,omitempty"`
 }
 
+// ListRuleGroupItemListParameter ...
+type ListRuleGroupItemListParameter struct {
+	autorest.Response `json:"-"`
+	Value             *[]RuleGroupItemListParameter `json:"value,omitempty"`
+}
+
 // ListSchemaExtendedStatusParameter ...
 type ListSchemaExtendedStatusParameter struct {
 	autorest.Response `json:"-"`
@@ -277,10 +322,23 @@ type ListServerTopMetricParameter struct {
 	Value             *[]ServerTopMetricParameter `json:"value,omitempty"`
 }
 
+// ListSetObject ...
+type ListSetObject struct {
+	autorest.Response `json:"-"`
+	Value             *[]interface{} `json:"value,omitempty"`
+}
+
 // ListString ...
 type ListString struct {
 	autorest.Response `json:"-"`
 	Value             *[]string `json:"value,omitempty"`
+}
+
+// MetricGroupListResponse metrics list
+type MetricGroupListResponse struct {
+	autorest.Response `json:"-"`
+	// MetricsGroups - Metrics list of specified criteria
+	MetricsGroups *[]MetricsGroupParameter `json:"metricsGroups,omitempty"`
 }
 
 // MetricInfoParameter 데이터 조회 요청
@@ -301,12 +359,114 @@ type MetricInfoParameter struct {
 	Dimensions *DimensionParameter `json:"dimensions,omitempty"`
 }
 
+// MetricListRequest metric 리스트 조회
+type MetricListRequest struct {
+	// DimValues - 조회하려는 Dimension 정보
+	DimValues *[]DimensionItemParameter `json:"dimValues,omitempty"`
+	// DimensionNames - dimension names
+	DimensionNames *[]string `json:"dimensionNames,omitempty"`
+	// DimensionSelected - for query metric group
+	DimensionSelected *string `json:"dimensionSelected,omitempty"`
+	// EndTime - 조회 종료 시간
+	EndTime *int64 `json:"endTime,omitempty"`
+	// PageNum - The number of page to get, default to 0 if missing will cause no pagination
+	PageNum *int32 `json:"pageNum,omitempty"`
+	// PageSize - Page size of the request, default to 0 if missing will cause no pagination
+	PageSize *int32 `json:"pageSize,omitempty"`
+	// ProdKey - 상품의 cw_key
+	ProdKey *string `json:"prodKey,omitempty"`
+	// ProductName - 상품의 이름
+	ProductName *string `json:"productName,omitempty"`
+	// Query - Query keyword string
+	Query *string `json:"query,omitempty"`
+	// StartTime - 조회 시작 시간
+	StartTime *int64 `json:"startTime,omitempty"`
+}
+
+// MetricsGroupCreateorUpdateParameter create or update metrics group request
+type MetricsGroupCreateorUpdateParameter struct {
+	// GroupDesc - desc of the metric group
+	GroupDesc *string `json:"groupDesc,omitempty"`
+	// GroupName - name of the metric group
+	GroupName *string `json:"groupName,omitempty"`
+	// ID - id of metrics group, empty when create, but not in update
+	ID *string `json:"id,omitempty"`
+	// MetricsGroupItems - metrics group List
+	MetricsGroupItems *[]MetricsGroupItemParameter `json:"metricsGroupItems,omitempty"`
+	// ProdKey - product key
+	ProdKey        *string `json:"prodKey,omitempty"`
+	TemporaryGroup *bool   `json:"temporaryGroup,omitempty"`
+}
+
+// MetricsGroupItemParameter response for metrics group item
+type MetricsGroupItemParameter struct {
+	// Calculation - Possible values include: 'MetricsGroupItemCalculationCOUNT', 'MetricsGroupItemCalculationSUM', 'MetricsGroupItemCalculationMAX', 'MetricsGroupItemCalculationMIN', 'MetricsGroupItemCalculationAVG', 'MetricsGroupItemCalculationCOUNTER'
+	Calculation MetricsGroupItemCalculation `json:"calculation,omitempty"`
+	// Condition - Possible values include: 'LT', 'LE', 'EQ', 'GE', 'GT', 'NE', 'EXP'
+	Condition  MetricsGroupItemCondition `json:"condition,omitempty"`
+	Desc       *string                   `json:"desc,omitempty"`
+	Dimensions *[]DimensionParameter     `json:"dimensions,omitempty"`
+	Duration   *int64                    `json:"duration,omitempty"`
+	// EventLevel - Possible values include: 'INFO', 'WARNING', 'CRITICAL'
+	EventLevel        MetricsGroupItemEventLevel `json:"eventLevel,omitempty"`
+	Metric            *string                    `json:"metric,omitempty"`
+	MetricGroupItemID *string                    `json:"metricGroupItemId,omitempty"`
+	Threshold         *float64                   `json:"threshold,omitempty"`
+}
+
+// MetricsGroupParameter response for metrics group
+type MetricsGroupParameter struct {
+	autorest.Response `json:"-"`
+	CreateTime        *int64                       `json:"createTime,omitempty"`
+	DomainCode        *string                      `json:"domainCode,omitempty"`
+	GroupDesc         *string                      `json:"groupDesc,omitempty"`
+	GroupName         *string                      `json:"groupName,omitempty"`
+	ID                *string                      `json:"id,omitempty"`
+	MbrNo             *string                      `json:"mbrNo,omitempty"`
+	Metrics           *[]MetricsGroupItemParameter `json:"metrics,omitempty"`
+	ProdKey           *string                      `json:"prodKey,omitempty"`
+	RegionCode        *string                      `json:"regionCode,omitempty"`
+	TemporaryGroup    *bool                        `json:"temporaryGroup,omitempty"`
+	UpdateTime        *int64                       `json:"updateTime,omitempty"`
+}
+
+// MetricsGroupRequest 감시 항목 그룹 생성/수정 시 필요
+type MetricsGroupRequest struct {
+	// GroupDesc - 감시 항목 그룹 설명
+	GroupDesc *string `json:"groupDesc,omitempty"`
+	// GroupName - 감시 항목 그룹 이름
+	GroupName *string `json:"groupName,omitempty"`
+	// ID - 감시 항목 그룹 id
+	ID *string `json:"id,omitempty"`
+	// MetricsGroupItems - 감시 항목 지정
+	MetricsGroupItems *[]MetricsGroupItemParameter `json:"metricsGroupItems,omitempty"`
+	// ProdKey - 상품의 cw_key
+	ProdKey *string `json:"prodKey,omitempty"`
+	// TemporaryGroup - 감시 항목 그룹 생성 여부, false일 경우 감시 항목 그룹 생성 없이 Event Rule을 생성
+	TemporaryGroup *bool `json:"temporaryGroup,omitempty"`
+}
+
 // MonitorGroupItemParameter 감시 대상
 type MonitorGroupItemParameter struct {
 	// Nrn - NRN이란 네이버 클라우드 플랫폼의 모든 리소스를 일정한 규칙으로 표현하기 위한 정보이며 상품별로 구성요소가 다를 수 있습니다.
 	Nrn *string `json:"nrn,omitempty"`
 	// ResourceID - 감시 대상 Id
 	ResourceID *string `json:"resourceId,omitempty"`
+}
+
+// MonitorGroupParameter monitorGrpDto
+type MonitorGroupParameter struct {
+	autorest.Response `json:"-"`
+	// GroupDesc - desc of the monitor group
+	GroupDesc *string `json:"groupDesc,omitempty"`
+	// GroupName - name of the monitor group
+	GroupName *string `json:"groupName,omitempty"`
+	ID        *string `json:"id,omitempty"`
+	// MonitorGroupItemList - monitor group servers
+	MonitorGroupItemList *[]MonitorGroupItemParameter `json:"monitorGroupItemList,omitempty"`
+	// ProdKey - product key
+	ProdKey        *string `json:"prodKey,omitempty"`
+	TemporaryGroup *bool   `json:"temporaryGroup,omitempty"`
 }
 
 // MonitorGroupRequest 감시 대상 그룹 생성/수정 시 필요
@@ -432,6 +592,13 @@ type RecipientNotificationParameter struct {
 	NotifyTypes *[]RecipientNotificationNotifyType `json:"notifyTypes,omitempty"`
 }
 
+// RemoveResourceFromRulesParameter model for delete resourceId from given rules
+type RemoveResourceFromRulesParameter struct {
+	ProdKey      *string   `json:"prodKey,omitempty"`
+	ResourceID   *string   `json:"resourceId,omitempty"`
+	RuleGroupIds *[]string `json:"ruleGroupIds,omitempty"`
+}
+
 // RuleGroup ...
 type RuleGroup struct {
 	ActionSubAccountID *int32                          `json:"actionSubAccountId,omitempty"`
@@ -531,6 +698,132 @@ func (rg RuleGroup) MarshalJSON() ([]byte, error) {
 		objectMap["updateTime"] = rg.UpdateTime
 	}
 	return json.Marshal(objectMap)
+}
+
+// RuleGroupCopyForAsgGroupRequest copy asg rule information
+type RuleGroupCopyForAsgGroupRequest struct {
+	// NewAsgGroupNo - New asg groupNo
+	NewAsgGroupNo *int64 `json:"newAsgGroupNo,omitempty"`
+	// NewAsgPolicyNo - New asg policyNo
+	NewAsgPolicyNo *int64 `json:"newAsgPolicyNo,omitempty"`
+	// ProtoAsgGroupNo - Proto asg groupNo
+	ProtoAsgGroupNo *int64 `json:"protoAsgGroupNo,omitempty"`
+	// ProtoAsgPolicyNo - Proto asg policyNo
+	ProtoAsgPolicyNo *int64 `json:"protoAsgPolicyNo,omitempty"`
+}
+
+// RuleGroupCopySettingRequest copySettingsDto
+type RuleGroupCopySettingRequest struct {
+	// ProdKey - 상품의 cw_key
+	ProdKey *string `json:"prodKey,omitempty"`
+	// ResourceID - 삭제할 감시 대상 id
+	ResourceID *string `json:"resourceId,omitempty"`
+	// RuleGroupIds - Event Rule id
+	RuleGroupIds *[]string `json:"ruleGroupIds,omitempty"`
+}
+
+// RuleGroupDeleteItemParameter 삭제할 Event Rule을 지정
+type RuleGroupDeleteItemParameter struct {
+	// ProdKey - 상품의 cw_key
+	ProdKey *string `json:"prodKey,omitempty"`
+	// RuleGroupID - Event Rule id
+	RuleGroupID *string `json:"ruleGroupId,omitempty"`
+}
+
+// RuleGroupDeleteRequest objects in rule group to be deleted
+type RuleGroupDeleteRequest struct {
+	// Items - rule group List
+	Items *[]RuleGroupDeleteItemParameter `json:"items,omitempty"`
+}
+
+// RuleGroupItemListParameter ...
+type RuleGroupItemListParameter struct {
+	ID                   *string                   `json:"id,omitempty"`
+	RuleGroupItemDtoList *[]RuleGroupItemParameter `json:"ruleGroupItemDtoList,omitempty"`
+}
+
+// RuleGroupItemParameter rule group item list
+type RuleGroupItemParameter struct {
+	AsgPolicys *[]AsgPolicyParameter `json:"asgPolicys,omitempty"`
+	// CfTriggers - 추후 제공될 예정입니다. 현재는 미사용 상태
+	CfTriggers *[]string `json:"cfTriggers,omitempty"`
+	// CreateTime - 생성 시간
+	CreateTime *float64 `json:"createTime,omitempty"`
+	DomainCode *string  `json:"domainCode,omitempty"`
+	// GroupDesc - Event Rule 설명
+	GroupDesc *string `json:"groupDesc,omitempty"`
+	// GroupName - Event Rule 이름
+	GroupName *string `json:"groupName,omitempty"`
+	// ID - Event Rule id
+	ID            *string                  `json:"id,omitempty"`
+	MetricsGroups *[]MetricsGroupParameter `json:"metricsGroups,omitempty"`
+	MonitorGroups *[]MonitorGroupParameter `json:"monitorGroups,omitempty"`
+	// ProdKey - 상품의 cw_key
+	ProdKey *string `json:"prodKey,omitempty"`
+	// RecipientNotifications - 통보 대상 그룹, 여러개 입력 가능
+	RecipientNotifications *[]RecipientNotificationParameter `json:"recipientNotifications,omitempty"`
+	RegionCode             *string                           `json:"regionCode,omitempty"`
+	RuleVersion            *string                           `json:"ruleVersion,omitempty"`
+	// SuspendRuleItems - Event Rule 중 비활성화 시킬 목록 설정
+	SuspendRuleItems *[]SuspendRuleItemParameter `json:"suspendRuleItems,omitempty"`
+	// UpdateTime - 갱신 시간
+	UpdateTime *float64 `json:"updateTime,omitempty"`
+}
+
+// RuleGroupListQueryRequest rule group list
+type RuleGroupListQueryRequest struct {
+	// Dimensions - for products like cdb-mysql use this, like '"dimensions":{"instanceNo":"1178714"}', also support other dimensions
+	Dimensions map[string]*string `json:"dimensions"`
+	// PageNum - page Number
+	PageNum *int32 `json:"pageNum,omitempty"`
+	// PageSize - page size
+	PageSize *int32 `json:"pageSize,omitempty"`
+	// ProdKey - prodkey
+	ProdKey *string `json:"prodKey,omitempty"`
+	// Search - keyword
+	Search *string `json:"search,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for RuleGroupListQueryRequest.
+func (rglqr RuleGroupListQueryRequest) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if rglqr.Dimensions != nil {
+		objectMap["dimensions"] = rglqr.Dimensions
+	}
+	if rglqr.PageNum != nil {
+		objectMap["pageNum"] = rglqr.PageNum
+	}
+	if rglqr.PageSize != nil {
+		objectMap["pageSize"] = rglqr.PageSize
+	}
+	if rglqr.ProdKey != nil {
+		objectMap["prodKey"] = rglqr.ProdKey
+	}
+	if rglqr.Search != nil {
+		objectMap["search"] = rglqr.Search
+	}
+	return json.Marshal(objectMap)
+}
+
+// RuleGroupListQueryResponse rule group list
+type RuleGroupListQueryResponse struct {
+	autorest.Response `json:"-"`
+	// PageNum - Current page number
+	PageNum *int32 `json:"pageNum,omitempty"`
+	// PageSize - Current page size
+	PageSize *int32 `json:"pageSize,omitempty"`
+	// RuleGroups - rule group list of specified criteria
+	RuleGroups *[]RuleGroupItemParameter `json:"ruleGroups,omitempty"`
+	// TotalPages - Total pages of the list
+	TotalPages *int64 `json:"totalPages,omitempty"`
+	// TotalRecords - Total number of records
+	TotalRecords *int64 `json:"totalRecords,omitempty"`
+}
+
+// RuleGroupParameter response of rule group model
+type RuleGroupParameter struct {
+	autorest.Response `json:"-"`
+	RuleGroup         *RuleGroupItemParameter `json:"ruleGroup,omitempty"`
 }
 
 // RuleGroupRequest event Rule 생성/수정 시 필요
@@ -786,6 +1079,14 @@ type SuspendRuleItemParameter struct {
 	MetricGroupItemID *string `json:"metricGroupItemId,omitempty"`
 	// ResourceID - 감시 대상 id
 	ResourceID *string `json:"resourceId,omitempty"`
+}
+
+// TypeGroupRelatedRuleParameter ...
+type TypeGroupRelatedRuleParameter struct {
+	// ID - 삭제하려는 감시 대상 그룹 id
+	ID *string `json:"id,omitempty"`
+	// RuleGroupItemDtoList - 삭제하려는 Event Rule, 여러개 입력 가능
+	RuleGroupItemDtoList *[]RuleGroupItemParameter `json:"ruleGroupItemDtoList,omitempty"`
 }
 
 // WidgetMetricInfoParameter widget 내 Metric 정보
