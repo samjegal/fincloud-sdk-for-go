@@ -1,3 +1,9 @@
+## 1.8.4 (August 20, 2020)
+
+### UPDATED SERVICES
+
+- Cloud Insight
+
 ## 1.8.3 (August 13, 2020)
 
 ### UPDATED SERVICES
