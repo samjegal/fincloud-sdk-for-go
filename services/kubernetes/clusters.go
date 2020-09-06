@@ -4,11 +4,15 @@ package kubernetes
 
 import (
 	"context"
+	"crypto"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
 	"github.com/Azure/go-autorest/tracing"
+	"github.com/samjegal/go-fincloud-helpers/security"
 	"net/http"
+	"strconv"
+	"time"
 )
 
 // ClustersClient is the kubernetes Client
@@ -30,7 +34,7 @@ func NewClustersClientWithBaseURI(baseURI string) ClustersClient {
 // Create 클러스터 생성
 // Parameters:
 // parameters - 클러스터 생성 파라미터
-func (client ClustersClient) Create(ctx context.Context, parameters ClusterRequestParameter) (result autorest.Response, err error) {
+func (client ClustersClient) Create(ctx context.Context, parameters ClusterRequest) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ClustersClient.Create")
 		defer func() {
@@ -79,13 +83,22 @@ func (client ClustersClient) Create(ctx context.Context, parameters ClusterReque
 }
 
 // CreatePreparer prepares the Create request.
-func (client ClustersClient) CreatePreparer(ctx context.Context, parameters ClusterRequestParameter) (*http.Request, error) {
+func (client ClustersClient) CreatePreparer(ctx context.Context, parameters ClusterRequest) (*http.Request, error) {
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("POST", autorest.GetPath(DefaultBaseURI, "/clusters")+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json;charset=UTF-8"),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/nks/v2/clusters"),
-		autorest.WithJSON(parameters))
+		autorest.WithPath("/clusters"),
+		autorest.WithJSON(parameters),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -147,10 +160,19 @@ func (client ClustersClient) DeletePreparer(ctx context.Context, UUID string) (*
 		"uuid": autorest.Encode("path", UUID),
 	}
 
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("DELETE", autorest.GetPath(DefaultBaseURI, "/clusters/{uuid}")+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/nks/v2/clusters/{uuid}", pathParameters))
+		autorest.WithPathParameters("/clusters/{uuid}", pathParameters),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -174,7 +196,7 @@ func (client ClustersClient) DeleteResponder(resp *http.Response) (result autore
 // Get 클러스터 조회
 // Parameters:
 // UUID - 클러스터 UUID
-func (client ClustersClient) Get(ctx context.Context, UUID string) (result ClusterResponseParameter, err error) {
+func (client ClustersClient) Get(ctx context.Context, UUID string) (result ClusterResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ClustersClient.Get")
 		defer func() {
@@ -212,10 +234,19 @@ func (client ClustersClient) GetPreparer(ctx context.Context, UUID string) (*htt
 		"uuid": autorest.Encode("path", UUID),
 	}
 
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("GET", autorest.GetPath(DefaultBaseURI, "/clusters/{uuid}")+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/nks/v2/clusters/{uuid}", pathParameters))
+		autorest.WithPathParameters("/clusters/{uuid}", pathParameters),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -227,7 +258,7 @@ func (client ClustersClient) GetSender(req *http.Request) (*http.Response, error
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client ClustersClient) GetResponder(resp *http.Response) (result ClusterResponseParameter, err error) {
+func (client ClustersClient) GetResponder(resp *http.Response) (result ClusterResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusInternalServerError),
@@ -238,7 +269,7 @@ func (client ClustersClient) GetResponder(resp *http.Response) (result ClusterRe
 }
 
 // List 클러스터 목록 조회
-func (client ClustersClient) List(ctx context.Context) (result ClustersListParameter, err error) {
+func (client ClustersClient) List(ctx context.Context) (result ClustersListResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ClustersClient.List")
 		defer func() {
@@ -272,10 +303,19 @@ func (client ClustersClient) List(ctx context.Context) (result ClustersListParam
 
 // ListPreparer prepares the List request.
 func (client ClustersClient) ListPreparer(ctx context.Context) (*http.Request, error) {
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("GET", autorest.GetPath(DefaultBaseURI, "/clusters")+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/nks/v2/clusters"))
+		autorest.WithPath("/clusters"),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -287,7 +327,7 @@ func (client ClustersClient) ListSender(req *http.Request) (*http.Response, erro
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client ClustersClient) ListResponder(resp *http.Response) (result ClustersListParameter, err error) {
+func (client ClustersClient) ListResponder(resp *http.Response) (result ClustersListResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusInternalServerError),

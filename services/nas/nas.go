@@ -4,10 +4,14 @@ package nas
 
 import (
 	"context"
+	"crypto"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/tracing"
+	"github.com/samjegal/go-fincloud-helpers/security"
 	"net/http"
+	"strconv"
+	"time"
 )
 
 // Client is the NAS Client
@@ -28,11 +32,10 @@ func NewClientWithBaseURI(baseURI string) Client {
 
 // AddAccessControl NAS 볼륨 접근제어를 추가
 // Parameters:
-// responseFormatType - 반환 데이터 포맷 타입
 // nasVolumeInstanceNo - NAS 볼륜 인스턴스 번호
 // serverInstanceNoListN - 서버 인스턴스 번호 리스트
 // regionCode - REGION 코드
-func (client Client) AddAccessControl(ctx context.Context, responseFormatType string, nasVolumeInstanceNo string, serverInstanceNoListN string, regionCode string) (result VolumeAccessControlResponse, err error) {
+func (client Client) AddAccessControl(ctx context.Context, nasVolumeInstanceNo string, serverInstanceNoListN string, regionCode string) (result VolumeAccessControlResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.AddAccessControl")
 		defer func() {
@@ -43,7 +46,7 @@ func (client Client) AddAccessControl(ctx context.Context, responseFormatType st
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.AddAccessControlPreparer(ctx, responseFormatType, nasVolumeInstanceNo, serverInstanceNoListN, regionCode)
+	req, err := client.AddAccessControlPreparer(ctx, nasVolumeInstanceNo, serverInstanceNoListN, regionCode)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "nas.Client", "AddAccessControl", nil, "Failure preparing request")
 		return
@@ -65,10 +68,10 @@ func (client Client) AddAccessControl(ctx context.Context, responseFormatType st
 }
 
 // AddAccessControlPreparer prepares the AddAccessControl request.
-func (client Client) AddAccessControlPreparer(ctx context.Context, responseFormatType string, nasVolumeInstanceNo string, serverInstanceNoListN string, regionCode string) (*http.Request, error) {
+func (client Client) AddAccessControlPreparer(ctx context.Context, nasVolumeInstanceNo string, serverInstanceNoListN string, regionCode string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"nasVolumeInstanceNo":    autorest.Encode("query", nasVolumeInstanceNo),
-		"responseFormatType":     autorest.Encode("query", responseFormatType),
+		"responseFormatType":     autorest.Encode("query", "json"),
 		"serverInstanceNoList.N": autorest.Encode("query", serverInstanceNoListN),
 	}
 	if len(regionCode) > 0 {
@@ -77,11 +80,20 @@ func (client Client) AddAccessControlPreparer(ctx context.Context, responseForma
 		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
 	}
 
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("POST", autorest.GetPath(DefaultBaseURI, "/addNasVolumeAccessControl")+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/vnas/v2/addNasVolumeAccessControl"),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithPath("/addNasVolumeAccessControl"),
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -105,11 +117,10 @@ func (client Client) AddAccessControlResponder(resp *http.Response) (result Volu
 
 // ChangeSize NAS 볼륨 사이즈를 변경
 // Parameters:
-// responseFormatType - 반환 데이터 포맷 타입
 // nasVolumeInstanceNo - NAS 볼륜 인스턴스 번호
 // volumeSize - 볼륨 사이즈
 // regionCode - REGION 코드
-func (client Client) ChangeSize(ctx context.Context, responseFormatType string, nasVolumeInstanceNo string, volumeSize string, regionCode string) (result VolumeSizeResponse, err error) {
+func (client Client) ChangeSize(ctx context.Context, nasVolumeInstanceNo string, volumeSize string, regionCode string) (result VolumeSizeResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.ChangeSize")
 		defer func() {
@@ -120,7 +131,7 @@ func (client Client) ChangeSize(ctx context.Context, responseFormatType string, 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.ChangeSizePreparer(ctx, responseFormatType, nasVolumeInstanceNo, volumeSize, regionCode)
+	req, err := client.ChangeSizePreparer(ctx, nasVolumeInstanceNo, volumeSize, regionCode)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "nas.Client", "ChangeSize", nil, "Failure preparing request")
 		return
@@ -142,10 +153,10 @@ func (client Client) ChangeSize(ctx context.Context, responseFormatType string, 
 }
 
 // ChangeSizePreparer prepares the ChangeSize request.
-func (client Client) ChangeSizePreparer(ctx context.Context, responseFormatType string, nasVolumeInstanceNo string, volumeSize string, regionCode string) (*http.Request, error) {
+func (client Client) ChangeSizePreparer(ctx context.Context, nasVolumeInstanceNo string, volumeSize string, regionCode string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"nasVolumeInstanceNo": autorest.Encode("query", nasVolumeInstanceNo),
-		"responseFormatType":  autorest.Encode("query", responseFormatType),
+		"responseFormatType":  autorest.Encode("query", "json"),
 		"volumeSize":          autorest.Encode("query", volumeSize),
 	}
 	if len(regionCode) > 0 {
@@ -154,11 +165,20 @@ func (client Client) ChangeSizePreparer(ctx context.Context, responseFormatType 
 		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
 	}
 
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("POST", autorest.GetPath(DefaultBaseURI, "/changeNasVolumeSize")+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/vnas/v2/changeNasVolumeSize"),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithPath("/changeNasVolumeSize"),
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -182,7 +202,6 @@ func (client Client) ChangeSizeResponder(resp *http.Response) (result VolumeSize
 
 // Create NAS 볼륨 인스턴스를 생성
 // Parameters:
-// responseFormatType - 반환 데이터 포맷 타입
 // volumeSize - 볼륨 사이즈
 // regionCode - REGION 코드
 // zoneCode - ZONE 코드
@@ -193,7 +212,7 @@ func (client Client) ChangeSizeResponder(resp *http.Response) (result VolumeSize
 // cifsUserPassword - CIFS 유저 비밀번호
 // isEncryptedVolume - 볼륨 암호화 여부
 // nasVolumeDescription - NAS 볼륨 설명
-func (client Client) Create(ctx context.Context, responseFormatType string, volumeSize string, regionCode string, zoneCode string, volumeName string, volumeAllotmentProtocolTypeCode VolumeAllotmentProtocolTypeCode, serverInstanceNoListN string, cifsUserName string, cifsUserPassword string, isEncryptedVolume EncryptedVolume, nasVolumeDescription string) (result VolumeInstancesResponse, err error) {
+func (client Client) Create(ctx context.Context, volumeSize string, regionCode string, zoneCode string, volumeName string, volumeAllotmentProtocolTypeCode VolumeAllotmentProtocolTypeCode, serverInstanceNoListN string, cifsUserName string, cifsUserPassword string, isEncryptedVolume EncryptedVolume, nasVolumeDescription string) (result VolumeInstancesResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.Create")
 		defer func() {
@@ -204,7 +223,7 @@ func (client Client) Create(ctx context.Context, responseFormatType string, volu
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.CreatePreparer(ctx, responseFormatType, volumeSize, regionCode, zoneCode, volumeName, volumeAllotmentProtocolTypeCode, serverInstanceNoListN, cifsUserName, cifsUserPassword, isEncryptedVolume, nasVolumeDescription)
+	req, err := client.CreatePreparer(ctx, volumeSize, regionCode, zoneCode, volumeName, volumeAllotmentProtocolTypeCode, serverInstanceNoListN, cifsUserName, cifsUserPassword, isEncryptedVolume, nasVolumeDescription)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "nas.Client", "Create", nil, "Failure preparing request")
 		return
@@ -226,9 +245,9 @@ func (client Client) Create(ctx context.Context, responseFormatType string, volu
 }
 
 // CreatePreparer prepares the Create request.
-func (client Client) CreatePreparer(ctx context.Context, responseFormatType string, volumeSize string, regionCode string, zoneCode string, volumeName string, volumeAllotmentProtocolTypeCode VolumeAllotmentProtocolTypeCode, serverInstanceNoListN string, cifsUserName string, cifsUserPassword string, isEncryptedVolume EncryptedVolume, nasVolumeDescription string) (*http.Request, error) {
+func (client Client) CreatePreparer(ctx context.Context, volumeSize string, regionCode string, zoneCode string, volumeName string, volumeAllotmentProtocolTypeCode VolumeAllotmentProtocolTypeCode, serverInstanceNoListN string, cifsUserName string, cifsUserPassword string, isEncryptedVolume EncryptedVolume, nasVolumeDescription string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
-		"responseFormatType": autorest.Encode("query", responseFormatType),
+		"responseFormatType": autorest.Encode("query", "json"),
 		"volumeSize":         autorest.Encode("query", volumeSize),
 	}
 	if len(regionCode) > 0 {
@@ -261,11 +280,20 @@ func (client Client) CreatePreparer(ctx context.Context, responseFormatType stri
 		queryParameters["nasVolumeDescription"] = autorest.Encode("query", nasVolumeDescription)
 	}
 
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("POST", autorest.GetPath(DefaultBaseURI, "/createNasVolumeInstance")+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/vnas/v2/createNasVolumeInstance"),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithPath("/createNasVolumeInstance"),
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -289,10 +317,9 @@ func (client Client) CreateResponder(resp *http.Response) (result VolumeInstance
 
 // Delete NAS 볼륨 인스턴스 삭제
 // Parameters:
-// responseFormatType - 반환 데이터 포맷 타입
 // nasVolumeInstanceNoListN - NAS 볼륨 인스턴스 번호 리스트
 // regionCode - REGION 코드
-func (client Client) Delete(ctx context.Context, responseFormatType string, nasVolumeInstanceNoListN string, regionCode string) (result VolumeInstancesResponse, err error) {
+func (client Client) Delete(ctx context.Context, nasVolumeInstanceNoListN string, regionCode string) (result VolumeInstancesResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.Delete")
 		defer func() {
@@ -303,7 +330,7 @@ func (client Client) Delete(ctx context.Context, responseFormatType string, nasV
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeletePreparer(ctx, responseFormatType, nasVolumeInstanceNoListN, regionCode)
+	req, err := client.DeletePreparer(ctx, nasVolumeInstanceNoListN, regionCode)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "nas.Client", "Delete", nil, "Failure preparing request")
 		return
@@ -325,10 +352,10 @@ func (client Client) Delete(ctx context.Context, responseFormatType string, nasV
 }
 
 // DeletePreparer prepares the Delete request.
-func (client Client) DeletePreparer(ctx context.Context, responseFormatType string, nasVolumeInstanceNoListN string, regionCode string) (*http.Request, error) {
+func (client Client) DeletePreparer(ctx context.Context, nasVolumeInstanceNoListN string, regionCode string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"nasVolumeInstanceNoList.N": autorest.Encode("query", nasVolumeInstanceNoListN),
-		"responseFormatType":        autorest.Encode("query", responseFormatType),
+		"responseFormatType":        autorest.Encode("query", "json"),
 	}
 	if len(regionCode) > 0 {
 		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
@@ -336,11 +363,20 @@ func (client Client) DeletePreparer(ctx context.Context, responseFormatType stri
 		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
 	}
 
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("POST", autorest.GetPath(DefaultBaseURI, "/deleteNasVolumeInstances")+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/vnas/v2/deleteNasVolumeInstances"),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithPath("/deleteNasVolumeInstances"),
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -364,10 +400,9 @@ func (client Client) DeleteResponder(resp *http.Response) (result VolumeInstance
 
 // GetDetail NAS 볼륜 인스턴스 상세 정보를 조회
 // Parameters:
-// responseFormatType - 반환 데이터 포맷 타입
 // nasVolumeInstanceNo - NAS 볼륜 인스턴스 번호
 // regionCode - REGION 코드
-func (client Client) GetDetail(ctx context.Context, responseFormatType string, nasVolumeInstanceNo string, regionCode string) (result VolumeInstanceDetailResponse, err error) {
+func (client Client) GetDetail(ctx context.Context, nasVolumeInstanceNo string, regionCode string) (result VolumeInstanceDetailResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.GetDetail")
 		defer func() {
@@ -378,7 +413,7 @@ func (client Client) GetDetail(ctx context.Context, responseFormatType string, n
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetDetailPreparer(ctx, responseFormatType, nasVolumeInstanceNo, regionCode)
+	req, err := client.GetDetailPreparer(ctx, nasVolumeInstanceNo, regionCode)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "nas.Client", "GetDetail", nil, "Failure preparing request")
 		return
@@ -400,10 +435,10 @@ func (client Client) GetDetail(ctx context.Context, responseFormatType string, n
 }
 
 // GetDetailPreparer prepares the GetDetail request.
-func (client Client) GetDetailPreparer(ctx context.Context, responseFormatType string, nasVolumeInstanceNo string, regionCode string) (*http.Request, error) {
+func (client Client) GetDetailPreparer(ctx context.Context, nasVolumeInstanceNo string, regionCode string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"nasVolumeInstanceNo": autorest.Encode("query", nasVolumeInstanceNo),
-		"responseFormatType":  autorest.Encode("query", responseFormatType),
+		"responseFormatType":  autorest.Encode("query", "json"),
 	}
 	if len(regionCode) > 0 {
 		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
@@ -411,11 +446,20 @@ func (client Client) GetDetailPreparer(ctx context.Context, responseFormatType s
 		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
 	}
 
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("GET", autorest.GetPath(DefaultBaseURI, "/getNasVolumeInstanceDetail")+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/vnas/v2/getNasVolumeInstanceDetail"),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithPath("/getNasVolumeInstanceDetail"),
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -439,7 +483,6 @@ func (client Client) GetDetailResponder(resp *http.Response) (result VolumeInsta
 
 // GetList NAS 볼륨 인스턴스 리스트를 조회
 // Parameters:
-// responseFormatType - 반환 데이터 포맷 타입
 // regionCode - REGION 코드
 // volumeAllotmentProtocolTypeCode - 볼륨 할당 프로토콜 유형 코드
 // isEventConfiguration - 이벤트 설정 여부
@@ -451,7 +494,7 @@ func (client Client) GetDetailResponder(resp *http.Response) (result VolumeInsta
 // volumeName - 볼륨 이름
 // sortedBy - 정렬 대상
 // sortingOrder - 정렬 순서
-func (client Client) GetList(ctx context.Context, responseFormatType string, regionCode string, volumeAllotmentProtocolTypeCode VolumeAllotmentProtocolTypeCode, isEventConfiguration EventConfiguration, isSnapshotConfiguration SnapshotConfiguration, nasVolumeInstanceNoListN string, zoneCode string, pageNo string, pageSize string, volumeName string, sortedBy SortedBy, sortingOrder SortingOrder) (result VolumeInstanceListResponse, err error) {
+func (client Client) GetList(ctx context.Context, regionCode string, volumeAllotmentProtocolTypeCode VolumeAllotmentProtocolTypeCode, isEventConfiguration EventConfiguration, isSnapshotConfiguration SnapshotConfiguration, nasVolumeInstanceNoListN string, zoneCode string, pageNo string, pageSize string, volumeName string, sortedBy SortedBy, sortingOrder SortingOrder) (result VolumeInstanceListResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.GetList")
 		defer func() {
@@ -462,7 +505,7 @@ func (client Client) GetList(ctx context.Context, responseFormatType string, reg
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetListPreparer(ctx, responseFormatType, regionCode, volumeAllotmentProtocolTypeCode, isEventConfiguration, isSnapshotConfiguration, nasVolumeInstanceNoListN, zoneCode, pageNo, pageSize, volumeName, sortedBy, sortingOrder)
+	req, err := client.GetListPreparer(ctx, regionCode, volumeAllotmentProtocolTypeCode, isEventConfiguration, isSnapshotConfiguration, nasVolumeInstanceNoListN, zoneCode, pageNo, pageSize, volumeName, sortedBy, sortingOrder)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "nas.Client", "GetList", nil, "Failure preparing request")
 		return
@@ -484,9 +527,9 @@ func (client Client) GetList(ctx context.Context, responseFormatType string, reg
 }
 
 // GetListPreparer prepares the GetList request.
-func (client Client) GetListPreparer(ctx context.Context, responseFormatType string, regionCode string, volumeAllotmentProtocolTypeCode VolumeAllotmentProtocolTypeCode, isEventConfiguration EventConfiguration, isSnapshotConfiguration SnapshotConfiguration, nasVolumeInstanceNoListN string, zoneCode string, pageNo string, pageSize string, volumeName string, sortedBy SortedBy, sortingOrder SortingOrder) (*http.Request, error) {
+func (client Client) GetListPreparer(ctx context.Context, regionCode string, volumeAllotmentProtocolTypeCode VolumeAllotmentProtocolTypeCode, isEventConfiguration EventConfiguration, isSnapshotConfiguration SnapshotConfiguration, nasVolumeInstanceNoListN string, zoneCode string, pageNo string, pageSize string, volumeName string, sortedBy SortedBy, sortingOrder SortingOrder) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
-		"responseFormatType": autorest.Encode("query", responseFormatType),
+		"responseFormatType": autorest.Encode("query", "json"),
 	}
 	if len(regionCode) > 0 {
 		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
@@ -524,11 +567,20 @@ func (client Client) GetListPreparer(ctx context.Context, responseFormatType str
 		queryParameters["sortingOrder"] = autorest.Encode("query", sortingOrder)
 	}
 
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("GET", autorest.GetPath(DefaultBaseURI, "/getNasVolumeInstanceList")+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/vnas/v2/getNasVolumeInstanceList"),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithPath("/getNasVolumeInstanceList"),
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -552,11 +604,10 @@ func (client Client) GetListResponder(resp *http.Response) (result VolumeInstanc
 
 // RemoveAccessControl NAS 볼륨 접근제어를 제거
 // Parameters:
-// responseFormatType - 반환 데이터 포맷 타입
 // nasVolumeInstanceNo - NAS 볼륜 인스턴스 번호
 // serverInstanceNoListN - 서버 인스턴스 번호 리스트
 // regionCode - REGION 코드
-func (client Client) RemoveAccessControl(ctx context.Context, responseFormatType string, nasVolumeInstanceNo string, serverInstanceNoListN string, regionCode string) (result VolumeAccessControlResponse, err error) {
+func (client Client) RemoveAccessControl(ctx context.Context, nasVolumeInstanceNo string, serverInstanceNoListN string, regionCode string) (result VolumeAccessControlResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.RemoveAccessControl")
 		defer func() {
@@ -567,7 +618,7 @@ func (client Client) RemoveAccessControl(ctx context.Context, responseFormatType
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.RemoveAccessControlPreparer(ctx, responseFormatType, nasVolumeInstanceNo, serverInstanceNoListN, regionCode)
+	req, err := client.RemoveAccessControlPreparer(ctx, nasVolumeInstanceNo, serverInstanceNoListN, regionCode)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "nas.Client", "RemoveAccessControl", nil, "Failure preparing request")
 		return
@@ -589,10 +640,10 @@ func (client Client) RemoveAccessControl(ctx context.Context, responseFormatType
 }
 
 // RemoveAccessControlPreparer prepares the RemoveAccessControl request.
-func (client Client) RemoveAccessControlPreparer(ctx context.Context, responseFormatType string, nasVolumeInstanceNo string, serverInstanceNoListN string, regionCode string) (*http.Request, error) {
+func (client Client) RemoveAccessControlPreparer(ctx context.Context, nasVolumeInstanceNo string, serverInstanceNoListN string, regionCode string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"nasVolumeInstanceNo":    autorest.Encode("query", nasVolumeInstanceNo),
-		"responseFormatType":     autorest.Encode("query", responseFormatType),
+		"responseFormatType":     autorest.Encode("query", "json"),
 		"serverInstanceNoList.N": autorest.Encode("query", serverInstanceNoListN),
 	}
 	if len(regionCode) > 0 {
@@ -601,11 +652,20 @@ func (client Client) RemoveAccessControlPreparer(ctx context.Context, responseFo
 		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
 	}
 
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("POST", autorest.GetPath(DefaultBaseURI, "/removeNasVolumeAccessControl")+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/vnas/v2/removeNasVolumeAccessControl"),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithPath("/removeNasVolumeAccessControl"),
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -629,11 +689,10 @@ func (client Client) RemoveAccessControlResponder(resp *http.Response) (result V
 
 // SetAccessControl NAS 볼륨 접근제어를 설정
 // Parameters:
-// responseFormatType - 반환 데이터 포맷 타입
 // nasVolumeInstanceNo - NAS 볼륜 인스턴스 번호
 // regionCode - REGION 코드
 // serverInstanceNoListN - 서버 인스턴스 번호 리스트
-func (client Client) SetAccessControl(ctx context.Context, responseFormatType string, nasVolumeInstanceNo string, regionCode string, serverInstanceNoListN string) (result VolumeAccessControlResponse, err error) {
+func (client Client) SetAccessControl(ctx context.Context, nasVolumeInstanceNo string, regionCode string, serverInstanceNoListN string) (result VolumeAccessControlResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.SetAccessControl")
 		defer func() {
@@ -644,7 +703,7 @@ func (client Client) SetAccessControl(ctx context.Context, responseFormatType st
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.SetAccessControlPreparer(ctx, responseFormatType, nasVolumeInstanceNo, regionCode, serverInstanceNoListN)
+	req, err := client.SetAccessControlPreparer(ctx, nasVolumeInstanceNo, regionCode, serverInstanceNoListN)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "nas.Client", "SetAccessControl", nil, "Failure preparing request")
 		return
@@ -666,10 +725,10 @@ func (client Client) SetAccessControl(ctx context.Context, responseFormatType st
 }
 
 // SetAccessControlPreparer prepares the SetAccessControl request.
-func (client Client) SetAccessControlPreparer(ctx context.Context, responseFormatType string, nasVolumeInstanceNo string, regionCode string, serverInstanceNoListN string) (*http.Request, error) {
+func (client Client) SetAccessControlPreparer(ctx context.Context, nasVolumeInstanceNo string, regionCode string, serverInstanceNoListN string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"nasVolumeInstanceNo": autorest.Encode("query", nasVolumeInstanceNo),
-		"responseFormatType":  autorest.Encode("query", responseFormatType),
+		"responseFormatType":  autorest.Encode("query", "json"),
 	}
 	if len(regionCode) > 0 {
 		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
@@ -680,11 +739,20 @@ func (client Client) SetAccessControlPreparer(ctx context.Context, responseForma
 		queryParameters["serverInstanceNoList.N"] = autorest.Encode("query", serverInstanceNoListN)
 	}
 
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("POST", autorest.GetPath(DefaultBaseURI, "/setNasVolumeAccessControl")+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/vnas/v2/setNasVolumeAccessControl"),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithPath("/setNasVolumeAccessControl"),
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 

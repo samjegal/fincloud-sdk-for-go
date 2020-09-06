@@ -4,10 +4,14 @@ package server
 
 import (
 	"context"
+	"crypto"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/tracing"
+	"github.com/samjegal/go-fincloud-helpers/security"
 	"net/http"
+	"strconv"
+	"time"
 )
 
 // RegionClient is the server Client
@@ -27,9 +31,7 @@ func NewRegionClientWithBaseURI(baseURI string) RegionClient {
 }
 
 // GetList REGION 리스트를 조회
-// Parameters:
-// responseFormatType - 반환 데이터 포맷 타입
-func (client RegionClient) GetList(ctx context.Context, responseFormatType string) (result RegionListResponse, err error) {
+func (client RegionClient) GetList(ctx context.Context) (result RegionListResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/RegionClient.GetList")
 		defer func() {
@@ -40,7 +42,7 @@ func (client RegionClient) GetList(ctx context.Context, responseFormatType strin
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetListPreparer(ctx, responseFormatType)
+	req, err := client.GetListPreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "server.RegionClient", "GetList", nil, "Failure preparing request")
 		return
@@ -62,16 +64,25 @@ func (client RegionClient) GetList(ctx context.Context, responseFormatType strin
 }
 
 // GetListPreparer prepares the GetList request.
-func (client RegionClient) GetListPreparer(ctx context.Context, responseFormatType string) (*http.Request, error) {
+func (client RegionClient) GetListPreparer(ctx context.Context) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
-		"responseFormatType": autorest.Encode("query", responseFormatType),
+		"responseFormatType": autorest.Encode("query", "json"),
 	}
 
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("GET", autorest.GetPath(DefaultBaseURI, "/getRegionList")+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/vserver/v2/getRegionList"),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithPath("/getRegionList"),
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 

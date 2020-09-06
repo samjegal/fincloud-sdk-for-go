@@ -11,7 +11,7 @@ import (
 
 const (
 	// DefaultBaseURI is the default URI used for the service Vpc
-	DefaultBaseURI = "https://fin-ncloud.apigw.fin-ntruss.com"
+	DefaultBaseURI = "https://fin-ncloud.apigw.fin-ntruss.com/vpc/v2"
 )
 
 // BaseClient is the base client for Vpc.

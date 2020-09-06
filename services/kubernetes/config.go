@@ -4,10 +4,14 @@ package kubernetes
 
 import (
 	"context"
+	"crypto"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/tracing"
+	"github.com/samjegal/go-fincloud-helpers/security"
 	"net/http"
+	"strconv"
+	"time"
 )
 
 // ConfigClient is the kubernetes Client
@@ -29,7 +33,7 @@ func NewConfigClientWithBaseURI(baseURI string) ConfigClient {
 // Get kubeConfig 조회
 // Parameters:
 // UUID - 클러스터 UUID
-func (client ConfigClient) Get(ctx context.Context, UUID string) (result ConfigParameter, err error) {
+func (client ConfigClient) Get(ctx context.Context, UUID string) (result ConfigResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ConfigClient.Get")
 		defer func() {
@@ -67,10 +71,19 @@ func (client ConfigClient) GetPreparer(ctx context.Context, UUID string) (*http.
 		"uuid": autorest.Encode("path", UUID),
 	}
 
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("GET", autorest.GetPath(DefaultBaseURI, "/clusters/{uuid}/kubeconfig")+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/nks/v2/clusters/{uuid}/kubeconfig", pathParameters))
+		autorest.WithPathParameters("/clusters/{uuid}/kubeconfig", pathParameters),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -82,7 +95,7 @@ func (client ConfigClient) GetSender(req *http.Request) (*http.Response, error) 
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client ConfigClient) GetResponder(resp *http.Response) (result ConfigParameter, err error) {
+func (client ConfigClient) GetResponder(resp *http.Response) (result ConfigResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusNotFound, http.StatusInternalServerError),
@@ -133,10 +146,19 @@ func (client ConfigClient) ResetPreparer(ctx context.Context, UUID string) (*htt
 		"uuid": autorest.Encode("path", UUID),
 	}
 
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("PATCH", autorest.GetPath(DefaultBaseURI, "/clusters/{uuid}/kubeconfig/reset")+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
 	preparer := autorest.CreatePreparer(
 		autorest.AsPatch(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/nks/v2/clusters/{uuid}/kubeconfig/reset", pathParameters))
+		autorest.WithPathParameters("/clusters/{uuid}/kubeconfig/reset", pathParameters),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 

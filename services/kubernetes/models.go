@@ -78,11 +78,11 @@ type ClusterParamter struct {
 	// LoginKeyName - 로그인 키 이름
 	LoginKeyName *string `json:"loginKeyName,omitempty"`
 	// NodePool - 노드풀
-	NodePool *[]NodePoolResponseParameter `json:"nodePool,omitempty"`
+	NodePool *[]NodePoolResponse `json:"nodePool,omitempty"`
 }
 
-// ClusterRequestParameter ...
-type ClusterRequestParameter struct {
+// ClusterRequest ...
+type ClusterRequest struct {
 	// Name - 클러스터 이름
 	Name *string `json:"name,omitempty"`
 	// ClusterType - 클러스터 타입
@@ -102,25 +102,25 @@ type ClusterRequestParameter struct {
 	// DefaultNodePool - 기본 노드풀
 	DefaultNodePool *DefaultNodePoolParameter `json:"defaultNodePool,omitempty"`
 	// NodePool - 추가 노드풀
-	NodePool *[]NodePoolParametera `json:"nodePool,omitempty"`
+	NodePool *[]NodePoolParameter `json:"nodePool,omitempty"`
 }
 
-// ClusterResponseParameter ...
-type ClusterResponseParameter struct {
+// ClusterResponse ...
+type ClusterResponse struct {
 	autorest.Response `json:"-"`
 	// Cluster - 클러스터
 	Cluster *ClusterParamter `json:"cluster,omitempty"`
 }
 
-// ClustersListParameter ...
-type ClustersListParameter struct {
+// ClustersListResponse ...
+type ClustersListResponse struct {
 	autorest.Response `json:"-"`
 	// Clusters - 클러스터 목록
 	Clusters *[]ClusterParamter `json:"clusters,omitempty"`
 }
 
-// ConfigParameter ...
-type ConfigParameter struct {
+// ConfigResponse ...
+type ConfigResponse struct {
 	autorest.Response `json:"-"`
 	// Kubeconfig - 쿠버네티스 설정 정보
 	Kubeconfig *string `json:"kubeconfig,omitempty"`
@@ -134,8 +134,8 @@ type DefaultNodePoolParameter struct {
 	ProductCode *string `json:"productCode,omitempty"`
 }
 
-// NodePoolParametera ...
-type NodePoolParametera struct {
+// NodePoolParameter ...
+type NodePoolParameter struct {
 	// Name - 노드풀 이름
 	Name *string `json:"name,omitempty"`
 	// NodeCount - 노드 개수
@@ -144,8 +144,8 @@ type NodePoolParametera struct {
 	ProductCode *string `json:"productCode,omitempty"`
 }
 
-// NodePoolRequestParameter ...
-type NodePoolRequestParameter struct {
+// NodePoolRequest ...
+type NodePoolRequest struct {
 	// Name - 노드풀 이름
 	Name *string `json:"name,omitempty"`
 	// NodeCount - 등록 될 노드 개수
@@ -154,8 +154,8 @@ type NodePoolRequestParameter struct {
 	ProductCode *string `json:"productCode,omitempty"`
 }
 
-// NodePoolResponseParameter ...
-type NodePoolResponseParameter struct {
+// NodePoolResponse ...
+type NodePoolResponse struct {
 	autorest.Response `json:"-"`
 	// InstanceNo - 인스턴스 번호
 	InstanceNo *float64 `json:"instanceNo,omitempty"`
@@ -173,8 +173,8 @@ type NodePoolResponseParameter struct {
 	Autoscale *AutoscaleOptionParameter `json:"autoscale,omitempty"`
 }
 
-// NodePoolUpdateParameter ...
-type NodePoolUpdateParameter struct {
+// NodePoolUpdateRequest ...
+type NodePoolUpdateRequest struct {
 	// NodeCount - 노드 개수
 	NodeCount *float64 `json:"nodeCount,omitempty"`
 	// Autoscale - 오토스케일
@@ -227,8 +227,8 @@ type WorkerNodeParameter struct {
 	NodePoolName *string `json:"nodePoolName,omitempty"`
 }
 
-// WorkerNodeResponseParameter ...
-type WorkerNodeResponseParameter struct {
+// WorkerNodeResponse ...
+type WorkerNodeResponse struct {
 	autorest.Response `json:"-"`
 	// Nodes - 워커노드 목록
 	Nodes *[]WorkerNodeParameter `json:"nodes,omitempty"`

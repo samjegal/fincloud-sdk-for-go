@@ -27,21 +27,21 @@ type AutoscaleOptionParameter = original.AutoscaleOptionParameter
 type AutoscalerUpdateParameter = original.AutoscalerUpdateParameter
 type BaseClient = original.BaseClient
 type ClusterParamter = original.ClusterParamter
-type ClusterRequestParameter = original.ClusterRequestParameter
-type ClusterResponseParameter = original.ClusterResponseParameter
+type ClusterRequest = original.ClusterRequest
+type ClusterResponse = original.ClusterResponse
 type ClustersClient = original.ClustersClient
-type ClustersListParameter = original.ClustersListParameter
+type ClustersListResponse = original.ClustersListResponse
 type ConfigClient = original.ConfigClient
-type ConfigParameter = original.ConfigParameter
+type ConfigResponse = original.ConfigResponse
 type DefaultNodePoolParameter = original.DefaultNodePoolParameter
 type NodePoolClient = original.NodePoolClient
-type NodePoolParametera = original.NodePoolParametera
-type NodePoolRequestParameter = original.NodePoolRequestParameter
-type NodePoolResponseParameter = original.NodePoolResponseParameter
-type NodePoolUpdateParameter = original.NodePoolUpdateParameter
+type NodePoolParameter = original.NodePoolParameter
+type NodePoolRequest = original.NodePoolRequest
+type NodePoolResponse = original.NodePoolResponse
+type NodePoolUpdateRequest = original.NodePoolUpdateRequest
 type WorkerNodeClient = original.WorkerNodeClient
 type WorkerNodeParameter = original.WorkerNodeParameter
-type WorkerNodeResponseParameter = original.WorkerNodeResponseParameter
+type WorkerNodeResponse = original.WorkerNodeResponse
 
 func New() BaseClient {
 	return original.New()

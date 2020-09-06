@@ -4,10 +4,14 @@ package server
 
 import (
 	"context"
+	"crypto"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/tracing"
+	"github.com/samjegal/go-fincloud-helpers/security"
 	"net/http"
+	"strconv"
+	"time"
 )
 
 // PlacementGroupClient is the server Client
@@ -28,11 +32,10 @@ func NewPlacementGroupClientWithBaseURI(baseURI string) PlacementGroupClient {
 
 // Add 물리 배치 그룹에 서버 인스턴스를 추가
 // Parameters:
-// responseFormatType - 반환 데이터 포맷 타입
 // placementGroupNo - 물리 배치 그룹 번호
 // serverInstanceNo - 서버 인스턴스 번호
 // regionCode - REGION 코드
-func (client PlacementGroupClient) Add(ctx context.Context, responseFormatType string, placementGroupNo string, serverInstanceNo string, regionCode string) (result PlacementGroupServerInstanceResponse, err error) {
+func (client PlacementGroupClient) Add(ctx context.Context, placementGroupNo string, serverInstanceNo string, regionCode string) (result PlacementGroupServerInstanceResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PlacementGroupClient.Add")
 		defer func() {
@@ -43,7 +46,7 @@ func (client PlacementGroupClient) Add(ctx context.Context, responseFormatType s
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.AddPreparer(ctx, responseFormatType, placementGroupNo, serverInstanceNo, regionCode)
+	req, err := client.AddPreparer(ctx, placementGroupNo, serverInstanceNo, regionCode)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "server.PlacementGroupClient", "Add", nil, "Failure preparing request")
 		return
@@ -65,10 +68,10 @@ func (client PlacementGroupClient) Add(ctx context.Context, responseFormatType s
 }
 
 // AddPreparer prepares the Add request.
-func (client PlacementGroupClient) AddPreparer(ctx context.Context, responseFormatType string, placementGroupNo string, serverInstanceNo string, regionCode string) (*http.Request, error) {
+func (client PlacementGroupClient) AddPreparer(ctx context.Context, placementGroupNo string, serverInstanceNo string, regionCode string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"placementGroupNo":   autorest.Encode("query", placementGroupNo),
-		"responseFormatType": autorest.Encode("query", responseFormatType),
+		"responseFormatType": autorest.Encode("query", "json"),
 		"serverInstanceNo":   autorest.Encode("query", serverInstanceNo),
 	}
 	if len(regionCode) > 0 {
@@ -77,11 +80,20 @@ func (client PlacementGroupClient) AddPreparer(ctx context.Context, responseForm
 		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
 	}
 
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("POST", autorest.GetPath(DefaultBaseURI, "/addPlacementGroupServerInstance")+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/vserver/v2/addPlacementGroupServerInstance"),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithPath("/addPlacementGroupServerInstance"),
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -105,11 +117,10 @@ func (client PlacementGroupClient) AddResponder(resp *http.Response) (result Pla
 
 // Create 물리 배치 그룹을 생성
 // Parameters:
-// responseFormatType - 반환 데이터 포맷 타입
 // regionCode - REGION 코드
 // placementGroupName - 물리 배치 그룹 이름
 // placementGroupTypeCode - 물리 배치 그룹 유형 코드
-func (client PlacementGroupClient) Create(ctx context.Context, responseFormatType string, regionCode string, placementGroupName string, placementGroupTypeCode string) (result PlacementGroupResponse, err error) {
+func (client PlacementGroupClient) Create(ctx context.Context, regionCode string, placementGroupName string, placementGroupTypeCode string) (result PlacementGroupResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PlacementGroupClient.Create")
 		defer func() {
@@ -120,7 +131,7 @@ func (client PlacementGroupClient) Create(ctx context.Context, responseFormatTyp
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.CreatePreparer(ctx, responseFormatType, regionCode, placementGroupName, placementGroupTypeCode)
+	req, err := client.CreatePreparer(ctx, regionCode, placementGroupName, placementGroupTypeCode)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "server.PlacementGroupClient", "Create", nil, "Failure preparing request")
 		return
@@ -142,9 +153,9 @@ func (client PlacementGroupClient) Create(ctx context.Context, responseFormatTyp
 }
 
 // CreatePreparer prepares the Create request.
-func (client PlacementGroupClient) CreatePreparer(ctx context.Context, responseFormatType string, regionCode string, placementGroupName string, placementGroupTypeCode string) (*http.Request, error) {
+func (client PlacementGroupClient) CreatePreparer(ctx context.Context, regionCode string, placementGroupName string, placementGroupTypeCode string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
-		"responseFormatType": autorest.Encode("query", responseFormatType),
+		"responseFormatType": autorest.Encode("query", "json"),
 	}
 	if len(regionCode) > 0 {
 		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
@@ -158,11 +169,20 @@ func (client PlacementGroupClient) CreatePreparer(ctx context.Context, responseF
 		queryParameters["placementGroupTypeCode"] = autorest.Encode("query", placementGroupTypeCode)
 	}
 
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("POST", autorest.GetPath(DefaultBaseURI, "/createPlacementGroup")+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/vserver/v2/createPlacementGroup"),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithPath("/createPlacementGroup"),
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -186,10 +206,9 @@ func (client PlacementGroupClient) CreateResponder(resp *http.Response) (result 
 
 // Delete 물리 배치 그룹을 삭제
 // Parameters:
-// responseFormatType - 반환 데이터 포맷 타입
 // placementGroupNo - 물리 배치 그룹 번호
 // regionCode - REGION 코드
-func (client PlacementGroupClient) Delete(ctx context.Context, responseFormatType string, placementGroupNo string, regionCode string) (result PlacementGroupResponse, err error) {
+func (client PlacementGroupClient) Delete(ctx context.Context, placementGroupNo string, regionCode string) (result PlacementGroupResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PlacementGroupClient.Delete")
 		defer func() {
@@ -200,7 +219,7 @@ func (client PlacementGroupClient) Delete(ctx context.Context, responseFormatTyp
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeletePreparer(ctx, responseFormatType, placementGroupNo, regionCode)
+	req, err := client.DeletePreparer(ctx, placementGroupNo, regionCode)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "server.PlacementGroupClient", "Delete", nil, "Failure preparing request")
 		return
@@ -222,10 +241,10 @@ func (client PlacementGroupClient) Delete(ctx context.Context, responseFormatTyp
 }
 
 // DeletePreparer prepares the Delete request.
-func (client PlacementGroupClient) DeletePreparer(ctx context.Context, responseFormatType string, placementGroupNo string, regionCode string) (*http.Request, error) {
+func (client PlacementGroupClient) DeletePreparer(ctx context.Context, placementGroupNo string, regionCode string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"placementGroupNo":   autorest.Encode("query", placementGroupNo),
-		"responseFormatType": autorest.Encode("query", responseFormatType),
+		"responseFormatType": autorest.Encode("query", "json"),
 	}
 	if len(regionCode) > 0 {
 		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
@@ -233,11 +252,20 @@ func (client PlacementGroupClient) DeletePreparer(ctx context.Context, responseF
 		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
 	}
 
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("POST", autorest.GetPath(DefaultBaseURI, "/deletePlacementGroup")+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/vserver/v2/deletePlacementGroup"),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithPath("/deletePlacementGroup"),
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -261,10 +289,9 @@ func (client PlacementGroupClient) DeleteResponder(resp *http.Response) (result 
 
 // GetDetail 물리 배치 그룹 상세 정보를 조회
 // Parameters:
-// responseFormatType - 반환 데이터 포맷 타입
 // regionCode - REGION 코드
 // placementGroupNo - 물리 배치 그룹 번호
-func (client PlacementGroupClient) GetDetail(ctx context.Context, responseFormatType string, regionCode string, placementGroupNo string) (result PlacementGroupDetailResponse, err error) {
+func (client PlacementGroupClient) GetDetail(ctx context.Context, regionCode string, placementGroupNo string) (result PlacementGroupDetailResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PlacementGroupClient.GetDetail")
 		defer func() {
@@ -275,7 +302,7 @@ func (client PlacementGroupClient) GetDetail(ctx context.Context, responseFormat
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetDetailPreparer(ctx, responseFormatType, regionCode, placementGroupNo)
+	req, err := client.GetDetailPreparer(ctx, regionCode, placementGroupNo)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "server.PlacementGroupClient", "GetDetail", nil, "Failure preparing request")
 		return
@@ -297,9 +324,9 @@ func (client PlacementGroupClient) GetDetail(ctx context.Context, responseFormat
 }
 
 // GetDetailPreparer prepares the GetDetail request.
-func (client PlacementGroupClient) GetDetailPreparer(ctx context.Context, responseFormatType string, regionCode string, placementGroupNo string) (*http.Request, error) {
+func (client PlacementGroupClient) GetDetailPreparer(ctx context.Context, regionCode string, placementGroupNo string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
-		"responseFormatType": autorest.Encode("query", responseFormatType),
+		"responseFormatType": autorest.Encode("query", "json"),
 	}
 	if len(regionCode) > 0 {
 		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
@@ -310,11 +337,20 @@ func (client PlacementGroupClient) GetDetailPreparer(ctx context.Context, respon
 		queryParameters["placementGroupNo"] = autorest.Encode("query", placementGroupNo)
 	}
 
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("GET", autorest.GetPath(DefaultBaseURI, "/getPlacementGroupDetail")+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/vserver/v2/getPlacementGroupDetail"),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithPath("/getPlacementGroupDetail"),
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -338,11 +374,10 @@ func (client PlacementGroupClient) GetDetailResponder(resp *http.Response) (resu
 
 // GetList 치 그룹 리스트를 조회
 // Parameters:
-// responseFormatType - 반환 데이터 포맷 타입
 // regionCode - REGION 코드
 // placementGroupName - 물리 배치 그룹 이름
 // placementGroupNoListN - 물리 배치 그룹 번호 리스트
-func (client PlacementGroupClient) GetList(ctx context.Context, responseFormatType string, regionCode string, placementGroupName string, placementGroupNoListN string) (result PlacementGroupListResponse, err error) {
+func (client PlacementGroupClient) GetList(ctx context.Context, regionCode string, placementGroupName string, placementGroupNoListN string) (result PlacementGroupListResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PlacementGroupClient.GetList")
 		defer func() {
@@ -353,7 +388,7 @@ func (client PlacementGroupClient) GetList(ctx context.Context, responseFormatTy
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetListPreparer(ctx, responseFormatType, regionCode, placementGroupName, placementGroupNoListN)
+	req, err := client.GetListPreparer(ctx, regionCode, placementGroupName, placementGroupNoListN)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "server.PlacementGroupClient", "GetList", nil, "Failure preparing request")
 		return
@@ -375,9 +410,9 @@ func (client PlacementGroupClient) GetList(ctx context.Context, responseFormatTy
 }
 
 // GetListPreparer prepares the GetList request.
-func (client PlacementGroupClient) GetListPreparer(ctx context.Context, responseFormatType string, regionCode string, placementGroupName string, placementGroupNoListN string) (*http.Request, error) {
+func (client PlacementGroupClient) GetListPreparer(ctx context.Context, regionCode string, placementGroupName string, placementGroupNoListN string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
-		"responseFormatType": autorest.Encode("query", responseFormatType),
+		"responseFormatType": autorest.Encode("query", "json"),
 	}
 	if len(regionCode) > 0 {
 		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
@@ -391,11 +426,20 @@ func (client PlacementGroupClient) GetListPreparer(ctx context.Context, response
 		queryParameters["placementGroupNoList.N"] = autorest.Encode("query", placementGroupNoListN)
 	}
 
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("GET", autorest.GetPath(DefaultBaseURI, "/getPlacementGroupList")+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/vserver/v2/getPlacementGroupList"),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithPath("/getPlacementGroupList"),
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -419,11 +463,10 @@ func (client PlacementGroupClient) GetListResponder(resp *http.Response) (result
 
 // Remove 물리 배치 그룹에서 서버 인스턴스를 제거
 // Parameters:
-// responseFormatType - 반환 데이터 포맷 타입
 // placementGroupNo - 물리 배치 그룹 번호
 // serverInstanceNo - 서버 인스턴스 번호
 // regionCode - REGION 코드
-func (client PlacementGroupClient) Remove(ctx context.Context, responseFormatType string, placementGroupNo string, serverInstanceNo string, regionCode string) (result PlacementGroupServerInstanceResponse, err error) {
+func (client PlacementGroupClient) Remove(ctx context.Context, placementGroupNo string, serverInstanceNo string, regionCode string) (result PlacementGroupServerInstanceResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PlacementGroupClient.Remove")
 		defer func() {
@@ -434,7 +477,7 @@ func (client PlacementGroupClient) Remove(ctx context.Context, responseFormatTyp
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.RemovePreparer(ctx, responseFormatType, placementGroupNo, serverInstanceNo, regionCode)
+	req, err := client.RemovePreparer(ctx, placementGroupNo, serverInstanceNo, regionCode)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "server.PlacementGroupClient", "Remove", nil, "Failure preparing request")
 		return
@@ -456,10 +499,10 @@ func (client PlacementGroupClient) Remove(ctx context.Context, responseFormatTyp
 }
 
 // RemovePreparer prepares the Remove request.
-func (client PlacementGroupClient) RemovePreparer(ctx context.Context, responseFormatType string, placementGroupNo string, serverInstanceNo string, regionCode string) (*http.Request, error) {
+func (client PlacementGroupClient) RemovePreparer(ctx context.Context, placementGroupNo string, serverInstanceNo string, regionCode string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"placementGroupNo":   autorest.Encode("query", placementGroupNo),
-		"responseFormatType": autorest.Encode("query", responseFormatType),
+		"responseFormatType": autorest.Encode("query", "json"),
 		"serverInstanceNo":   autorest.Encode("query", serverInstanceNo),
 	}
 	if len(regionCode) > 0 {
@@ -468,11 +511,20 @@ func (client PlacementGroupClient) RemovePreparer(ctx context.Context, responseF
 		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
 	}
 
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("POST", autorest.GetPath(DefaultBaseURI, "/removePlacementGroupServerInstance")+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/vserver/v2/removePlacementGroupServerInstance"),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithPath("/removePlacementGroupServerInstance"),
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 

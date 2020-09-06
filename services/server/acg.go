@@ -4,10 +4,14 @@ package server
 
 import (
 	"context"
+	"crypto"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/tracing"
+	"github.com/samjegal/go-fincloud-helpers/security"
 	"net/http"
+	"strconv"
+	"time"
 )
 
 // ACGClient is the server Client
@@ -28,12 +32,11 @@ func NewACGClientWithBaseURI(baseURI string) ACGClient {
 
 // Create aCG를 생성
 // Parameters:
-// responseFormatType - 반환 데이터 포맷 타입
 // vpcNo - VPC 번호
 // regionCode - REGION 코드
 // accessControlGroupName - ACG 이름
 // accessControlGroupDescription - ACG 설명
-func (client ACGClient) Create(ctx context.Context, responseFormatType string, vpcNo string, regionCode string, accessControlGroupName string, accessControlGroupDescription string) (result AccessControlGroupResponse, err error) {
+func (client ACGClient) Create(ctx context.Context, vpcNo string, regionCode string, accessControlGroupName string, accessControlGroupDescription string) (result AccessControlGroupResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ACGClient.Create")
 		defer func() {
@@ -44,7 +47,7 @@ func (client ACGClient) Create(ctx context.Context, responseFormatType string, v
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.CreatePreparer(ctx, responseFormatType, vpcNo, regionCode, accessControlGroupName, accessControlGroupDescription)
+	req, err := client.CreatePreparer(ctx, vpcNo, regionCode, accessControlGroupName, accessControlGroupDescription)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "server.ACGClient", "Create", nil, "Failure preparing request")
 		return
@@ -66,9 +69,9 @@ func (client ACGClient) Create(ctx context.Context, responseFormatType string, v
 }
 
 // CreatePreparer prepares the Create request.
-func (client ACGClient) CreatePreparer(ctx context.Context, responseFormatType string, vpcNo string, regionCode string, accessControlGroupName string, accessControlGroupDescription string) (*http.Request, error) {
+func (client ACGClient) CreatePreparer(ctx context.Context, vpcNo string, regionCode string, accessControlGroupName string, accessControlGroupDescription string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
-		"responseFormatType": autorest.Encode("query", responseFormatType),
+		"responseFormatType": autorest.Encode("query", "json"),
 		"vpcNo":              autorest.Encode("query", vpcNo),
 	}
 	if len(regionCode) > 0 {
@@ -83,11 +86,20 @@ func (client ACGClient) CreatePreparer(ctx context.Context, responseFormatType s
 		queryParameters["accessControlGroupDescription"] = autorest.Encode("query", accessControlGroupDescription)
 	}
 
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("POST", autorest.GetPath(DefaultBaseURI, "/createAccessControlGroup")+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/vserver/v2/createAccessControlGroup"),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithPath("/createAccessControlGroup"),
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -111,11 +123,10 @@ func (client ACGClient) CreateResponder(resp *http.Response) (result AccessContr
 
 // Delete aCG를 삭제
 // Parameters:
-// responseFormatType - 반환 데이터 포맷 타입
 // vpcNo - VPC 번호
 // accessControlGroupNo - ACG 번호
 // regionCode - REGION 코드
-func (client ACGClient) Delete(ctx context.Context, responseFormatType string, vpcNo string, accessControlGroupNo string, regionCode string) (result AccessControlGroupResponse, err error) {
+func (client ACGClient) Delete(ctx context.Context, vpcNo string, accessControlGroupNo string, regionCode string) (result AccessControlGroupResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ACGClient.Delete")
 		defer func() {
@@ -126,7 +137,7 @@ func (client ACGClient) Delete(ctx context.Context, responseFormatType string, v
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeletePreparer(ctx, responseFormatType, vpcNo, accessControlGroupNo, regionCode)
+	req, err := client.DeletePreparer(ctx, vpcNo, accessControlGroupNo, regionCode)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "server.ACGClient", "Delete", nil, "Failure preparing request")
 		return
@@ -148,10 +159,10 @@ func (client ACGClient) Delete(ctx context.Context, responseFormatType string, v
 }
 
 // DeletePreparer prepares the Delete request.
-func (client ACGClient) DeletePreparer(ctx context.Context, responseFormatType string, vpcNo string, accessControlGroupNo string, regionCode string) (*http.Request, error) {
+func (client ACGClient) DeletePreparer(ctx context.Context, vpcNo string, accessControlGroupNo string, regionCode string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"accessControlGroupNo": autorest.Encode("query", accessControlGroupNo),
-		"responseFormatType":   autorest.Encode("query", responseFormatType),
+		"responseFormatType":   autorest.Encode("query", "json"),
 		"vpcNo":                autorest.Encode("query", vpcNo),
 	}
 	if len(regionCode) > 0 {
@@ -160,11 +171,20 @@ func (client ACGClient) DeletePreparer(ctx context.Context, responseFormatType s
 		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
 	}
 
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("POST", autorest.GetPath(DefaultBaseURI, "/deleteAccessControlGroup")+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/vserver/v2/deleteAccessControlGroup"),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithPath("/deleteAccessControlGroup"),
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -188,10 +208,9 @@ func (client ACGClient) DeleteResponder(resp *http.Response) (result AccessContr
 
 // GetDetail ACG 상세 정보를 조회
 // Parameters:
-// responseFormatType - 반환 데이터 포맷 타입
 // accessControlGroupNo - ACG 번호
 // regionCode - REGION 코드
-func (client ACGClient) GetDetail(ctx context.Context, responseFormatType string, accessControlGroupNo string, regionCode string) (result AccessControlGroupDetailResponse, err error) {
+func (client ACGClient) GetDetail(ctx context.Context, accessControlGroupNo string, regionCode string) (result AccessControlGroupDetailResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ACGClient.GetDetail")
 		defer func() {
@@ -202,7 +221,7 @@ func (client ACGClient) GetDetail(ctx context.Context, responseFormatType string
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetDetailPreparer(ctx, responseFormatType, accessControlGroupNo, regionCode)
+	req, err := client.GetDetailPreparer(ctx, accessControlGroupNo, regionCode)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "server.ACGClient", "GetDetail", nil, "Failure preparing request")
 		return
@@ -224,10 +243,10 @@ func (client ACGClient) GetDetail(ctx context.Context, responseFormatType string
 }
 
 // GetDetailPreparer prepares the GetDetail request.
-func (client ACGClient) GetDetailPreparer(ctx context.Context, responseFormatType string, accessControlGroupNo string, regionCode string) (*http.Request, error) {
+func (client ACGClient) GetDetailPreparer(ctx context.Context, accessControlGroupNo string, regionCode string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"accessControlGroupNo": autorest.Encode("query", accessControlGroupNo),
-		"responseFormatType":   autorest.Encode("query", responseFormatType),
+		"responseFormatType":   autorest.Encode("query", "json"),
 	}
 	if len(regionCode) > 0 {
 		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
@@ -235,11 +254,20 @@ func (client ACGClient) GetDetailPreparer(ctx context.Context, responseFormatTyp
 		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
 	}
 
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("GET", autorest.GetPath(DefaultBaseURI, "/getAccessControlGroupDetail")+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/vserver/v2/getAccessControlGroupDetail"),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithPath("/getAccessControlGroupDetail"),
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -263,7 +291,6 @@ func (client ACGClient) GetDetailResponder(resp *http.Response) (result AccessCo
 
 // GetList ACG 리스트를 조회
 // Parameters:
-// responseFormatType - 반환 데이터 포맷 타입
 // regionCode - REGION 코드
 // accessControlGroupNoListN - ACG 번호 리스트
 // accessControlGroupName - ACG 이름
@@ -271,7 +298,7 @@ func (client ACGClient) GetDetailResponder(resp *http.Response) (result AccessCo
 // pageNo - 페이지 번호
 // pageSize - 페이지 사이즈
 // vpcNo - VPC 번호
-func (client ACGClient) GetList(ctx context.Context, responseFormatType string, regionCode string, accessControlGroupNoListN string, accessControlGroupName string, accessControlGroupStatusCode AccessControlGroupStatusCode, pageNo string, pageSize string, vpcNo string) (result AccessControlGroupListResponse, err error) {
+func (client ACGClient) GetList(ctx context.Context, regionCode string, accessControlGroupNoListN string, accessControlGroupName string, accessControlGroupStatusCode AccessControlGroupStatusCode, pageNo string, pageSize string, vpcNo string) (result AccessControlGroupListResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ACGClient.GetList")
 		defer func() {
@@ -282,7 +309,7 @@ func (client ACGClient) GetList(ctx context.Context, responseFormatType string, 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetListPreparer(ctx, responseFormatType, regionCode, accessControlGroupNoListN, accessControlGroupName, accessControlGroupStatusCode, pageNo, pageSize, vpcNo)
+	req, err := client.GetListPreparer(ctx, regionCode, accessControlGroupNoListN, accessControlGroupName, accessControlGroupStatusCode, pageNo, pageSize, vpcNo)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "server.ACGClient", "GetList", nil, "Failure preparing request")
 		return
@@ -304,9 +331,9 @@ func (client ACGClient) GetList(ctx context.Context, responseFormatType string, 
 }
 
 // GetListPreparer prepares the GetList request.
-func (client ACGClient) GetListPreparer(ctx context.Context, responseFormatType string, regionCode string, accessControlGroupNoListN string, accessControlGroupName string, accessControlGroupStatusCode AccessControlGroupStatusCode, pageNo string, pageSize string, vpcNo string) (*http.Request, error) {
+func (client ACGClient) GetListPreparer(ctx context.Context, regionCode string, accessControlGroupNoListN string, accessControlGroupName string, accessControlGroupStatusCode AccessControlGroupStatusCode, pageNo string, pageSize string, vpcNo string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
-		"responseFormatType": autorest.Encode("query", responseFormatType),
+		"responseFormatType": autorest.Encode("query", "json"),
 	}
 	if len(regionCode) > 0 {
 		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
@@ -332,11 +359,20 @@ func (client ACGClient) GetListPreparer(ctx context.Context, responseFormatType 
 		queryParameters["vpcNo"] = autorest.Encode("query", vpcNo)
 	}
 
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("GET", autorest.GetPath(DefaultBaseURI, "/getAccessControlGroupList")+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/vserver/v2/getAccessControlGroupList"),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithPath("/getAccessControlGroupList"),
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -360,11 +396,10 @@ func (client ACGClient) GetListResponder(resp *http.Response) (result AccessCont
 
 // GetRuleList ACG Rule 리스트를 조회
 // Parameters:
-// responseFormatType - 반환 데이터 포맷 타입
 // accessControlGroupNo - ACG 번호
 // regionCode - REGION 코드
 // accessControlGroupRuleTypeCode - ACG Rule 유형 코드
-func (client ACGClient) GetRuleList(ctx context.Context, responseFormatType string, accessControlGroupNo string, regionCode string, accessControlGroupRuleTypeCode AccessControlGroupRuleTypeCode) (result AccessControlGroupRuleListResponse, err error) {
+func (client ACGClient) GetRuleList(ctx context.Context, accessControlGroupNo string, regionCode string, accessControlGroupRuleTypeCode AccessControlGroupRuleTypeCode) (result AccessControlGroupRuleListResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ACGClient.GetRuleList")
 		defer func() {
@@ -375,7 +410,7 @@ func (client ACGClient) GetRuleList(ctx context.Context, responseFormatType stri
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetRuleListPreparer(ctx, responseFormatType, accessControlGroupNo, regionCode, accessControlGroupRuleTypeCode)
+	req, err := client.GetRuleListPreparer(ctx, accessControlGroupNo, regionCode, accessControlGroupRuleTypeCode)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "server.ACGClient", "GetRuleList", nil, "Failure preparing request")
 		return
@@ -397,10 +432,10 @@ func (client ACGClient) GetRuleList(ctx context.Context, responseFormatType stri
 }
 
 // GetRuleListPreparer prepares the GetRuleList request.
-func (client ACGClient) GetRuleListPreparer(ctx context.Context, responseFormatType string, accessControlGroupNo string, regionCode string, accessControlGroupRuleTypeCode AccessControlGroupRuleTypeCode) (*http.Request, error) {
+func (client ACGClient) GetRuleListPreparer(ctx context.Context, accessControlGroupNo string, regionCode string, accessControlGroupRuleTypeCode AccessControlGroupRuleTypeCode) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"accessControlGroupNo": autorest.Encode("query", accessControlGroupNo),
-		"responseFormatType":   autorest.Encode("query", responseFormatType),
+		"responseFormatType":   autorest.Encode("query", "json"),
 	}
 	if len(regionCode) > 0 {
 		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
@@ -411,11 +446,20 @@ func (client ACGClient) GetRuleListPreparer(ctx context.Context, responseFormatT
 		queryParameters["accessControlGroupRuleTypeCode"] = autorest.Encode("query", accessControlGroupRuleTypeCode)
 	}
 
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("POST", autorest.GetPath(DefaultBaseURI, "/getAccessControlGroupRuleList")+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/vserver/v2/getAccessControlGroupRuleList"),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithPath("/getAccessControlGroupRuleList"),
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 

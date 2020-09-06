@@ -4,10 +4,14 @@ package server
 
 import (
 	"context"
+	"crypto"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/tracing"
+	"github.com/samjegal/go-fincloud-helpers/security"
 	"net/http"
+	"strconv"
+	"time"
 )
 
 // InitScriptClient is the server Client
@@ -28,13 +32,12 @@ func NewInitScriptClientWithBaseURI(baseURI string) InitScriptClient {
 
 // Create 초기화 스크립트를 생성
 // Parameters:
-// responseFormatType - 반환 데이터 포맷 타입
 // initScriptContent - 초기화 스크립트 내용
 // regionCode - REGION 코드
 // osTypeCode - OS 유형 코드
 // initScriptName - 초기화 스크립트 이름
 // initScriptDescription - 초기화 스크립트 설명
-func (client InitScriptClient) Create(ctx context.Context, responseFormatType string, initScriptContent string, regionCode string, osTypeCode OsTypeCode, initScriptName string, initScriptDescription string) (result InitScriptResponse, err error) {
+func (client InitScriptClient) Create(ctx context.Context, initScriptContent string, regionCode string, osTypeCode OsTypeCode, initScriptName string, initScriptDescription string) (result InitScriptResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/InitScriptClient.Create")
 		defer func() {
@@ -45,7 +48,7 @@ func (client InitScriptClient) Create(ctx context.Context, responseFormatType st
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.CreatePreparer(ctx, responseFormatType, initScriptContent, regionCode, osTypeCode, initScriptName, initScriptDescription)
+	req, err := client.CreatePreparer(ctx, initScriptContent, regionCode, osTypeCode, initScriptName, initScriptDescription)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "server.InitScriptClient", "Create", nil, "Failure preparing request")
 		return
@@ -67,10 +70,10 @@ func (client InitScriptClient) Create(ctx context.Context, responseFormatType st
 }
 
 // CreatePreparer prepares the Create request.
-func (client InitScriptClient) CreatePreparer(ctx context.Context, responseFormatType string, initScriptContent string, regionCode string, osTypeCode OsTypeCode, initScriptName string, initScriptDescription string) (*http.Request, error) {
+func (client InitScriptClient) CreatePreparer(ctx context.Context, initScriptContent string, regionCode string, osTypeCode OsTypeCode, initScriptName string, initScriptDescription string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"initScriptContent":  autorest.Encode("query", initScriptContent),
-		"responseFormatType": autorest.Encode("query", responseFormatType),
+		"responseFormatType": autorest.Encode("query", "json"),
 	}
 	if len(regionCode) > 0 {
 		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
@@ -87,11 +90,20 @@ func (client InitScriptClient) CreatePreparer(ctx context.Context, responseForma
 		queryParameters["initScriptDescription"] = autorest.Encode("query", initScriptDescription)
 	}
 
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("POST", autorest.GetPath(DefaultBaseURI, "/createInitScript")+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/vserver/v2/createInitScript"),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithPath("/createInitScript"),
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -115,10 +127,9 @@ func (client InitScriptClient) CreateResponder(resp *http.Response) (result Init
 
 // Delete 초기화 스크립트를 삭제
 // Parameters:
-// responseFormatType - 반환 데이터 포맷 타입
 // regionCode - REGION 코드
 // initScriptNoListN - 초기화 스크립트 번호 리스트
-func (client InitScriptClient) Delete(ctx context.Context, responseFormatType string, regionCode string, initScriptNoListN string) (result InitScriptResponse, err error) {
+func (client InitScriptClient) Delete(ctx context.Context, regionCode string, initScriptNoListN string) (result InitScriptResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/InitScriptClient.Delete")
 		defer func() {
@@ -129,7 +140,7 @@ func (client InitScriptClient) Delete(ctx context.Context, responseFormatType st
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeletePreparer(ctx, responseFormatType, regionCode, initScriptNoListN)
+	req, err := client.DeletePreparer(ctx, regionCode, initScriptNoListN)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "server.InitScriptClient", "Delete", nil, "Failure preparing request")
 		return
@@ -151,9 +162,9 @@ func (client InitScriptClient) Delete(ctx context.Context, responseFormatType st
 }
 
 // DeletePreparer prepares the Delete request.
-func (client InitScriptClient) DeletePreparer(ctx context.Context, responseFormatType string, regionCode string, initScriptNoListN string) (*http.Request, error) {
+func (client InitScriptClient) DeletePreparer(ctx context.Context, regionCode string, initScriptNoListN string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
-		"responseFormatType": autorest.Encode("query", responseFormatType),
+		"responseFormatType": autorest.Encode("query", "json"),
 	}
 	if len(regionCode) > 0 {
 		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
@@ -164,11 +175,20 @@ func (client InitScriptClient) DeletePreparer(ctx context.Context, responseForma
 		queryParameters["initScriptNoList.N"] = autorest.Encode("query", initScriptNoListN)
 	}
 
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("POST", autorest.GetPath(DefaultBaseURI, "/deleteInitScripts")+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/vserver/v2/deleteInitScripts"),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithPath("/deleteInitScripts"),
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -192,10 +212,9 @@ func (client InitScriptClient) DeleteResponder(resp *http.Response) (result Init
 
 // GetDetail 초기화 스크립트 상세 정보를 조회
 // Parameters:
-// responseFormatType - 반환 데이터 포맷 타입
 // regionCode - REGION 코드
 // initScriptNo - 초기화 스크립트 번호
-func (client InitScriptClient) GetDetail(ctx context.Context, responseFormatType string, regionCode string, initScriptNo string) (result InitScriptDetailResponse, err error) {
+func (client InitScriptClient) GetDetail(ctx context.Context, regionCode string, initScriptNo string) (result InitScriptDetailResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/InitScriptClient.GetDetail")
 		defer func() {
@@ -206,7 +225,7 @@ func (client InitScriptClient) GetDetail(ctx context.Context, responseFormatType
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetDetailPreparer(ctx, responseFormatType, regionCode, initScriptNo)
+	req, err := client.GetDetailPreparer(ctx, regionCode, initScriptNo)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "server.InitScriptClient", "GetDetail", nil, "Failure preparing request")
 		return
@@ -228,9 +247,9 @@ func (client InitScriptClient) GetDetail(ctx context.Context, responseFormatType
 }
 
 // GetDetailPreparer prepares the GetDetail request.
-func (client InitScriptClient) GetDetailPreparer(ctx context.Context, responseFormatType string, regionCode string, initScriptNo string) (*http.Request, error) {
+func (client InitScriptClient) GetDetailPreparer(ctx context.Context, regionCode string, initScriptNo string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
-		"responseFormatType": autorest.Encode("query", responseFormatType),
+		"responseFormatType": autorest.Encode("query", "json"),
 	}
 	if len(regionCode) > 0 {
 		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
@@ -241,11 +260,20 @@ func (client InitScriptClient) GetDetailPreparer(ctx context.Context, responseFo
 		queryParameters["initScriptNo"] = autorest.Encode("query", initScriptNo)
 	}
 
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("GET", autorest.GetPath(DefaultBaseURI, "/getInitScriptDetail")+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/vserver/v2/getInitScriptDetail"),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithPath("/getInitScriptDetail"),
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -269,7 +297,6 @@ func (client InitScriptClient) GetDetailResponder(resp *http.Response) (result I
 
 // GetList 초기화 스크립트 리스트를 조회
 // Parameters:
-// responseFormatType - 반환 데이터 포맷 타입
 // regionCode - REGION 코드
 // osTypeCode - OS 유형 코드
 // pageNo - 페이지 번호
@@ -278,7 +305,7 @@ func (client InitScriptClient) GetDetailResponder(resp *http.Response) (result I
 // sortingOrder - 정렬 순서
 // initScriptName - 초기화 스크립트 이름
 // initScriptNoListN - 초기화 스크립트 번호 리스트
-func (client InitScriptClient) GetList(ctx context.Context, responseFormatType string, regionCode string, osTypeCode OsTypeCode, pageNo string, pageSize string, sortedBy string, sortingOrder SortingOrder, initScriptName string, initScriptNoListN string) (result InitScriptListResponse, err error) {
+func (client InitScriptClient) GetList(ctx context.Context, regionCode string, osTypeCode OsTypeCode, pageNo string, pageSize string, sortedBy string, sortingOrder SortingOrder, initScriptName string, initScriptNoListN string) (result InitScriptListResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/InitScriptClient.GetList")
 		defer func() {
@@ -289,7 +316,7 @@ func (client InitScriptClient) GetList(ctx context.Context, responseFormatType s
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetListPreparer(ctx, responseFormatType, regionCode, osTypeCode, pageNo, pageSize, sortedBy, sortingOrder, initScriptName, initScriptNoListN)
+	req, err := client.GetListPreparer(ctx, regionCode, osTypeCode, pageNo, pageSize, sortedBy, sortingOrder, initScriptName, initScriptNoListN)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "server.InitScriptClient", "GetList", nil, "Failure preparing request")
 		return
@@ -311,9 +338,9 @@ func (client InitScriptClient) GetList(ctx context.Context, responseFormatType s
 }
 
 // GetListPreparer prepares the GetList request.
-func (client InitScriptClient) GetListPreparer(ctx context.Context, responseFormatType string, regionCode string, osTypeCode OsTypeCode, pageNo string, pageSize string, sortedBy string, sortingOrder SortingOrder, initScriptName string, initScriptNoListN string) (*http.Request, error) {
+func (client InitScriptClient) GetListPreparer(ctx context.Context, regionCode string, osTypeCode OsTypeCode, pageNo string, pageSize string, sortedBy string, sortingOrder SortingOrder, initScriptName string, initScriptNoListN string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
-		"responseFormatType": autorest.Encode("query", responseFormatType),
+		"responseFormatType": autorest.Encode("query", "json"),
 	}
 	if len(regionCode) > 0 {
 		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
@@ -342,11 +369,20 @@ func (client InitScriptClient) GetListPreparer(ctx context.Context, responseForm
 		queryParameters["initScriptNoList.N"] = autorest.Encode("query", initScriptNoListN)
 	}
 
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("GET", autorest.GetPath(DefaultBaseURI, "/getInitScriptList")+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/vserver/v2/getInitScriptList"),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithPath("/getInitScriptList"),
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 

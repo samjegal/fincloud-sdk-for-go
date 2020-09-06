@@ -4,11 +4,15 @@ package kubernetes
 
 import (
 	"context"
+	"crypto"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
 	"github.com/Azure/go-autorest/tracing"
+	"github.com/samjegal/go-fincloud-helpers/security"
 	"net/http"
+	"strconv"
+	"time"
 )
 
 // NodePoolClient is the kubernetes Client
@@ -31,7 +35,7 @@ func NewNodePoolClientWithBaseURI(baseURI string) NodePoolClient {
 // Parameters:
 // UUID - 클러스터 UUID
 // parameters - 노드풀 생성 파라미터
-func (client NodePoolClient) Create(ctx context.Context, UUID string, parameters NodePoolRequestParameter) (result autorest.Response, err error) {
+func (client NodePoolClient) Create(ctx context.Context, UUID string, parameters NodePoolRequest) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NodePoolClient.Create")
 		defer func() {
@@ -72,17 +76,26 @@ func (client NodePoolClient) Create(ctx context.Context, UUID string, parameters
 }
 
 // CreatePreparer prepares the Create request.
-func (client NodePoolClient) CreatePreparer(ctx context.Context, UUID string, parameters NodePoolRequestParameter) (*http.Request, error) {
+func (client NodePoolClient) CreatePreparer(ctx context.Context, UUID string, parameters NodePoolRequest) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"uuid": autorest.Encode("path", UUID),
 	}
 
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("POST", autorest.GetPath(DefaultBaseURI, "/clusters/{uuid}/node-pool")+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json;charset=UTF-8"),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/nks/v2/clusters/{uuid}/node-pool", pathParameters),
-		autorest.WithJSON(parameters))
+		autorest.WithPathParameters("/clusters/{uuid}/node-pool", pathParameters),
+		autorest.WithJSON(parameters),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -146,10 +159,19 @@ func (client NodePoolClient) DeletePreparer(ctx context.Context, UUID string, in
 		"uuid":       autorest.Encode("path", UUID),
 	}
 
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("DELETE", autorest.GetPath(DefaultBaseURI, "/clusters/{uuid}/node-pool/{instanceNo}")+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/nks/v2/clusters/{uuid}/node-pool/{instanceNo}", pathParameters))
+		autorest.WithPathParameters("/clusters/{uuid}/node-pool/{instanceNo}", pathParameters),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -173,7 +195,7 @@ func (client NodePoolClient) DeleteResponder(resp *http.Response) (result autore
 // Get 노드풀 조회
 // Parameters:
 // UUID - 클러스터 UUID
-func (client NodePoolClient) Get(ctx context.Context, UUID string) (result NodePoolResponseParameter, err error) {
+func (client NodePoolClient) Get(ctx context.Context, UUID string) (result NodePoolResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NodePoolClient.Get")
 		defer func() {
@@ -211,10 +233,19 @@ func (client NodePoolClient) GetPreparer(ctx context.Context, UUID string) (*htt
 		"uuid": autorest.Encode("path", UUID),
 	}
 
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("GET", autorest.GetPath(DefaultBaseURI, "/clusters/{uuid}/node-pool")+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/nks/v2/clusters/{uuid}/node-pool", pathParameters))
+		autorest.WithPathParameters("/clusters/{uuid}/node-pool", pathParameters),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -226,7 +257,7 @@ func (client NodePoolClient) GetSender(req *http.Request) (*http.Response, error
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client NodePoolClient) GetResponder(resp *http.Response) (result NodePoolResponseParameter, err error) {
+func (client NodePoolClient) GetResponder(resp *http.Response) (result NodePoolResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusNotFound, http.StatusInternalServerError),
@@ -241,7 +272,7 @@ func (client NodePoolClient) GetResponder(resp *http.Response) (result NodePoolR
 // UUID - 클러스터 UUID
 // instanceNo - 인스턴스 번호
 // parameters - 노드풀 생성 파라미터
-func (client NodePoolClient) Update(ctx context.Context, UUID string, instanceNo string, parameters NodePoolUpdateParameter) (result autorest.Response, err error) {
+func (client NodePoolClient) Update(ctx context.Context, UUID string, instanceNo string, parameters NodePoolUpdateRequest) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NodePoolClient.Update")
 		defer func() {
@@ -274,18 +305,27 @@ func (client NodePoolClient) Update(ctx context.Context, UUID string, instanceNo
 }
 
 // UpdatePreparer prepares the Update request.
-func (client NodePoolClient) UpdatePreparer(ctx context.Context, UUID string, instanceNo string, parameters NodePoolUpdateParameter) (*http.Request, error) {
+func (client NodePoolClient) UpdatePreparer(ctx context.Context, UUID string, instanceNo string, parameters NodePoolUpdateRequest) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"instanceNo": autorest.Encode("path", instanceNo),
 		"uuid":       autorest.Encode("path", UUID),
 	}
 
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("PATCH", autorest.GetPath(DefaultBaseURI, "/clusters/{uuid}/node-pool/{instanceNo}")+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json;charset=UTF-8"),
 		autorest.AsPatch(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/nks/v2/clusters/{uuid}/node-pool/{instanceNo}", pathParameters),
-		autorest.WithJSON(parameters))
+		autorest.WithPathParameters("/clusters/{uuid}/node-pool/{instanceNo}", pathParameters),
+		autorest.WithJSON(parameters),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 

@@ -4,10 +4,14 @@ package server
 
 import (
 	"context"
+	"crypto"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/tracing"
+	"github.com/samjegal/go-fincloud-helpers/security"
 	"net/http"
+	"strconv"
+	"time"
 )
 
 // LoginKeyClient is the server Client
@@ -28,9 +32,8 @@ func NewLoginKeyClientWithBaseURI(baseURI string) LoginKeyClient {
 
 // Create 로그인 키를 생성
 // Parameters:
-// responseFormatType - 반환 데이터 포맷 타입
 // keyName - 키 이름
-func (client LoginKeyClient) Create(ctx context.Context, responseFormatType string, keyName string) (result CreateLoginKeyResponse, err error) {
+func (client LoginKeyClient) Create(ctx context.Context, keyName string) (result CreateLoginKeyResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/LoginKeyClient.Create")
 		defer func() {
@@ -41,7 +44,7 @@ func (client LoginKeyClient) Create(ctx context.Context, responseFormatType stri
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.CreatePreparer(ctx, responseFormatType, keyName)
+	req, err := client.CreatePreparer(ctx, keyName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "server.LoginKeyClient", "Create", nil, "Failure preparing request")
 		return
@@ -63,19 +66,28 @@ func (client LoginKeyClient) Create(ctx context.Context, responseFormatType stri
 }
 
 // CreatePreparer prepares the Create request.
-func (client LoginKeyClient) CreatePreparer(ctx context.Context, responseFormatType string, keyName string) (*http.Request, error) {
+func (client LoginKeyClient) CreatePreparer(ctx context.Context, keyName string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
-		"responseFormatType": autorest.Encode("query", responseFormatType),
+		"responseFormatType": autorest.Encode("query", "json"),
 	}
 	if len(keyName) > 0 {
 		queryParameters["keyName"] = autorest.Encode("query", keyName)
 	}
 
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("POST", autorest.GetPath(DefaultBaseURI, "/createLoginKey")+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/vserver/v2/createLoginKey"),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithPath("/createLoginKey"),
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -99,9 +111,8 @@ func (client LoginKeyClient) CreateResponder(resp *http.Response) (result Create
 
 // Delete 로그인 키를 삭제
 // Parameters:
-// responseFormatType - 반환 데이터 포맷 타입
 // keyNameListN - 키 이름 리스트
-func (client LoginKeyClient) Delete(ctx context.Context, responseFormatType string, keyNameListN string) (result DeleteLoginKeysResponse, err error) {
+func (client LoginKeyClient) Delete(ctx context.Context, keyNameListN string) (result DeleteLoginKeysResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/LoginKeyClient.Delete")
 		defer func() {
@@ -112,7 +123,7 @@ func (client LoginKeyClient) Delete(ctx context.Context, responseFormatType stri
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeletePreparer(ctx, responseFormatType, keyNameListN)
+	req, err := client.DeletePreparer(ctx, keyNameListN)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "server.LoginKeyClient", "Delete", nil, "Failure preparing request")
 		return
@@ -134,17 +145,26 @@ func (client LoginKeyClient) Delete(ctx context.Context, responseFormatType stri
 }
 
 // DeletePreparer prepares the Delete request.
-func (client LoginKeyClient) DeletePreparer(ctx context.Context, responseFormatType string, keyNameListN string) (*http.Request, error) {
+func (client LoginKeyClient) DeletePreparer(ctx context.Context, keyNameListN string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"keyNameList.N":      autorest.Encode("query", keyNameListN),
-		"responseFormatType": autorest.Encode("query", responseFormatType),
+		"responseFormatType": autorest.Encode("query", "json"),
 	}
 
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("POST", autorest.GetPath(DefaultBaseURI, "/deleteLoginKeys")+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/vserver/v2/deleteLoginKeys"),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithPath("/deleteLoginKeys"),
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -168,10 +188,9 @@ func (client LoginKeyClient) DeleteResponder(resp *http.Response) (result Delete
 
 // GetList 로그인 키 리스트를 조회
 // Parameters:
-// responseFormatType - 반환 데이터 포맷 타입
 // pageNo - 페이지 번호
 // pageSize - 페이지 사이즈
-func (client LoginKeyClient) GetList(ctx context.Context, responseFormatType string, pageNo string, pageSize string) (result LoginKeyListResponse, err error) {
+func (client LoginKeyClient) GetList(ctx context.Context, pageNo string, pageSize string) (result LoginKeyListResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/LoginKeyClient.GetList")
 		defer func() {
@@ -182,7 +201,7 @@ func (client LoginKeyClient) GetList(ctx context.Context, responseFormatType str
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetListPreparer(ctx, responseFormatType, pageNo, pageSize)
+	req, err := client.GetListPreparer(ctx, pageNo, pageSize)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "server.LoginKeyClient", "GetList", nil, "Failure preparing request")
 		return
@@ -204,9 +223,9 @@ func (client LoginKeyClient) GetList(ctx context.Context, responseFormatType str
 }
 
 // GetListPreparer prepares the GetList request.
-func (client LoginKeyClient) GetListPreparer(ctx context.Context, responseFormatType string, pageNo string, pageSize string) (*http.Request, error) {
+func (client LoginKeyClient) GetListPreparer(ctx context.Context, pageNo string, pageSize string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
-		"responseFormatType": autorest.Encode("query", responseFormatType),
+		"responseFormatType": autorest.Encode("query", "json"),
 	}
 	if len(pageNo) > 0 {
 		queryParameters["pageNo"] = autorest.Encode("query", pageNo)
@@ -215,11 +234,20 @@ func (client LoginKeyClient) GetListPreparer(ctx context.Context, responseFormat
 		queryParameters["pageSize"] = autorest.Encode("query", pageSize)
 	}
 
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("GET", autorest.GetPath(DefaultBaseURI, "/getLoginKeyList")+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/vserver/v2/getLoginKeyList"),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithPath("/getLoginKeyList"),
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -243,10 +271,9 @@ func (client LoginKeyClient) GetListResponder(resp *http.Response) (result Login
 
 // Import 사용자가 생성한 로그인 키를 Import
 // Parameters:
-// responseFormatType - 반환 데이터 포맷 타입
 // publicKey - 공개키
 // keyName - 키 이름
-func (client LoginKeyClient) Import(ctx context.Context, responseFormatType string, publicKey string, keyName string) (result LoginKeyResponse, err error) {
+func (client LoginKeyClient) Import(ctx context.Context, publicKey string, keyName string) (result LoginKeyResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/LoginKeyClient.Import")
 		defer func() {
@@ -257,7 +284,7 @@ func (client LoginKeyClient) Import(ctx context.Context, responseFormatType stri
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.ImportPreparer(ctx, responseFormatType, publicKey, keyName)
+	req, err := client.ImportPreparer(ctx, publicKey, keyName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "server.LoginKeyClient", "Import", nil, "Failure preparing request")
 		return
@@ -279,20 +306,29 @@ func (client LoginKeyClient) Import(ctx context.Context, responseFormatType stri
 }
 
 // ImportPreparer prepares the Import request.
-func (client LoginKeyClient) ImportPreparer(ctx context.Context, responseFormatType string, publicKey string, keyName string) (*http.Request, error) {
+func (client LoginKeyClient) ImportPreparer(ctx context.Context, publicKey string, keyName string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"publicKey":          autorest.Encode("query", publicKey),
-		"responseFormatType": autorest.Encode("query", responseFormatType),
+		"responseFormatType": autorest.Encode("query", "json"),
 	}
 	if len(keyName) > 0 {
 		queryParameters["keyName"] = autorest.Encode("query", keyName)
 	}
 
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("POST", autorest.GetPath(DefaultBaseURI, "/importLoginKey")+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/vserver/v2/importLoginKey"),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithPath("/importLoginKey"),
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 

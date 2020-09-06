@@ -138,6 +138,7 @@ type Client = original.Client
 type DetailResponse = original.DetailResponse
 type List = original.List
 type ListResponse = original.ListResponse
+type ListResponseGetVpcListResponse = original.ListResponseGetVpcListResponse
 type NatGatewayClient = original.NatGatewayClient
 type NatGatewayInstanceDetailResponse = original.NatGatewayInstanceDetailResponse
 type NatGatewayInstanceList = original.NatGatewayInstanceList

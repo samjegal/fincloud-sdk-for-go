@@ -11,7 +11,7 @@ import (
 
 const (
 	// DefaultBaseURI is the default URI used for the service Kubernetes
-	DefaultBaseURI = "https://nks.apigw.fin-ntruss.com"
+	DefaultBaseURI = "https://nks.apigw.fin-ntruss.com/nks/v2"
 )
 
 // BaseClient is the base client for Kubernetes.

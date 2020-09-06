@@ -11,7 +11,7 @@ import (
 
 const (
 	// DefaultBaseURI is the default URI used for the service Server
-	DefaultBaseURI = "https://fin-ncloud.apigw.fin-ntruss.com"
+	DefaultBaseURI = "https://fin-ncloud.apigw.fin-ntruss.com/vserver/v2"
 )
 
 // BaseClient is the base client for Server.

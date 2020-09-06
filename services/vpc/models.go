@@ -40,7 +40,12 @@ type List struct {
 
 // ListResponse ...
 type ListResponse struct {
-	autorest.Response `json:"-"`
+	autorest.Response  `json:"-"`
+	GetVpcListResponse *ListResponseGetVpcListResponse `json:"getVpcListResponse,omitempty"`
+}
+
+// ListResponseGetVpcListResponse ...
+type ListResponseGetVpcListResponse struct {
 	// ReturnCode - 리턴 코드
 	ReturnCode *string `json:"returnCode,omitempty"`
 	// ReturnMessage - 리턴 메시지

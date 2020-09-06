@@ -4,10 +4,14 @@ package kubernetes
 
 import (
 	"context"
+	"crypto"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/tracing"
+	"github.com/samjegal/go-fincloud-helpers/security"
 	"net/http"
+	"strconv"
+	"time"
 )
 
 // WorkerNodeClient is the kubernetes Client
@@ -29,7 +33,7 @@ func NewWorkerNodeClientWithBaseURI(baseURI string) WorkerNodeClient {
 // Get 워커노드 조회
 // Parameters:
 // UUID - 클러스터 UUID
-func (client WorkerNodeClient) Get(ctx context.Context, UUID string) (result WorkerNodeResponseParameter, err error) {
+func (client WorkerNodeClient) Get(ctx context.Context, UUID string) (result WorkerNodeResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/WorkerNodeClient.Get")
 		defer func() {
@@ -67,10 +71,19 @@ func (client WorkerNodeClient) GetPreparer(ctx context.Context, UUID string) (*h
 		"uuid": autorest.Encode("path", UUID),
 	}
 
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("GET", autorest.GetPath(DefaultBaseURI, "/clusters/{uuid}/nodes")+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/nks/v2/clusters/{uuid}/nodes", pathParameters))
+		autorest.WithPathParameters("/clusters/{uuid}/nodes", pathParameters),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -82,7 +95,7 @@ func (client WorkerNodeClient) GetSender(req *http.Request) (*http.Response, err
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client WorkerNodeClient) GetResponder(resp *http.Response) (result WorkerNodeResponseParameter, err error) {
+func (client WorkerNodeClient) GetResponder(resp *http.Response) (result WorkerNodeResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusNotFound, http.StatusInternalServerError),

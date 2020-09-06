@@ -4,10 +4,14 @@ package server
 
 import (
 	"context"
+	"crypto"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/tracing"
+	"github.com/samjegal/go-fincloud-helpers/security"
 	"net/http"
+	"strconv"
+	"time"
 )
 
 // RootPasswordClient is the server Client
@@ -28,11 +32,10 @@ func NewRootPasswordClientWithBaseURI(baseURI string) RootPasswordClient {
 
 // Get 서버 인스턴스의 루트 패스워드를 조회
 // Parameters:
-// responseFormatType - 반환 데이터 포맷 타입
 // serverInstanceNo - 서버 인스턴스 번호
 // regionCode - REGION 코드
 // privateKey - 개인키
-func (client RootPasswordClient) Get(ctx context.Context, responseFormatType string, serverInstanceNo string, regionCode string, privateKey string) (result RootPassword, err error) {
+func (client RootPasswordClient) Get(ctx context.Context, serverInstanceNo string, regionCode string, privateKey string) (result RootPassword, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/RootPasswordClient.Get")
 		defer func() {
@@ -43,7 +46,7 @@ func (client RootPasswordClient) Get(ctx context.Context, responseFormatType str
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetPreparer(ctx, responseFormatType, serverInstanceNo, regionCode, privateKey)
+	req, err := client.GetPreparer(ctx, serverInstanceNo, regionCode, privateKey)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "server.RootPasswordClient", "Get", nil, "Failure preparing request")
 		return
@@ -65,9 +68,9 @@ func (client RootPasswordClient) Get(ctx context.Context, responseFormatType str
 }
 
 // GetPreparer prepares the Get request.
-func (client RootPasswordClient) GetPreparer(ctx context.Context, responseFormatType string, serverInstanceNo string, regionCode string, privateKey string) (*http.Request, error) {
+func (client RootPasswordClient) GetPreparer(ctx context.Context, serverInstanceNo string, regionCode string, privateKey string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
-		"responseFormatType": autorest.Encode("query", responseFormatType),
+		"responseFormatType": autorest.Encode("query", "json"),
 		"serverInstanceNo":   autorest.Encode("query", serverInstanceNo),
 	}
 	if len(regionCode) > 0 {
@@ -79,11 +82,20 @@ func (client RootPasswordClient) GetPreparer(ctx context.Context, responseFormat
 		queryParameters["privateKey"] = autorest.Encode("query", privateKey)
 	}
 
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("POST", autorest.GetPath(DefaultBaseURI, "/getRootPassword")+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/vserver/v2/getRootPassword"),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithPath("/getRootPassword"),
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -107,11 +119,10 @@ func (client RootPasswordClient) GetResponder(resp *http.Response) (result RootP
 
 // GetList 서버 인스턴스 리스트의 루트 패스워드를 조회
 // Parameters:
-// responseFormatType - 반환 데이터 포맷 타입
 // rootPasswordServerInstanceListNserverInstanceNo - 서버 인스턴스 번호
 // regionCode - REGION 코드
 // rootPasswordServerInstanceListNprivateKey - 개인키
-func (client RootPasswordClient) GetList(ctx context.Context, responseFormatType string, rootPasswordServerInstanceListNserverInstanceNo string, regionCode string, rootPasswordServerInstanceListNprivateKey string) (result RootPasswordServerInstanceListResponse, err error) {
+func (client RootPasswordClient) GetList(ctx context.Context, rootPasswordServerInstanceListNserverInstanceNo string, regionCode string, rootPasswordServerInstanceListNprivateKey string) (result RootPasswordServerInstanceListResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/RootPasswordClient.GetList")
 		defer func() {
@@ -122,7 +133,7 @@ func (client RootPasswordClient) GetList(ctx context.Context, responseFormatType
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetListPreparer(ctx, responseFormatType, rootPasswordServerInstanceListNserverInstanceNo, regionCode, rootPasswordServerInstanceListNprivateKey)
+	req, err := client.GetListPreparer(ctx, rootPasswordServerInstanceListNserverInstanceNo, regionCode, rootPasswordServerInstanceListNprivateKey)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "server.RootPasswordClient", "GetList", nil, "Failure preparing request")
 		return
@@ -144,9 +155,9 @@ func (client RootPasswordClient) GetList(ctx context.Context, responseFormatType
 }
 
 // GetListPreparer prepares the GetList request.
-func (client RootPasswordClient) GetListPreparer(ctx context.Context, responseFormatType string, rootPasswordServerInstanceListNserverInstanceNo string, regionCode string, rootPasswordServerInstanceListNprivateKey string) (*http.Request, error) {
+func (client RootPasswordClient) GetListPreparer(ctx context.Context, rootPasswordServerInstanceListNserverInstanceNo string, regionCode string, rootPasswordServerInstanceListNprivateKey string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
-		"responseFormatType": autorest.Encode("query", responseFormatType),
+		"responseFormatType": autorest.Encode("query", "json"),
 		"rootPasswordServerInstanceList.N.serverInstanceNo": autorest.Encode("query", rootPasswordServerInstanceListNserverInstanceNo),
 	}
 	if len(regionCode) > 0 {
@@ -158,11 +169,20 @@ func (client RootPasswordClient) GetListPreparer(ctx context.Context, responseFo
 		queryParameters["rootPasswordServerInstanceList.N.privateKey"] = autorest.Encode("query", rootPasswordServerInstanceListNprivateKey)
 	}
 
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("POST", autorest.GetPath(DefaultBaseURI, "/getRootPasswordServerInstanceList")+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/vserver/v2/getRootPasswordServerInstanceList"),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithPath("/getRootPasswordServerInstanceList"),
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 

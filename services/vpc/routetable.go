@@ -4,10 +4,14 @@ package vpc
 
 import (
 	"context"
+	"crypto"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/tracing"
+	"github.com/samjegal/go-fincloud-helpers/security"
 	"net/http"
+	"strconv"
+	"time"
 )
 
 // RouteTableClient is the VPC Client
@@ -28,13 +32,12 @@ func NewRouteTableClientWithBaseURI(baseURI string) RouteTableClient {
 
 // Create 라우트 테이블을 생성
 // Parameters:
-// responseFormatType - 반환 데이터 포맷 타입
 // vpcNo - VPC 번호
 // regionCode - REGION 코드
 // routeTableName - 라우트 테이블 이름
 // supportedSubnetTypeCode - 지원하는 서브넷 유형 코드
 // routeTableDescription - 라우트 테이블 설명
-func (client RouteTableClient) Create(ctx context.Context, responseFormatType string, vpcNo string, regionCode string, routeTableName string, supportedSubnetTypeCode SupportedSubnetTypeCode, routeTableDescription string) (result RouteTableResponse, err error) {
+func (client RouteTableClient) Create(ctx context.Context, vpcNo string, regionCode string, routeTableName string, supportedSubnetTypeCode SupportedSubnetTypeCode, routeTableDescription string) (result RouteTableResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/RouteTableClient.Create")
 		defer func() {
@@ -45,7 +48,7 @@ func (client RouteTableClient) Create(ctx context.Context, responseFormatType st
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.CreatePreparer(ctx, responseFormatType, vpcNo, regionCode, routeTableName, supportedSubnetTypeCode, routeTableDescription)
+	req, err := client.CreatePreparer(ctx, vpcNo, regionCode, routeTableName, supportedSubnetTypeCode, routeTableDescription)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vpc.RouteTableClient", "Create", nil, "Failure preparing request")
 		return
@@ -67,9 +70,9 @@ func (client RouteTableClient) Create(ctx context.Context, responseFormatType st
 }
 
 // CreatePreparer prepares the Create request.
-func (client RouteTableClient) CreatePreparer(ctx context.Context, responseFormatType string, vpcNo string, regionCode string, routeTableName string, supportedSubnetTypeCode SupportedSubnetTypeCode, routeTableDescription string) (*http.Request, error) {
+func (client RouteTableClient) CreatePreparer(ctx context.Context, vpcNo string, regionCode string, routeTableName string, supportedSubnetTypeCode SupportedSubnetTypeCode, routeTableDescription string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
-		"responseFormatType": autorest.Encode("query", responseFormatType),
+		"responseFormatType": autorest.Encode("query", "json"),
 		"vpcNo":              autorest.Encode("query", vpcNo),
 	}
 	if len(regionCode) > 0 {
@@ -87,11 +90,20 @@ func (client RouteTableClient) CreatePreparer(ctx context.Context, responseForma
 		queryParameters["routeTableDescription"] = autorest.Encode("query", routeTableDescription)
 	}
 
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("POST", autorest.GetPath(DefaultBaseURI, "/createRouteTable")+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/vpc/v2/createRouteTable"),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithPath("/createRouteTable"),
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -115,10 +127,9 @@ func (client RouteTableClient) CreateResponder(resp *http.Response) (result Rout
 
 // Delete 라우트 테이블을 삭제
 // Parameters:
-// responseFormatType - 반환 데이터 포맷 타입
 // routeTableNo - 라우트 테이블 번호
 // regionCode - REGION 코드
-func (client RouteTableClient) Delete(ctx context.Context, responseFormatType string, routeTableNo string, regionCode string) (result RouteTableResponse, err error) {
+func (client RouteTableClient) Delete(ctx context.Context, routeTableNo string, regionCode string) (result RouteTableResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/RouteTableClient.Delete")
 		defer func() {
@@ -129,7 +140,7 @@ func (client RouteTableClient) Delete(ctx context.Context, responseFormatType st
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeletePreparer(ctx, responseFormatType, routeTableNo, regionCode)
+	req, err := client.DeletePreparer(ctx, routeTableNo, regionCode)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vpc.RouteTableClient", "Delete", nil, "Failure preparing request")
 		return
@@ -151,9 +162,9 @@ func (client RouteTableClient) Delete(ctx context.Context, responseFormatType st
 }
 
 // DeletePreparer prepares the Delete request.
-func (client RouteTableClient) DeletePreparer(ctx context.Context, responseFormatType string, routeTableNo string, regionCode string) (*http.Request, error) {
+func (client RouteTableClient) DeletePreparer(ctx context.Context, routeTableNo string, regionCode string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
-		"responseFormatType": autorest.Encode("query", responseFormatType),
+		"responseFormatType": autorest.Encode("query", "json"),
 		"routeTableNo":       autorest.Encode("query", routeTableNo),
 	}
 	if len(regionCode) > 0 {
@@ -162,11 +173,20 @@ func (client RouteTableClient) DeletePreparer(ctx context.Context, responseForma
 		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
 	}
 
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("POST", autorest.GetPath(DefaultBaseURI, "/deleteRouteTable")+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/vpc/v2/deleteRouteTable"),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithPath("/deleteRouteTable"),
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -190,10 +210,9 @@ func (client RouteTableClient) DeleteResponder(resp *http.Response) (result Rout
 
 // GetDetail 라우트 테이블 상세 정보를 조회
 // Parameters:
-// responseFormatType - 반환 데이터 포맷 타입
 // routeTableNo - 라우트 테이블 번호
 // regionCode - REGION 코드
-func (client RouteTableClient) GetDetail(ctx context.Context, responseFormatType string, routeTableNo string, regionCode string) (result RouteTableDetailResponse, err error) {
+func (client RouteTableClient) GetDetail(ctx context.Context, routeTableNo string, regionCode string) (result RouteTableDetailResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/RouteTableClient.GetDetail")
 		defer func() {
@@ -204,7 +223,7 @@ func (client RouteTableClient) GetDetail(ctx context.Context, responseFormatType
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetDetailPreparer(ctx, responseFormatType, routeTableNo, regionCode)
+	req, err := client.GetDetailPreparer(ctx, routeTableNo, regionCode)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vpc.RouteTableClient", "GetDetail", nil, "Failure preparing request")
 		return
@@ -226,9 +245,9 @@ func (client RouteTableClient) GetDetail(ctx context.Context, responseFormatType
 }
 
 // GetDetailPreparer prepares the GetDetail request.
-func (client RouteTableClient) GetDetailPreparer(ctx context.Context, responseFormatType string, routeTableNo string, regionCode string) (*http.Request, error) {
+func (client RouteTableClient) GetDetailPreparer(ctx context.Context, routeTableNo string, regionCode string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
-		"responseFormatType": autorest.Encode("query", responseFormatType),
+		"responseFormatType": autorest.Encode("query", "json"),
 		"routeTableNo":       autorest.Encode("query", routeTableNo),
 	}
 	if len(regionCode) > 0 {
@@ -237,11 +256,20 @@ func (client RouteTableClient) GetDetailPreparer(ctx context.Context, responseFo
 		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
 	}
 
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("GET", autorest.GetPath(DefaultBaseURI, "/getRouteTableDetail")+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/vpc/v2/getRouteTableDetail"),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithPath("/getRouteTableDetail"),
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -265,7 +293,6 @@ func (client RouteTableClient) GetDetailResponder(resp *http.Response) (result R
 
 // GetList 라우트 테이블 리스트를 조회
 // Parameters:
-// responseFormatType - 반환 데이터 포맷 타입
 // regionCode - REGION 코드
 // routeTableNoListN - 라우트 테이블 번호 리스트
 // routeTableName - 라우트 테이블 이름
@@ -275,7 +302,7 @@ func (client RouteTableClient) GetDetailResponder(resp *http.Response) (result R
 // sortedBy - 정렬 대상
 // sortingOrder - 정렬 순서
 // vpcNo - VPC 번호
-func (client RouteTableClient) GetList(ctx context.Context, responseFormatType string, regionCode string, routeTableNoListN string, routeTableName string, supportedSubnetTypeCode SupportedSubnetTypeCode, pageNo string, pageSize string, sortedBy string, sortingOrder SortingOrder, vpcNo string) (result RouteTableListResponse, err error) {
+func (client RouteTableClient) GetList(ctx context.Context, regionCode string, routeTableNoListN string, routeTableName string, supportedSubnetTypeCode SupportedSubnetTypeCode, pageNo string, pageSize string, sortedBy string, sortingOrder SortingOrder, vpcNo string) (result RouteTableListResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/RouteTableClient.GetList")
 		defer func() {
@@ -286,7 +313,7 @@ func (client RouteTableClient) GetList(ctx context.Context, responseFormatType s
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetListPreparer(ctx, responseFormatType, regionCode, routeTableNoListN, routeTableName, supportedSubnetTypeCode, pageNo, pageSize, sortedBy, sortingOrder, vpcNo)
+	req, err := client.GetListPreparer(ctx, regionCode, routeTableNoListN, routeTableName, supportedSubnetTypeCode, pageNo, pageSize, sortedBy, sortingOrder, vpcNo)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vpc.RouteTableClient", "GetList", nil, "Failure preparing request")
 		return
@@ -308,9 +335,9 @@ func (client RouteTableClient) GetList(ctx context.Context, responseFormatType s
 }
 
 // GetListPreparer prepares the GetList request.
-func (client RouteTableClient) GetListPreparer(ctx context.Context, responseFormatType string, regionCode string, routeTableNoListN string, routeTableName string, supportedSubnetTypeCode SupportedSubnetTypeCode, pageNo string, pageSize string, sortedBy string, sortingOrder SortingOrder, vpcNo string) (*http.Request, error) {
+func (client RouteTableClient) GetListPreparer(ctx context.Context, regionCode string, routeTableNoListN string, routeTableName string, supportedSubnetTypeCode SupportedSubnetTypeCode, pageNo string, pageSize string, sortedBy string, sortingOrder SortingOrder, vpcNo string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
-		"responseFormatType": autorest.Encode("query", responseFormatType),
+		"responseFormatType": autorest.Encode("query", "json"),
 	}
 	if len(regionCode) > 0 {
 		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
@@ -342,11 +369,20 @@ func (client RouteTableClient) GetListPreparer(ctx context.Context, responseForm
 		queryParameters["vpcNo"] = autorest.Encode("query", vpcNo)
 	}
 
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("GET", autorest.GetPath(DefaultBaseURI, "/getRouteTableList")+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/vpc/v2/getRouteTableList"),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithPath("/getRouteTableList"),
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 

@@ -4,10 +4,14 @@ package vpc
 
 import (
 	"context"
+	"crypto"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/tracing"
+	"github.com/samjegal/go-fincloud-helpers/security"
 	"net/http"
+	"strconv"
+	"time"
 )
 
 // PeeringClient is the VPC Client
@@ -28,11 +32,10 @@ func NewPeeringClientWithBaseURI(baseURI string) PeeringClient {
 
 // AcceptOrReject VPC Peering 요청을 수락/거절
 // Parameters:
-// responseFormatType - 반환 데이터 포맷 타입
 // vpcPeeringInstanceNo - VPC Peering 인스턴스 번호
 // isAccept - 수락 여부
 // regionCode - REGION 코드
-func (client PeeringClient) AcceptOrReject(ctx context.Context, responseFormatType string, vpcPeeringInstanceNo string, isAccept string, regionCode string) (result PeeringInstanceResponse, err error) {
+func (client PeeringClient) AcceptOrReject(ctx context.Context, vpcPeeringInstanceNo string, isAccept string, regionCode string) (result PeeringInstanceResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PeeringClient.AcceptOrReject")
 		defer func() {
@@ -43,7 +46,7 @@ func (client PeeringClient) AcceptOrReject(ctx context.Context, responseFormatTy
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.AcceptOrRejectPreparer(ctx, responseFormatType, vpcPeeringInstanceNo, isAccept, regionCode)
+	req, err := client.AcceptOrRejectPreparer(ctx, vpcPeeringInstanceNo, isAccept, regionCode)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vpc.PeeringClient", "AcceptOrReject", nil, "Failure preparing request")
 		return
@@ -65,10 +68,10 @@ func (client PeeringClient) AcceptOrReject(ctx context.Context, responseFormatTy
 }
 
 // AcceptOrRejectPreparer prepares the AcceptOrReject request.
-func (client PeeringClient) AcceptOrRejectPreparer(ctx context.Context, responseFormatType string, vpcPeeringInstanceNo string, isAccept string, regionCode string) (*http.Request, error) {
+func (client PeeringClient) AcceptOrRejectPreparer(ctx context.Context, vpcPeeringInstanceNo string, isAccept string, regionCode string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"isAccept":             autorest.Encode("query", isAccept),
-		"responseFormatType":   autorest.Encode("query", responseFormatType),
+		"responseFormatType":   autorest.Encode("query", "json"),
 		"vpcPeeringInstanceNo": autorest.Encode("query", vpcPeeringInstanceNo),
 	}
 	if len(regionCode) > 0 {
@@ -77,11 +80,20 @@ func (client PeeringClient) AcceptOrRejectPreparer(ctx context.Context, response
 		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
 	}
 
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("POST", autorest.GetPath(DefaultBaseURI, "/acceptOrRejectVpcPeering")+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/vpc/v2/acceptOrRejectVpcPeering"),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithPath("/acceptOrRejectVpcPeering"),
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -105,7 +117,6 @@ func (client PeeringClient) AcceptOrRejectResponder(resp *http.Response) (result
 
 // Create VPC Peering 인스턴스를 생성
 // Parameters:
-// responseFormatType - 반환 데이터 포맷 타입
 // sourceVpcNo - 요청 VPC 번호
 // targetVpcNo - 수락 VPC 번호
 // regionCode - REGION 코드
@@ -113,7 +124,7 @@ func (client PeeringClient) AcceptOrRejectResponder(resp *http.Response) (result
 // targetVpcName - 수락 VPC 이름
 // targetVpcLoginID - 수락 VPC 소유자 ID
 // vpcPeeringDescription - VPC Peering 설명
-func (client PeeringClient) Create(ctx context.Context, responseFormatType string, sourceVpcNo string, targetVpcNo string, regionCode string, vpcPeeringName string, targetVpcName string, targetVpcLoginID string, vpcPeeringDescription string) (result PeeringInstanceResponse, err error) {
+func (client PeeringClient) Create(ctx context.Context, sourceVpcNo string, targetVpcNo string, regionCode string, vpcPeeringName string, targetVpcName string, targetVpcLoginID string, vpcPeeringDescription string) (result PeeringInstanceResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PeeringClient.Create")
 		defer func() {
@@ -124,7 +135,7 @@ func (client PeeringClient) Create(ctx context.Context, responseFormatType strin
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.CreatePreparer(ctx, responseFormatType, sourceVpcNo, targetVpcNo, regionCode, vpcPeeringName, targetVpcName, targetVpcLoginID, vpcPeeringDescription)
+	req, err := client.CreatePreparer(ctx, sourceVpcNo, targetVpcNo, regionCode, vpcPeeringName, targetVpcName, targetVpcLoginID, vpcPeeringDescription)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vpc.PeeringClient", "Create", nil, "Failure preparing request")
 		return
@@ -146,9 +157,9 @@ func (client PeeringClient) Create(ctx context.Context, responseFormatType strin
 }
 
 // CreatePreparer prepares the Create request.
-func (client PeeringClient) CreatePreparer(ctx context.Context, responseFormatType string, sourceVpcNo string, targetVpcNo string, regionCode string, vpcPeeringName string, targetVpcName string, targetVpcLoginID string, vpcPeeringDescription string) (*http.Request, error) {
+func (client PeeringClient) CreatePreparer(ctx context.Context, sourceVpcNo string, targetVpcNo string, regionCode string, vpcPeeringName string, targetVpcName string, targetVpcLoginID string, vpcPeeringDescription string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
-		"responseFormatType": autorest.Encode("query", responseFormatType),
+		"responseFormatType": autorest.Encode("query", "json"),
 		"sourceVpcNo":        autorest.Encode("query", sourceVpcNo),
 		"targetVpcNo":        autorest.Encode("query", targetVpcNo),
 	}
@@ -170,11 +181,20 @@ func (client PeeringClient) CreatePreparer(ctx context.Context, responseFormatTy
 		queryParameters["vpcPeeringDescription"] = autorest.Encode("query", vpcPeeringDescription)
 	}
 
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("POST", autorest.GetPath(DefaultBaseURI, "/createVpcPeeringInstance")+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/vpc/v2/createVpcPeeringInstance"),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithPath("/createVpcPeeringInstance"),
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -198,10 +218,9 @@ func (client PeeringClient) CreateResponder(resp *http.Response) (result Peering
 
 // Delete VPC Peering 인스턴스를 삭제
 // Parameters:
-// responseFormatType - 반환 데이터 포맷 타입
 // vpcPeeringInstanceNo - VPC Peering 인스턴스 번호
 // regionCode - REGION 코드
-func (client PeeringClient) Delete(ctx context.Context, responseFormatType string, vpcPeeringInstanceNo string, regionCode string) (result PeeringInstanceResponse, err error) {
+func (client PeeringClient) Delete(ctx context.Context, vpcPeeringInstanceNo string, regionCode string) (result PeeringInstanceResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PeeringClient.Delete")
 		defer func() {
@@ -212,7 +231,7 @@ func (client PeeringClient) Delete(ctx context.Context, responseFormatType strin
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeletePreparer(ctx, responseFormatType, vpcPeeringInstanceNo, regionCode)
+	req, err := client.DeletePreparer(ctx, vpcPeeringInstanceNo, regionCode)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vpc.PeeringClient", "Delete", nil, "Failure preparing request")
 		return
@@ -234,9 +253,9 @@ func (client PeeringClient) Delete(ctx context.Context, responseFormatType strin
 }
 
 // DeletePreparer prepares the Delete request.
-func (client PeeringClient) DeletePreparer(ctx context.Context, responseFormatType string, vpcPeeringInstanceNo string, regionCode string) (*http.Request, error) {
+func (client PeeringClient) DeletePreparer(ctx context.Context, vpcPeeringInstanceNo string, regionCode string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
-		"responseFormatType":   autorest.Encode("query", responseFormatType),
+		"responseFormatType":   autorest.Encode("query", "json"),
 		"vpcPeeringInstanceNo": autorest.Encode("query", vpcPeeringInstanceNo),
 	}
 	if len(regionCode) > 0 {
@@ -245,11 +264,20 @@ func (client PeeringClient) DeletePreparer(ctx context.Context, responseFormatTy
 		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
 	}
 
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("POST", autorest.GetPath(DefaultBaseURI, "/deleteVpcPeeringInstance")+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/vpc/v2/deleteVpcPeeringInstance"),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithPath("/deleteVpcPeeringInstance"),
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -273,10 +301,9 @@ func (client PeeringClient) DeleteResponder(resp *http.Response) (result Peering
 
 // GetDetail VPC Peering 인스턴스 상세 정보를 조회
 // Parameters:
-// responseFormatType - 반환 데이터 포맷 타입
 // vpcPeeringInstanceNo - VPC Peering 인스턴스 번호
 // regionCode - REGION 코드
-func (client PeeringClient) GetDetail(ctx context.Context, responseFormatType string, vpcPeeringInstanceNo string, regionCode string) (result autorest.Response, err error) {
+func (client PeeringClient) GetDetail(ctx context.Context, vpcPeeringInstanceNo string, regionCode string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PeeringClient.GetDetail")
 		defer func() {
@@ -287,7 +314,7 @@ func (client PeeringClient) GetDetail(ctx context.Context, responseFormatType st
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetDetailPreparer(ctx, responseFormatType, vpcPeeringInstanceNo, regionCode)
+	req, err := client.GetDetailPreparer(ctx, vpcPeeringInstanceNo, regionCode)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vpc.PeeringClient", "GetDetail", nil, "Failure preparing request")
 		return
@@ -309,9 +336,9 @@ func (client PeeringClient) GetDetail(ctx context.Context, responseFormatType st
 }
 
 // GetDetailPreparer prepares the GetDetail request.
-func (client PeeringClient) GetDetailPreparer(ctx context.Context, responseFormatType string, vpcPeeringInstanceNo string, regionCode string) (*http.Request, error) {
+func (client PeeringClient) GetDetailPreparer(ctx context.Context, vpcPeeringInstanceNo string, regionCode string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
-		"responseFormatType":   autorest.Encode("query", responseFormatType),
+		"responseFormatType":   autorest.Encode("query", "json"),
 		"vpcPeeringInstanceNo": autorest.Encode("query", vpcPeeringInstanceNo),
 	}
 	if len(regionCode) > 0 {
@@ -320,11 +347,20 @@ func (client PeeringClient) GetDetailPreparer(ctx context.Context, responseForma
 		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
 	}
 
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("GET", autorest.GetPath(DefaultBaseURI, "/getVpcPeeringInstanceDetail")+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/vpc/v2/getVpcPeeringInstanceDetail"),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithPath("/getVpcPeeringInstanceDetail"),
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -347,7 +383,6 @@ func (client PeeringClient) GetDetailResponder(resp *http.Response) (result auto
 
 // GetList VPC Peering 인스턴스 리스트를 조회
 // Parameters:
-// responseFormatType - 반환 데이터 포맷 타입
 // regionCode - REGION 코드
 // vpcPeeringInstanceNoListN - VPC Peering 인스턴스 번호 리스트
 // sourceVpcName - 요청 VPC 이름
@@ -358,7 +393,7 @@ func (client PeeringClient) GetDetailResponder(resp *http.Response) (result auto
 // pageSize - 페이지 사이즈
 // sortedBy - 정렬 대상
 // sortingOrder - 정렬 순서
-func (client PeeringClient) GetList(ctx context.Context, responseFormatType string, regionCode string, vpcPeeringInstanceNoListN string, sourceVpcName string, vpcPeeringName string, targetVpcName string, vpcPeeringInstanceStatusCode PeeringInstanceStatusCode, pageNo string, pageSize string, sortedBy SortedBy, sortingOrder SortingOrder) (result autorest.Response, err error) {
+func (client PeeringClient) GetList(ctx context.Context, regionCode string, vpcPeeringInstanceNoListN string, sourceVpcName string, vpcPeeringName string, targetVpcName string, vpcPeeringInstanceStatusCode PeeringInstanceStatusCode, pageNo string, pageSize string, sortedBy SortedBy, sortingOrder SortingOrder) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PeeringClient.GetList")
 		defer func() {
@@ -369,7 +404,7 @@ func (client PeeringClient) GetList(ctx context.Context, responseFormatType stri
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetListPreparer(ctx, responseFormatType, regionCode, vpcPeeringInstanceNoListN, sourceVpcName, vpcPeeringName, targetVpcName, vpcPeeringInstanceStatusCode, pageNo, pageSize, sortedBy, sortingOrder)
+	req, err := client.GetListPreparer(ctx, regionCode, vpcPeeringInstanceNoListN, sourceVpcName, vpcPeeringName, targetVpcName, vpcPeeringInstanceStatusCode, pageNo, pageSize, sortedBy, sortingOrder)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vpc.PeeringClient", "GetList", nil, "Failure preparing request")
 		return
@@ -391,9 +426,9 @@ func (client PeeringClient) GetList(ctx context.Context, responseFormatType stri
 }
 
 // GetListPreparer prepares the GetList request.
-func (client PeeringClient) GetListPreparer(ctx context.Context, responseFormatType string, regionCode string, vpcPeeringInstanceNoListN string, sourceVpcName string, vpcPeeringName string, targetVpcName string, vpcPeeringInstanceStatusCode PeeringInstanceStatusCode, pageNo string, pageSize string, sortedBy SortedBy, sortingOrder SortingOrder) (*http.Request, error) {
+func (client PeeringClient) GetListPreparer(ctx context.Context, regionCode string, vpcPeeringInstanceNoListN string, sourceVpcName string, vpcPeeringName string, targetVpcName string, vpcPeeringInstanceStatusCode PeeringInstanceStatusCode, pageNo string, pageSize string, sortedBy SortedBy, sortingOrder SortingOrder) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
-		"responseFormatType": autorest.Encode("query", responseFormatType),
+		"responseFormatType": autorest.Encode("query", "json"),
 	}
 	if len(regionCode) > 0 {
 		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
@@ -428,11 +463,20 @@ func (client PeeringClient) GetListPreparer(ctx context.Context, responseFormatT
 		queryParameters["sortingOrder"] = autorest.Encode("query", sortingOrder)
 	}
 
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("GET", autorest.GetPath(DefaultBaseURI, "/getVpcPeeringInstanceList")+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/vpc/v2/getVpcPeeringInstanceList"),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithPath("/getVpcPeeringInstanceList"),
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
