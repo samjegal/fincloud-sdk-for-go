@@ -32,3 +32,6 @@ _testmain.go
 
 # ignore vendor/
 vendor/
+
+# Generated code model
+**/code-model-v1
