@@ -70,7 +70,7 @@ func (client Client) Create(ctx context.Context, ipv4CidrBlock string, regionCod
 // CreatePreparer prepares the Create request.
 func (client Client) CreatePreparer(ctx context.Context, ipv4CidrBlock string, regionCode string, vpcName string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
-		"ipv4CidrBlock":      autorest.Encode("query", ipv4CidrBlock),
+		"ipv4CidrBlock":      ipv4CidrBlock,
 		"responseFormatType": autorest.Encode("query", "json"),
 	}
 	if len(regionCode) > 0 {
