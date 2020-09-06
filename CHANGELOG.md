@@ -1,3 +1,12 @@
+## 1.9.0 (September 6, 2020)
+
+### UPDATED SERVICES
+
+- VPC
+- Server
+- NAS
+- Kuebernetes
+
 ## 1.8.4 (August 20, 2020)
 
 ### UPDATED SERVICES
