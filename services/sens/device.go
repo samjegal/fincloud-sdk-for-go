@@ -4,11 +4,15 @@ package sens
 
 import (
 	"context"
+	"crypto"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
 	"github.com/Azure/go-autorest/tracing"
+	"github.com/samjegal/go-fincloud-helpers/security"
 	"net/http"
+	"strconv"
+	"time"
 )
 
 // DeviceClient is the SENS Client
@@ -21,7 +25,8 @@ func NewDeviceClient() DeviceClient {
 	return NewDeviceClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewDeviceClientWithBaseURI creates an instance of the DeviceClient client.
+// NewDeviceClientWithBaseURI creates an instance of the DeviceClient client using a custom endpoint.  Use this when
+// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewDeviceClientWithBaseURI(baseURI string) DeviceClient {
 	return DeviceClient{NewWithBaseURI(baseURI)}
 }
@@ -42,8 +47,7 @@ func (client DeviceClient) Create(ctx context.Context, serviceID string, paramet
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameter,
-			Constraints: []validation.Constraint{{Target: "parameter.UserID", Name: validation.Null, Rule: true,
-				Chain: []validation.Constraint{{Target: "parameter.UserID", Name: validation.MaxLength, Rule: 128, Chain: nil}}},
+			Constraints: []validation.Constraint{{Target: "parameter.UserID", Name: validation.Null, Rule: true, Chain: nil},
 				{Target: "parameter.DeviceType", Name: validation.Null, Rule: true, Chain: nil},
 				{Target: "parameter.DeviceToken", Name: validation.Null, Rule: true, Chain: nil},
 				{Target: "parameter.IsNotificationAgreement", Name: validation.Null, Rule: true, Chain: nil},
@@ -79,20 +83,30 @@ func (client DeviceClient) CreatePreparer(ctx context.Context, serviceID string,
 		"serviceId": serviceID,
 	}
 
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("POST", autorest.GetPathParameters(DefaultBaseURI, "/push/v2/services/{serviceId}/users", pathParameters), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/push/v2/services/{serviceId}/users", pathParameters),
-		autorest.WithJSON(parameter))
+		autorest.WithJSON(parameter),
+		autorest.WithHeader("x-ncp-apigw-api-key", client.Client.APIGatewayAPIKey),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
 func (client DeviceClient) CreateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CreateResponder handles the response to the Create request. The method always
@@ -100,7 +114,6 @@ func (client DeviceClient) CreateSender(req *http.Request) (*http.Response, erro
 func (client DeviceClient) CreateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusNotFound, http.StatusConflict, http.StatusInternalServerError),
 		autorest.ByClosing())
 	result.Response = resp
@@ -150,18 +163,28 @@ func (client DeviceClient) DeletePreparer(ctx context.Context, serviceID string,
 		"userId":    autorest.Encode("path", userID),
 	}
 
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("DELETE", autorest.GetPathParameters(DefaultBaseURI, "/push/v2/services/{serviceId}/users/{userId}", pathParameters), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/push/v2/services/{serviceId}/users/{userId}", pathParameters))
+		autorest.WithPathParameters("/push/v2/services/{serviceId}/users/{userId}", pathParameters),
+		autorest.WithHeader("x-ncp-apigw-api-key", client.Client.APIGatewayAPIKey),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client DeviceClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -169,7 +192,6 @@ func (client DeviceClient) DeleteSender(req *http.Request) (*http.Response, erro
 func (client DeviceClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusNotFound, http.StatusInternalServerError),
 		autorest.ByClosing())
 	result.Response = resp
@@ -219,18 +241,28 @@ func (client DeviceClient) GetPreparer(ctx context.Context, serviceID string, us
 		"userId":    autorest.Encode("path", userID),
 	}
 
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("GET", autorest.GetPathParameters(DefaultBaseURI, "/push/v2/services/{serviceId}/users/{userId}", pathParameters), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/push/v2/services/{serviceId}/users/{userId}", pathParameters))
+		autorest.WithPathParameters("/push/v2/services/{serviceId}/users/{userId}", pathParameters),
+		autorest.WithHeader("x-ncp-apigw-api-key", client.Client.APIGatewayAPIKey),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client DeviceClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -238,7 +270,6 @@ func (client DeviceClient) GetSender(req *http.Request) (*http.Response, error) 
 func (client DeviceClient) GetResponder(resp *http.Response) (result PushUserResponseParameter, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusNotFound, http.StatusInternalServerError),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

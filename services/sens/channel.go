@@ -4,11 +4,15 @@ package sens
 
 import (
 	"context"
+	"crypto"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
 	"github.com/Azure/go-autorest/tracing"
+	"github.com/samjegal/go-fincloud-helpers/security"
 	"net/http"
+	"strconv"
+	"time"
 )
 
 // ChannelClient is the SENS Client
@@ -21,7 +25,8 @@ func NewChannelClient() ChannelClient {
 	return NewChannelClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewChannelClientWithBaseURI creates an instance of the ChannelClient client.
+// NewChannelClientWithBaseURI creates an instance of the ChannelClient client using a custom endpoint.  Use this when
+// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewChannelClientWithBaseURI(baseURI string) ChannelClient {
 	return ChannelClient{NewWithBaseURI(baseURI)}
 }
@@ -71,18 +76,28 @@ func (client ChannelClient) AddUserPreparer(ctx context.Context, serviceID strin
 		"userId":      autorest.Encode("path", userID),
 	}
 
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("POST", autorest.GetPathParameters(DefaultBaseURI, "/push/v2/services/{serviceId}/channels/{channelName}/users/{userId}", pathParameters), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/push/v2/services/{serviceId}/channels/{channelName}/users/{userId}", pathParameters))
+		autorest.WithPathParameters("/push/v2/services/{serviceId}/channels/{channelName}/users/{userId}", pathParameters),
+		autorest.WithHeader("x-ncp-apigw-api-key", client.Client.APIGatewayAPIKey),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // AddUserSender sends the AddUser request. The method will close the
 // http.Response Body if it receives an error.
 func (client ChannelClient) AddUserSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // AddUserResponder handles the response to the AddUser request. The method always
@@ -90,7 +105,6 @@ func (client ChannelClient) AddUserSender(req *http.Request) (*http.Response, er
 func (client ChannelClient) AddUserResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusNotFound, http.StatusInternalServerError),
 		autorest.ByClosing())
 	result.Response = resp
@@ -114,8 +128,7 @@ func (client ChannelClient) Create(ctx context.Context, serviceID string, channe
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: channel,
-			Constraints: []validation.Constraint{{Target: "channel.ChannelName", Name: validation.Null, Rule: true,
-				Chain: []validation.Constraint{{Target: "channel.ChannelName", Name: validation.MaxLength, Rule: 24, Chain: nil}}}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "channel.ChannelName", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("sens.ChannelClient", "Create", err.Error())
 	}
 
@@ -146,20 +159,30 @@ func (client ChannelClient) CreatePreparer(ctx context.Context, serviceID string
 		"serviceId": serviceID,
 	}
 
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("POST", autorest.GetPathParameters(DefaultBaseURI, "/push/v2/services/{serviceId}/channels", pathParameters), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/push/v2/services/{serviceId}/channels", pathParameters),
-		autorest.WithJSON(channel))
+		autorest.WithJSON(channel),
+		autorest.WithHeader("x-ncp-apigw-api-key", client.Client.APIGatewayAPIKey),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
 func (client ChannelClient) CreateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CreateResponder handles the response to the Create request. The method always
@@ -167,7 +190,6 @@ func (client ChannelClient) CreateSender(req *http.Request) (*http.Response, err
 func (client ChannelClient) CreateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusNotFound, http.StatusConflict, http.StatusInternalServerError),
 		autorest.ByClosing())
 	result.Response = resp
@@ -219,18 +241,28 @@ func (client ChannelClient) DeleteUserPreparer(ctx context.Context, serviceID st
 		"userId":      autorest.Encode("path", userID),
 	}
 
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("DELETE", autorest.GetPathParameters(DefaultBaseURI, "/push/v2/services/{serviceId}/channels/{channelName}/users/{userId}", pathParameters), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/push/v2/services/{serviceId}/channels/{channelName}/users/{userId}", pathParameters))
+		autorest.WithPathParameters("/push/v2/services/{serviceId}/channels/{channelName}/users/{userId}", pathParameters),
+		autorest.WithHeader("x-ncp-apigw-api-key", client.Client.APIGatewayAPIKey),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // DeleteUserSender sends the DeleteUser request. The method will close the
 // http.Response Body if it receives an error.
 func (client ChannelClient) DeleteUserSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteUserResponder handles the response to the DeleteUser request. The method always
@@ -238,7 +270,6 @@ func (client ChannelClient) DeleteUserSender(req *http.Request) (*http.Response,
 func (client ChannelClient) DeleteUserResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusNotFound, http.StatusInternalServerError),
 		autorest.ByClosing())
 	result.Response = resp

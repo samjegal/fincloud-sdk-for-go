@@ -4,11 +4,15 @@ package sens
 
 import (
 	"context"
+	"crypto"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
 	"github.com/Azure/go-autorest/tracing"
+	"github.com/samjegal/go-fincloud-helpers/security"
 	"net/http"
+	"strconv"
+	"time"
 )
 
 // MessageClient is the SENS Client
@@ -21,7 +25,8 @@ func NewMessageClient() MessageClient {
 	return NewMessageClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewMessageClientWithBaseURI creates an instance of the MessageClient client.
+// NewMessageClientWithBaseURI creates an instance of the MessageClient client using a custom endpoint.  Use this when
+// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewMessageClientWithBaseURI(baseURI string) MessageClient {
 	return MessageClient{NewWithBaseURI(baseURI)}
 }
@@ -69,18 +74,28 @@ func (client MessageClient) DeletePreparer(ctx context.Context, serviceID string
 		"serviceId": serviceID,
 	}
 
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("DELETE", autorest.GetPathParameters(DefaultBaseURI, "/push/v2/services/{serviceId}/reservations/{reserveId}", pathParameters), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/push/v2/services/{serviceId}/reservations/{reserveId}", pathParameters))
+		autorest.WithPathParameters("/push/v2/services/{serviceId}/reservations/{reserveId}", pathParameters),
+		autorest.WithHeader("x-ncp-apigw-api-key", client.Client.APIGatewayAPIKey),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client MessageClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -88,7 +103,6 @@ func (client MessageClient) DeleteSender(req *http.Request) (*http.Response, err
 func (client MessageClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusNotFound, http.StatusInternalServerError),
 		autorest.ByClosing())
 	result.Response = resp
@@ -138,18 +152,28 @@ func (client MessageClient) GetResultPreparer(ctx context.Context, serviceID str
 		"serviceId": serviceID,
 	}
 
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("GET", autorest.GetPathParameters(DefaultBaseURI, "/push/v2/services/{serviceId}/messages/{requestId}", pathParameters), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/push/v2/services/{serviceId}/messages/{requestId}", pathParameters))
+		autorest.WithPathParameters("/push/v2/services/{serviceId}/messages/{requestId}", pathParameters),
+		autorest.WithHeader("x-ncp-apigw-api-key", client.Client.APIGatewayAPIKey),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // GetResultSender sends the GetResult request. The method will close the
 // http.Response Body if it receives an error.
 func (client MessageClient) GetResultSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetResultResponder handles the response to the GetResult request. The method always
@@ -157,7 +181,6 @@ func (client MessageClient) GetResultSender(req *http.Request) (*http.Response, 
 func (client MessageClient) GetResultResponder(resp *http.Response) (result PushMessageResultResponseParameter, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusNotFound, http.StatusInternalServerError),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -165,13 +188,13 @@ func (client MessageClient) GetResultResponder(resp *http.Response) (result Push
 	return
 }
 
-// Send 메시지 발송
+// SendMethod 메시지 발송
 // Parameters:
 // serviceID - 프로젝트 등록 시 발급받은 서비스 아이디
 // parameter - 생성할 채널
-func (client MessageClient) Send(ctx context.Context, serviceID string, parameter PushMessageRequestParameter) (result PushMessageResponseParameter, err error) {
+func (client MessageClient) SendMethod(ctx context.Context, serviceID string, parameter PushMessageRequestParameter) (result PushMessageResponseParameter, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/MessageClient.Send")
+		ctx = tracing.StartSpan(ctx, fqdn+"/MessageClient.SendMethod")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -198,34 +221,41 @@ func (client MessageClient) Send(ctx context.Context, serviceID string, paramete
 				}},
 				{Target: "parameter.Target", Name: validation.Null, Rule: true,
 					Chain: []validation.Constraint{{Target: "parameter.Target.Type", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
-		return result, validation.NewError("sens.MessageClient", "Send", err.Error())
+		return result, validation.NewError("sens.MessageClient", "SendMethod", err.Error())
 	}
 
-	req, err := client.SendPreparer(ctx, serviceID, parameter)
+	req, err := client.SendMethodPreparer(ctx, serviceID, parameter)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sens.MessageClient", "Send", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "sens.MessageClient", "SendMethod", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.SendSender(req)
+	resp, err := client.SendMethodSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "sens.MessageClient", "Send", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sens.MessageClient", "SendMethod", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.SendResponder(resp)
+	result, err = client.SendMethodResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sens.MessageClient", "Send", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "sens.MessageClient", "SendMethod", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// SendPreparer prepares the Send request.
-func (client MessageClient) SendPreparer(ctx context.Context, serviceID string, parameter PushMessageRequestParameter) (*http.Request, error) {
+// SendMethodPreparer prepares the SendMethod request.
+func (client MessageClient) SendMethodPreparer(ctx context.Context, serviceID string, parameter PushMessageRequestParameter) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"serviceId": serviceID,
+	}
+
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("POST", autorest.GetPathParameters(DefaultBaseURI, "/push/v2/services/{serviceId}/messages", pathParameters), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -233,23 +263,25 @@ func (client MessageClient) SendPreparer(ctx context.Context, serviceID string, 
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/push/v2/services/{serviceId}/messages", pathParameters),
-		autorest.WithJSON(parameter))
+		autorest.WithJSON(parameter),
+		autorest.WithHeader("x-ncp-apigw-api-key", client.Client.APIGatewayAPIKey),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// SendSender sends the Send request. The method will close the
+// SendMethodSender sends the SendMethod request. The method will close the
 // http.Response Body if it receives an error.
-func (client MessageClient) SendSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+func (client MessageClient) SendMethodSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
-// SendResponder handles the response to the Send request. The method always
+// SendMethodResponder handles the response to the SendMethod request. The method always
 // closes the http.Response Body.
-func (client MessageClient) SendResponder(resp *http.Response) (result PushMessageResponseParameter, err error) {
+func (client MessageClient) SendMethodResponder(resp *http.Response) (result PushMessageResponseParameter, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusNotFound, http.StatusInternalServerError),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

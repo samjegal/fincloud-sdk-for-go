@@ -4,11 +4,15 @@ package cloudinsight
 
 import (
 	"context"
+	"crypto"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
 	"github.com/Azure/go-autorest/tracing"
+	"github.com/samjegal/go-fincloud-helpers/security"
 	"net/http"
+	"strconv"
+	"time"
 )
 
 // EventClient is the cloud Insight Client
@@ -73,12 +77,23 @@ func (client EventClient) SearchByID(ctx context.Context, parameters EventSearch
 
 // SearchByIDPreparer prepares the SearchByID request.
 func (client EventClient) SearchByIDPreparer(ctx context.Context, parameters EventSearchRequest) (*http.Request, error) {
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("POST", autorest.GetPath(DefaultBaseURI, "/cw/api/event/searchById"), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPath("/cw/api/event/searchById"),
-		autorest.WithJSON(parameters))
+		autorest.WithJSON(parameters),
+		autorest.WithHeader("x-ncp-apigw-api-key", client.Client.APIGatewayAPIKey),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -142,12 +157,23 @@ func (client EventClient) SearchEventCount(ctx context.Context, parameters Searc
 
 // SearchEventCountPreparer prepares the SearchEventCount request.
 func (client EventClient) SearchEventCountPreparer(ctx context.Context, parameters SearchEventCountConsoleRequest) (*http.Request, error) {
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("POST", autorest.GetPath(DefaultBaseURI, "/cw_fea/real/cw/api/event/searchEventCountConsole"), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPath("/cw_fea/real/cw/api/event/searchEventCountConsole"),
-		autorest.WithJSON(parameters))
+		autorest.WithJSON(parameters),
+		autorest.WithHeader("x-ncp-apigw-api-key", client.Client.APIGatewayAPIKey),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 

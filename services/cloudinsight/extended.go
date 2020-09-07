@@ -4,10 +4,14 @@ package cloudinsight
 
 import (
 	"context"
+	"crypto"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/tracing"
+	"github.com/samjegal/go-fincloud-helpers/security"
 	"net/http"
+	"strconv"
+	"time"
 )
 
 // ExtendedClient is the cloud Insight Client
@@ -69,11 +73,22 @@ func (client ExtendedClient) DisablePreparer(ctx context.Context, cwKey string, 
 		"instanceIds": autorest.Encode("query", instanceIds),
 	}
 
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("PUT", autorest.GetPath(DefaultBaseURI, "/cw_fea/real/cw/api/schema/extended/disable")+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPath("/cw_fea/real/cw/api/schema/extended/disable"),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("x-ncp-apigw-api-key", client.Client.APIGatewayAPIKey),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -138,11 +153,22 @@ func (client ExtendedClient) EnablePreparer(ctx context.Context, cwKey string, i
 		"instanceIds": autorest.Encode("query", instanceIds),
 	}
 
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("PUT", autorest.GetPath(DefaultBaseURI, "/cw_fea/real/cw/api/schema/extended/enable")+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPath("/cw_fea/real/cw/api/schema/extended/enable"),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("x-ncp-apigw-api-key", client.Client.APIGatewayAPIKey),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -207,11 +233,22 @@ func (client ExtendedClient) StatusPreparer(ctx context.Context, cwKey string, i
 		"instanceIds": autorest.Encode("query", instanceIds),
 	}
 
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("GET", autorest.GetPath(DefaultBaseURI, "/cw_fea/real/cw/api/schema/extended/status")+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPath("/cw_fea/real/cw/api/schema/extended/status"),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("x-ncp-apigw-api-key", client.Client.APIGatewayAPIKey),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 

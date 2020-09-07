@@ -4,10 +4,14 @@ package cloudinsight
 
 import (
 	"context"
+	"crypto"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/tracing"
+	"github.com/samjegal/go-fincloud-helpers/security"
 	"net/http"
+	"strconv"
+	"time"
 )
 
 // NotificationClient is the cloud Insight Client
@@ -64,15 +68,27 @@ func (client NotificationClient) Get(ctx context.Context, grpID string) (result 
 // GetPreparer prepares the Get request.
 func (client NotificationClient) GetPreparer(ctx context.Context, grpID string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{}
+
 	if len(grpID) > 0 {
 		queryParameters["grpId"] = autorest.Encode("query", grpID)
+	}
+
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("GET", autorest.GetPath(DefaultBaseURI, "/cw_fea/real/cw/api/notification")+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
 	}
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPath("/cw_fea/real/cw/api/notification"),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("x-ncp-apigw-api-key", client.Client.APIGatewayAPIKey),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 

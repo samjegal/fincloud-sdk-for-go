@@ -32,7 +32,7 @@ var _ ChannelClientAPI = (*sens.ChannelClient)(nil)
 type MessageClientAPI interface {
 	Delete(ctx context.Context, serviceID string, reserveID string) (result autorest.Response, err error)
 	GetResult(ctx context.Context, serviceID string, requestID string) (result sens.PushMessageResultResponseParameter, err error)
-	Send(ctx context.Context, serviceID string, parameter sens.PushMessageRequestParameter) (result sens.PushMessageResponseParameter, err error)
+	SendMethod(ctx context.Context, serviceID string, parameter sens.PushMessageRequestParameter) (result sens.PushMessageResponseParameter, err error)
 }
 
 var _ MessageClientAPI = (*sens.MessageClient)(nil)

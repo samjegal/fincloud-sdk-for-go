@@ -4,11 +4,15 @@ package cloudinsight
 
 import (
 	"context"
+	"crypto"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
 	"github.com/Azure/go-autorest/tracing"
+	"github.com/samjegal/go-fincloud-helpers/security"
 	"net/http"
+	"strconv"
+	"time"
 )
 
 // RuleGroupClient is the cloud Insight Client
@@ -68,10 +72,21 @@ func (client RuleGroupClient) CopyPreparer(ctx context.Context, ID string) (*htt
 		"id": autorest.Encode("path", ID),
 	}
 
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("PUT", autorest.GetPathParameters(DefaultBaseURI, "/cw_fea/real/cw/api/rule/group/ruleGrp/copy/{id}", pathParameters), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/cw_fea/real/cw/api/rule/group/ruleGrp/copy/{id}", pathParameters))
+		autorest.WithPathParameters("/cw_fea/real/cw/api/rule/group/ruleGrp/copy/{id}", pathParameters),
+		autorest.WithHeader("x-ncp-apigw-api-key", client.Client.APIGatewayAPIKey),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -139,12 +154,23 @@ func (client RuleGroupClient) CopyAsgGroup(ctx context.Context, parameters RuleG
 
 // CopyAsgGroupPreparer prepares the CopyAsgGroup request.
 func (client RuleGroupClient) CopyAsgGroupPreparer(ctx context.Context, parameters RuleGroupCopyForAsgGroupRequest) (*http.Request, error) {
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("POST", autorest.GetPath(DefaultBaseURI, "/cw_fea/real/cw/api/rule/group/ruleGrp/asgCopy"), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPath("/cw_fea/real/cw/api/rule/group/ruleGrp/asgCopy"),
-		autorest.WithJSON(parameters))
+		autorest.WithJSON(parameters),
+		autorest.WithHeader("x-ncp-apigw-api-key", client.Client.APIGatewayAPIKey),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -211,12 +237,23 @@ func (client RuleGroupClient) CopySettings(ctx context.Context, parameters RuleG
 
 // CopySettingsPreparer prepares the CopySettings request.
 func (client RuleGroupClient) CopySettingsPreparer(ctx context.Context, parameters RuleGroupCopySettingRequest) (*http.Request, error) {
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("POST", autorest.GetPath(DefaultBaseURI, "/cw_fea/real/cw/api/rule/group/ruleGrp/copySettings"), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPath("/cw_fea/real/cw/api/rule/group/ruleGrp/copySettings"),
-		autorest.WithJSON(parameters))
+		autorest.WithJSON(parameters),
+		autorest.WithHeader("x-ncp-apigw-api-key", client.Client.APIGatewayAPIKey),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -284,12 +321,23 @@ func (client RuleGroupClient) Create(ctx context.Context, parameters RuleGroupRe
 
 // CreatePreparer prepares the Create request.
 func (client RuleGroupClient) CreatePreparer(ctx context.Context, parameters RuleGroupRequest) (*http.Request, error) {
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("POST", autorest.GetPath(DefaultBaseURI, "/cw_fea/real/cw/api/rule/group/ruleGrp"), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPath("/cw_fea/real/cw/api/rule/group/ruleGrp"),
-		autorest.WithJSON(parameters))
+		autorest.WithJSON(parameters),
+		autorest.WithHeader("x-ncp-apigw-api-key", client.Client.APIGatewayAPIKey),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -361,12 +409,23 @@ func (client RuleGroupClient) CreateDirectly(ctx context.Context, parameters Dir
 
 // CreateDirectlyPreparer prepares the CreateDirectly request.
 func (client RuleGroupClient) CreateDirectlyPreparer(ctx context.Context, parameters DirectRuleGroupCreateRequest) (*http.Request, error) {
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("POST", autorest.GetPath(DefaultBaseURI, "/cw_fea/real/cw/api/rule/group/ruleGrp/createDirectly"), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPath("/cw_fea/real/cw/api/rule/group/ruleGrp/createDirectly"),
-		autorest.WithJSON(parameters))
+		autorest.WithJSON(parameters),
+		autorest.WithHeader("x-ncp-apigw-api-key", client.Client.APIGatewayAPIKey),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -431,12 +490,23 @@ func (client RuleGroupClient) Delete(ctx context.Context, parameters RuleGroupDe
 
 // DeletePreparer prepares the Delete request.
 func (client RuleGroupClient) DeletePreparer(ctx context.Context, parameters RuleGroupDeleteRequest) (*http.Request, error) {
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("POST", autorest.GetPath(DefaultBaseURI, "/cw_fea/real/cw/api/rule/group/ruleGrp/del"), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPath("/cw_fea/real/cw/api/rule/group/ruleGrp/del"),
-		autorest.WithJSON(parameters))
+		autorest.WithJSON(parameters),
+		autorest.WithHeader("x-ncp-apigw-api-key", client.Client.APIGatewayAPIKey),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -500,10 +570,21 @@ func (client RuleGroupClient) DeleteByProdKeyAndIDPreparer(ctx context.Context, 
 		"prodKey": autorest.Encode("path", prodKey),
 	}
 
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("DELETE", autorest.GetPathParameters(DefaultBaseURI, "/cw_fea/real/cw/api/rule/group/ruleGrp/del/{prodKey}/{id}", pathParameters), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/cw_fea/real/cw/api/rule/group/ruleGrp/del/{prodKey}/{id}", pathParameters))
+		autorest.WithPathParameters("/cw_fea/real/cw/api/rule/group/ruleGrp/del/{prodKey}/{id}", pathParameters),
+		autorest.WithHeader("x-ncp-apigw-api-key", client.Client.APIGatewayAPIKey),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -572,13 +653,24 @@ func (client RuleGroupClient) GetByMonitorGroupIdsPreparer(ctx context.Context, 
 		"prodKey": autorest.Encode("query", prodKey),
 	}
 
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("POST", autorest.GetPath(DefaultBaseURI, "/cw_fea/real/cw/api/rule/group/metric/group/related")+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPath("/cw_fea/real/cw/api/rule/group/metric/group/related"),
 		autorest.WithJSON(parameters),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("x-ncp-apigw-api-key", client.Client.APIGatewayAPIKey),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -637,12 +729,23 @@ func (client RuleGroupClient) Query(ctx context.Context, parameters RuleGroupLis
 
 // QueryPreparer prepares the Query request.
 func (client RuleGroupClient) QueryPreparer(ctx context.Context, parameters RuleGroupListQueryRequest) (*http.Request, error) {
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("POST", autorest.GetPath(DefaultBaseURI, "/cw_fea/real/cw/api/rule/group/ruleGrp/query"), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPath("/cw_fea/real/cw/api/rule/group/ruleGrp/query"),
-		autorest.WithJSON(parameters))
+		autorest.WithJSON(parameters),
+		autorest.WithHeader("x-ncp-apigw-api-key", client.Client.APIGatewayAPIKey),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -707,10 +810,21 @@ func (client RuleGroupClient) QueryByProdKeyAndIDPreparer(ctx context.Context, p
 		"prodKey": autorest.Encode("path", prodKey),
 	}
 
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("GET", autorest.GetPathParameters(DefaultBaseURI, "/cw_fea/real/cw/api/rule/group/ruleGrp/query/{prodKey}/{id}", pathParameters), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/cw_fea/real/cw/api/rule/group/ruleGrp/query/{prodKey}/{id}", pathParameters))
+		autorest.WithPathParameters("/cw_fea/real/cw/api/rule/group/ruleGrp/query/{prodKey}/{id}", pathParameters),
+		autorest.WithHeader("x-ncp-apigw-api-key", client.Client.APIGatewayAPIKey),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -778,12 +892,23 @@ func (client RuleGroupClient) Update(ctx context.Context, parameters RuleGroupRe
 
 // UpdatePreparer prepares the Update request.
 func (client RuleGroupClient) UpdatePreparer(ctx context.Context, parameters RuleGroupRequest) (*http.Request, error) {
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("POST", autorest.GetPath(DefaultBaseURI, "/cw_fea/real/cw/api/rule/group/ruleGrp/update"), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPath("/cw_fea/real/cw/api/rule/group/ruleGrp/update"),
-		autorest.WithJSON(parameters))
+		autorest.WithJSON(parameters),
+		autorest.WithHeader("x-ncp-apigw-api-key", client.Client.APIGatewayAPIKey),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 

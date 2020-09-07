@@ -26,14 +26,14 @@ type AlimTalkMessageRequestParameter struct {
 
 // AlimTalkMessageRequestParameterMessagesItem ...
 type AlimTalkMessageRequestParameterMessagesItem struct {
-	CountryCode *string                                                   `json:"countryCode,omitempty"`
-	To          *string                                                   `json:"to,omitempty"`
-	Content     *string                                                   `json:"content,omitempty"`
-	Buttons     *[]AlimTalkMessageRequestParameterMessagesItemButtonsItem `json:"buttons,omitempty"`
+	CountryCode *string                                                       `json:"countryCode,omitempty"`
+	To          *string                                                       `json:"to,omitempty"`
+	Content     *string                                                       `json:"content,omitempty"`
+	Buttons     *[]AlimTalkMessageRequestParameterMessagesPropertiesItemsItem `json:"buttons,omitempty"`
 }
 
-// AlimTalkMessageRequestParameterMessagesItemButtonsItem ...
-type AlimTalkMessageRequestParameterMessagesItemButtonsItem struct {
+// AlimTalkMessageRequestParameterMessagesPropertiesItemsItem ...
+type AlimTalkMessageRequestParameterMessagesPropertiesItemsItem struct {
 	Type          *string `json:"type,omitempty"`
 	Name          *string `json:"name,omitempty"`
 	LinkMobile    *string `json:"linkMobile,omitempty"`

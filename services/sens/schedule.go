@@ -4,11 +4,15 @@ package sens
 
 import (
 	"context"
+	"crypto"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
 	"github.com/Azure/go-autorest/tracing"
+	"github.com/samjegal/go-fincloud-helpers/security"
 	"net/http"
+	"strconv"
+	"time"
 )
 
 // ScheduleClient is the SENS Client
@@ -21,7 +25,8 @@ func NewScheduleClient() ScheduleClient {
 	return NewScheduleClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewScheduleClientWithBaseURI creates an instance of the ScheduleClient client.
+// NewScheduleClientWithBaseURI creates an instance of the ScheduleClient client using a custom endpoint.  Use this
+// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewScheduleClientWithBaseURI(baseURI string) ScheduleClient {
 	return ScheduleClient{NewWithBaseURI(baseURI)}
 }
@@ -42,10 +47,7 @@ func (client ScheduleClient) Create(ctx context.Context, serviceID string, param
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameter,
-			Constraints: []validation.Constraint{{Target: "parameter.ScheduleCode", Name: validation.Null, Rule: true,
-				Chain: []validation.Constraint{{Target: "parameter.ScheduleCode", Name: validation.MaxLength, Rule: 24, Chain: nil}}},
-				{Target: "parameter.ScheduleDesc", Name: validation.Null, Rule: false,
-					Chain: []validation.Constraint{{Target: "parameter.ScheduleDesc", Name: validation.MaxLength, Rule: 128, Chain: nil}}},
+			Constraints: []validation.Constraint{{Target: "parameter.ScheduleCode", Name: validation.Null, Rule: true, Chain: nil},
 				{Target: "parameter.ScheduleTime", Name: validation.Null, Rule: true, Chain: nil},
 				{Target: "parameter.EndDate", Name: validation.Null, Rule: true, Chain: nil},
 				{Target: "parameter.DayOfWeeks", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
@@ -79,20 +81,30 @@ func (client ScheduleClient) CreatePreparer(ctx context.Context, serviceID strin
 		"serviceId": serviceID,
 	}
 
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("POST", autorest.GetPathParameters(DefaultBaseURI, "/push/v2/services/{serviceId}/schedules", pathParameters), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/push/v2/services/{serviceId}/schedules", pathParameters),
-		autorest.WithJSON(parameter))
+		autorest.WithJSON(parameter),
+		autorest.WithHeader("x-ncp-apigw-api-key", client.Client.APIGatewayAPIKey),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
 func (client ScheduleClient) CreateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CreateResponder handles the response to the Create request. The method always
@@ -100,7 +112,6 @@ func (client ScheduleClient) CreateSender(req *http.Request) (*http.Response, er
 func (client ScheduleClient) CreateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusNotFound, http.StatusConflict, http.StatusInternalServerError),
 		autorest.ByClosing())
 	result.Response = resp
@@ -150,18 +161,28 @@ func (client ScheduleClient) DeletePreparer(ctx context.Context, serviceID strin
 		"serviceId":    serviceID,
 	}
 
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("DELETE", autorest.GetPathParameters(DefaultBaseURI, "/push/v2/services/{serviceId}/schedules/{scheduleCode}", pathParameters), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/push/v2/services/{serviceId}/schedules/{scheduleCode}", pathParameters))
+		autorest.WithPathParameters("/push/v2/services/{serviceId}/schedules/{scheduleCode}", pathParameters),
+		autorest.WithHeader("x-ncp-apigw-api-key", client.Client.APIGatewayAPIKey),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client ScheduleClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -169,7 +190,6 @@ func (client ScheduleClient) DeleteSender(req *http.Request) (*http.Response, er
 func (client ScheduleClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusNotFound, http.StatusInternalServerError),
 		autorest.ByClosing())
 	result.Response = resp
@@ -219,18 +239,28 @@ func (client ScheduleClient) GetPreparer(ctx context.Context, serviceID string, 
 		"serviceId":    serviceID,
 	}
 
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("GET", autorest.GetPathParameters(DefaultBaseURI, "/push/v2/services/{serviceId}/schedules/{scheduleCode}", pathParameters), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/push/v2/services/{serviceId}/schedules/{scheduleCode}", pathParameters))
+		autorest.WithPathParameters("/push/v2/services/{serviceId}/schedules/{scheduleCode}", pathParameters),
+		autorest.WithHeader("x-ncp-apigw-api-key", client.Client.APIGatewayAPIKey),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client ScheduleClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -238,7 +268,6 @@ func (client ScheduleClient) GetSender(req *http.Request) (*http.Response, error
 func (client ScheduleClient) GetResponder(resp *http.Response) (result PushScheduleFetchParameter, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusNotFound, http.StatusInternalServerError),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -292,6 +321,7 @@ func (client ScheduleClient) ListPreparer(ctx context.Context, serviceID string,
 	}
 
 	queryParameters := map[string]interface{}{}
+
 	if page != nil {
 		queryParameters["page"] = autorest.Encode("query", *page)
 	}
@@ -305,19 +335,29 @@ func (client ScheduleClient) ListPreparer(ctx context.Context, serviceID string,
 		queryParameters["sort"] = autorest.Encode("query", sortParameter)
 	}
 
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("GET", autorest.GetPathParameters(DefaultBaseURI, "/push/v2/services/{serviceId}/schedules", pathParameters)+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/push/v2/services/{serviceId}/schedules", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("x-ncp-apigw-api-key", client.Client.APIGatewayAPIKey),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client ScheduleClient) ListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -325,7 +365,6 @@ func (client ScheduleClient) ListSender(req *http.Request) (*http.Response, erro
 func (client ScheduleClient) ListResponder(resp *http.Response) (result PushScheduleFetchAllParameter, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusNotFound, http.StatusInternalServerError),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -350,10 +389,7 @@ func (client ScheduleClient) Put(ctx context.Context, serviceID string, schedule
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameter,
-			Constraints: []validation.Constraint{{Target: "parameter.ScheduleCode", Name: validation.Null, Rule: true,
-				Chain: []validation.Constraint{{Target: "parameter.ScheduleCode", Name: validation.MaxLength, Rule: 24, Chain: nil}}},
-				{Target: "parameter.ScheduleDesc", Name: validation.Null, Rule: false,
-					Chain: []validation.Constraint{{Target: "parameter.ScheduleDesc", Name: validation.MaxLength, Rule: 128, Chain: nil}}},
+			Constraints: []validation.Constraint{{Target: "parameter.ScheduleCode", Name: validation.Null, Rule: true, Chain: nil},
 				{Target: "parameter.ScheduleTime", Name: validation.Null, Rule: true, Chain: nil},
 				{Target: "parameter.EndDate", Name: validation.Null, Rule: true, Chain: nil},
 				{Target: "parameter.DayOfWeeks", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
@@ -388,20 +424,30 @@ func (client ScheduleClient) PutPreparer(ctx context.Context, serviceID string, 
 		"serviceId":    serviceID,
 	}
 
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("PUT", autorest.GetPathParameters(DefaultBaseURI, "/push/v2/services/{serviceId}/schedules/{scheduleCode}", pathParameters), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
+
 	preparer := autorest.CreatePreparer(
-		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsContentType("application/json; charset=UTF-8"),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/push/v2/services/{serviceId}/schedules/{scheduleCode}", pathParameters),
-		autorest.WithJSON(parameter))
+		autorest.WithJSON(parameter),
+		autorest.WithHeader("x-ncp-apigw-api-key", client.Client.APIGatewayAPIKey),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // PutSender sends the Put request. The method will close the
 // http.Response Body if it receives an error.
 func (client ScheduleClient) PutSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // PutResponder handles the response to the Put request. The method always
@@ -409,7 +455,6 @@ func (client ScheduleClient) PutSender(req *http.Request) (*http.Response, error
 func (client ScheduleClient) PutResponder(resp *http.Response) (result PushScheduleFetchParameter, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusNotFound, http.StatusInternalServerError),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

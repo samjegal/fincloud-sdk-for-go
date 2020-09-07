@@ -4,11 +4,15 @@ package sens
 
 import (
 	"context"
+	"crypto"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
 	"github.com/Azure/go-autorest/tracing"
+	"github.com/samjegal/go-fincloud-helpers/security"
 	"net/http"
+	"strconv"
+	"time"
 )
 
 // SMSClient is the SENS Client
@@ -21,7 +25,8 @@ func NewSMSClient() SMSClient {
 	return NewSMSClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewSMSClientWithBaseURI creates an instance of the SMSClient client.
+// NewSMSClientWithBaseURI creates an instance of the SMSClient client using a custom endpoint.  Use this when
+// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewSMSClientWithBaseURI(baseURI string) SMSClient {
 	return SMSClient{NewWithBaseURI(baseURI)}
 }
@@ -69,18 +74,28 @@ func (client SMSClient) DeleteReservationPreparer(ctx context.Context, serviceID
 		"serviceId": serviceID,
 	}
 
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("DELETE", autorest.GetPathParameters(DefaultBaseURI, "/sms/v2/services/{serviceId}/reservations/{reserveId}", pathParameters), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/sms/v2/services/{serviceId}/reservations/{reserveId}", pathParameters))
+		autorest.WithPathParameters("/sms/v2/services/{serviceId}/reservations/{reserveId}", pathParameters),
+		autorest.WithHeader("x-ncp-apigw-api-key", client.Client.APIGatewayAPIKey),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // DeleteReservationSender sends the DeleteReservation request. The method will close the
 // http.Response Body if it receives an error.
 func (client SMSClient) DeleteReservationSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteReservationResponder handles the response to the DeleteReservation request. The method always
@@ -88,7 +103,6 @@ func (client SMSClient) DeleteReservationSender(req *http.Request) (*http.Respon
 func (client SMSClient) DeleteReservationResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusNotFound, http.StatusInternalServerError),
 		autorest.ByClosing())
 	result.Response = resp
@@ -140,18 +154,28 @@ func (client SMSClient) DeleteSchedulePreparer(ctx context.Context, serviceID st
 		"serviceId":    serviceID,
 	}
 
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("DELETE", autorest.GetPathParameters(DefaultBaseURI, "/sms/v2/services/{serviceId}/schedules/{scheduleCode}/messages/{messageId}", pathParameters), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/sms/v2/services/{serviceId}/schedules/{scheduleCode}/messages/{messageId}", pathParameters))
+		autorest.WithPathParameters("/sms/v2/services/{serviceId}/schedules/{scheduleCode}/messages/{messageId}", pathParameters),
+		autorest.WithHeader("x-ncp-apigw-api-key", client.Client.APIGatewayAPIKey),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // DeleteScheduleSender sends the DeleteSchedule request. The method will close the
 // http.Response Body if it receives an error.
 func (client SMSClient) DeleteScheduleSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // DeleteScheduleResponder handles the response to the DeleteSchedule request. The method always
@@ -159,7 +183,6 @@ func (client SMSClient) DeleteScheduleSender(req *http.Request) (*http.Response,
 func (client SMSClient) DeleteScheduleResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusNotFound, http.StatusInternalServerError),
 		autorest.ByClosing())
 	result.Response = resp
@@ -212,19 +235,29 @@ func (client SMSClient) GetRequestPreparer(ctx context.Context, serviceID string
 		"requestId": autorest.Encode("query", requestID),
 	}
 
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("GET", autorest.GetPathParameters(DefaultBaseURI, "/sms/v2/services/{serviceId}/messages", pathParameters)+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/sms/v2/services/{serviceId}/messages", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("x-ncp-apigw-api-key", client.Client.APIGatewayAPIKey),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // GetRequestSender sends the GetRequest request. The method will close the
 // http.Response Body if it receives an error.
 func (client SMSClient) GetRequestSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetRequestResponder handles the response to the GetRequest request. The method always
@@ -232,7 +265,6 @@ func (client SMSClient) GetRequestSender(req *http.Request) (*http.Response, err
 func (client SMSClient) GetRequestResponder(resp *http.Response) (result SMSMessageParameter, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusUnauthorized, http.StatusForbidden, http.StatusNotFound, http.StatusInternalServerError),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -286,19 +318,29 @@ func (client SMSClient) GetResultPreparer(ctx context.Context, serviceID string,
 		"messageId": autorest.Encode("query", messageID),
 	}
 
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("GET", autorest.GetPathParameters(DefaultBaseURI, "/sms/v2/services/{serviceId}/messages/{messageId}", pathParameters)+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/sms/v2/services/{serviceId}/messages/{messageId}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("x-ncp-apigw-api-key", client.Client.APIGatewayAPIKey),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // GetResultSender sends the GetResult request. The method will close the
 // http.Response Body if it receives an error.
 func (client SMSClient) GetResultSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetResultResponder handles the response to the GetResult request. The method always
@@ -306,7 +348,6 @@ func (client SMSClient) GetResultSender(req *http.Request) (*http.Response, erro
 func (client SMSClient) GetResultResponder(resp *http.Response) (result SMSMessageParameter, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusUnauthorized, http.StatusForbidden, http.StatusNotFound, http.StatusInternalServerError),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -334,8 +375,6 @@ func (client SMSClient) Request(ctx context.Context, serviceID string, parameter
 			Constraints: []validation.Constraint{{Target: "parameter.Type", Name: validation.Null, Rule: true, Chain: nil},
 				{Target: "parameter.From", Name: validation.Null, Rule: true, Chain: nil},
 				{Target: "parameter.Content", Name: validation.Null, Rule: true, Chain: nil},
-				{Target: "parameter.ReserveTime", Name: validation.Null, Rule: false,
-					Chain: []validation.Constraint{{Target: "parameter.ReserveTime", Name: validation.Pattern, Rule: `^(19|20)\d{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[0-1]) (0[0-9]|1[0-9]|2[0-3]):([0-5][0-9])$`, Chain: nil}}},
 				{Target: "parameter.Messages", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("sens.SMSClient", "Request", err.Error())
 	}
@@ -367,20 +406,30 @@ func (client SMSClient) RequestPreparer(ctx context.Context, serviceID string, p
 		"serviceId": serviceID,
 	}
 
+	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
+	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("POST", autorest.GetPathParameters(DefaultBaseURI, "/sms/v2/services/{serviceId}/messages", pathParameters), client.Client.AccessKey, timestamp)
+	if err != nil {
+		return nil, err
+	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/sms/v2/services/{serviceId}/messages", pathParameters),
-		autorest.WithJSON(parameter))
+		autorest.WithJSON(parameter),
+		autorest.WithHeader("x-ncp-apigw-api-key", client.Client.APIGatewayAPIKey),
+		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
+		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // RequestSender sends the Request request. The method will close the
 // http.Response Body if it receives an error.
 func (client SMSClient) RequestSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // RequestResponder handles the response to the Request request. The method always
@@ -388,7 +437,6 @@ func (client SMSClient) RequestSender(req *http.Request) (*http.Response, error)
 func (client SMSClient) RequestResponder(resp *http.Response) (result SMSMessageParameter, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusNotFound, http.StatusTooManyRequests, http.StatusInternalServerError),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
