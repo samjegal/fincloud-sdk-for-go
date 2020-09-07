@@ -37,10 +37,9 @@ func NewNetworkACLClientWithBaseURI(baseURI string) NetworkACLClient {
 // networkACLRuleListNprotocolTypeCode - 네트워크 ACL Rule 유형 코드
 // networkACLRuleListNipBlock - IP 블록
 // networkACLRuleListNruleActionCode - rule 액션 코드
-// regionCode - REGION 코드
 // networkACLRuleListNportRange - 포트 범위
 // networkACLRuleListNnetworkACLRuleDescription - 네트워크 ACL Rule 설명
-func (client NetworkACLClient) AddInboundRule(ctx context.Context, networkACLNo string, networkACLRuleListNpriority string, networkACLRuleListNprotocolTypeCode ProtocolTypeCode, networkACLRuleListNipBlock string, networkACLRuleListNruleActionCode RuleActionCode, regionCode string, networkACLRuleListNportRange string, networkACLRuleListNnetworkACLRuleDescription string) (result NetworkACLInboundRuleResponse, err error) {
+func (client NetworkACLClient) AddInboundRule(ctx context.Context, networkACLNo string, networkACLRuleListNpriority string, networkACLRuleListNprotocolTypeCode ProtocolTypeCode, networkACLRuleListNipBlock string, networkACLRuleListNruleActionCode RuleActionCode, networkACLRuleListNportRange string, networkACLRuleListNnetworkACLRuleDescription string) (result NetworkACLInboundRuleResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NetworkACLClient.AddInboundRule")
 		defer func() {
@@ -51,7 +50,7 @@ func (client NetworkACLClient) AddInboundRule(ctx context.Context, networkACLNo 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.AddInboundRulePreparer(ctx, networkACLNo, networkACLRuleListNpriority, networkACLRuleListNprotocolTypeCode, networkACLRuleListNipBlock, networkACLRuleListNruleActionCode, regionCode, networkACLRuleListNportRange, networkACLRuleListNnetworkACLRuleDescription)
+	req, err := client.AddInboundRulePreparer(ctx, networkACLNo, networkACLRuleListNpriority, networkACLRuleListNprotocolTypeCode, networkACLRuleListNipBlock, networkACLRuleListNruleActionCode, networkACLRuleListNportRange, networkACLRuleListNnetworkACLRuleDescription)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vpc.NetworkACLClient", "AddInboundRule", nil, "Failure preparing request")
 		return
@@ -73,7 +72,7 @@ func (client NetworkACLClient) AddInboundRule(ctx context.Context, networkACLNo 
 }
 
 // AddInboundRulePreparer prepares the AddInboundRule request.
-func (client NetworkACLClient) AddInboundRulePreparer(ctx context.Context, networkACLNo string, networkACLRuleListNpriority string, networkACLRuleListNprotocolTypeCode ProtocolTypeCode, networkACLRuleListNipBlock string, networkACLRuleListNruleActionCode RuleActionCode, regionCode string, networkACLRuleListNportRange string, networkACLRuleListNnetworkACLRuleDescription string) (*http.Request, error) {
+func (client NetworkACLClient) AddInboundRulePreparer(ctx context.Context, networkACLNo string, networkACLRuleListNpriority string, networkACLRuleListNprotocolTypeCode ProtocolTypeCode, networkACLRuleListNipBlock string, networkACLRuleListNruleActionCode RuleActionCode, networkACLRuleListNportRange string, networkACLRuleListNnetworkACLRuleDescription string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"networkAclNo":                          autorest.Encode("query", networkACLNo),
 		"networkAclRuleList.N.ipBlock":          autorest.Encode("query", networkACLRuleListNipBlock),
@@ -82,11 +81,9 @@ func (client NetworkACLClient) AddInboundRulePreparer(ctx context.Context, netwo
 		"networkAclRuleList.N.ruleActionCode":   autorest.Encode("query", networkACLRuleListNruleActionCode),
 		"responseFormatType":                    autorest.Encode("query", "json"),
 	}
-	if len(regionCode) > 0 {
-		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
-	} else {
-		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
-	}
+
+	queryParameters["regionCode"] = autorest.Encode("query", "FKR")
+
 	if len(networkACLRuleListNportRange) > 0 {
 		queryParameters["networkAclRuleList.N.portRange"] = autorest.Encode("query", networkACLRuleListNportRange)
 	}
@@ -136,10 +133,9 @@ func (client NetworkACLClient) AddInboundRuleResponder(resp *http.Response) (res
 // networkACLRuleListNprotocolTypeCode - 네트워크 ACL Rule 유형 코드
 // networkACLRuleListNipBlock - IP 블록
 // networkACLRuleListNruleActionCode - rule 액션 코드
-// regionCode - REGION 코드
 // networkACLRuleListNportRange - 포트 범위
 // networkACLRuleListNnetworkACLRuleDescription - 네트워크 ACL Rule 설명
-func (client NetworkACLClient) AddOutboundRule(ctx context.Context, networkACLNo string, networkACLRuleListNpriority string, networkACLRuleListNprotocolTypeCode ProtocolTypeCode, networkACLRuleListNipBlock string, networkACLRuleListNruleActionCode RuleActionCode, regionCode string, networkACLRuleListNportRange string, networkACLRuleListNnetworkACLRuleDescription string) (result NetworkACLOutboundRuleResponse, err error) {
+func (client NetworkACLClient) AddOutboundRule(ctx context.Context, networkACLNo string, networkACLRuleListNpriority string, networkACLRuleListNprotocolTypeCode ProtocolTypeCode, networkACLRuleListNipBlock string, networkACLRuleListNruleActionCode RuleActionCode, networkACLRuleListNportRange string, networkACLRuleListNnetworkACLRuleDescription string) (result NetworkACLOutboundRuleResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NetworkACLClient.AddOutboundRule")
 		defer func() {
@@ -150,7 +146,7 @@ func (client NetworkACLClient) AddOutboundRule(ctx context.Context, networkACLNo
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.AddOutboundRulePreparer(ctx, networkACLNo, networkACLRuleListNpriority, networkACLRuleListNprotocolTypeCode, networkACLRuleListNipBlock, networkACLRuleListNruleActionCode, regionCode, networkACLRuleListNportRange, networkACLRuleListNnetworkACLRuleDescription)
+	req, err := client.AddOutboundRulePreparer(ctx, networkACLNo, networkACLRuleListNpriority, networkACLRuleListNprotocolTypeCode, networkACLRuleListNipBlock, networkACLRuleListNruleActionCode, networkACLRuleListNportRange, networkACLRuleListNnetworkACLRuleDescription)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vpc.NetworkACLClient", "AddOutboundRule", nil, "Failure preparing request")
 		return
@@ -172,7 +168,7 @@ func (client NetworkACLClient) AddOutboundRule(ctx context.Context, networkACLNo
 }
 
 // AddOutboundRulePreparer prepares the AddOutboundRule request.
-func (client NetworkACLClient) AddOutboundRulePreparer(ctx context.Context, networkACLNo string, networkACLRuleListNpriority string, networkACLRuleListNprotocolTypeCode ProtocolTypeCode, networkACLRuleListNipBlock string, networkACLRuleListNruleActionCode RuleActionCode, regionCode string, networkACLRuleListNportRange string, networkACLRuleListNnetworkACLRuleDescription string) (*http.Request, error) {
+func (client NetworkACLClient) AddOutboundRulePreparer(ctx context.Context, networkACLNo string, networkACLRuleListNpriority string, networkACLRuleListNprotocolTypeCode ProtocolTypeCode, networkACLRuleListNipBlock string, networkACLRuleListNruleActionCode RuleActionCode, networkACLRuleListNportRange string, networkACLRuleListNnetworkACLRuleDescription string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"networkAclNo":                          autorest.Encode("query", networkACLNo),
 		"networkAclRuleList.N.ipBlock":          autorest.Encode("query", networkACLRuleListNipBlock),
@@ -181,11 +177,9 @@ func (client NetworkACLClient) AddOutboundRulePreparer(ctx context.Context, netw
 		"networkAclRuleList.N.ruleActionCode":   autorest.Encode("query", networkACLRuleListNruleActionCode),
 		"responseFormatType":                    autorest.Encode("query", "json"),
 	}
-	if len(regionCode) > 0 {
-		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
-	} else {
-		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
-	}
+
+	queryParameters["regionCode"] = autorest.Encode("query", "FKR")
+
 	if len(networkACLRuleListNportRange) > 0 {
 		queryParameters["networkAclRuleList.N.portRange"] = autorest.Encode("query", networkACLRuleListNportRange)
 	}
@@ -231,10 +225,9 @@ func (client NetworkACLClient) AddOutboundRuleResponder(resp *http.Response) (re
 // Create 네트워크 ACL을 생성
 // Parameters:
 // vpcNo - VPC 번호
-// regionCode - REGION 코드
 // networkACLName - 네트워크 ACL 이름
 // networkACLDescription - 네트워크 ACL 설명
-func (client NetworkACLClient) Create(ctx context.Context, vpcNo string, regionCode string, networkACLName string, networkACLDescription string) (result NetworkACLResponse, err error) {
+func (client NetworkACLClient) Create(ctx context.Context, vpcNo string, networkACLName string, networkACLDescription string) (result NetworkACLResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NetworkACLClient.Create")
 		defer func() {
@@ -245,7 +238,7 @@ func (client NetworkACLClient) Create(ctx context.Context, vpcNo string, regionC
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.CreatePreparer(ctx, vpcNo, regionCode, networkACLName, networkACLDescription)
+	req, err := client.CreatePreparer(ctx, vpcNo, networkACLName, networkACLDescription)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vpc.NetworkACLClient", "Create", nil, "Failure preparing request")
 		return
@@ -267,16 +260,14 @@ func (client NetworkACLClient) Create(ctx context.Context, vpcNo string, regionC
 }
 
 // CreatePreparer prepares the Create request.
-func (client NetworkACLClient) CreatePreparer(ctx context.Context, vpcNo string, regionCode string, networkACLName string, networkACLDescription string) (*http.Request, error) {
+func (client NetworkACLClient) CreatePreparer(ctx context.Context, vpcNo string, networkACLName string, networkACLDescription string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"responseFormatType": autorest.Encode("query", "json"),
 		"vpcNo":              autorest.Encode("query", vpcNo),
 	}
-	if len(regionCode) > 0 {
-		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
-	} else {
-		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
-	}
+
+	queryParameters["regionCode"] = autorest.Encode("query", "FKR")
+
 	if len(networkACLName) > 0 {
 		queryParameters["networkAclName"] = autorest.Encode("query", networkACLName)
 	}
@@ -322,8 +313,7 @@ func (client NetworkACLClient) CreateResponder(resp *http.Response) (result Netw
 // Delete 네트워크 ACL을 삭제
 // Parameters:
 // networkACLNo - 네트워크 ACL 번호
-// regionCode - REGION 코드
-func (client NetworkACLClient) Delete(ctx context.Context, networkACLNo string, regionCode string) (result NetworkACLResponse, err error) {
+func (client NetworkACLClient) Delete(ctx context.Context, networkACLNo string) (result NetworkACLResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NetworkACLClient.Delete")
 		defer func() {
@@ -334,7 +324,7 @@ func (client NetworkACLClient) Delete(ctx context.Context, networkACLNo string, 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeletePreparer(ctx, networkACLNo, regionCode)
+	req, err := client.DeletePreparer(ctx, networkACLNo)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vpc.NetworkACLClient", "Delete", nil, "Failure preparing request")
 		return
@@ -356,16 +346,13 @@ func (client NetworkACLClient) Delete(ctx context.Context, networkACLNo string, 
 }
 
 // DeletePreparer prepares the Delete request.
-func (client NetworkACLClient) DeletePreparer(ctx context.Context, networkACLNo string, regionCode string) (*http.Request, error) {
+func (client NetworkACLClient) DeletePreparer(ctx context.Context, networkACLNo string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"networkAclNo":       autorest.Encode("query", networkACLNo),
 		"responseFormatType": autorest.Encode("query", "json"),
 	}
-	if len(regionCode) > 0 {
-		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
-	} else {
-		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
-	}
+
+	queryParameters["regionCode"] = autorest.Encode("query", "FKR")
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
@@ -405,8 +392,7 @@ func (client NetworkACLClient) DeleteResponder(resp *http.Response) (result Netw
 // GetDetail 네트워크 ACL 상세 정보를 조회
 // Parameters:
 // networkACLNo - 네트워크 ACL 번호
-// regionCode - REGION 코드
-func (client NetworkACLClient) GetDetail(ctx context.Context, networkACLNo string, regionCode string) (result NetworkACLDetailResponse, err error) {
+func (client NetworkACLClient) GetDetail(ctx context.Context, networkACLNo string) (result NetworkACLDetailResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NetworkACLClient.GetDetail")
 		defer func() {
@@ -417,7 +403,7 @@ func (client NetworkACLClient) GetDetail(ctx context.Context, networkACLNo strin
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetDetailPreparer(ctx, networkACLNo, regionCode)
+	req, err := client.GetDetailPreparer(ctx, networkACLNo)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vpc.NetworkACLClient", "GetDetail", nil, "Failure preparing request")
 		return
@@ -439,16 +425,13 @@ func (client NetworkACLClient) GetDetail(ctx context.Context, networkACLNo strin
 }
 
 // GetDetailPreparer prepares the GetDetail request.
-func (client NetworkACLClient) GetDetailPreparer(ctx context.Context, networkACLNo string, regionCode string) (*http.Request, error) {
+func (client NetworkACLClient) GetDetailPreparer(ctx context.Context, networkACLNo string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"networkAclNo":       autorest.Encode("query", networkACLNo),
 		"responseFormatType": autorest.Encode("query", "json"),
 	}
-	if len(regionCode) > 0 {
-		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
-	} else {
-		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
-	}
+
+	queryParameters["regionCode"] = autorest.Encode("query", "FKR")
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
@@ -487,14 +470,13 @@ func (client NetworkACLClient) GetDetailResponder(resp *http.Response) (result N
 
 // GetList 네트워크 ACL 리스트를 조회
 // Parameters:
-// regionCode - REGION 코드
 // networkACLName - 네트워크 ACL 이름
 // networkACLStatusCode - 네트워크 ACL 상태 코드
 // networkACLNoListN - 네트워크 ACL 번호 리스트
 // pageNo - 페이지 번호
 // pageSize - 페이지 사이즈
 // vpcNo - VPC 번호
-func (client NetworkACLClient) GetList(ctx context.Context, regionCode string, networkACLName string, networkACLStatusCode NetworkACLStatusCode, networkACLNoListN string, pageNo string, pageSize string, vpcNo string) (result NetworkACLListResponse, err error) {
+func (client NetworkACLClient) GetList(ctx context.Context, networkACLName string, networkACLStatusCode NetworkACLStatusCode, networkACLNoListN string, pageNo string, pageSize string, vpcNo string) (result NetworkACLListResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NetworkACLClient.GetList")
 		defer func() {
@@ -505,7 +487,7 @@ func (client NetworkACLClient) GetList(ctx context.Context, regionCode string, n
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetListPreparer(ctx, regionCode, networkACLName, networkACLStatusCode, networkACLNoListN, pageNo, pageSize, vpcNo)
+	req, err := client.GetListPreparer(ctx, networkACLName, networkACLStatusCode, networkACLNoListN, pageNo, pageSize, vpcNo)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vpc.NetworkACLClient", "GetList", nil, "Failure preparing request")
 		return
@@ -527,15 +509,13 @@ func (client NetworkACLClient) GetList(ctx context.Context, regionCode string, n
 }
 
 // GetListPreparer prepares the GetList request.
-func (client NetworkACLClient) GetListPreparer(ctx context.Context, regionCode string, networkACLName string, networkACLStatusCode NetworkACLStatusCode, networkACLNoListN string, pageNo string, pageSize string, vpcNo string) (*http.Request, error) {
+func (client NetworkACLClient) GetListPreparer(ctx context.Context, networkACLName string, networkACLStatusCode NetworkACLStatusCode, networkACLNoListN string, pageNo string, pageSize string, vpcNo string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"responseFormatType": autorest.Encode("query", "json"),
 	}
-	if len(regionCode) > 0 {
-		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
-	} else {
-		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
-	}
+
+	queryParameters["regionCode"] = autorest.Encode("query", "FKR")
+
 	if len(networkACLName) > 0 {
 		queryParameters["networkAclName"] = autorest.Encode("query", networkACLName)
 	}
@@ -593,9 +573,8 @@ func (client NetworkACLClient) GetListResponder(resp *http.Response) (result Net
 // GetRuleList 네트워크 ACL의 Rule 리스트를 조회
 // Parameters:
 // networkACLNo - 네트워크 ACL 번호
-// regionCode - REGION 코드
 // networkACLRuleTypeCode - 네트워크 ACL Rule 유형 코드
-func (client NetworkACLClient) GetRuleList(ctx context.Context, networkACLNo string, regionCode string, networkACLRuleTypeCode NetworkACLRuleTypeCode) (result NetworkACLRuleListResponse, err error) {
+func (client NetworkACLClient) GetRuleList(ctx context.Context, networkACLNo string, networkACLRuleTypeCode NetworkACLRuleTypeCode) (result NetworkACLRuleListResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NetworkACLClient.GetRuleList")
 		defer func() {
@@ -606,7 +585,7 @@ func (client NetworkACLClient) GetRuleList(ctx context.Context, networkACLNo str
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetRuleListPreparer(ctx, networkACLNo, regionCode, networkACLRuleTypeCode)
+	req, err := client.GetRuleListPreparer(ctx, networkACLNo, networkACLRuleTypeCode)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vpc.NetworkACLClient", "GetRuleList", nil, "Failure preparing request")
 		return
@@ -628,16 +607,14 @@ func (client NetworkACLClient) GetRuleList(ctx context.Context, networkACLNo str
 }
 
 // GetRuleListPreparer prepares the GetRuleList request.
-func (client NetworkACLClient) GetRuleListPreparer(ctx context.Context, networkACLNo string, regionCode string, networkACLRuleTypeCode NetworkACLRuleTypeCode) (*http.Request, error) {
+func (client NetworkACLClient) GetRuleListPreparer(ctx context.Context, networkACLNo string, networkACLRuleTypeCode NetworkACLRuleTypeCode) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"networkAclNo":       autorest.Encode("query", networkACLNo),
 		"responseFormatType": autorest.Encode("query", "json"),
 	}
-	if len(regionCode) > 0 {
-		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
-	} else {
-		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
-	}
+
+	queryParameters["regionCode"] = autorest.Encode("query", "FKR")
+
 	if len(string(networkACLRuleTypeCode)) > 0 {
 		queryParameters["networkAclRuleTypeCode"] = autorest.Encode("query", networkACLRuleTypeCode)
 	}
@@ -684,9 +661,8 @@ func (client NetworkACLClient) GetRuleListResponder(resp *http.Response) (result
 // networkACLRuleListNprotocolTypeCode - 네트워크 ACL Rule 유형 코드
 // networkACLRuleListNipBlock - IP 블록
 // networkACLRuleListNruleActionCode - rule 액션 코드
-// regionCode - REGION 코드
 // networkACLRuleListNportRange - 포트 범위
-func (client NetworkACLClient) RemoveInboundRule(ctx context.Context, networkACLNo string, networkACLRuleListNpriority string, networkACLRuleListNprotocolTypeCode ProtocolTypeCode, networkACLRuleListNipBlock string, networkACLRuleListNruleActionCode RuleActionCode, regionCode string, networkACLRuleListNportRange string) (result NetworkACLInboundRuleResponse, err error) {
+func (client NetworkACLClient) RemoveInboundRule(ctx context.Context, networkACLNo string, networkACLRuleListNpriority string, networkACLRuleListNprotocolTypeCode ProtocolTypeCode, networkACLRuleListNipBlock string, networkACLRuleListNruleActionCode RuleActionCode, networkACLRuleListNportRange string) (result NetworkACLInboundRuleResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NetworkACLClient.RemoveInboundRule")
 		defer func() {
@@ -697,7 +673,7 @@ func (client NetworkACLClient) RemoveInboundRule(ctx context.Context, networkACL
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.RemoveInboundRulePreparer(ctx, networkACLNo, networkACLRuleListNpriority, networkACLRuleListNprotocolTypeCode, networkACLRuleListNipBlock, networkACLRuleListNruleActionCode, regionCode, networkACLRuleListNportRange)
+	req, err := client.RemoveInboundRulePreparer(ctx, networkACLNo, networkACLRuleListNpriority, networkACLRuleListNprotocolTypeCode, networkACLRuleListNipBlock, networkACLRuleListNruleActionCode, networkACLRuleListNportRange)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vpc.NetworkACLClient", "RemoveInboundRule", nil, "Failure preparing request")
 		return
@@ -719,7 +695,7 @@ func (client NetworkACLClient) RemoveInboundRule(ctx context.Context, networkACL
 }
 
 // RemoveInboundRulePreparer prepares the RemoveInboundRule request.
-func (client NetworkACLClient) RemoveInboundRulePreparer(ctx context.Context, networkACLNo string, networkACLRuleListNpriority string, networkACLRuleListNprotocolTypeCode ProtocolTypeCode, networkACLRuleListNipBlock string, networkACLRuleListNruleActionCode RuleActionCode, regionCode string, networkACLRuleListNportRange string) (*http.Request, error) {
+func (client NetworkACLClient) RemoveInboundRulePreparer(ctx context.Context, networkACLNo string, networkACLRuleListNpriority string, networkACLRuleListNprotocolTypeCode ProtocolTypeCode, networkACLRuleListNipBlock string, networkACLRuleListNruleActionCode RuleActionCode, networkACLRuleListNportRange string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"networkAclNo":                          autorest.Encode("query", networkACLNo),
 		"networkAclRuleList.N.ipBlock":          autorest.Encode("query", networkACLRuleListNipBlock),
@@ -728,11 +704,9 @@ func (client NetworkACLClient) RemoveInboundRulePreparer(ctx context.Context, ne
 		"networkAclRuleList.N.ruleActionCode":   autorest.Encode("query", networkACLRuleListNruleActionCode),
 		"responseFormatType":                    autorest.Encode("query", "json"),
 	}
-	if len(regionCode) > 0 {
-		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
-	} else {
-		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
-	}
+
+	queryParameters["regionCode"] = autorest.Encode("query", "FKR")
+
 	if len(networkACLRuleListNportRange) > 0 {
 		queryParameters["networkAclRuleList.N.portRange"] = autorest.Encode("query", networkACLRuleListNportRange)
 	}
@@ -779,9 +753,8 @@ func (client NetworkACLClient) RemoveInboundRuleResponder(resp *http.Response) (
 // networkACLRuleListNprotocolTypeCode - 네트워크 ACL Rule 유형 코드
 // networkACLRuleListNipBlock - IP 블록
 // networkACLRuleListNruleActionCode - rule 액션 코드
-// regionCode - REGION 코드
 // networkACLRuleListNportRange - 포트 범위
-func (client NetworkACLClient) RemoveOutboundRule(ctx context.Context, networkACLNo string, networkACLRuleListNpriority string, networkACLRuleListNprotocolTypeCode ProtocolTypeCode, networkACLRuleListNipBlock string, networkACLRuleListNruleActionCode RuleActionCode, regionCode string, networkACLRuleListNportRange string) (result NetworkACLOutboundRuleResponse, err error) {
+func (client NetworkACLClient) RemoveOutboundRule(ctx context.Context, networkACLNo string, networkACLRuleListNpriority string, networkACLRuleListNprotocolTypeCode ProtocolTypeCode, networkACLRuleListNipBlock string, networkACLRuleListNruleActionCode RuleActionCode, networkACLRuleListNportRange string) (result NetworkACLOutboundRuleResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NetworkACLClient.RemoveOutboundRule")
 		defer func() {
@@ -792,7 +765,7 @@ func (client NetworkACLClient) RemoveOutboundRule(ctx context.Context, networkAC
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.RemoveOutboundRulePreparer(ctx, networkACLNo, networkACLRuleListNpriority, networkACLRuleListNprotocolTypeCode, networkACLRuleListNipBlock, networkACLRuleListNruleActionCode, regionCode, networkACLRuleListNportRange)
+	req, err := client.RemoveOutboundRulePreparer(ctx, networkACLNo, networkACLRuleListNpriority, networkACLRuleListNprotocolTypeCode, networkACLRuleListNipBlock, networkACLRuleListNruleActionCode, networkACLRuleListNportRange)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vpc.NetworkACLClient", "RemoveOutboundRule", nil, "Failure preparing request")
 		return
@@ -814,7 +787,7 @@ func (client NetworkACLClient) RemoveOutboundRule(ctx context.Context, networkAC
 }
 
 // RemoveOutboundRulePreparer prepares the RemoveOutboundRule request.
-func (client NetworkACLClient) RemoveOutboundRulePreparer(ctx context.Context, networkACLNo string, networkACLRuleListNpriority string, networkACLRuleListNprotocolTypeCode ProtocolTypeCode, networkACLRuleListNipBlock string, networkACLRuleListNruleActionCode RuleActionCode, regionCode string, networkACLRuleListNportRange string) (*http.Request, error) {
+func (client NetworkACLClient) RemoveOutboundRulePreparer(ctx context.Context, networkACLNo string, networkACLRuleListNpriority string, networkACLRuleListNprotocolTypeCode ProtocolTypeCode, networkACLRuleListNipBlock string, networkACLRuleListNruleActionCode RuleActionCode, networkACLRuleListNportRange string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"networkAclNo":                          autorest.Encode("query", networkACLNo),
 		"networkAclRuleList.N.ipBlock":          autorest.Encode("query", networkACLRuleListNipBlock),
@@ -823,11 +796,9 @@ func (client NetworkACLClient) RemoveOutboundRulePreparer(ctx context.Context, n
 		"networkAclRuleList.N.ruleActionCode":   autorest.Encode("query", networkACLRuleListNruleActionCode),
 		"responseFormatType":                    autorest.Encode("query", "json"),
 	}
-	if len(regionCode) > 0 {
-		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
-	} else {
-		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
-	}
+
+	queryParameters["regionCode"] = autorest.Encode("query", "FKR")
+
 	if len(networkACLRuleListNportRange) > 0 {
 		queryParameters["networkAclRuleList.N.portRange"] = autorest.Encode("query", networkACLRuleListNportRange)
 	}
@@ -871,8 +842,7 @@ func (client NetworkACLClient) RemoveOutboundRuleResponder(resp *http.Response) 
 // Parameters:
 // networkACLNo - 네트워크 ACL 번호
 // subnetNo - 서브넷 번호
-// regionCode - REGION 코드
-func (client NetworkACLClient) SetSubnet(ctx context.Context, networkACLNo string, subnetNo string, regionCode string) (result SubnetNetworkACLResponse, err error) {
+func (client NetworkACLClient) SetSubnet(ctx context.Context, networkACLNo string, subnetNo string) (result SubnetNetworkACLResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NetworkACLClient.SetSubnet")
 		defer func() {
@@ -883,7 +853,7 @@ func (client NetworkACLClient) SetSubnet(ctx context.Context, networkACLNo strin
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.SetSubnetPreparer(ctx, networkACLNo, subnetNo, regionCode)
+	req, err := client.SetSubnetPreparer(ctx, networkACLNo, subnetNo)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vpc.NetworkACLClient", "SetSubnet", nil, "Failure preparing request")
 		return
@@ -905,17 +875,14 @@ func (client NetworkACLClient) SetSubnet(ctx context.Context, networkACLNo strin
 }
 
 // SetSubnetPreparer prepares the SetSubnet request.
-func (client NetworkACLClient) SetSubnetPreparer(ctx context.Context, networkACLNo string, subnetNo string, regionCode string) (*http.Request, error) {
+func (client NetworkACLClient) SetSubnetPreparer(ctx context.Context, networkACLNo string, subnetNo string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"networkAclNo":       autorest.Encode("query", networkACLNo),
 		"responseFormatType": autorest.Encode("query", "json"),
 		"subnetNo":           autorest.Encode("query", subnetNo),
 	}
-	if len(regionCode) > 0 {
-		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
-	} else {
-		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
-	}
+
+	queryParameters["regionCode"] = autorest.Encode("query", "FKR")
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)

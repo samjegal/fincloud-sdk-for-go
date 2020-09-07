@@ -34,8 +34,7 @@ func NewClientWithBaseURI(baseURI string) Client {
 // Parameters:
 // serverInstanceNo - 서버 인스턴스 번호
 // serverProductCode - 서버 상품 코드
-// regionCode - REGION 코드
-func (client Client) ChangeSpec(ctx context.Context, serverInstanceNo string, serverProductCode string, regionCode string) (result InstanceSpecResponse, err error) {
+func (client Client) ChangeSpec(ctx context.Context, serverInstanceNo string, serverProductCode string) (result InstanceSpecResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.ChangeSpec")
 		defer func() {
@@ -46,7 +45,7 @@ func (client Client) ChangeSpec(ctx context.Context, serverInstanceNo string, se
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.ChangeSpecPreparer(ctx, serverInstanceNo, serverProductCode, regionCode)
+	req, err := client.ChangeSpecPreparer(ctx, serverInstanceNo, serverProductCode)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "server.Client", "ChangeSpec", nil, "Failure preparing request")
 		return
@@ -68,17 +67,14 @@ func (client Client) ChangeSpec(ctx context.Context, serverInstanceNo string, se
 }
 
 // ChangeSpecPreparer prepares the ChangeSpec request.
-func (client Client) ChangeSpecPreparer(ctx context.Context, serverInstanceNo string, serverProductCode string, regionCode string) (*http.Request, error) {
+func (client Client) ChangeSpecPreparer(ctx context.Context, serverInstanceNo string, serverProductCode string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"responseFormatType": autorest.Encode("query", "json"),
 		"serverInstanceNo":   autorest.Encode("query", serverInstanceNo),
 		"serverProductCode":  autorest.Encode("query", serverProductCode),
 	}
-	if len(regionCode) > 0 {
-		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
-	} else {
-		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
-	}
+
+	queryParameters["regionCode"] = autorest.Encode("query", "FKR")
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
@@ -121,7 +117,6 @@ func (client Client) ChangeSpecResponder(resp *http.Response) (result InstanceSp
 // subnetNo - 서브넷 번호
 // networkInterfaceListNnetworkInterfaceOrder - 네트워크 인터페이스 순서
 // networkInterfaceListNaccessControlGroupNoListN - ACG 번호 리스트
-// regionCode - REGION 코드
 // memberServerImageInstanceNo - 회원 서버 이미지 인스턴스 번호
 // serverImageProductCode - 서버 이미지 상품 코드
 // serverProductCode - 서버 상품 코드
@@ -138,7 +133,7 @@ func (client Client) ChangeSpecResponder(resp *http.Response) (result InstanceSp
 // serverDescription - 서버 설명
 // initScriptNo - 초기화 스크립트 번호
 // loginKeyName - 로그인 키 이름
-func (client Client) Create(ctx context.Context, vpcNo string, subnetNo string, networkInterfaceListNnetworkInterfaceOrder string, networkInterfaceListNaccessControlGroupNoListN string, regionCode string, memberServerImageInstanceNo string, serverImageProductCode string, serverProductCode string, isEncryptedBaseBlockStorageVolume *bool, feeSystemTypeCode FeeSystemTypeCode, serverCreateCount string, serverCreateStartNo string, serverName string, networkInterfaceListNnetworkInterfaceNo string, networkInterfaceListNsubnetNo string, networkInterfaceListNip string, placementGroupNo string, isProtectServerTermination *bool, serverDescription string, initScriptNo string, loginKeyName string) (result InstancesResponse, err error) {
+func (client Client) Create(ctx context.Context, vpcNo string, subnetNo string, networkInterfaceListNnetworkInterfaceOrder string, networkInterfaceListNaccessControlGroupNoListN string, memberServerImageInstanceNo string, serverImageProductCode string, serverProductCode string, isEncryptedBaseBlockStorageVolume *bool, feeSystemTypeCode FeeSystemTypeCode, serverCreateCount string, serverCreateStartNo string, serverName string, networkInterfaceListNnetworkInterfaceNo string, networkInterfaceListNsubnetNo string, networkInterfaceListNip string, placementGroupNo string, isProtectServerTermination *bool, serverDescription string, initScriptNo string, loginKeyName string) (result InstancesResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.Create")
 		defer func() {
@@ -149,7 +144,7 @@ func (client Client) Create(ctx context.Context, vpcNo string, subnetNo string, 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.CreatePreparer(ctx, vpcNo, subnetNo, networkInterfaceListNnetworkInterfaceOrder, networkInterfaceListNaccessControlGroupNoListN, regionCode, memberServerImageInstanceNo, serverImageProductCode, serverProductCode, isEncryptedBaseBlockStorageVolume, feeSystemTypeCode, serverCreateCount, serverCreateStartNo, serverName, networkInterfaceListNnetworkInterfaceNo, networkInterfaceListNsubnetNo, networkInterfaceListNip, placementGroupNo, isProtectServerTermination, serverDescription, initScriptNo, loginKeyName)
+	req, err := client.CreatePreparer(ctx, vpcNo, subnetNo, networkInterfaceListNnetworkInterfaceOrder, networkInterfaceListNaccessControlGroupNoListN, memberServerImageInstanceNo, serverImageProductCode, serverProductCode, isEncryptedBaseBlockStorageVolume, feeSystemTypeCode, serverCreateCount, serverCreateStartNo, serverName, networkInterfaceListNnetworkInterfaceNo, networkInterfaceListNsubnetNo, networkInterfaceListNip, placementGroupNo, isProtectServerTermination, serverDescription, initScriptNo, loginKeyName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "server.Client", "Create", nil, "Failure preparing request")
 		return
@@ -171,7 +166,7 @@ func (client Client) Create(ctx context.Context, vpcNo string, subnetNo string, 
 }
 
 // CreatePreparer prepares the Create request.
-func (client Client) CreatePreparer(ctx context.Context, vpcNo string, subnetNo string, networkInterfaceListNnetworkInterfaceOrder string, networkInterfaceListNaccessControlGroupNoListN string, regionCode string, memberServerImageInstanceNo string, serverImageProductCode string, serverProductCode string, isEncryptedBaseBlockStorageVolume *bool, feeSystemTypeCode FeeSystemTypeCode, serverCreateCount string, serverCreateStartNo string, serverName string, networkInterfaceListNnetworkInterfaceNo string, networkInterfaceListNsubnetNo string, networkInterfaceListNip string, placementGroupNo string, isProtectServerTermination *bool, serverDescription string, initScriptNo string, loginKeyName string) (*http.Request, error) {
+func (client Client) CreatePreparer(ctx context.Context, vpcNo string, subnetNo string, networkInterfaceListNnetworkInterfaceOrder string, networkInterfaceListNaccessControlGroupNoListN string, memberServerImageInstanceNo string, serverImageProductCode string, serverProductCode string, isEncryptedBaseBlockStorageVolume *bool, feeSystemTypeCode FeeSystemTypeCode, serverCreateCount string, serverCreateStartNo string, serverName string, networkInterfaceListNnetworkInterfaceNo string, networkInterfaceListNsubnetNo string, networkInterfaceListNip string, placementGroupNo string, isProtectServerTermination *bool, serverDescription string, initScriptNo string, loginKeyName string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"networkInterfaceList.N.accessControlGroupNoList.N": autorest.Encode("query", networkInterfaceListNaccessControlGroupNoListN),
 		"networkInterfaceList.N.networkInterfaceOrder":      autorest.Encode("query", networkInterfaceListNnetworkInterfaceOrder),
@@ -179,11 +174,9 @@ func (client Client) CreatePreparer(ctx context.Context, vpcNo string, subnetNo 
 		"subnetNo":                                          autorest.Encode("query", subnetNo),
 		"vpcNo":                                             autorest.Encode("query", vpcNo),
 	}
-	if len(regionCode) > 0 {
-		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
-	} else {
-		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
-	}
+
+	queryParameters["regionCode"] = autorest.Encode("query", "FKR")
+
 	if len(memberServerImageInstanceNo) > 0 {
 		queryParameters["memberServerImageInstanceNo"] = autorest.Encode("query", memberServerImageInstanceNo)
 	}
@@ -271,8 +264,7 @@ func (client Client) CreateResponder(resp *http.Response) (result InstancesRespo
 // GetDetail 서버 인스턴스 상세 정보를 조회
 // Parameters:
 // serverInstanceNo - 서버 인스턴스 번호
-// regionCode - REGION 코드
-func (client Client) GetDetail(ctx context.Context, serverInstanceNo string, regionCode string) (result InstanceDetailResponse, err error) {
+func (client Client) GetDetail(ctx context.Context, serverInstanceNo string) (result InstanceDetailResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.GetDetail")
 		defer func() {
@@ -283,7 +275,7 @@ func (client Client) GetDetail(ctx context.Context, serverInstanceNo string, reg
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetDetailPreparer(ctx, serverInstanceNo, regionCode)
+	req, err := client.GetDetailPreparer(ctx, serverInstanceNo)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "server.Client", "GetDetail", nil, "Failure preparing request")
 		return
@@ -305,16 +297,13 @@ func (client Client) GetDetail(ctx context.Context, serverInstanceNo string, reg
 }
 
 // GetDetailPreparer prepares the GetDetail request.
-func (client Client) GetDetailPreparer(ctx context.Context, serverInstanceNo string, regionCode string) (*http.Request, error) {
+func (client Client) GetDetailPreparer(ctx context.Context, serverInstanceNo string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"responseFormatType": autorest.Encode("query", "json"),
 		"serverInstanceNo":   autorest.Encode("query", serverInstanceNo),
 	}
-	if len(regionCode) > 0 {
-		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
-	} else {
-		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
-	}
+
+	queryParameters["regionCode"] = autorest.Encode("query", "FKR")
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
@@ -353,7 +342,6 @@ func (client Client) GetDetailResponder(resp *http.Response) (result InstanceDet
 
 // GetInstanceList 서버 인스턴스 리스트를 조회
 // Parameters:
-// regionCode - REGION 코드
 // serverInstanceNoListN - 서버 인스턴스 번호 리스트
 // vpcNo - VPC 번호
 // pageNo - 페이지 번호
@@ -365,7 +353,7 @@ func (client Client) GetDetailResponder(resp *http.Response) (result InstanceDet
 // sortedBy - 정렬 대상
 // sortingOrder - 정렬 순서
 // placementGroupNoListN - 물리 배치 그룹 번호 리스트
-func (client Client) GetInstanceList(ctx context.Context, regionCode string, serverInstanceNoListN string, vpcNo string, pageNo string, serverInstanceStatusCode string, baseBlockStorageDiskTypeCode string, baseBlockStorageDiskDetailTypeCode string, serverName string, IP string, sortedBy string, sortingOrder string, placementGroupNoListN string) (result InstanceListResponse, err error) {
+func (client Client) GetInstanceList(ctx context.Context, serverInstanceNoListN string, vpcNo string, pageNo string, serverInstanceStatusCode string, baseBlockStorageDiskTypeCode string, baseBlockStorageDiskDetailTypeCode string, serverName string, IP string, sortedBy string, sortingOrder string, placementGroupNoListN string) (result InstanceListResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.GetInstanceList")
 		defer func() {
@@ -376,7 +364,7 @@ func (client Client) GetInstanceList(ctx context.Context, regionCode string, ser
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetInstanceListPreparer(ctx, regionCode, serverInstanceNoListN, vpcNo, pageNo, serverInstanceStatusCode, baseBlockStorageDiskTypeCode, baseBlockStorageDiskDetailTypeCode, serverName, IP, sortedBy, sortingOrder, placementGroupNoListN)
+	req, err := client.GetInstanceListPreparer(ctx, serverInstanceNoListN, vpcNo, pageNo, serverInstanceStatusCode, baseBlockStorageDiskTypeCode, baseBlockStorageDiskDetailTypeCode, serverName, IP, sortedBy, sortingOrder, placementGroupNoListN)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "server.Client", "GetInstanceList", nil, "Failure preparing request")
 		return
@@ -398,18 +386,12 @@ func (client Client) GetInstanceList(ctx context.Context, regionCode string, ser
 }
 
 // GetInstanceListPreparer prepares the GetInstanceList request.
-func (client Client) GetInstanceListPreparer(ctx context.Context, regionCode string, serverInstanceNoListN string, vpcNo string, pageNo string, serverInstanceStatusCode string, baseBlockStorageDiskTypeCode string, baseBlockStorageDiskDetailTypeCode string, serverName string, IP string, sortedBy string, sortingOrder string, placementGroupNoListN string) (*http.Request, error) {
+func (client Client) GetInstanceListPreparer(ctx context.Context, serverInstanceNoListN string, vpcNo string, pageNo string, serverInstanceStatusCode string, baseBlockStorageDiskTypeCode string, baseBlockStorageDiskDetailTypeCode string, serverName string, IP string, sortedBy string, sortingOrder string, placementGroupNoListN string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{}
-	if len(responseFormatType) > 0 {
-		queryParameters["responseFormatType"] = autorest.Encode("query", "json")
-	} else {
-		queryParameters["responseFormatType"] = autorest.Encode("query", "json")
-	}
-	if len(regionCode) > 0 {
-		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
-	} else {
-		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
-	}
+
+	queryParameters["responseFormatType"] = autorest.Encode("query", "json")
+	queryParameters["regionCode"] = autorest.Encode("query", "FKR")
+
 	if len(serverInstanceNoListN) > 0 {
 		queryParameters["serverInstanceNoList.N"] = autorest.Encode("query", serverInstanceNoListN)
 	}
@@ -484,8 +466,7 @@ func (client Client) GetInstanceListResponder(resp *http.Response) (result Insta
 // Reboot 서버 인스턴스를 재시작
 // Parameters:
 // serverInstanceNoListN - 서버 인스턴스 번호 리스트
-// regionCode - REGION 코드
-func (client Client) Reboot(ctx context.Context, serverInstanceNoListN string, regionCode string) (result InstancesResponse, err error) {
+func (client Client) Reboot(ctx context.Context, serverInstanceNoListN string) (result InstancesResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.Reboot")
 		defer func() {
@@ -496,7 +477,7 @@ func (client Client) Reboot(ctx context.Context, serverInstanceNoListN string, r
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.RebootPreparer(ctx, serverInstanceNoListN, regionCode)
+	req, err := client.RebootPreparer(ctx, serverInstanceNoListN)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "server.Client", "Reboot", nil, "Failure preparing request")
 		return
@@ -518,16 +499,13 @@ func (client Client) Reboot(ctx context.Context, serverInstanceNoListN string, r
 }
 
 // RebootPreparer prepares the Reboot request.
-func (client Client) RebootPreparer(ctx context.Context, serverInstanceNoListN string, regionCode string) (*http.Request, error) {
+func (client Client) RebootPreparer(ctx context.Context, serverInstanceNoListN string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"responseFormatType":     autorest.Encode("query", "json"),
 		"serverInstanceNoList.N": autorest.Encode("query", serverInstanceNoListN),
 	}
-	if len(regionCode) > 0 {
-		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
-	} else {
-		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
-	}
+
+	queryParameters["regionCode"] = autorest.Encode("query", "FKR")
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
@@ -567,8 +545,7 @@ func (client Client) RebootResponder(resp *http.Response) (result InstancesRespo
 // Start 서버 인스턴스를 시작
 // Parameters:
 // serverInstanceNoListN - 서버 인스턴스 번호 리스트
-// regionCode - REGION 코드
-func (client Client) Start(ctx context.Context, serverInstanceNoListN string, regionCode string) (result InstancesResponse, err error) {
+func (client Client) Start(ctx context.Context, serverInstanceNoListN string) (result InstancesResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.Start")
 		defer func() {
@@ -579,7 +556,7 @@ func (client Client) Start(ctx context.Context, serverInstanceNoListN string, re
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.StartPreparer(ctx, serverInstanceNoListN, regionCode)
+	req, err := client.StartPreparer(ctx, serverInstanceNoListN)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "server.Client", "Start", nil, "Failure preparing request")
 		return
@@ -601,16 +578,13 @@ func (client Client) Start(ctx context.Context, serverInstanceNoListN string, re
 }
 
 // StartPreparer prepares the Start request.
-func (client Client) StartPreparer(ctx context.Context, serverInstanceNoListN string, regionCode string) (*http.Request, error) {
+func (client Client) StartPreparer(ctx context.Context, serverInstanceNoListN string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"responseFormatType":     autorest.Encode("query", "json"),
 		"serverInstanceNoList.N": autorest.Encode("query", serverInstanceNoListN),
 	}
-	if len(regionCode) > 0 {
-		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
-	} else {
-		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
-	}
+
+	queryParameters["regionCode"] = autorest.Encode("query", "FKR")
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
@@ -650,8 +624,7 @@ func (client Client) StartResponder(resp *http.Response) (result InstancesRespon
 // Stop 서버 인스턴스를 종료
 // Parameters:
 // serverInstanceNoListN - 서버 인스턴스 번호 리스트
-// regionCode - REGION 코드
-func (client Client) Stop(ctx context.Context, serverInstanceNoListN string, regionCode string) (result InstancesResponse, err error) {
+func (client Client) Stop(ctx context.Context, serverInstanceNoListN string) (result InstancesResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.Stop")
 		defer func() {
@@ -662,7 +635,7 @@ func (client Client) Stop(ctx context.Context, serverInstanceNoListN string, reg
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.StopPreparer(ctx, serverInstanceNoListN, regionCode)
+	req, err := client.StopPreparer(ctx, serverInstanceNoListN)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "server.Client", "Stop", nil, "Failure preparing request")
 		return
@@ -684,16 +657,13 @@ func (client Client) Stop(ctx context.Context, serverInstanceNoListN string, reg
 }
 
 // StopPreparer prepares the Stop request.
-func (client Client) StopPreparer(ctx context.Context, serverInstanceNoListN string, regionCode string) (*http.Request, error) {
+func (client Client) StopPreparer(ctx context.Context, serverInstanceNoListN string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"responseFormatType":     autorest.Encode("query", "json"),
 		"serverInstanceNoList.N": autorest.Encode("query", serverInstanceNoListN),
 	}
-	if len(regionCode) > 0 {
-		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
-	} else {
-		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
-	}
+
+	queryParameters["regionCode"] = autorest.Encode("query", "FKR")
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
@@ -733,8 +703,7 @@ func (client Client) StopResponder(resp *http.Response) (result InstancesRespons
 // Terminate 서버 인스턴스를 반납
 // Parameters:
 // serverInstanceNoListN - 서버 인스턴스 번호 리스트
-// regionCode - REGION 코드
-func (client Client) Terminate(ctx context.Context, serverInstanceNoListN string, regionCode string) (result InstancesResponse, err error) {
+func (client Client) Terminate(ctx context.Context, serverInstanceNoListN string) (result InstancesResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.Terminate")
 		defer func() {
@@ -745,7 +714,7 @@ func (client Client) Terminate(ctx context.Context, serverInstanceNoListN string
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.TerminatePreparer(ctx, serverInstanceNoListN, regionCode)
+	req, err := client.TerminatePreparer(ctx, serverInstanceNoListN)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "server.Client", "Terminate", nil, "Failure preparing request")
 		return
@@ -767,16 +736,13 @@ func (client Client) Terminate(ctx context.Context, serverInstanceNoListN string
 }
 
 // TerminatePreparer prepares the Terminate request.
-func (client Client) TerminatePreparer(ctx context.Context, serverInstanceNoListN string, regionCode string) (*http.Request, error) {
+func (client Client) TerminatePreparer(ctx context.Context, serverInstanceNoListN string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"responseFormatType":     autorest.Encode("query", "json"),
 		"serverInstanceNoList.N": autorest.Encode("query", serverInstanceNoListN),
 	}
-	if len(regionCode) > 0 {
-		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
-	} else {
-		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
-	}
+
+	queryParameters["regionCode"] = autorest.Encode("query", "FKR")
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)

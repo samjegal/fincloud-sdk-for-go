@@ -35,8 +35,7 @@ func NewNetworkInterfaceClientWithBaseURI(baseURI string) NetworkInterfaceClient
 // Parameters:
 // networkInterfaceNo - 네트워크 인터페이스 번호
 // accessControlGroupNoListN - ACG 번호 리스트
-// regionCode - REGION 코드
-func (client NetworkInterfaceClient) AddACG(ctx context.Context, networkInterfaceNo string, accessControlGroupNoListN string, regionCode string) (result NetworkInterfaceAccessControlGroupResponse, err error) {
+func (client NetworkInterfaceClient) AddACG(ctx context.Context, networkInterfaceNo string, accessControlGroupNoListN string) (result NetworkInterfaceAccessControlGroupResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NetworkInterfaceClient.AddACG")
 		defer func() {
@@ -47,7 +46,7 @@ func (client NetworkInterfaceClient) AddACG(ctx context.Context, networkInterfac
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.AddACGPreparer(ctx, networkInterfaceNo, accessControlGroupNoListN, regionCode)
+	req, err := client.AddACGPreparer(ctx, networkInterfaceNo, accessControlGroupNoListN)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "server.NetworkInterfaceClient", "AddACG", nil, "Failure preparing request")
 		return
@@ -69,17 +68,14 @@ func (client NetworkInterfaceClient) AddACG(ctx context.Context, networkInterfac
 }
 
 // AddACGPreparer prepares the AddACG request.
-func (client NetworkInterfaceClient) AddACGPreparer(ctx context.Context, networkInterfaceNo string, accessControlGroupNoListN string, regionCode string) (*http.Request, error) {
+func (client NetworkInterfaceClient) AddACGPreparer(ctx context.Context, networkInterfaceNo string, accessControlGroupNoListN string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"accessControlGroupNoList.N": autorest.Encode("query", accessControlGroupNoListN),
 		"networkInterfaceNo":         autorest.Encode("query", networkInterfaceNo),
 		"responseFormatType":         autorest.Encode("query", "json"),
 	}
-	if len(regionCode) > 0 {
-		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
-	} else {
-		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
-	}
+
+	queryParameters["regionCode"] = autorest.Encode("query", "FKR")
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
@@ -121,8 +117,7 @@ func (client NetworkInterfaceClient) AddACGResponder(resp *http.Response) (resul
 // subnetNo - 서브넷 번호
 // networkInterfaceNo - 네트워크 인터페이스 번호
 // serverInstanceNo - 서버 인스턴스 번호
-// regionCode - REGION 코드
-func (client NetworkInterfaceClient) Attach(ctx context.Context, subnetNo string, networkInterfaceNo string, serverInstanceNo string, regionCode string) (result NetworkInterfaceResponse, err error) {
+func (client NetworkInterfaceClient) Attach(ctx context.Context, subnetNo string, networkInterfaceNo string, serverInstanceNo string) (result NetworkInterfaceResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NetworkInterfaceClient.Attach")
 		defer func() {
@@ -133,7 +128,7 @@ func (client NetworkInterfaceClient) Attach(ctx context.Context, subnetNo string
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.AttachPreparer(ctx, subnetNo, networkInterfaceNo, serverInstanceNo, regionCode)
+	req, err := client.AttachPreparer(ctx, subnetNo, networkInterfaceNo, serverInstanceNo)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "server.NetworkInterfaceClient", "Attach", nil, "Failure preparing request")
 		return
@@ -155,18 +150,15 @@ func (client NetworkInterfaceClient) Attach(ctx context.Context, subnetNo string
 }
 
 // AttachPreparer prepares the Attach request.
-func (client NetworkInterfaceClient) AttachPreparer(ctx context.Context, subnetNo string, networkInterfaceNo string, serverInstanceNo string, regionCode string) (*http.Request, error) {
+func (client NetworkInterfaceClient) AttachPreparer(ctx context.Context, subnetNo string, networkInterfaceNo string, serverInstanceNo string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"networkInterfaceNo": autorest.Encode("query", networkInterfaceNo),
 		"responseFormatType": autorest.Encode("query", "json"),
 		"serverInstanceNo":   autorest.Encode("query", serverInstanceNo),
 		"subnetNo":           autorest.Encode("query", subnetNo),
 	}
-	if len(regionCode) > 0 {
-		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
-	} else {
-		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
-	}
+
+	queryParameters["regionCode"] = autorest.Encode("query", "FKR")
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
@@ -205,7 +197,6 @@ func (client NetworkInterfaceClient) AttachResponder(resp *http.Response) (resul
 
 // Create 네트워크 인터페이스를 생성
 // Parameters:
-// regionCode - REGION 코드
 // vpcNo - VPC 번호
 // subnetNo - 서브넷 번호
 // networkInterfaceName - 네트워크 인터페이스 이름
@@ -213,7 +204,7 @@ func (client NetworkInterfaceClient) AttachResponder(resp *http.Response) (resul
 // serverInstanceNo - 서버 인스턴스 번호
 // IP - IP 주소
 // networkInterfaceDescription - 네트워크 인터페이스 설명
-func (client NetworkInterfaceClient) Create(ctx context.Context, regionCode string, vpcNo string, subnetNo string, networkInterfaceName string, accessControlGroupNoListN string, serverInstanceNo string, IP string, networkInterfaceDescription string) (result NetworkInterfaceResponse, err error) {
+func (client NetworkInterfaceClient) Create(ctx context.Context, vpcNo string, subnetNo string, networkInterfaceName string, accessControlGroupNoListN string, serverInstanceNo string, IP string, networkInterfaceDescription string) (result NetworkInterfaceResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NetworkInterfaceClient.Create")
 		defer func() {
@@ -224,7 +215,7 @@ func (client NetworkInterfaceClient) Create(ctx context.Context, regionCode stri
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.CreatePreparer(ctx, regionCode, vpcNo, subnetNo, networkInterfaceName, accessControlGroupNoListN, serverInstanceNo, IP, networkInterfaceDescription)
+	req, err := client.CreatePreparer(ctx, vpcNo, subnetNo, networkInterfaceName, accessControlGroupNoListN, serverInstanceNo, IP, networkInterfaceDescription)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "server.NetworkInterfaceClient", "Create", nil, "Failure preparing request")
 		return
@@ -246,15 +237,13 @@ func (client NetworkInterfaceClient) Create(ctx context.Context, regionCode stri
 }
 
 // CreatePreparer prepares the Create request.
-func (client NetworkInterfaceClient) CreatePreparer(ctx context.Context, regionCode string, vpcNo string, subnetNo string, networkInterfaceName string, accessControlGroupNoListN string, serverInstanceNo string, IP string, networkInterfaceDescription string) (*http.Request, error) {
+func (client NetworkInterfaceClient) CreatePreparer(ctx context.Context, vpcNo string, subnetNo string, networkInterfaceName string, accessControlGroupNoListN string, serverInstanceNo string, IP string, networkInterfaceDescription string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"responseFormatType": autorest.Encode("query", "json"),
 	}
-	if len(regionCode) > 0 {
-		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
-	} else {
-		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
-	}
+
+	queryParameters["regionCode"] = autorest.Encode("query", "FKR")
+
 	if len(vpcNo) > 0 {
 		queryParameters["vpcNo"] = autorest.Encode("query", vpcNo)
 	}
@@ -314,9 +303,8 @@ func (client NetworkInterfaceClient) CreateResponder(resp *http.Response) (resul
 
 // Delete 네트워크 인터페이스 삭제
 // Parameters:
-// regionCode - REGION 코드
 // networkInterfaceNo - 네트워크 인터페이스 번호
-func (client NetworkInterfaceClient) Delete(ctx context.Context, regionCode string, networkInterfaceNo string) (result NetworkInterfaceResponse, err error) {
+func (client NetworkInterfaceClient) Delete(ctx context.Context, networkInterfaceNo string) (result NetworkInterfaceResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NetworkInterfaceClient.Delete")
 		defer func() {
@@ -327,7 +315,7 @@ func (client NetworkInterfaceClient) Delete(ctx context.Context, regionCode stri
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeletePreparer(ctx, regionCode, networkInterfaceNo)
+	req, err := client.DeletePreparer(ctx, networkInterfaceNo)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "server.NetworkInterfaceClient", "Delete", nil, "Failure preparing request")
 		return
@@ -349,15 +337,13 @@ func (client NetworkInterfaceClient) Delete(ctx context.Context, regionCode stri
 }
 
 // DeletePreparer prepares the Delete request.
-func (client NetworkInterfaceClient) DeletePreparer(ctx context.Context, regionCode string, networkInterfaceNo string) (*http.Request, error) {
+func (client NetworkInterfaceClient) DeletePreparer(ctx context.Context, networkInterfaceNo string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"responseFormatType": autorest.Encode("query", "json"),
 	}
-	if len(regionCode) > 0 {
-		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
-	} else {
-		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
-	}
+
+	queryParameters["regionCode"] = autorest.Encode("query", "FKR")
+
 	if len(networkInterfaceNo) > 0 {
 		queryParameters["networkInterfaceNo"] = autorest.Encode("query", networkInterfaceNo)
 	}
@@ -402,8 +388,7 @@ func (client NetworkInterfaceClient) DeleteResponder(resp *http.Response) (resul
 // subnetNo - 서브넷 번호
 // networkInterfaceNo - 네트워크 인터페이스 번호
 // serverInstanceNo - 서버 인스턴스 번호
-// regionCode - REGION 코드
-func (client NetworkInterfaceClient) Detach(ctx context.Context, subnetNo string, networkInterfaceNo string, serverInstanceNo string, regionCode string) (result NetworkInterfaceResponse, err error) {
+func (client NetworkInterfaceClient) Detach(ctx context.Context, subnetNo string, networkInterfaceNo string, serverInstanceNo string) (result NetworkInterfaceResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NetworkInterfaceClient.Detach")
 		defer func() {
@@ -414,7 +399,7 @@ func (client NetworkInterfaceClient) Detach(ctx context.Context, subnetNo string
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DetachPreparer(ctx, subnetNo, networkInterfaceNo, serverInstanceNo, regionCode)
+	req, err := client.DetachPreparer(ctx, subnetNo, networkInterfaceNo, serverInstanceNo)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "server.NetworkInterfaceClient", "Detach", nil, "Failure preparing request")
 		return
@@ -436,18 +421,15 @@ func (client NetworkInterfaceClient) Detach(ctx context.Context, subnetNo string
 }
 
 // DetachPreparer prepares the Detach request.
-func (client NetworkInterfaceClient) DetachPreparer(ctx context.Context, subnetNo string, networkInterfaceNo string, serverInstanceNo string, regionCode string) (*http.Request, error) {
+func (client NetworkInterfaceClient) DetachPreparer(ctx context.Context, subnetNo string, networkInterfaceNo string, serverInstanceNo string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"networkInterfaceNo": autorest.Encode("query", networkInterfaceNo),
 		"responseFormatType": autorest.Encode("query", "json"),
 		"serverInstanceNo":   autorest.Encode("query", serverInstanceNo),
 		"subnetNo":           autorest.Encode("query", subnetNo),
 	}
-	if len(regionCode) > 0 {
-		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
-	} else {
-		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
-	}
+
+	queryParameters["regionCode"] = autorest.Encode("query", "FKR")
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
@@ -487,8 +469,7 @@ func (client NetworkInterfaceClient) DetachResponder(resp *http.Response) (resul
 // GetDetail 네트워크 인터페이스 상세 정보를 조회
 // Parameters:
 // networkInterfaceNo - 네트워크 인터페이스 번호
-// regionCode - REGION 코드
-func (client NetworkInterfaceClient) GetDetail(ctx context.Context, networkInterfaceNo string, regionCode string) (result NetworkInterfaceDetailResponse, err error) {
+func (client NetworkInterfaceClient) GetDetail(ctx context.Context, networkInterfaceNo string) (result NetworkInterfaceDetailResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NetworkInterfaceClient.GetDetail")
 		defer func() {
@@ -499,7 +480,7 @@ func (client NetworkInterfaceClient) GetDetail(ctx context.Context, networkInter
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetDetailPreparer(ctx, networkInterfaceNo, regionCode)
+	req, err := client.GetDetailPreparer(ctx, networkInterfaceNo)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "server.NetworkInterfaceClient", "GetDetail", nil, "Failure preparing request")
 		return
@@ -521,16 +502,13 @@ func (client NetworkInterfaceClient) GetDetail(ctx context.Context, networkInter
 }
 
 // GetDetailPreparer prepares the GetDetail request.
-func (client NetworkInterfaceClient) GetDetailPreparer(ctx context.Context, networkInterfaceNo string, regionCode string) (*http.Request, error) {
+func (client NetworkInterfaceClient) GetDetailPreparer(ctx context.Context, networkInterfaceNo string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"networkInterfaceNo": autorest.Encode("query", networkInterfaceNo),
 		"responseFormatType": autorest.Encode("query", "json"),
 	}
-	if len(regionCode) > 0 {
-		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
-	} else {
-		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
-	}
+
+	queryParameters["regionCode"] = autorest.Encode("query", "FKR")
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
@@ -569,7 +547,6 @@ func (client NetworkInterfaceClient) GetDetailResponder(resp *http.Response) (re
 
 // GetList 네트워크 인터페이스 리스트를 조회
 // Parameters:
-// regionCode - REGION 코드
 // networkInterfaceNoListN - 네트워크 인터페이스 번호 리스트
 // IP - IP 주소
 // networkInterfaceName - 네트워크 인터페이스 이름
@@ -578,7 +555,7 @@ func (client NetworkInterfaceClient) GetDetailResponder(resp *http.Response) (re
 // pageNo - 페이지 번호
 // pageSize - 페이지 사이즈
 // networkInterfaceStatusCode - 네트워크 인터페이스 상태 코드
-func (client NetworkInterfaceClient) GetList(ctx context.Context, regionCode string, networkInterfaceNoListN string, IP string, networkInterfaceName string, serverInstanceName string, subnetName string, pageNo string, pageSize string, networkInterfaceStatusCode NetworkInterfaceStatusCode) (result NetworkInterfaceListResponse, err error) {
+func (client NetworkInterfaceClient) GetList(ctx context.Context, networkInterfaceNoListN string, IP string, networkInterfaceName string, serverInstanceName string, subnetName string, pageNo string, pageSize string, networkInterfaceStatusCode NetworkInterfaceStatusCode) (result NetworkInterfaceListResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NetworkInterfaceClient.GetList")
 		defer func() {
@@ -589,7 +566,7 @@ func (client NetworkInterfaceClient) GetList(ctx context.Context, regionCode str
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetListPreparer(ctx, regionCode, networkInterfaceNoListN, IP, networkInterfaceName, serverInstanceName, subnetName, pageNo, pageSize, networkInterfaceStatusCode)
+	req, err := client.GetListPreparer(ctx, networkInterfaceNoListN, IP, networkInterfaceName, serverInstanceName, subnetName, pageNo, pageSize, networkInterfaceStatusCode)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "server.NetworkInterfaceClient", "GetList", nil, "Failure preparing request")
 		return
@@ -611,15 +588,13 @@ func (client NetworkInterfaceClient) GetList(ctx context.Context, regionCode str
 }
 
 // GetListPreparer prepares the GetList request.
-func (client NetworkInterfaceClient) GetListPreparer(ctx context.Context, regionCode string, networkInterfaceNoListN string, IP string, networkInterfaceName string, serverInstanceName string, subnetName string, pageNo string, pageSize string, networkInterfaceStatusCode NetworkInterfaceStatusCode) (*http.Request, error) {
+func (client NetworkInterfaceClient) GetListPreparer(ctx context.Context, networkInterfaceNoListN string, IP string, networkInterfaceName string, serverInstanceName string, subnetName string, pageNo string, pageSize string, networkInterfaceStatusCode NetworkInterfaceStatusCode) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"responseFormatType": autorest.Encode("query", "json"),
 	}
-	if len(regionCode) > 0 {
-		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
-	} else {
-		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
-	}
+
+	queryParameters["regionCode"] = autorest.Encode("query", "FKR")
+
 	if len(networkInterfaceNoListN) > 0 {
 		queryParameters["networkInterfaceNoList.N"] = autorest.Encode("query", networkInterfaceNoListN)
 	}
@@ -684,8 +659,7 @@ func (client NetworkInterfaceClient) GetListResponder(resp *http.Response) (resu
 // Parameters:
 // networkInterfaceNo - 네트워크 인터페이스 번호
 // accessControlGroupNoListN - ACG 번호 리스트
-// regionCode - REGION 코드
-func (client NetworkInterfaceClient) RemoveACG(ctx context.Context, networkInterfaceNo string, accessControlGroupNoListN string, regionCode string) (result NetworkInterfaceAccessControlGroupResponse, err error) {
+func (client NetworkInterfaceClient) RemoveACG(ctx context.Context, networkInterfaceNo string, accessControlGroupNoListN string) (result NetworkInterfaceAccessControlGroupResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NetworkInterfaceClient.RemoveACG")
 		defer func() {
@@ -696,7 +670,7 @@ func (client NetworkInterfaceClient) RemoveACG(ctx context.Context, networkInter
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.RemoveACGPreparer(ctx, networkInterfaceNo, accessControlGroupNoListN, regionCode)
+	req, err := client.RemoveACGPreparer(ctx, networkInterfaceNo, accessControlGroupNoListN)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "server.NetworkInterfaceClient", "RemoveACG", nil, "Failure preparing request")
 		return
@@ -718,17 +692,14 @@ func (client NetworkInterfaceClient) RemoveACG(ctx context.Context, networkInter
 }
 
 // RemoveACGPreparer prepares the RemoveACG request.
-func (client NetworkInterfaceClient) RemoveACGPreparer(ctx context.Context, networkInterfaceNo string, accessControlGroupNoListN string, regionCode string) (*http.Request, error) {
+func (client NetworkInterfaceClient) RemoveACGPreparer(ctx context.Context, networkInterfaceNo string, accessControlGroupNoListN string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"accessControlGroupNoList.N": autorest.Encode("query", accessControlGroupNoListN),
 		"networkInterfaceNo":         autorest.Encode("query", networkInterfaceNo),
 		"responseFormatType":         autorest.Encode("query", "json"),
 	}
-	if len(regionCode) > 0 {
-		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
-	} else {
-		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
-	}
+
+	queryParameters["regionCode"] = autorest.Encode("query", "FKR")
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)

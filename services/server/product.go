@@ -33,12 +33,11 @@ func NewProductClientWithBaseURI(baseURI string) ProductClient {
 // GetList 서버 상품 리스트를 조회
 // Parameters:
 // serverImageProductCode - 서버 이미지 상품 코드
-// regionCode - REGION 코드
 // zoneCode - ZONE 코드
 // exclusionProductCode - 제외할 상품 코드
 // productCode - 조회할 상품 코드
 // generationCode - 세대 코드
-func (client ProductClient) GetList(ctx context.Context, serverImageProductCode string, regionCode string, zoneCode string, exclusionProductCode string, productCode string, generationCode string) (result ProductListResponse, err error) {
+func (client ProductClient) GetList(ctx context.Context, serverImageProductCode string, zoneCode string, exclusionProductCode string, productCode string, generationCode string) (result ProductListResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ProductClient.GetList")
 		defer func() {
@@ -49,7 +48,7 @@ func (client ProductClient) GetList(ctx context.Context, serverImageProductCode 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetListPreparer(ctx, serverImageProductCode, regionCode, zoneCode, exclusionProductCode, productCode, generationCode)
+	req, err := client.GetListPreparer(ctx, serverImageProductCode, zoneCode, exclusionProductCode, productCode, generationCode)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "server.ProductClient", "GetList", nil, "Failure preparing request")
 		return
@@ -71,16 +70,14 @@ func (client ProductClient) GetList(ctx context.Context, serverImageProductCode 
 }
 
 // GetListPreparer prepares the GetList request.
-func (client ProductClient) GetListPreparer(ctx context.Context, serverImageProductCode string, regionCode string, zoneCode string, exclusionProductCode string, productCode string, generationCode string) (*http.Request, error) {
+func (client ProductClient) GetListPreparer(ctx context.Context, serverImageProductCode string, zoneCode string, exclusionProductCode string, productCode string, generationCode string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"responseFormatType":     autorest.Encode("query", "json"),
 		"serverImageProductCode": autorest.Encode("query", serverImageProductCode),
 	}
-	if len(regionCode) > 0 {
-		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
-	} else {
-		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
-	}
+
+	queryParameters["regionCode"] = autorest.Encode("query", "FKR")
+
 	if len(zoneCode) > 0 {
 		queryParameters["zoneCode"] = autorest.Encode("query", zoneCode)
 	}

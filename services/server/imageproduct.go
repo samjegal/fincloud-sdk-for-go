@@ -32,12 +32,11 @@ func NewImageProductClientWithBaseURI(baseURI string) ImageProductClient {
 
 // GetList 서버 이미지 상품 리스트를 조회
 // Parameters:
-// regionCode - REGION 코드
 // blockStorageSize - 블록스토리지 사이즈
 // exclusionProductCode - 제외할 상품 코드
 // productCode - 조회할 상품 코드
 // platformTypeCodeListN - 플랫폼 유형 코드 리스트
-func (client ImageProductClient) GetList(ctx context.Context, regionCode string, blockStorageSize string, exclusionProductCode string, productCode string, platformTypeCodeListN PlatformTypeCode) (result ImageProductListResponse, err error) {
+func (client ImageProductClient) GetList(ctx context.Context, blockStorageSize string, exclusionProductCode string, productCode string, platformTypeCodeListN PlatformTypeCode) (result ImageProductListResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ImageProductClient.GetList")
 		defer func() {
@@ -48,7 +47,7 @@ func (client ImageProductClient) GetList(ctx context.Context, regionCode string,
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetListPreparer(ctx, regionCode, blockStorageSize, exclusionProductCode, productCode, platformTypeCodeListN)
+	req, err := client.GetListPreparer(ctx, blockStorageSize, exclusionProductCode, productCode, platformTypeCodeListN)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "server.ImageProductClient", "GetList", nil, "Failure preparing request")
 		return
@@ -70,15 +69,13 @@ func (client ImageProductClient) GetList(ctx context.Context, regionCode string,
 }
 
 // GetListPreparer prepares the GetList request.
-func (client ImageProductClient) GetListPreparer(ctx context.Context, regionCode string, blockStorageSize string, exclusionProductCode string, productCode string, platformTypeCodeListN PlatformTypeCode) (*http.Request, error) {
+func (client ImageProductClient) GetListPreparer(ctx context.Context, blockStorageSize string, exclusionProductCode string, productCode string, platformTypeCodeListN PlatformTypeCode) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"responseFormatType": autorest.Encode("query", "json"),
 	}
-	if len(regionCode) > 0 {
-		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
-	} else {
-		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
-	}
+
+	queryParameters["regionCode"] = autorest.Encode("query", "FKR")
+
 	if len(blockStorageSize) > 0 {
 		queryParameters["blockStorageSize"] = autorest.Encode("query", blockStorageSize)
 	}

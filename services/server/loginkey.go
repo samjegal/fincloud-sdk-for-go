@@ -70,6 +70,7 @@ func (client LoginKeyClient) CreatePreparer(ctx context.Context, keyName string)
 	queryParameters := map[string]interface{}{
 		"responseFormatType": autorest.Encode("query", "json"),
 	}
+
 	if len(keyName) > 0 {
 		queryParameters["keyName"] = autorest.Encode("query", keyName)
 	}
@@ -227,6 +228,7 @@ func (client LoginKeyClient) GetListPreparer(ctx context.Context, pageNo string,
 	queryParameters := map[string]interface{}{
 		"responseFormatType": autorest.Encode("query", "json"),
 	}
+
 	if len(pageNo) > 0 {
 		queryParameters["pageNo"] = autorest.Encode("query", pageNo)
 	}
@@ -311,6 +313,7 @@ func (client LoginKeyClient) ImportPreparer(ctx context.Context, publicKey strin
 		"publicKey":          autorest.Encode("query", publicKey),
 		"responseFormatType": autorest.Encode("query", "json"),
 	}
+
 	if len(keyName) > 0 {
 		queryParameters["keyName"] = autorest.Encode("query", keyName)
 	}

@@ -35,12 +35,11 @@ func NewACGOutboundClientWithBaseURI(baseURI string) ACGOutboundClient {
 // vpcNo - VPC 번호
 // accessControlGroupNo - ACG 번호
 // accessControlGroupRuleListNprotocolTypeCode - 프로토콜 유형 코드
-// regionCode - REGION 코드
 // accessControlGroupRuleListNipBlock - IP 블록
 // accessControlGroupRuleListNaccessControlGroupSequence - 접근 소스 ACG
 // accessControlGroupRuleListNportRange - 포트 범위
 // accessControlGroupRuleListNaccessControlGroupRuleDescription - ACG Rule 설명
-func (client ACGOutboundClient) AddRule(ctx context.Context, vpcNo string, accessControlGroupNo string, accessControlGroupRuleListNprotocolTypeCode ProtocolTypeCode, regionCode string, accessControlGroupRuleListNipBlock string, accessControlGroupRuleListNaccessControlGroupSequence string, accessControlGroupRuleListNportRange string, accessControlGroupRuleListNaccessControlGroupRuleDescription string) (result AccessControlGroupOutboundRuleResponse, err error) {
+func (client ACGOutboundClient) AddRule(ctx context.Context, vpcNo string, accessControlGroupNo string, accessControlGroupRuleListNprotocolTypeCode ProtocolTypeCode, accessControlGroupRuleListNipBlock string, accessControlGroupRuleListNaccessControlGroupSequence string, accessControlGroupRuleListNportRange string, accessControlGroupRuleListNaccessControlGroupRuleDescription string) (result AccessControlGroupOutboundRuleResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ACGOutboundClient.AddRule")
 		defer func() {
@@ -51,7 +50,7 @@ func (client ACGOutboundClient) AddRule(ctx context.Context, vpcNo string, acces
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.AddRulePreparer(ctx, vpcNo, accessControlGroupNo, accessControlGroupRuleListNprotocolTypeCode, regionCode, accessControlGroupRuleListNipBlock, accessControlGroupRuleListNaccessControlGroupSequence, accessControlGroupRuleListNportRange, accessControlGroupRuleListNaccessControlGroupRuleDescription)
+	req, err := client.AddRulePreparer(ctx, vpcNo, accessControlGroupNo, accessControlGroupRuleListNprotocolTypeCode, accessControlGroupRuleListNipBlock, accessControlGroupRuleListNaccessControlGroupSequence, accessControlGroupRuleListNportRange, accessControlGroupRuleListNaccessControlGroupRuleDescription)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "server.ACGOutboundClient", "AddRule", nil, "Failure preparing request")
 		return
@@ -73,18 +72,16 @@ func (client ACGOutboundClient) AddRule(ctx context.Context, vpcNo string, acces
 }
 
 // AddRulePreparer prepares the AddRule request.
-func (client ACGOutboundClient) AddRulePreparer(ctx context.Context, vpcNo string, accessControlGroupNo string, accessControlGroupRuleListNprotocolTypeCode ProtocolTypeCode, regionCode string, accessControlGroupRuleListNipBlock string, accessControlGroupRuleListNaccessControlGroupSequence string, accessControlGroupRuleListNportRange string, accessControlGroupRuleListNaccessControlGroupRuleDescription string) (*http.Request, error) {
+func (client ACGOutboundClient) AddRulePreparer(ctx context.Context, vpcNo string, accessControlGroupNo string, accessControlGroupRuleListNprotocolTypeCode ProtocolTypeCode, accessControlGroupRuleListNipBlock string, accessControlGroupRuleListNaccessControlGroupSequence string, accessControlGroupRuleListNportRange string, accessControlGroupRuleListNaccessControlGroupRuleDescription string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"accessControlGroupNo":                          autorest.Encode("query", accessControlGroupNo),
 		"accessControlGroupRuleList.N.protocolTypeCode": autorest.Encode("query", accessControlGroupRuleListNprotocolTypeCode),
 		"responseFormatType":                            autorest.Encode("query", "json"),
 		"vpcNo":                                         autorest.Encode("query", vpcNo),
 	}
-	if len(regionCode) > 0 {
-		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
-	} else {
-		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
-	}
+
+	queryParameters["regionCode"] = autorest.Encode("query", "FKR")
+
 	if len(accessControlGroupRuleListNipBlock) > 0 {
 		queryParameters["accessControlGroupRuleList.N.ipBlock"] = autorest.Encode("query", accessControlGroupRuleListNipBlock)
 	}
@@ -138,11 +135,10 @@ func (client ACGOutboundClient) AddRuleResponder(resp *http.Response) (result Ac
 // vpcNo - VPC 번호
 // accessControlGroupNo - ACG 번호
 // accessControlGroupRuleListNprotocolTypeCode - 프로토콜 유형 코드
-// regionCode - REGION 코드
 // accessControlGroupRuleListNipBlock - IP 블록
 // accessControlGroupRuleListNaccessControlGroupSequence - 접근 소스 ACG
 // accessControlGroupRuleListNportRange - 포트 범위
-func (client ACGOutboundClient) RemoveRule(ctx context.Context, vpcNo string, accessControlGroupNo string, accessControlGroupRuleListNprotocolTypeCode ProtocolTypeCode, regionCode string, accessControlGroupRuleListNipBlock string, accessControlGroupRuleListNaccessControlGroupSequence string, accessControlGroupRuleListNportRange string) (result AccessControlGroupOutboundRuleResponse, err error) {
+func (client ACGOutboundClient) RemoveRule(ctx context.Context, vpcNo string, accessControlGroupNo string, accessControlGroupRuleListNprotocolTypeCode ProtocolTypeCode, accessControlGroupRuleListNipBlock string, accessControlGroupRuleListNaccessControlGroupSequence string, accessControlGroupRuleListNportRange string) (result AccessControlGroupOutboundRuleResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ACGOutboundClient.RemoveRule")
 		defer func() {
@@ -153,7 +149,7 @@ func (client ACGOutboundClient) RemoveRule(ctx context.Context, vpcNo string, ac
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.RemoveRulePreparer(ctx, vpcNo, accessControlGroupNo, accessControlGroupRuleListNprotocolTypeCode, regionCode, accessControlGroupRuleListNipBlock, accessControlGroupRuleListNaccessControlGroupSequence, accessControlGroupRuleListNportRange)
+	req, err := client.RemoveRulePreparer(ctx, vpcNo, accessControlGroupNo, accessControlGroupRuleListNprotocolTypeCode, accessControlGroupRuleListNipBlock, accessControlGroupRuleListNaccessControlGroupSequence, accessControlGroupRuleListNportRange)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "server.ACGOutboundClient", "RemoveRule", nil, "Failure preparing request")
 		return
@@ -175,18 +171,16 @@ func (client ACGOutboundClient) RemoveRule(ctx context.Context, vpcNo string, ac
 }
 
 // RemoveRulePreparer prepares the RemoveRule request.
-func (client ACGOutboundClient) RemoveRulePreparer(ctx context.Context, vpcNo string, accessControlGroupNo string, accessControlGroupRuleListNprotocolTypeCode ProtocolTypeCode, regionCode string, accessControlGroupRuleListNipBlock string, accessControlGroupRuleListNaccessControlGroupSequence string, accessControlGroupRuleListNportRange string) (*http.Request, error) {
+func (client ACGOutboundClient) RemoveRulePreparer(ctx context.Context, vpcNo string, accessControlGroupNo string, accessControlGroupRuleListNprotocolTypeCode ProtocolTypeCode, accessControlGroupRuleListNipBlock string, accessControlGroupRuleListNaccessControlGroupSequence string, accessControlGroupRuleListNportRange string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"accessControlGroupNo":                          autorest.Encode("query", accessControlGroupNo),
 		"accessControlGroupRuleList.N.protocolTypeCode": autorest.Encode("query", accessControlGroupRuleListNprotocolTypeCode),
 		"responseFormatType":                            autorest.Encode("query", "json"),
 		"vpcNo":                                         autorest.Encode("query", vpcNo),
 	}
-	if len(regionCode) > 0 {
-		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
-	} else {
-		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
-	}
+
+	queryParameters["regionCode"] = autorest.Encode("query", "FKR")
+
 	if len(accessControlGroupRuleListNipBlock) > 0 {
 		queryParameters["accessControlGroupRuleList.N.ipBlock"] = autorest.Encode("query", accessControlGroupRuleListNipBlock)
 	}

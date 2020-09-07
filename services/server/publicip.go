@@ -34,8 +34,7 @@ func NewPublicIPClientWithBaseURI(baseURI string) PublicIPClient {
 // Parameters:
 // publicIPInstanceNo - 공인 IP 인스턴스 번호
 // serverInstanceNo - 서버 인스턴스 번호
-// regionCode - REGION 코드
-func (client PublicIPClient) Associate(ctx context.Context, publicIPInstanceNo string, serverInstanceNo string, regionCode string) (result PublicIPWithServerInstanceResponse, err error) {
+func (client PublicIPClient) Associate(ctx context.Context, publicIPInstanceNo string, serverInstanceNo string) (result PublicIPWithServerInstanceResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PublicIPClient.Associate")
 		defer func() {
@@ -46,7 +45,7 @@ func (client PublicIPClient) Associate(ctx context.Context, publicIPInstanceNo s
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.AssociatePreparer(ctx, publicIPInstanceNo, serverInstanceNo, regionCode)
+	req, err := client.AssociatePreparer(ctx, publicIPInstanceNo, serverInstanceNo)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "server.PublicIPClient", "Associate", nil, "Failure preparing request")
 		return
@@ -68,17 +67,14 @@ func (client PublicIPClient) Associate(ctx context.Context, publicIPInstanceNo s
 }
 
 // AssociatePreparer prepares the Associate request.
-func (client PublicIPClient) AssociatePreparer(ctx context.Context, publicIPInstanceNo string, serverInstanceNo string, regionCode string) (*http.Request, error) {
+func (client PublicIPClient) AssociatePreparer(ctx context.Context, publicIPInstanceNo string, serverInstanceNo string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"publicIpInstanceNo": autorest.Encode("query", publicIPInstanceNo),
 		"responseFormatType": autorest.Encode("query", "json"),
 		"serverInstanceNo":   autorest.Encode("query", serverInstanceNo),
 	}
-	if len(regionCode) > 0 {
-		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
-	} else {
-		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
-	}
+
+	queryParameters["regionCode"] = autorest.Encode("query", "FKR")
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
@@ -117,10 +113,9 @@ func (client PublicIPClient) AssociateResponder(resp *http.Response) (result Pub
 
 // Create 공인 IP 인스턴스를 생성
 // Parameters:
-// regionCode - REGION 코드
 // serverInstanceNo - 서버 인스턴스 번호
 // publicIPDescription - 공인 IP 설명
-func (client PublicIPClient) Create(ctx context.Context, regionCode string, serverInstanceNo string, publicIPDescription string) (result PublicIPInstanceResponse, err error) {
+func (client PublicIPClient) Create(ctx context.Context, serverInstanceNo string, publicIPDescription string) (result PublicIPInstanceResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PublicIPClient.Create")
 		defer func() {
@@ -131,7 +126,7 @@ func (client PublicIPClient) Create(ctx context.Context, regionCode string, serv
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.CreatePreparer(ctx, regionCode, serverInstanceNo, publicIPDescription)
+	req, err := client.CreatePreparer(ctx, serverInstanceNo, publicIPDescription)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "server.PublicIPClient", "Create", nil, "Failure preparing request")
 		return
@@ -153,15 +148,13 @@ func (client PublicIPClient) Create(ctx context.Context, regionCode string, serv
 }
 
 // CreatePreparer prepares the Create request.
-func (client PublicIPClient) CreatePreparer(ctx context.Context, regionCode string, serverInstanceNo string, publicIPDescription string) (*http.Request, error) {
+func (client PublicIPClient) CreatePreparer(ctx context.Context, serverInstanceNo string, publicIPDescription string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"responseFormatType": autorest.Encode("query", "json"),
 	}
-	if len(regionCode) > 0 {
-		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
-	} else {
-		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
-	}
+
+	queryParameters["regionCode"] = autorest.Encode("query", "FKR")
+
 	if len(serverInstanceNo) > 0 {
 		queryParameters["serverInstanceNo"] = autorest.Encode("query", serverInstanceNo)
 	}
@@ -207,8 +200,7 @@ func (client PublicIPClient) CreateResponder(resp *http.Response) (result Public
 // Delete 공인 IP 인스턴스를 삭제
 // Parameters:
 // publicIPInstanceNo - 공인 IP 인스턴스 번호
-// regionCode - REGION 코드
-func (client PublicIPClient) Delete(ctx context.Context, publicIPInstanceNo string, regionCode string) (result PublicIPInstanceResponse, err error) {
+func (client PublicIPClient) Delete(ctx context.Context, publicIPInstanceNo string) (result PublicIPInstanceResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PublicIPClient.Delete")
 		defer func() {
@@ -219,7 +211,7 @@ func (client PublicIPClient) Delete(ctx context.Context, publicIPInstanceNo stri
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeletePreparer(ctx, publicIPInstanceNo, regionCode)
+	req, err := client.DeletePreparer(ctx, publicIPInstanceNo)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "server.PublicIPClient", "Delete", nil, "Failure preparing request")
 		return
@@ -241,16 +233,13 @@ func (client PublicIPClient) Delete(ctx context.Context, publicIPInstanceNo stri
 }
 
 // DeletePreparer prepares the Delete request.
-func (client PublicIPClient) DeletePreparer(ctx context.Context, publicIPInstanceNo string, regionCode string) (*http.Request, error) {
+func (client PublicIPClient) DeletePreparer(ctx context.Context, publicIPInstanceNo string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"publicIpInstanceNo": autorest.Encode("query", publicIPInstanceNo),
 		"responseFormatType": autorest.Encode("query", "json"),
 	}
-	if len(regionCode) > 0 {
-		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
-	} else {
-		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
-	}
+
+	queryParameters["regionCode"] = autorest.Encode("query", "FKR")
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
@@ -289,10 +278,9 @@ func (client PublicIPClient) DeleteResponder(resp *http.Response) (result Public
 
 // Disassociate 공인 IP를 서버 인스턴스에서 할당 해제
 // Parameters:
-// regionCode - REGION 코드
 // publicIPInstanceNo - 공인 IP 인스턴스 번호
 // serverInstanceNo - 서버 인스턴스 번호
-func (client PublicIPClient) Disassociate(ctx context.Context, regionCode string, publicIPInstanceNo string, serverInstanceNo string) (result PublicIPFromServerInstanceResponse, err error) {
+func (client PublicIPClient) Disassociate(ctx context.Context, publicIPInstanceNo string, serverInstanceNo string) (result PublicIPFromServerInstanceResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PublicIPClient.Disassociate")
 		defer func() {
@@ -303,7 +291,7 @@ func (client PublicIPClient) Disassociate(ctx context.Context, regionCode string
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DisassociatePreparer(ctx, regionCode, publicIPInstanceNo, serverInstanceNo)
+	req, err := client.DisassociatePreparer(ctx, publicIPInstanceNo, serverInstanceNo)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "server.PublicIPClient", "Disassociate", nil, "Failure preparing request")
 		return
@@ -325,15 +313,13 @@ func (client PublicIPClient) Disassociate(ctx context.Context, regionCode string
 }
 
 // DisassociatePreparer prepares the Disassociate request.
-func (client PublicIPClient) DisassociatePreparer(ctx context.Context, regionCode string, publicIPInstanceNo string, serverInstanceNo string) (*http.Request, error) {
+func (client PublicIPClient) DisassociatePreparer(ctx context.Context, publicIPInstanceNo string, serverInstanceNo string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"responseFormatType": autorest.Encode("query", "json"),
 	}
-	if len(regionCode) > 0 {
-		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
-	} else {
-		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
-	}
+
+	queryParameters["regionCode"] = autorest.Encode("query", "FKR")
+
 	if len(publicIPInstanceNo) > 0 {
 		queryParameters["publicIpInstanceNo"] = autorest.Encode("query", publicIPInstanceNo)
 	}
@@ -379,8 +365,7 @@ func (client PublicIPClient) DisassociateResponder(resp *http.Response) (result 
 // GetDetail 공인 IP 인스턴스 상세 정보를 조회
 // Parameters:
 // publicIPInstanceNo - 공인 IP 인스턴스 번호
-// regionCode - REGION 코드
-func (client PublicIPClient) GetDetail(ctx context.Context, publicIPInstanceNo string, regionCode string) (result PublicIPInstanceDetailResponse, err error) {
+func (client PublicIPClient) GetDetail(ctx context.Context, publicIPInstanceNo string) (result PublicIPInstanceDetailResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PublicIPClient.GetDetail")
 		defer func() {
@@ -391,7 +376,7 @@ func (client PublicIPClient) GetDetail(ctx context.Context, publicIPInstanceNo s
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetDetailPreparer(ctx, publicIPInstanceNo, regionCode)
+	req, err := client.GetDetailPreparer(ctx, publicIPInstanceNo)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "server.PublicIPClient", "GetDetail", nil, "Failure preparing request")
 		return
@@ -413,16 +398,13 @@ func (client PublicIPClient) GetDetail(ctx context.Context, publicIPInstanceNo s
 }
 
 // GetDetailPreparer prepares the GetDetail request.
-func (client PublicIPClient) GetDetailPreparer(ctx context.Context, publicIPInstanceNo string, regionCode string) (*http.Request, error) {
+func (client PublicIPClient) GetDetailPreparer(ctx context.Context, publicIPInstanceNo string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"publicIpInstanceNo": autorest.Encode("query", publicIPInstanceNo),
 		"responseFormatType": autorest.Encode("query", "json"),
 	}
-	if len(regionCode) > 0 {
-		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
-	} else {
-		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
-	}
+
+	queryParameters["regionCode"] = autorest.Encode("query", "FKR")
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
@@ -461,12 +443,11 @@ func (client PublicIPClient) GetDetailResponder(resp *http.Response) (result Pub
 
 // GetList 공인 IP 인스턴스 리스트를 조회
 // Parameters:
-// regionCode - REGION 코드
 // publicIPInstanceNoListN - 공인 IP 인스턴스 번호 리스트
 // publicIP - 공인 IP 주소
 // privateIP - 비공인 IP 주소
 // isAssociated - 할당 여부
-func (client PublicIPClient) GetList(ctx context.Context, regionCode string, publicIPInstanceNoListN string, publicIP string, privateIP string, isAssociated *bool) (result PublicIPInstanceListResponse, err error) {
+func (client PublicIPClient) GetList(ctx context.Context, publicIPInstanceNoListN string, publicIP string, privateIP string, isAssociated *bool) (result PublicIPInstanceListResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PublicIPClient.GetList")
 		defer func() {
@@ -477,7 +458,7 @@ func (client PublicIPClient) GetList(ctx context.Context, regionCode string, pub
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetListPreparer(ctx, regionCode, publicIPInstanceNoListN, publicIP, privateIP, isAssociated)
+	req, err := client.GetListPreparer(ctx, publicIPInstanceNoListN, publicIP, privateIP, isAssociated)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "server.PublicIPClient", "GetList", nil, "Failure preparing request")
 		return
@@ -499,15 +480,13 @@ func (client PublicIPClient) GetList(ctx context.Context, regionCode string, pub
 }
 
 // GetListPreparer prepares the GetList request.
-func (client PublicIPClient) GetListPreparer(ctx context.Context, regionCode string, publicIPInstanceNoListN string, publicIP string, privateIP string, isAssociated *bool) (*http.Request, error) {
+func (client PublicIPClient) GetListPreparer(ctx context.Context, publicIPInstanceNoListN string, publicIP string, privateIP string, isAssociated *bool) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"responseFormatType": autorest.Encode("query", "json"),
 	}
-	if len(regionCode) > 0 {
-		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
-	} else {
-		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
-	}
+
+	queryParameters["regionCode"] = autorest.Encode("query", "FKR")
+
 	if len(publicIPInstanceNoListN) > 0 {
 		queryParameters["publicIpInstanceNoList.N"] = autorest.Encode("query", publicIPInstanceNoListN)
 	}
@@ -560,8 +539,7 @@ func (client PublicIPClient) GetListResponder(resp *http.Response) (result Publi
 // Parameters:
 // publicIPInstanceNo - 공인 IP 인스턴스 번호
 // serverInstanceNo - 서버 인스턴스 번호
-// regionCode - REGION 코드
-func (client PublicIPClient) GetTargetList(ctx context.Context, publicIPInstanceNo string, serverInstanceNo string, regionCode string) (result PublicIPTargetServerInstanceListResponse, err error) {
+func (client PublicIPClient) GetTargetList(ctx context.Context, publicIPInstanceNo string, serverInstanceNo string) (result PublicIPTargetServerInstanceListResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PublicIPClient.GetTargetList")
 		defer func() {
@@ -572,7 +550,7 @@ func (client PublicIPClient) GetTargetList(ctx context.Context, publicIPInstance
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetTargetListPreparer(ctx, publicIPInstanceNo, serverInstanceNo, regionCode)
+	req, err := client.GetTargetListPreparer(ctx, publicIPInstanceNo, serverInstanceNo)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "server.PublicIPClient", "GetTargetList", nil, "Failure preparing request")
 		return
@@ -594,17 +572,14 @@ func (client PublicIPClient) GetTargetList(ctx context.Context, publicIPInstance
 }
 
 // GetTargetListPreparer prepares the GetTargetList request.
-func (client PublicIPClient) GetTargetListPreparer(ctx context.Context, publicIPInstanceNo string, serverInstanceNo string, regionCode string) (*http.Request, error) {
+func (client PublicIPClient) GetTargetListPreparer(ctx context.Context, publicIPInstanceNo string, serverInstanceNo string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"publicIpInstanceNo": autorest.Encode("query", publicIPInstanceNo),
 		"responseFormatType": autorest.Encode("query", "json"),
 		"serverInstanceNo":   autorest.Encode("query", serverInstanceNo),
 	}
-	if len(regionCode) > 0 {
-		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
-	} else {
-		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
-	}
+
+	queryParameters["regionCode"] = autorest.Encode("query", "FKR")
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)

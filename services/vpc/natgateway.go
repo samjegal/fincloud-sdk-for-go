@@ -34,10 +34,9 @@ func NewNatGatewayClientWithBaseURI(baseURI string) NatGatewayClient {
 // Parameters:
 // vpcNo - VPC 번호
 // zoneCode - ZONE 코드
-// regionCode - REGION 코드
 // natGatewayName - NAT Gateway 이름
 // natGatewayDescription - NAT Gateway 설명
-func (client NatGatewayClient) Create(ctx context.Context, vpcNo string, zoneCode string, regionCode string, natGatewayName string, natGatewayDescription string) (result autorest.Response, err error) {
+func (client NatGatewayClient) Create(ctx context.Context, vpcNo string, zoneCode string, natGatewayName string, natGatewayDescription string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NatGatewayClient.Create")
 		defer func() {
@@ -48,7 +47,7 @@ func (client NatGatewayClient) Create(ctx context.Context, vpcNo string, zoneCod
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.CreatePreparer(ctx, vpcNo, zoneCode, regionCode, natGatewayName, natGatewayDescription)
+	req, err := client.CreatePreparer(ctx, vpcNo, zoneCode, natGatewayName, natGatewayDescription)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vpc.NatGatewayClient", "Create", nil, "Failure preparing request")
 		return
@@ -70,17 +69,15 @@ func (client NatGatewayClient) Create(ctx context.Context, vpcNo string, zoneCod
 }
 
 // CreatePreparer prepares the Create request.
-func (client NatGatewayClient) CreatePreparer(ctx context.Context, vpcNo string, zoneCode string, regionCode string, natGatewayName string, natGatewayDescription string) (*http.Request, error) {
+func (client NatGatewayClient) CreatePreparer(ctx context.Context, vpcNo string, zoneCode string, natGatewayName string, natGatewayDescription string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"responseFormatType": autorest.Encode("query", "json"),
 		"vpcNo":              autorest.Encode("query", vpcNo),
 		"zoneCode":           autorest.Encode("query", zoneCode),
 	}
-	if len(regionCode) > 0 {
-		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
-	} else {
-		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
-	}
+
+	queryParameters["regionCode"] = autorest.Encode("query", "FKR")
+
 	if len(natGatewayName) > 0 {
 		queryParameters["natGatewayName"] = autorest.Encode("query", natGatewayName)
 	}
@@ -125,8 +122,7 @@ func (client NatGatewayClient) CreateResponder(resp *http.Response) (result auto
 // Delete NAT Gateway 인스턴스를 삭제
 // Parameters:
 // natGatewayInstanceNo - NAT Gateway 인스턴스 번호
-// regionCode - REGION 코드
-func (client NatGatewayClient) Delete(ctx context.Context, natGatewayInstanceNo string, regionCode string) (result autorest.Response, err error) {
+func (client NatGatewayClient) Delete(ctx context.Context, natGatewayInstanceNo string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NatGatewayClient.Delete")
 		defer func() {
@@ -137,7 +133,7 @@ func (client NatGatewayClient) Delete(ctx context.Context, natGatewayInstanceNo 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeletePreparer(ctx, natGatewayInstanceNo, regionCode)
+	req, err := client.DeletePreparer(ctx, natGatewayInstanceNo)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vpc.NatGatewayClient", "Delete", nil, "Failure preparing request")
 		return
@@ -159,16 +155,13 @@ func (client NatGatewayClient) Delete(ctx context.Context, natGatewayInstanceNo 
 }
 
 // DeletePreparer prepares the Delete request.
-func (client NatGatewayClient) DeletePreparer(ctx context.Context, natGatewayInstanceNo string, regionCode string) (*http.Request, error) {
+func (client NatGatewayClient) DeletePreparer(ctx context.Context, natGatewayInstanceNo string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"natGatewayInstanceNo": autorest.Encode("query", natGatewayInstanceNo),
 		"responseFormatType":   autorest.Encode("query", "json"),
 	}
-	if len(regionCode) > 0 {
-		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
-	} else {
-		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
-	}
+
+	queryParameters["regionCode"] = autorest.Encode("query", "FKR")
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
@@ -207,8 +200,7 @@ func (client NatGatewayClient) DeleteResponder(resp *http.Response) (result auto
 // GetDetail NAT Gateway 인스턴스 상세 정보를 조회
 // Parameters:
 // natGatewayInstanceNo - NAT Gateway 인스턴스 번호
-// regionCode - REGION 코드
-func (client NatGatewayClient) GetDetail(ctx context.Context, natGatewayInstanceNo string, regionCode string) (result autorest.Response, err error) {
+func (client NatGatewayClient) GetDetail(ctx context.Context, natGatewayInstanceNo string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NatGatewayClient.GetDetail")
 		defer func() {
@@ -219,7 +211,7 @@ func (client NatGatewayClient) GetDetail(ctx context.Context, natGatewayInstance
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetDetailPreparer(ctx, natGatewayInstanceNo, regionCode)
+	req, err := client.GetDetailPreparer(ctx, natGatewayInstanceNo)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vpc.NatGatewayClient", "GetDetail", nil, "Failure preparing request")
 		return
@@ -241,16 +233,13 @@ func (client NatGatewayClient) GetDetail(ctx context.Context, natGatewayInstance
 }
 
 // GetDetailPreparer prepares the GetDetail request.
-func (client NatGatewayClient) GetDetailPreparer(ctx context.Context, natGatewayInstanceNo string, regionCode string) (*http.Request, error) {
+func (client NatGatewayClient) GetDetailPreparer(ctx context.Context, natGatewayInstanceNo string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"natGatewayInstanceNo": autorest.Encode("query", natGatewayInstanceNo),
 		"responseFormatType":   autorest.Encode("query", "json"),
 	}
-	if len(regionCode) > 0 {
-		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
-	} else {
-		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
-	}
+
+	queryParameters["regionCode"] = autorest.Encode("query", "FKR")
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
@@ -288,7 +277,6 @@ func (client NatGatewayClient) GetDetailResponder(resp *http.Response) (result a
 
 // GetList NAT Gateway 인스턴스 리스트를 조회
 // Parameters:
-// regionCode - REGION 코드
 // natGatewayInstanceNoListN - NAT Gateway 인스턴스 번호 리스트
 // publicIP - 공인 IP 주소
 // vpcName - VPC 이름
@@ -296,7 +284,7 @@ func (client NatGatewayClient) GetDetailResponder(resp *http.Response) (result a
 // natGatewayInstanceStatusCode - NAT Gateway 인스턴스 상태 코드
 // pageNo - 페이지 번호
 // pageSize - 페이지 사이즈
-func (client NatGatewayClient) GetList(ctx context.Context, regionCode string, natGatewayInstanceNoListN string, publicIP string, vpcName string, natGatewayName string, natGatewayInstanceStatusCode NatGatewayInstanceStatusCode, pageNo string, pageSize string) (result autorest.Response, err error) {
+func (client NatGatewayClient) GetList(ctx context.Context, natGatewayInstanceNoListN string, publicIP string, vpcName string, natGatewayName string, natGatewayInstanceStatusCode NatGatewayInstanceStatusCode, pageNo string, pageSize string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NatGatewayClient.GetList")
 		defer func() {
@@ -307,7 +295,7 @@ func (client NatGatewayClient) GetList(ctx context.Context, regionCode string, n
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetListPreparer(ctx, regionCode, natGatewayInstanceNoListN, publicIP, vpcName, natGatewayName, natGatewayInstanceStatusCode, pageNo, pageSize)
+	req, err := client.GetListPreparer(ctx, natGatewayInstanceNoListN, publicIP, vpcName, natGatewayName, natGatewayInstanceStatusCode, pageNo, pageSize)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vpc.NatGatewayClient", "GetList", nil, "Failure preparing request")
 		return
@@ -329,15 +317,13 @@ func (client NatGatewayClient) GetList(ctx context.Context, regionCode string, n
 }
 
 // GetListPreparer prepares the GetList request.
-func (client NatGatewayClient) GetListPreparer(ctx context.Context, regionCode string, natGatewayInstanceNoListN string, publicIP string, vpcName string, natGatewayName string, natGatewayInstanceStatusCode NatGatewayInstanceStatusCode, pageNo string, pageSize string) (*http.Request, error) {
+func (client NatGatewayClient) GetListPreparer(ctx context.Context, natGatewayInstanceNoListN string, publicIP string, vpcName string, natGatewayName string, natGatewayInstanceStatusCode NatGatewayInstanceStatusCode, pageNo string, pageSize string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"responseFormatType": autorest.Encode("query", "json"),
 	}
-	if len(regionCode) > 0 {
-		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
-	} else {
-		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
-	}
+
+	queryParameters["regionCode"] = autorest.Encode("query", "FKR")
+
 	if len(natGatewayInstanceNoListN) > 0 {
 		queryParameters["natGatewayInstanceNoList.N"] = autorest.Encode("query", natGatewayInstanceNoListN)
 	}

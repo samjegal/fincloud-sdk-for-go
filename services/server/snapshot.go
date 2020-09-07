@@ -33,10 +33,9 @@ func NewSnapshotClientWithBaseURI(baseURI string) SnapshotClient {
 // Create 블록스토리지 스냅샷 인스턴스를 생성
 // Parameters:
 // originalBlockStorageInstanceNo - 원본 블록스토리지 인스턴스 번호
-// regionCode - REGION 코드
 // blockStorageSnapshotName - 블록스토리지 스냅샷 이름
 // blockStorageSnapshotDescription - 블록스토리지 스냅샷 설명
-func (client SnapshotClient) Create(ctx context.Context, originalBlockStorageInstanceNo string, regionCode string, blockStorageSnapshotName string, blockStorageSnapshotDescription string) (result BlockStorageSnapshotInstanceResponse, err error) {
+func (client SnapshotClient) Create(ctx context.Context, originalBlockStorageInstanceNo string, blockStorageSnapshotName string, blockStorageSnapshotDescription string) (result BlockStorageSnapshotInstanceResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SnapshotClient.Create")
 		defer func() {
@@ -47,7 +46,7 @@ func (client SnapshotClient) Create(ctx context.Context, originalBlockStorageIns
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.CreatePreparer(ctx, originalBlockStorageInstanceNo, regionCode, blockStorageSnapshotName, blockStorageSnapshotDescription)
+	req, err := client.CreatePreparer(ctx, originalBlockStorageInstanceNo, blockStorageSnapshotName, blockStorageSnapshotDescription)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "server.SnapshotClient", "Create", nil, "Failure preparing request")
 		return
@@ -69,16 +68,14 @@ func (client SnapshotClient) Create(ctx context.Context, originalBlockStorageIns
 }
 
 // CreatePreparer prepares the Create request.
-func (client SnapshotClient) CreatePreparer(ctx context.Context, originalBlockStorageInstanceNo string, regionCode string, blockStorageSnapshotName string, blockStorageSnapshotDescription string) (*http.Request, error) {
+func (client SnapshotClient) CreatePreparer(ctx context.Context, originalBlockStorageInstanceNo string, blockStorageSnapshotName string, blockStorageSnapshotDescription string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"originalBlockStorageInstanceNo": autorest.Encode("query", originalBlockStorageInstanceNo),
 		"responseFormatType":             autorest.Encode("query", "json"),
 	}
-	if len(regionCode) > 0 {
-		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
-	} else {
-		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
-	}
+
+	queryParameters["regionCode"] = autorest.Encode("query", "FKR")
+
 	if len(blockStorageSnapshotName) > 0 {
 		queryParameters["blockStorageSnapshotName"] = autorest.Encode("query", blockStorageSnapshotName)
 	}
@@ -124,8 +121,7 @@ func (client SnapshotClient) CreateResponder(resp *http.Response) (result BlockS
 // Delete 블록스토리지 스냅샷 인스턴스 번호 리스트
 // Parameters:
 // blockStorageSnapshotInstanceNoListN - 블록스토리지 스냅샷 인스턴스 번호 리스트
-// regionCode - REGION 코드
-func (client SnapshotClient) Delete(ctx context.Context, blockStorageSnapshotInstanceNoListN string, regionCode string) (result BlockStorageSnapshotInstanceResponse, err error) {
+func (client SnapshotClient) Delete(ctx context.Context, blockStorageSnapshotInstanceNoListN string) (result BlockStorageSnapshotInstanceResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SnapshotClient.Delete")
 		defer func() {
@@ -136,7 +132,7 @@ func (client SnapshotClient) Delete(ctx context.Context, blockStorageSnapshotIns
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeletePreparer(ctx, blockStorageSnapshotInstanceNoListN, regionCode)
+	req, err := client.DeletePreparer(ctx, blockStorageSnapshotInstanceNoListN)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "server.SnapshotClient", "Delete", nil, "Failure preparing request")
 		return
@@ -158,16 +154,13 @@ func (client SnapshotClient) Delete(ctx context.Context, blockStorageSnapshotIns
 }
 
 // DeletePreparer prepares the Delete request.
-func (client SnapshotClient) DeletePreparer(ctx context.Context, blockStorageSnapshotInstanceNoListN string, regionCode string) (*http.Request, error) {
+func (client SnapshotClient) DeletePreparer(ctx context.Context, blockStorageSnapshotInstanceNoListN string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"blockStorageSnapshotInstanceNoList.N": autorest.Encode("query", blockStorageSnapshotInstanceNoListN),
 		"responseFormatType":                   autorest.Encode("query", "json"),
 	}
-	if len(regionCode) > 0 {
-		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
-	} else {
-		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
-	}
+
+	queryParameters["regionCode"] = autorest.Encode("query", "FKR")
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
@@ -207,8 +200,7 @@ func (client SnapshotClient) DeleteResponder(resp *http.Response) (result BlockS
 // GetDetail 블록스토리지 스냅샷 인스턴스 상세 정보를 조회
 // Parameters:
 // blockStorageSnapshotInstanceNo - 블록스토리지 스냅샷 인스턴스 번호
-// regionCode - REGION 코드
-func (client SnapshotClient) GetDetail(ctx context.Context, blockStorageSnapshotInstanceNo string, regionCode string) (result BlockStorageSnapshotInstanceDetailResponse, err error) {
+func (client SnapshotClient) GetDetail(ctx context.Context, blockStorageSnapshotInstanceNo string) (result BlockStorageSnapshotInstanceDetailResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SnapshotClient.GetDetail")
 		defer func() {
@@ -219,7 +211,7 @@ func (client SnapshotClient) GetDetail(ctx context.Context, blockStorageSnapshot
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetDetailPreparer(ctx, blockStorageSnapshotInstanceNo, regionCode)
+	req, err := client.GetDetailPreparer(ctx, blockStorageSnapshotInstanceNo)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "server.SnapshotClient", "GetDetail", nil, "Failure preparing request")
 		return
@@ -241,16 +233,13 @@ func (client SnapshotClient) GetDetail(ctx context.Context, blockStorageSnapshot
 }
 
 // GetDetailPreparer prepares the GetDetail request.
-func (client SnapshotClient) GetDetailPreparer(ctx context.Context, blockStorageSnapshotInstanceNo string, regionCode string) (*http.Request, error) {
+func (client SnapshotClient) GetDetailPreparer(ctx context.Context, blockStorageSnapshotInstanceNo string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"blockStorageSnapshotInstanceNo": autorest.Encode("query", blockStorageSnapshotInstanceNo),
 		"responseFormatType":             autorest.Encode("query", "json"),
 	}
-	if len(regionCode) > 0 {
-		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
-	} else {
-		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
-	}
+
+	queryParameters["regionCode"] = autorest.Encode("query", "FKR")
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
@@ -289,7 +278,6 @@ func (client SnapshotClient) GetDetailResponder(resp *http.Response) (result Blo
 
 // GetList 블록스토리지 스냅샷 인스턴스 리스트를 조회
 // Parameters:
-// regionCode - REGION 코드
 // blockStorageSnapshotInstanceNoListN - 블록스토리지 스냅샷 인스턴스 번호 리스트
 // originalBlockStorageInstanceNoListN - 원본 블록스토리지 인스턴스 번호 리스트
 // blockStorageSnapshotInstanceStatusCode - 블록스토리지 스냅샷 인스턴스 상태 코드
@@ -300,7 +288,7 @@ func (client SnapshotClient) GetDetailResponder(resp *http.Response) (result Blo
 // blockStorageSnapshotName - 블록스토리지 스냅샷 이름
 // sortedBy - 정렬 대상
 // sortingOrder - 정렬 순서
-func (client SnapshotClient) GetList(ctx context.Context, regionCode string, blockStorageSnapshotInstanceNoListN string, originalBlockStorageInstanceNoListN string, blockStorageSnapshotInstanceStatusCode BlockStorageSnapshotInstanceStatusCode, pageNo string, pageSize string, blockStorageSnapshotVolumeSize string, isEncryptedOriginalBlockStorageVolume *bool, blockStorageSnapshotName string, sortedBy string, sortingOrder SortingOrder) (result BlockStorageSnapshotInstanceListResponse, err error) {
+func (client SnapshotClient) GetList(ctx context.Context, blockStorageSnapshotInstanceNoListN string, originalBlockStorageInstanceNoListN string, blockStorageSnapshotInstanceStatusCode BlockStorageSnapshotInstanceStatusCode, pageNo string, pageSize string, blockStorageSnapshotVolumeSize string, isEncryptedOriginalBlockStorageVolume *bool, blockStorageSnapshotName string, sortedBy string, sortingOrder SortingOrder) (result BlockStorageSnapshotInstanceListResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SnapshotClient.GetList")
 		defer func() {
@@ -311,7 +299,7 @@ func (client SnapshotClient) GetList(ctx context.Context, regionCode string, blo
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetListPreparer(ctx, regionCode, blockStorageSnapshotInstanceNoListN, originalBlockStorageInstanceNoListN, blockStorageSnapshotInstanceStatusCode, pageNo, pageSize, blockStorageSnapshotVolumeSize, isEncryptedOriginalBlockStorageVolume, blockStorageSnapshotName, sortedBy, sortingOrder)
+	req, err := client.GetListPreparer(ctx, blockStorageSnapshotInstanceNoListN, originalBlockStorageInstanceNoListN, blockStorageSnapshotInstanceStatusCode, pageNo, pageSize, blockStorageSnapshotVolumeSize, isEncryptedOriginalBlockStorageVolume, blockStorageSnapshotName, sortedBy, sortingOrder)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "server.SnapshotClient", "GetList", nil, "Failure preparing request")
 		return
@@ -333,15 +321,13 @@ func (client SnapshotClient) GetList(ctx context.Context, regionCode string, blo
 }
 
 // GetListPreparer prepares the GetList request.
-func (client SnapshotClient) GetListPreparer(ctx context.Context, regionCode string, blockStorageSnapshotInstanceNoListN string, originalBlockStorageInstanceNoListN string, blockStorageSnapshotInstanceStatusCode BlockStorageSnapshotInstanceStatusCode, pageNo string, pageSize string, blockStorageSnapshotVolumeSize string, isEncryptedOriginalBlockStorageVolume *bool, blockStorageSnapshotName string, sortedBy string, sortingOrder SortingOrder) (*http.Request, error) {
+func (client SnapshotClient) GetListPreparer(ctx context.Context, blockStorageSnapshotInstanceNoListN string, originalBlockStorageInstanceNoListN string, blockStorageSnapshotInstanceStatusCode BlockStorageSnapshotInstanceStatusCode, pageNo string, pageSize string, blockStorageSnapshotVolumeSize string, isEncryptedOriginalBlockStorageVolume *bool, blockStorageSnapshotName string, sortedBy string, sortingOrder SortingOrder) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"responseFormatType": autorest.Encode("query", "json"),
 	}
-	if len(regionCode) > 0 {
-		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
-	} else {
-		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
-	}
+
+	queryParameters["regionCode"] = autorest.Encode("query", "FKR")
+
 	if len(blockStorageSnapshotInstanceNoListN) > 0 {
 		queryParameters["blockStorageSnapshotInstanceNoList.N"] = autorest.Encode("query", blockStorageSnapshotInstanceNoListN)
 	}

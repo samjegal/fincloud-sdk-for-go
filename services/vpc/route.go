@@ -38,8 +38,7 @@ func NewRouteClientWithBaseURI(baseURI string) RouteClient {
 // routeListNtargetTypeCode - 목적지 유형 코드
 // routeListNtargetNo - 목적지 번호
 // routeListNtargetName - 목적지 이름
-// regionCode - REGION 코드
-func (client RouteClient) Add(ctx context.Context, vpcNo string, routeTableNo string, routeListNdestinationCidrBlock string, routeListNtargetTypeCode TargetTypeCode, routeListNtargetNo string, routeListNtargetName string, regionCode string) (result RouteResponse, err error) {
+func (client RouteClient) Add(ctx context.Context, vpcNo string, routeTableNo string, routeListNdestinationCidrBlock string, routeListNtargetTypeCode TargetTypeCode, routeListNtargetNo string, routeListNtargetName string) (result RouteResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/RouteClient.Add")
 		defer func() {
@@ -50,7 +49,7 @@ func (client RouteClient) Add(ctx context.Context, vpcNo string, routeTableNo st
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.AddPreparer(ctx, vpcNo, routeTableNo, routeListNdestinationCidrBlock, routeListNtargetTypeCode, routeListNtargetNo, routeListNtargetName, regionCode)
+	req, err := client.AddPreparer(ctx, vpcNo, routeTableNo, routeListNdestinationCidrBlock, routeListNtargetTypeCode, routeListNtargetNo, routeListNtargetName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vpc.RouteClient", "Add", nil, "Failure preparing request")
 		return
@@ -72,7 +71,7 @@ func (client RouteClient) Add(ctx context.Context, vpcNo string, routeTableNo st
 }
 
 // AddPreparer prepares the Add request.
-func (client RouteClient) AddPreparer(ctx context.Context, vpcNo string, routeTableNo string, routeListNdestinationCidrBlock string, routeListNtargetTypeCode TargetTypeCode, routeListNtargetNo string, routeListNtargetName string, regionCode string) (*http.Request, error) {
+func (client RouteClient) AddPreparer(ctx context.Context, vpcNo string, routeTableNo string, routeListNdestinationCidrBlock string, routeListNtargetTypeCode TargetTypeCode, routeListNtargetNo string, routeListNtargetName string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"responseFormatType":               autorest.Encode("query", "json"),
 		"routeList.N.destinationCidrBlock": autorest.Encode("query", routeListNdestinationCidrBlock),
@@ -82,11 +81,8 @@ func (client RouteClient) AddPreparer(ctx context.Context, vpcNo string, routeTa
 		"routeTableNo":                     autorest.Encode("query", routeTableNo),
 		"vpcNo":                            autorest.Encode("query", vpcNo),
 	}
-	if len(regionCode) > 0 {
-		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
-	} else {
-		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
-	}
+
+	queryParameters["regionCode"] = autorest.Encode("query", "FKR")
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
@@ -127,8 +123,7 @@ func (client RouteClient) AddResponder(resp *http.Response) (result RouteRespons
 // Parameters:
 // routeTableNo - 라우트 테이블 번호
 // vpcNo - VPC 번호
-// regionCode - REGION 코드
-func (client RouteClient) GetList(ctx context.Context, routeTableNo string, vpcNo string, regionCode string) (result RouteListResponse, err error) {
+func (client RouteClient) GetList(ctx context.Context, routeTableNo string, vpcNo string) (result RouteListResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/RouteClient.GetList")
 		defer func() {
@@ -139,7 +134,7 @@ func (client RouteClient) GetList(ctx context.Context, routeTableNo string, vpcN
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetListPreparer(ctx, routeTableNo, vpcNo, regionCode)
+	req, err := client.GetListPreparer(ctx, routeTableNo, vpcNo)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vpc.RouteClient", "GetList", nil, "Failure preparing request")
 		return
@@ -161,17 +156,14 @@ func (client RouteClient) GetList(ctx context.Context, routeTableNo string, vpcN
 }
 
 // GetListPreparer prepares the GetList request.
-func (client RouteClient) GetListPreparer(ctx context.Context, routeTableNo string, vpcNo string, regionCode string) (*http.Request, error) {
+func (client RouteClient) GetListPreparer(ctx context.Context, routeTableNo string, vpcNo string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"responseFormatType": autorest.Encode("query", "json"),
 		"routeTableNo":       autorest.Encode("query", routeTableNo),
 		"vpcNo":              autorest.Encode("query", vpcNo),
 	}
-	if len(regionCode) > 0 {
-		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
-	} else {
-		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
-	}
+
+	queryParameters["regionCode"] = autorest.Encode("query", "FKR")
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
@@ -216,8 +208,7 @@ func (client RouteClient) GetListResponder(resp *http.Response) (result RouteLis
 // routeListNtargetTypeCode - 목적지 유형 코드
 // routeListNtargetNo - 목적지 번호
 // routeListNtargetName - 목적지 이름
-// regionCode - REGION 코드
-func (client RouteClient) Remove(ctx context.Context, vpcNo string, routeTableNo string, routeListNdestinationCidrBlock string, routeListNtargetTypeCode TargetTypeCode, routeListNtargetNo string, routeListNtargetName string, regionCode string) (result RouteResponse, err error) {
+func (client RouteClient) Remove(ctx context.Context, vpcNo string, routeTableNo string, routeListNdestinationCidrBlock string, routeListNtargetTypeCode TargetTypeCode, routeListNtargetNo string, routeListNtargetName string) (result RouteResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/RouteClient.Remove")
 		defer func() {
@@ -228,7 +219,7 @@ func (client RouteClient) Remove(ctx context.Context, vpcNo string, routeTableNo
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.RemovePreparer(ctx, vpcNo, routeTableNo, routeListNdestinationCidrBlock, routeListNtargetTypeCode, routeListNtargetNo, routeListNtargetName, regionCode)
+	req, err := client.RemovePreparer(ctx, vpcNo, routeTableNo, routeListNdestinationCidrBlock, routeListNtargetTypeCode, routeListNtargetNo, routeListNtargetName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vpc.RouteClient", "Remove", nil, "Failure preparing request")
 		return
@@ -250,7 +241,7 @@ func (client RouteClient) Remove(ctx context.Context, vpcNo string, routeTableNo
 }
 
 // RemovePreparer prepares the Remove request.
-func (client RouteClient) RemovePreparer(ctx context.Context, vpcNo string, routeTableNo string, routeListNdestinationCidrBlock string, routeListNtargetTypeCode TargetTypeCode, routeListNtargetNo string, routeListNtargetName string, regionCode string) (*http.Request, error) {
+func (client RouteClient) RemovePreparer(ctx context.Context, vpcNo string, routeTableNo string, routeListNdestinationCidrBlock string, routeListNtargetTypeCode TargetTypeCode, routeListNtargetNo string, routeListNtargetName string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"responseFormatType":               autorest.Encode("query", "json"),
 		"routeList.N.destinationCidrBlock": autorest.Encode("query", routeListNdestinationCidrBlock),
@@ -260,11 +251,8 @@ func (client RouteClient) RemovePreparer(ctx context.Context, vpcNo string, rout
 		"routeTableNo":                     autorest.Encode("query", routeTableNo),
 		"vpcNo":                            autorest.Encode("query", vpcNo),
 	}
-	if len(regionCode) > 0 {
-		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
-	} else {
-		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
-	}
+
+	queryParameters["regionCode"] = autorest.Encode("query", "FKR")
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)

@@ -34,8 +34,7 @@ func NewBlockStorageClientWithBaseURI(baseURI string) BlockStorageClient {
 // Parameters:
 // blockStorageInstanceNo - 블록스토리지 인스턴스 번호
 // serverInstanceNo - 서버 인스턴스 번호
-// regionCode - REGION 코드
-func (client BlockStorageClient) Attach(ctx context.Context, blockStorageInstanceNo string, serverInstanceNo string, regionCode string) (result BlockStorageInstanceResponse, err error) {
+func (client BlockStorageClient) Attach(ctx context.Context, blockStorageInstanceNo string, serverInstanceNo string) (result BlockStorageInstanceResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BlockStorageClient.Attach")
 		defer func() {
@@ -46,7 +45,7 @@ func (client BlockStorageClient) Attach(ctx context.Context, blockStorageInstanc
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.AttachPreparer(ctx, blockStorageInstanceNo, serverInstanceNo, regionCode)
+	req, err := client.AttachPreparer(ctx, blockStorageInstanceNo, serverInstanceNo)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "server.BlockStorageClient", "Attach", nil, "Failure preparing request")
 		return
@@ -68,17 +67,14 @@ func (client BlockStorageClient) Attach(ctx context.Context, blockStorageInstanc
 }
 
 // AttachPreparer prepares the Attach request.
-func (client BlockStorageClient) AttachPreparer(ctx context.Context, blockStorageInstanceNo string, serverInstanceNo string, regionCode string) (*http.Request, error) {
+func (client BlockStorageClient) AttachPreparer(ctx context.Context, blockStorageInstanceNo string, serverInstanceNo string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"blockStorageInstanceNo": autorest.Encode("query", blockStorageInstanceNo),
 		"responseFormatType":     autorest.Encode("query", "json"),
 		"serverInstanceNo":       autorest.Encode("query", serverInstanceNo),
 	}
-	if len(regionCode) > 0 {
-		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
-	} else {
-		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
-	}
+
+	queryParameters["regionCode"] = autorest.Encode("query", "FKR")
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
@@ -119,8 +115,7 @@ func (client BlockStorageClient) AttachResponder(resp *http.Response) (result Bl
 // Parameters:
 // blockStorageInstanceNo - 블록스토리지 인스턴스 번호
 // blockStorageSize - 블록스토리지 사이즈
-// regionCode - REGION 코드
-func (client BlockStorageClient) ChangeVolumeSize(ctx context.Context, blockStorageInstanceNo string, blockStorageSize string, regionCode string) (result BlockStorageVolumeSizeResponse, err error) {
+func (client BlockStorageClient) ChangeVolumeSize(ctx context.Context, blockStorageInstanceNo string, blockStorageSize string) (result BlockStorageVolumeSizeResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BlockStorageClient.ChangeVolumeSize")
 		defer func() {
@@ -131,7 +126,7 @@ func (client BlockStorageClient) ChangeVolumeSize(ctx context.Context, blockStor
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.ChangeVolumeSizePreparer(ctx, blockStorageInstanceNo, blockStorageSize, regionCode)
+	req, err := client.ChangeVolumeSizePreparer(ctx, blockStorageInstanceNo, blockStorageSize)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "server.BlockStorageClient", "ChangeVolumeSize", nil, "Failure preparing request")
 		return
@@ -153,17 +148,14 @@ func (client BlockStorageClient) ChangeVolumeSize(ctx context.Context, blockStor
 }
 
 // ChangeVolumeSizePreparer prepares the ChangeVolumeSize request.
-func (client BlockStorageClient) ChangeVolumeSizePreparer(ctx context.Context, blockStorageInstanceNo string, blockStorageSize string, regionCode string) (*http.Request, error) {
+func (client BlockStorageClient) ChangeVolumeSizePreparer(ctx context.Context, blockStorageInstanceNo string, blockStorageSize string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"blockStorageInstanceNo": autorest.Encode("query", blockStorageInstanceNo),
 		"blockStorageSize":       autorest.Encode("query", blockStorageSize),
 		"responseFormatType":     autorest.Encode("query", "json"),
 	}
-	if len(regionCode) > 0 {
-		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
-	} else {
-		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
-	}
+
+	queryParameters["regionCode"] = autorest.Encode("query", "FKR")
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
@@ -203,14 +195,13 @@ func (client BlockStorageClient) ChangeVolumeSizeResponder(resp *http.Response) 
 // Create 블록스토리지 인스턴스를 생성
 // Parameters:
 // serverInstanceNo - 서버 인스턴스 번호
-// regionCode - REGION 코드
 // zoneCode - ZONE 코드
 // blockStorageName - 블록스토리지 이름
 // blockStorageDiskDetailTypeCode - 블록스토리지 디스크 상세 유형 코드
 // blockStorageSnapshotInstanceNo - 블록스토리지 스냅샷 인스턴스 번호
 // blockStorageSize - 블록스토리지 사이즈
 // blockStorageDescription - 블록스토리지 설명
-func (client BlockStorageClient) Create(ctx context.Context, serverInstanceNo string, regionCode string, zoneCode string, blockStorageName string, blockStorageDiskDetailTypeCode BlockStorageDiskDetailTypeCode, blockStorageSnapshotInstanceNo string, blockStorageSize string, blockStorageDescription string) (result BlockStorageInstanceResponse, err error) {
+func (client BlockStorageClient) Create(ctx context.Context, serverInstanceNo string, zoneCode string, blockStorageName string, blockStorageDiskDetailTypeCode BlockStorageDiskDetailTypeCode, blockStorageSnapshotInstanceNo string, blockStorageSize string, blockStorageDescription string) (result BlockStorageInstanceResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BlockStorageClient.Create")
 		defer func() {
@@ -221,7 +212,7 @@ func (client BlockStorageClient) Create(ctx context.Context, serverInstanceNo st
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.CreatePreparer(ctx, serverInstanceNo, regionCode, zoneCode, blockStorageName, blockStorageDiskDetailTypeCode, blockStorageSnapshotInstanceNo, blockStorageSize, blockStorageDescription)
+	req, err := client.CreatePreparer(ctx, serverInstanceNo, zoneCode, blockStorageName, blockStorageDiskDetailTypeCode, blockStorageSnapshotInstanceNo, blockStorageSize, blockStorageDescription)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "server.BlockStorageClient", "Create", nil, "Failure preparing request")
 		return
@@ -243,16 +234,14 @@ func (client BlockStorageClient) Create(ctx context.Context, serverInstanceNo st
 }
 
 // CreatePreparer prepares the Create request.
-func (client BlockStorageClient) CreatePreparer(ctx context.Context, serverInstanceNo string, regionCode string, zoneCode string, blockStorageName string, blockStorageDiskDetailTypeCode BlockStorageDiskDetailTypeCode, blockStorageSnapshotInstanceNo string, blockStorageSize string, blockStorageDescription string) (*http.Request, error) {
+func (client BlockStorageClient) CreatePreparer(ctx context.Context, serverInstanceNo string, zoneCode string, blockStorageName string, blockStorageDiskDetailTypeCode BlockStorageDiskDetailTypeCode, blockStorageSnapshotInstanceNo string, blockStorageSize string, blockStorageDescription string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"responseFormatType": autorest.Encode("query", "json"),
 		"serverInstanceNo":   autorest.Encode("query", serverInstanceNo),
 	}
-	if len(regionCode) > 0 {
-		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
-	} else {
-		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
-	}
+
+	queryParameters["regionCode"] = autorest.Encode("query", "FKR")
+
 	if len(zoneCode) > 0 {
 		queryParameters["zoneCode"] = autorest.Encode("query", zoneCode)
 	}
@@ -310,8 +299,7 @@ func (client BlockStorageClient) CreateResponder(resp *http.Response) (result Bl
 // Delete 블록스토리지 인스턴스를 삭제
 // Parameters:
 // blockStorageInstanceNoListN - 블록스토리지 인스턴스 번호 리스트
-// regionCode - REGION 코드
-func (client BlockStorageClient) Delete(ctx context.Context, blockStorageInstanceNoListN string, regionCode string) (result BlockStorageInstanceResponse, err error) {
+func (client BlockStorageClient) Delete(ctx context.Context, blockStorageInstanceNoListN string) (result BlockStorageInstanceResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BlockStorageClient.Delete")
 		defer func() {
@@ -322,7 +310,7 @@ func (client BlockStorageClient) Delete(ctx context.Context, blockStorageInstanc
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeletePreparer(ctx, blockStorageInstanceNoListN, regionCode)
+	req, err := client.DeletePreparer(ctx, blockStorageInstanceNoListN)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "server.BlockStorageClient", "Delete", nil, "Failure preparing request")
 		return
@@ -344,16 +332,13 @@ func (client BlockStorageClient) Delete(ctx context.Context, blockStorageInstanc
 }
 
 // DeletePreparer prepares the Delete request.
-func (client BlockStorageClient) DeletePreparer(ctx context.Context, blockStorageInstanceNoListN string, regionCode string) (*http.Request, error) {
+func (client BlockStorageClient) DeletePreparer(ctx context.Context, blockStorageInstanceNoListN string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"blockStorageInstanceNoList.N": autorest.Encode("query", blockStorageInstanceNoListN),
 		"responseFormatType":           autorest.Encode("query", "json"),
 	}
-	if len(regionCode) > 0 {
-		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
-	} else {
-		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
-	}
+
+	queryParameters["regionCode"] = autorest.Encode("query", "FKR")
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
@@ -393,8 +378,7 @@ func (client BlockStorageClient) DeleteResponder(resp *http.Response) (result Bl
 // Detach 블록스토리지 인스턴스를 할당 해제
 // Parameters:
 // blockStorageInstanceNoListN - 블록스토리지 인스턴스 번호 리스트
-// regionCode - REGION 코드
-func (client BlockStorageClient) Detach(ctx context.Context, blockStorageInstanceNoListN string, regionCode string) (result BlockStorageInstanceResponse, err error) {
+func (client BlockStorageClient) Detach(ctx context.Context, blockStorageInstanceNoListN string) (result BlockStorageInstanceResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BlockStorageClient.Detach")
 		defer func() {
@@ -405,7 +389,7 @@ func (client BlockStorageClient) Detach(ctx context.Context, blockStorageInstanc
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DetachPreparer(ctx, blockStorageInstanceNoListN, regionCode)
+	req, err := client.DetachPreparer(ctx, blockStorageInstanceNoListN)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "server.BlockStorageClient", "Detach", nil, "Failure preparing request")
 		return
@@ -427,16 +411,13 @@ func (client BlockStorageClient) Detach(ctx context.Context, blockStorageInstanc
 }
 
 // DetachPreparer prepares the Detach request.
-func (client BlockStorageClient) DetachPreparer(ctx context.Context, blockStorageInstanceNoListN string, regionCode string) (*http.Request, error) {
+func (client BlockStorageClient) DetachPreparer(ctx context.Context, blockStorageInstanceNoListN string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"blockStorageInstanceNoList.N": autorest.Encode("query", blockStorageInstanceNoListN),
 		"responseFormatType":           autorest.Encode("query", "json"),
 	}
-	if len(regionCode) > 0 {
-		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
-	} else {
-		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
-	}
+
+	queryParameters["regionCode"] = autorest.Encode("query", "FKR")
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
@@ -476,8 +457,7 @@ func (client BlockStorageClient) DetachResponder(resp *http.Response) (result Bl
 // GetDetail 블록스토리지 인스턴스 상세 정보를 조회
 // Parameters:
 // blockStorageInstanceNo - 블록스토리지 인스턴스 번호
-// regionCode - REGION 코드
-func (client BlockStorageClient) GetDetail(ctx context.Context, blockStorageInstanceNo string, regionCode string) (result BlockStorageInstanceDetailResponse, err error) {
+func (client BlockStorageClient) GetDetail(ctx context.Context, blockStorageInstanceNo string) (result BlockStorageInstanceDetailResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BlockStorageClient.GetDetail")
 		defer func() {
@@ -488,7 +468,7 @@ func (client BlockStorageClient) GetDetail(ctx context.Context, blockStorageInst
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetDetailPreparer(ctx, blockStorageInstanceNo, regionCode)
+	req, err := client.GetDetailPreparer(ctx, blockStorageInstanceNo)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "server.BlockStorageClient", "GetDetail", nil, "Failure preparing request")
 		return
@@ -510,16 +490,13 @@ func (client BlockStorageClient) GetDetail(ctx context.Context, blockStorageInst
 }
 
 // GetDetailPreparer prepares the GetDetail request.
-func (client BlockStorageClient) GetDetailPreparer(ctx context.Context, blockStorageInstanceNo string, regionCode string) (*http.Request, error) {
+func (client BlockStorageClient) GetDetailPreparer(ctx context.Context, blockStorageInstanceNo string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"blockStorageInstanceNo": autorest.Encode("query", blockStorageInstanceNo),
 		"responseFormatType":     autorest.Encode("query", "json"),
 	}
-	if len(regionCode) > 0 {
-		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
-	} else {
-		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
-	}
+
+	queryParameters["regionCode"] = autorest.Encode("query", "FKR")
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
@@ -558,7 +535,6 @@ func (client BlockStorageClient) GetDetailResponder(resp *http.Response) (result
 
 // GetList 블록스토리지 인스턴스 리스트를 조회
 // Parameters:
-// regionCode - REGION 코드
 // serverInstanceNo - 서버 인스턴스 번호
 // blockStorageTypeCodeListN - 블록스토리지 유형 코드 리스트
 // blockStorageInstanceStatusCode - 블록스토리지 인스턴스 상태 코드
@@ -572,7 +548,7 @@ func (client BlockStorageClient) GetDetailResponder(resp *http.Response) (result
 // blockStorageDiskTypeCode - 블록스토리지 디스크 유형 코드
 // blockStorageDiskDetailTypeCode - 블록스토리지 디스크 상세 유형 코드
 // zoneCode - ZONE 코드
-func (client BlockStorageClient) GetList(ctx context.Context, regionCode string, serverInstanceNo string, blockStorageTypeCodeListN BlockStorageTypeCode, blockStorageInstanceStatusCode BlockStorageInstanceStatusCode, pageNo string, pageSize string, blockStorageSize string, blockStorageInstanceNoListN string, blockStorageName string, serverName string, connectionInfo string, blockStorageDiskTypeCode BlockStorageDiskTypeCode, blockStorageDiskDetailTypeCode BlockStorageDiskDetailTypeCode, zoneCode string) (result BlockStorageInstanceListResponse, err error) {
+func (client BlockStorageClient) GetList(ctx context.Context, serverInstanceNo string, blockStorageTypeCodeListN BlockStorageTypeCode, blockStorageInstanceStatusCode BlockStorageInstanceStatusCode, pageNo string, pageSize string, blockStorageSize string, blockStorageInstanceNoListN string, blockStorageName string, serverName string, connectionInfo string, blockStorageDiskTypeCode BlockStorageDiskTypeCode, blockStorageDiskDetailTypeCode BlockStorageDiskDetailTypeCode, zoneCode string) (result BlockStorageInstanceListResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BlockStorageClient.GetList")
 		defer func() {
@@ -583,7 +559,7 @@ func (client BlockStorageClient) GetList(ctx context.Context, regionCode string,
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetListPreparer(ctx, regionCode, serverInstanceNo, blockStorageTypeCodeListN, blockStorageInstanceStatusCode, pageNo, pageSize, blockStorageSize, blockStorageInstanceNoListN, blockStorageName, serverName, connectionInfo, blockStorageDiskTypeCode, blockStorageDiskDetailTypeCode, zoneCode)
+	req, err := client.GetListPreparer(ctx, serverInstanceNo, blockStorageTypeCodeListN, blockStorageInstanceStatusCode, pageNo, pageSize, blockStorageSize, blockStorageInstanceNoListN, blockStorageName, serverName, connectionInfo, blockStorageDiskTypeCode, blockStorageDiskDetailTypeCode, zoneCode)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "server.BlockStorageClient", "GetList", nil, "Failure preparing request")
 		return
@@ -605,15 +581,13 @@ func (client BlockStorageClient) GetList(ctx context.Context, regionCode string,
 }
 
 // GetListPreparer prepares the GetList request.
-func (client BlockStorageClient) GetListPreparer(ctx context.Context, regionCode string, serverInstanceNo string, blockStorageTypeCodeListN BlockStorageTypeCode, blockStorageInstanceStatusCode BlockStorageInstanceStatusCode, pageNo string, pageSize string, blockStorageSize string, blockStorageInstanceNoListN string, blockStorageName string, serverName string, connectionInfo string, blockStorageDiskTypeCode BlockStorageDiskTypeCode, blockStorageDiskDetailTypeCode BlockStorageDiskDetailTypeCode, zoneCode string) (*http.Request, error) {
+func (client BlockStorageClient) GetListPreparer(ctx context.Context, serverInstanceNo string, blockStorageTypeCodeListN BlockStorageTypeCode, blockStorageInstanceStatusCode BlockStorageInstanceStatusCode, pageNo string, pageSize string, blockStorageSize string, blockStorageInstanceNoListN string, blockStorageName string, serverName string, connectionInfo string, blockStorageDiskTypeCode BlockStorageDiskTypeCode, blockStorageDiskDetailTypeCode BlockStorageDiskDetailTypeCode, zoneCode string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"responseFormatType": autorest.Encode("query", "json"),
 	}
-	if len(regionCode) > 0 {
-		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
-	} else {
-		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
-	}
+
+	queryParameters["regionCode"] = autorest.Encode("query", "FKR")
+
 	if len(serverInstanceNo) > 0 {
 		queryParameters["serverInstanceNo"] = autorest.Encode("query", serverInstanceNo)
 	}

@@ -37,10 +37,9 @@ func NewSubnetClientWithBaseURI(baseURI string) SubnetClient {
 // subnet - 서브넷
 // networkACLNo - 네트워크 ACL 번호
 // subnetTypeCode - 서브넷 유형 코드
-// regionCode - REGION 코드
 // subnetName - 서브넷 이름
 // usageTypeCode - 용도 유형 코드
-func (client SubnetClient) Create(ctx context.Context, zoneCode string, vpcNo string, subnet string, networkACLNo string, subnetTypeCode SubnetTypeCode, regionCode string, subnetName string, usageTypeCode UsageTypeCode) (result SubnetResponse, err error) {
+func (client SubnetClient) Create(ctx context.Context, zoneCode string, vpcNo string, subnet string, networkACLNo string, subnetTypeCode SubnetTypeCode, subnetName string, usageTypeCode UsageTypeCode) (result SubnetResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SubnetClient.Create")
 		defer func() {
@@ -51,7 +50,7 @@ func (client SubnetClient) Create(ctx context.Context, zoneCode string, vpcNo st
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.CreatePreparer(ctx, zoneCode, vpcNo, subnet, networkACLNo, subnetTypeCode, regionCode, subnetName, usageTypeCode)
+	req, err := client.CreatePreparer(ctx, zoneCode, vpcNo, subnet, networkACLNo, subnetTypeCode, subnetName, usageTypeCode)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vpc.SubnetClient", "Create", nil, "Failure preparing request")
 		return
@@ -73,7 +72,7 @@ func (client SubnetClient) Create(ctx context.Context, zoneCode string, vpcNo st
 }
 
 // CreatePreparer prepares the Create request.
-func (client SubnetClient) CreatePreparer(ctx context.Context, zoneCode string, vpcNo string, subnet string, networkACLNo string, subnetTypeCode SubnetTypeCode, regionCode string, subnetName string, usageTypeCode UsageTypeCode) (*http.Request, error) {
+func (client SubnetClient) CreatePreparer(ctx context.Context, zoneCode string, vpcNo string, subnet string, networkACLNo string, subnetTypeCode SubnetTypeCode, subnetName string, usageTypeCode UsageTypeCode) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"networkAclNo":       autorest.Encode("query", networkACLNo),
 		"responseFormatType": autorest.Encode("query", "json"),
@@ -82,11 +81,9 @@ func (client SubnetClient) CreatePreparer(ctx context.Context, zoneCode string, 
 		"vpcNo":              autorest.Encode("query", vpcNo),
 		"zoneCode":           autorest.Encode("query", zoneCode),
 	}
-	if len(regionCode) > 0 {
-		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
-	} else {
-		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
-	}
+
+	queryParameters["regionCode"] = autorest.Encode("query", "FKR")
+
 	if len(subnetName) > 0 {
 		queryParameters["subnetName"] = autorest.Encode("query", subnetName)
 	}
@@ -132,8 +129,7 @@ func (client SubnetClient) CreateResponder(resp *http.Response) (result SubnetRe
 // Delete subnet을 삭제
 // Parameters:
 // subnetNo - 서브넷 번호
-// regionCode - REGION 코드
-func (client SubnetClient) Delete(ctx context.Context, subnetNo string, regionCode string) (result SubnetResponse, err error) {
+func (client SubnetClient) Delete(ctx context.Context, subnetNo string) (result SubnetResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SubnetClient.Delete")
 		defer func() {
@@ -144,7 +140,7 @@ func (client SubnetClient) Delete(ctx context.Context, subnetNo string, regionCo
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeletePreparer(ctx, subnetNo, regionCode)
+	req, err := client.DeletePreparer(ctx, subnetNo)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vpc.SubnetClient", "Delete", nil, "Failure preparing request")
 		return
@@ -166,16 +162,13 @@ func (client SubnetClient) Delete(ctx context.Context, subnetNo string, regionCo
 }
 
 // DeletePreparer prepares the Delete request.
-func (client SubnetClient) DeletePreparer(ctx context.Context, subnetNo string, regionCode string) (*http.Request, error) {
+func (client SubnetClient) DeletePreparer(ctx context.Context, subnetNo string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"responseFormatType": autorest.Encode("query", "json"),
 		"subnetNo":           autorest.Encode("query", subnetNo),
 	}
-	if len(regionCode) > 0 {
-		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
-	} else {
-		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
-	}
+
+	queryParameters["regionCode"] = autorest.Encode("query", "FKR")
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
@@ -215,8 +208,7 @@ func (client SubnetClient) DeleteResponder(resp *http.Response) (result SubnetRe
 // GetDetail subnet 상세 정보를 조회
 // Parameters:
 // subnetNo - 서브넷 번호
-// regionCode - REGION 코드
-func (client SubnetClient) GetDetail(ctx context.Context, subnetNo string, regionCode string) (result SubnetDetailResponse, err error) {
+func (client SubnetClient) GetDetail(ctx context.Context, subnetNo string) (result SubnetDetailResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SubnetClient.GetDetail")
 		defer func() {
@@ -227,7 +219,7 @@ func (client SubnetClient) GetDetail(ctx context.Context, subnetNo string, regio
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetDetailPreparer(ctx, subnetNo, regionCode)
+	req, err := client.GetDetailPreparer(ctx, subnetNo)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vpc.SubnetClient", "GetDetail", nil, "Failure preparing request")
 		return
@@ -249,16 +241,13 @@ func (client SubnetClient) GetDetail(ctx context.Context, subnetNo string, regio
 }
 
 // GetDetailPreparer prepares the GetDetail request.
-func (client SubnetClient) GetDetailPreparer(ctx context.Context, subnetNo string, regionCode string) (*http.Request, error) {
+func (client SubnetClient) GetDetailPreparer(ctx context.Context, subnetNo string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"responseFormatType": autorest.Encode("query", "json"),
 		"subnetNo":           autorest.Encode("query", subnetNo),
 	}
-	if len(regionCode) > 0 {
-		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
-	} else {
-		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
-	}
+
+	queryParameters["regionCode"] = autorest.Encode("query", "FKR")
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
@@ -297,7 +286,6 @@ func (client SubnetClient) GetDetailResponder(resp *http.Response) (result Subne
 
 // GetList subnet 리스트를 조회
 // Parameters:
-// regionCode - REGION 코드
 // subnetNoListN - 서브넷 번호 리스트
 // subnetName - 서브넷 이름
 // subnet - 서브넷
@@ -309,7 +297,7 @@ func (client SubnetClient) GetDetailResponder(resp *http.Response) (result Subne
 // subnetStatusCode - 서브넷 상태 코드
 // vpcNo - VPC 번호
 // zoneCode - ZONE 코드
-func (client SubnetClient) GetList(ctx context.Context, regionCode string, subnetNoListN string, subnetName string, subnet string, subnetTypeCode SubnetTypeCode, usageTypeCode UsageTypeCode, networkACLNo string, pageNo string, pageSize string, subnetStatusCode SubnetStatusCode, vpcNo string, zoneCode string) (result SubnetListResponse, err error) {
+func (client SubnetClient) GetList(ctx context.Context, subnetNoListN string, subnetName string, subnet string, subnetTypeCode SubnetTypeCode, usageTypeCode UsageTypeCode, networkACLNo string, pageNo string, pageSize string, subnetStatusCode SubnetStatusCode, vpcNo string, zoneCode string) (result SubnetListResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SubnetClient.GetList")
 		defer func() {
@@ -320,7 +308,7 @@ func (client SubnetClient) GetList(ctx context.Context, regionCode string, subne
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetListPreparer(ctx, regionCode, subnetNoListN, subnetName, subnet, subnetTypeCode, usageTypeCode, networkACLNo, pageNo, pageSize, subnetStatusCode, vpcNo, zoneCode)
+	req, err := client.GetListPreparer(ctx, subnetNoListN, subnetName, subnet, subnetTypeCode, usageTypeCode, networkACLNo, pageNo, pageSize, subnetStatusCode, vpcNo, zoneCode)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vpc.SubnetClient", "GetList", nil, "Failure preparing request")
 		return
@@ -342,15 +330,13 @@ func (client SubnetClient) GetList(ctx context.Context, regionCode string, subne
 }
 
 // GetListPreparer prepares the GetList request.
-func (client SubnetClient) GetListPreparer(ctx context.Context, regionCode string, subnetNoListN string, subnetName string, subnet string, subnetTypeCode SubnetTypeCode, usageTypeCode UsageTypeCode, networkACLNo string, pageNo string, pageSize string, subnetStatusCode SubnetStatusCode, vpcNo string, zoneCode string) (*http.Request, error) {
+func (client SubnetClient) GetListPreparer(ctx context.Context, subnetNoListN string, subnetName string, subnet string, subnetTypeCode SubnetTypeCode, usageTypeCode UsageTypeCode, networkACLNo string, pageNo string, pageSize string, subnetStatusCode SubnetStatusCode, vpcNo string, zoneCode string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"responseFormatType": autorest.Encode("query", "json"),
 	}
-	if len(regionCode) > 0 {
-		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
-	} else {
-		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
-	}
+
+	queryParameters["regionCode"] = autorest.Encode("query", "FKR")
+
 	if len(subnetNoListN) > 0 {
 		queryParameters["subnetNoList.N"] = autorest.Encode("query", subnetNoListN)
 	}

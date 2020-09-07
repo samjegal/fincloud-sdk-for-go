@@ -33,11 +33,10 @@ func NewInitScriptClientWithBaseURI(baseURI string) InitScriptClient {
 // Create 초기화 스크립트를 생성
 // Parameters:
 // initScriptContent - 초기화 스크립트 내용
-// regionCode - REGION 코드
 // osTypeCode - OS 유형 코드
 // initScriptName - 초기화 스크립트 이름
 // initScriptDescription - 초기화 스크립트 설명
-func (client InitScriptClient) Create(ctx context.Context, initScriptContent string, regionCode string, osTypeCode OsTypeCode, initScriptName string, initScriptDescription string) (result InitScriptResponse, err error) {
+func (client InitScriptClient) Create(ctx context.Context, initScriptContent string, osTypeCode OsTypeCode, initScriptName string, initScriptDescription string) (result InitScriptResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/InitScriptClient.Create")
 		defer func() {
@@ -48,7 +47,7 @@ func (client InitScriptClient) Create(ctx context.Context, initScriptContent str
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.CreatePreparer(ctx, initScriptContent, regionCode, osTypeCode, initScriptName, initScriptDescription)
+	req, err := client.CreatePreparer(ctx, initScriptContent, osTypeCode, initScriptName, initScriptDescription)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "server.InitScriptClient", "Create", nil, "Failure preparing request")
 		return
@@ -70,16 +69,14 @@ func (client InitScriptClient) Create(ctx context.Context, initScriptContent str
 }
 
 // CreatePreparer prepares the Create request.
-func (client InitScriptClient) CreatePreparer(ctx context.Context, initScriptContent string, regionCode string, osTypeCode OsTypeCode, initScriptName string, initScriptDescription string) (*http.Request, error) {
+func (client InitScriptClient) CreatePreparer(ctx context.Context, initScriptContent string, osTypeCode OsTypeCode, initScriptName string, initScriptDescription string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"initScriptContent":  autorest.Encode("query", initScriptContent),
 		"responseFormatType": autorest.Encode("query", "json"),
 	}
-	if len(regionCode) > 0 {
-		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
-	} else {
-		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
-	}
+
+	queryParameters["regionCode"] = autorest.Encode("query", "FKR")
+
 	if len(string(osTypeCode)) > 0 {
 		queryParameters["osTypeCode"] = autorest.Encode("query", osTypeCode)
 	}
@@ -127,9 +124,8 @@ func (client InitScriptClient) CreateResponder(resp *http.Response) (result Init
 
 // Delete 초기화 스크립트를 삭제
 // Parameters:
-// regionCode - REGION 코드
 // initScriptNoListN - 초기화 스크립트 번호 리스트
-func (client InitScriptClient) Delete(ctx context.Context, regionCode string, initScriptNoListN string) (result InitScriptResponse, err error) {
+func (client InitScriptClient) Delete(ctx context.Context, initScriptNoListN string) (result InitScriptResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/InitScriptClient.Delete")
 		defer func() {
@@ -140,7 +136,7 @@ func (client InitScriptClient) Delete(ctx context.Context, regionCode string, in
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeletePreparer(ctx, regionCode, initScriptNoListN)
+	req, err := client.DeletePreparer(ctx, initScriptNoListN)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "server.InitScriptClient", "Delete", nil, "Failure preparing request")
 		return
@@ -162,15 +158,13 @@ func (client InitScriptClient) Delete(ctx context.Context, regionCode string, in
 }
 
 // DeletePreparer prepares the Delete request.
-func (client InitScriptClient) DeletePreparer(ctx context.Context, regionCode string, initScriptNoListN string) (*http.Request, error) {
+func (client InitScriptClient) DeletePreparer(ctx context.Context, initScriptNoListN string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"responseFormatType": autorest.Encode("query", "json"),
 	}
-	if len(regionCode) > 0 {
-		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
-	} else {
-		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
-	}
+
+	queryParameters["regionCode"] = autorest.Encode("query", "FKR")
+
 	if len(initScriptNoListN) > 0 {
 		queryParameters["initScriptNoList.N"] = autorest.Encode("query", initScriptNoListN)
 	}
@@ -212,9 +206,8 @@ func (client InitScriptClient) DeleteResponder(resp *http.Response) (result Init
 
 // GetDetail 초기화 스크립트 상세 정보를 조회
 // Parameters:
-// regionCode - REGION 코드
 // initScriptNo - 초기화 스크립트 번호
-func (client InitScriptClient) GetDetail(ctx context.Context, regionCode string, initScriptNo string) (result InitScriptDetailResponse, err error) {
+func (client InitScriptClient) GetDetail(ctx context.Context, initScriptNo string) (result InitScriptDetailResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/InitScriptClient.GetDetail")
 		defer func() {
@@ -225,7 +218,7 @@ func (client InitScriptClient) GetDetail(ctx context.Context, regionCode string,
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetDetailPreparer(ctx, regionCode, initScriptNo)
+	req, err := client.GetDetailPreparer(ctx, initScriptNo)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "server.InitScriptClient", "GetDetail", nil, "Failure preparing request")
 		return
@@ -247,15 +240,13 @@ func (client InitScriptClient) GetDetail(ctx context.Context, regionCode string,
 }
 
 // GetDetailPreparer prepares the GetDetail request.
-func (client InitScriptClient) GetDetailPreparer(ctx context.Context, regionCode string, initScriptNo string) (*http.Request, error) {
+func (client InitScriptClient) GetDetailPreparer(ctx context.Context, initScriptNo string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"responseFormatType": autorest.Encode("query", "json"),
 	}
-	if len(regionCode) > 0 {
-		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
-	} else {
-		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
-	}
+
+	queryParameters["regionCode"] = autorest.Encode("query", "FKR")
+
 	if len(initScriptNo) > 0 {
 		queryParameters["initScriptNo"] = autorest.Encode("query", initScriptNo)
 	}
@@ -297,7 +288,6 @@ func (client InitScriptClient) GetDetailResponder(resp *http.Response) (result I
 
 // GetList 초기화 스크립트 리스트를 조회
 // Parameters:
-// regionCode - REGION 코드
 // osTypeCode - OS 유형 코드
 // pageNo - 페이지 번호
 // pageSize - 페이지 사이즈
@@ -305,7 +295,7 @@ func (client InitScriptClient) GetDetailResponder(resp *http.Response) (result I
 // sortingOrder - 정렬 순서
 // initScriptName - 초기화 스크립트 이름
 // initScriptNoListN - 초기화 스크립트 번호 리스트
-func (client InitScriptClient) GetList(ctx context.Context, regionCode string, osTypeCode OsTypeCode, pageNo string, pageSize string, sortedBy string, sortingOrder SortingOrder, initScriptName string, initScriptNoListN string) (result InitScriptListResponse, err error) {
+func (client InitScriptClient) GetList(ctx context.Context, osTypeCode OsTypeCode, pageNo string, pageSize string, sortedBy string, sortingOrder SortingOrder, initScriptName string, initScriptNoListN string) (result InitScriptListResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/InitScriptClient.GetList")
 		defer func() {
@@ -316,7 +306,7 @@ func (client InitScriptClient) GetList(ctx context.Context, regionCode string, o
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetListPreparer(ctx, regionCode, osTypeCode, pageNo, pageSize, sortedBy, sortingOrder, initScriptName, initScriptNoListN)
+	req, err := client.GetListPreparer(ctx, osTypeCode, pageNo, pageSize, sortedBy, sortingOrder, initScriptName, initScriptNoListN)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "server.InitScriptClient", "GetList", nil, "Failure preparing request")
 		return
@@ -338,15 +328,13 @@ func (client InitScriptClient) GetList(ctx context.Context, regionCode string, o
 }
 
 // GetListPreparer prepares the GetList request.
-func (client InitScriptClient) GetListPreparer(ctx context.Context, regionCode string, osTypeCode OsTypeCode, pageNo string, pageSize string, sortedBy string, sortingOrder SortingOrder, initScriptName string, initScriptNoListN string) (*http.Request, error) {
+func (client InitScriptClient) GetListPreparer(ctx context.Context, osTypeCode OsTypeCode, pageNo string, pageSize string, sortedBy string, sortingOrder SortingOrder, initScriptName string, initScriptNoListN string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"responseFormatType": autorest.Encode("query", "json"),
 	}
-	if len(regionCode) > 0 {
-		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
-	} else {
-		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
-	}
+
+	queryParameters["regionCode"] = autorest.Encode("query", "FKR")
+
 	if len(string(osTypeCode)) > 0 {
 		queryParameters["osTypeCode"] = autorest.Encode("query", osTypeCode)
 	}

@@ -33,10 +33,9 @@ func NewACGClientWithBaseURI(baseURI string) ACGClient {
 // Create aCG를 생성
 // Parameters:
 // vpcNo - VPC 번호
-// regionCode - REGION 코드
 // accessControlGroupName - ACG 이름
 // accessControlGroupDescription - ACG 설명
-func (client ACGClient) Create(ctx context.Context, vpcNo string, regionCode string, accessControlGroupName string, accessControlGroupDescription string) (result AccessControlGroupResponse, err error) {
+func (client ACGClient) Create(ctx context.Context, vpcNo string, accessControlGroupName string, accessControlGroupDescription string) (result AccessControlGroupResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ACGClient.Create")
 		defer func() {
@@ -47,7 +46,7 @@ func (client ACGClient) Create(ctx context.Context, vpcNo string, regionCode str
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.CreatePreparer(ctx, vpcNo, regionCode, accessControlGroupName, accessControlGroupDescription)
+	req, err := client.CreatePreparer(ctx, vpcNo, accessControlGroupName, accessControlGroupDescription)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "server.ACGClient", "Create", nil, "Failure preparing request")
 		return
@@ -69,16 +68,14 @@ func (client ACGClient) Create(ctx context.Context, vpcNo string, regionCode str
 }
 
 // CreatePreparer prepares the Create request.
-func (client ACGClient) CreatePreparer(ctx context.Context, vpcNo string, regionCode string, accessControlGroupName string, accessControlGroupDescription string) (*http.Request, error) {
+func (client ACGClient) CreatePreparer(ctx context.Context, vpcNo string, accessControlGroupName string, accessControlGroupDescription string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"responseFormatType": autorest.Encode("query", "json"),
 		"vpcNo":              autorest.Encode("query", vpcNo),
 	}
-	if len(regionCode) > 0 {
-		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
-	} else {
-		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
-	}
+
+	queryParameters["regionCode"] = autorest.Encode("query", "FKR")
+
 	if len(accessControlGroupName) > 0 {
 		queryParameters["accessControlGroupName"] = autorest.Encode("query", accessControlGroupName)
 	}
@@ -125,8 +122,7 @@ func (client ACGClient) CreateResponder(resp *http.Response) (result AccessContr
 // Parameters:
 // vpcNo - VPC 번호
 // accessControlGroupNo - ACG 번호
-// regionCode - REGION 코드
-func (client ACGClient) Delete(ctx context.Context, vpcNo string, accessControlGroupNo string, regionCode string) (result AccessControlGroupResponse, err error) {
+func (client ACGClient) Delete(ctx context.Context, vpcNo string, accessControlGroupNo string) (result AccessControlGroupResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ACGClient.Delete")
 		defer func() {
@@ -137,7 +133,7 @@ func (client ACGClient) Delete(ctx context.Context, vpcNo string, accessControlG
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeletePreparer(ctx, vpcNo, accessControlGroupNo, regionCode)
+	req, err := client.DeletePreparer(ctx, vpcNo, accessControlGroupNo)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "server.ACGClient", "Delete", nil, "Failure preparing request")
 		return
@@ -159,17 +155,14 @@ func (client ACGClient) Delete(ctx context.Context, vpcNo string, accessControlG
 }
 
 // DeletePreparer prepares the Delete request.
-func (client ACGClient) DeletePreparer(ctx context.Context, vpcNo string, accessControlGroupNo string, regionCode string) (*http.Request, error) {
+func (client ACGClient) DeletePreparer(ctx context.Context, vpcNo string, accessControlGroupNo string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"accessControlGroupNo": autorest.Encode("query", accessControlGroupNo),
 		"responseFormatType":   autorest.Encode("query", "json"),
 		"vpcNo":                autorest.Encode("query", vpcNo),
 	}
-	if len(regionCode) > 0 {
-		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
-	} else {
-		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
-	}
+
+	queryParameters["regionCode"] = autorest.Encode("query", "FKR")
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
@@ -209,8 +202,7 @@ func (client ACGClient) DeleteResponder(resp *http.Response) (result AccessContr
 // GetDetail ACG 상세 정보를 조회
 // Parameters:
 // accessControlGroupNo - ACG 번호
-// regionCode - REGION 코드
-func (client ACGClient) GetDetail(ctx context.Context, accessControlGroupNo string, regionCode string) (result AccessControlGroupDetailResponse, err error) {
+func (client ACGClient) GetDetail(ctx context.Context, accessControlGroupNo string) (result AccessControlGroupDetailResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ACGClient.GetDetail")
 		defer func() {
@@ -221,7 +213,7 @@ func (client ACGClient) GetDetail(ctx context.Context, accessControlGroupNo stri
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetDetailPreparer(ctx, accessControlGroupNo, regionCode)
+	req, err := client.GetDetailPreparer(ctx, accessControlGroupNo)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "server.ACGClient", "GetDetail", nil, "Failure preparing request")
 		return
@@ -243,16 +235,13 @@ func (client ACGClient) GetDetail(ctx context.Context, accessControlGroupNo stri
 }
 
 // GetDetailPreparer prepares the GetDetail request.
-func (client ACGClient) GetDetailPreparer(ctx context.Context, accessControlGroupNo string, regionCode string) (*http.Request, error) {
+func (client ACGClient) GetDetailPreparer(ctx context.Context, accessControlGroupNo string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"accessControlGroupNo": autorest.Encode("query", accessControlGroupNo),
 		"responseFormatType":   autorest.Encode("query", "json"),
 	}
-	if len(regionCode) > 0 {
-		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
-	} else {
-		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
-	}
+
+	queryParameters["regionCode"] = autorest.Encode("query", "FKR")
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
@@ -291,14 +280,13 @@ func (client ACGClient) GetDetailResponder(resp *http.Response) (result AccessCo
 
 // GetList ACG 리스트를 조회
 // Parameters:
-// regionCode - REGION 코드
 // accessControlGroupNoListN - ACG 번호 리스트
 // accessControlGroupName - ACG 이름
 // accessControlGroupStatusCode - ACG 상태 코드
 // pageNo - 페이지 번호
 // pageSize - 페이지 사이즈
 // vpcNo - VPC 번호
-func (client ACGClient) GetList(ctx context.Context, regionCode string, accessControlGroupNoListN string, accessControlGroupName string, accessControlGroupStatusCode AccessControlGroupStatusCode, pageNo string, pageSize string, vpcNo string) (result AccessControlGroupListResponse, err error) {
+func (client ACGClient) GetList(ctx context.Context, accessControlGroupNoListN string, accessControlGroupName string, accessControlGroupStatusCode AccessControlGroupStatusCode, pageNo string, pageSize string, vpcNo string) (result AccessControlGroupListResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ACGClient.GetList")
 		defer func() {
@@ -309,7 +297,7 @@ func (client ACGClient) GetList(ctx context.Context, regionCode string, accessCo
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetListPreparer(ctx, regionCode, accessControlGroupNoListN, accessControlGroupName, accessControlGroupStatusCode, pageNo, pageSize, vpcNo)
+	req, err := client.GetListPreparer(ctx, accessControlGroupNoListN, accessControlGroupName, accessControlGroupStatusCode, pageNo, pageSize, vpcNo)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "server.ACGClient", "GetList", nil, "Failure preparing request")
 		return
@@ -331,15 +319,13 @@ func (client ACGClient) GetList(ctx context.Context, regionCode string, accessCo
 }
 
 // GetListPreparer prepares the GetList request.
-func (client ACGClient) GetListPreparer(ctx context.Context, regionCode string, accessControlGroupNoListN string, accessControlGroupName string, accessControlGroupStatusCode AccessControlGroupStatusCode, pageNo string, pageSize string, vpcNo string) (*http.Request, error) {
+func (client ACGClient) GetListPreparer(ctx context.Context, accessControlGroupNoListN string, accessControlGroupName string, accessControlGroupStatusCode AccessControlGroupStatusCode, pageNo string, pageSize string, vpcNo string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"responseFormatType": autorest.Encode("query", "json"),
 	}
-	if len(regionCode) > 0 {
-		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
-	} else {
-		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
-	}
+
+	queryParameters["regionCode"] = autorest.Encode("query", "FKR")
+
 	if len(accessControlGroupNoListN) > 0 {
 		queryParameters["accessControlGroupNoList.N"] = autorest.Encode("query", accessControlGroupNoListN)
 	}
@@ -397,9 +383,8 @@ func (client ACGClient) GetListResponder(resp *http.Response) (result AccessCont
 // GetRuleList ACG Rule 리스트를 조회
 // Parameters:
 // accessControlGroupNo - ACG 번호
-// regionCode - REGION 코드
 // accessControlGroupRuleTypeCode - ACG Rule 유형 코드
-func (client ACGClient) GetRuleList(ctx context.Context, accessControlGroupNo string, regionCode string, accessControlGroupRuleTypeCode AccessControlGroupRuleTypeCode) (result AccessControlGroupRuleListResponse, err error) {
+func (client ACGClient) GetRuleList(ctx context.Context, accessControlGroupNo string, accessControlGroupRuleTypeCode AccessControlGroupRuleTypeCode) (result AccessControlGroupRuleListResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ACGClient.GetRuleList")
 		defer func() {
@@ -410,7 +395,7 @@ func (client ACGClient) GetRuleList(ctx context.Context, accessControlGroupNo st
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetRuleListPreparer(ctx, accessControlGroupNo, regionCode, accessControlGroupRuleTypeCode)
+	req, err := client.GetRuleListPreparer(ctx, accessControlGroupNo, accessControlGroupRuleTypeCode)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "server.ACGClient", "GetRuleList", nil, "Failure preparing request")
 		return
@@ -432,16 +417,14 @@ func (client ACGClient) GetRuleList(ctx context.Context, accessControlGroupNo st
 }
 
 // GetRuleListPreparer prepares the GetRuleList request.
-func (client ACGClient) GetRuleListPreparer(ctx context.Context, accessControlGroupNo string, regionCode string, accessControlGroupRuleTypeCode AccessControlGroupRuleTypeCode) (*http.Request, error) {
+func (client ACGClient) GetRuleListPreparer(ctx context.Context, accessControlGroupNo string, accessControlGroupRuleTypeCode AccessControlGroupRuleTypeCode) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"accessControlGroupNo": autorest.Encode("query", accessControlGroupNo),
 		"responseFormatType":   autorest.Encode("query", "json"),
 	}
-	if len(regionCode) > 0 {
-		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
-	} else {
-		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
-	}
+
+	queryParameters["regionCode"] = autorest.Encode("query", "FKR")
+
 	if len(string(accessControlGroupRuleTypeCode)) > 0 {
 		queryParameters["accessControlGroupRuleTypeCode"] = autorest.Encode("query", accessControlGroupRuleTypeCode)
 	}

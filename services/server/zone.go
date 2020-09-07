@@ -31,9 +31,7 @@ func NewZoneClientWithBaseURI(baseURI string) ZoneClient {
 }
 
 // GetList ZONE 리스트를 조회
-// Parameters:
-// regionCode - REGION 코드
-func (client ZoneClient) GetList(ctx context.Context, regionCode string) (result autorest.Response, err error) {
+func (client ZoneClient) GetList(ctx context.Context) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ZoneClient.GetList")
 		defer func() {
@@ -44,7 +42,7 @@ func (client ZoneClient) GetList(ctx context.Context, regionCode string) (result
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetListPreparer(ctx, regionCode)
+	req, err := client.GetListPreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "server.ZoneClient", "GetList", nil, "Failure preparing request")
 		return
@@ -66,15 +64,12 @@ func (client ZoneClient) GetList(ctx context.Context, regionCode string) (result
 }
 
 // GetListPreparer prepares the GetList request.
-func (client ZoneClient) GetListPreparer(ctx context.Context, regionCode string) (*http.Request, error) {
+func (client ZoneClient) GetListPreparer(ctx context.Context) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"responseFormatType": autorest.Encode("query", "json"),
 	}
-	if len(regionCode) > 0 {
-		queryParameters["regionCode"] = autorest.Encode("query", regionCode)
-	} else {
-		queryParameters["regionCode"] = autorest.Encode("query", "FKR")
-	}
+
+	queryParameters["regionCode"] = autorest.Encode("query", "FKR")
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
