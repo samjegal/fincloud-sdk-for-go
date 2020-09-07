@@ -82,6 +82,7 @@ func (client Client) AddAccessControlPreparer(ctx context.Context, nasVolumeInst
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -163,6 +164,7 @@ func (client Client) ChangeSizePreparer(ctx context.Context, nasVolumeInstanceNo
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -275,6 +277,7 @@ func (client Client) CreatePreparer(ctx context.Context, volumeSize string, zone
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -354,6 +357,7 @@ func (client Client) DeletePreparer(ctx context.Context, nasVolumeInstanceNoList
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -433,6 +437,7 @@ func (client Client) GetDetailPreparer(ctx context.Context, nasVolumeInstanceNo 
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -551,6 +556,7 @@ func (client Client) GetListPreparer(ctx context.Context, volumeAllotmentProtoco
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -632,6 +638,7 @@ func (client Client) RemoveAccessControlPreparer(ctx context.Context, nasVolumeI
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -716,6 +723,7 @@ func (client Client) SetAccessControlPreparer(ctx context.Context, nasVolumeInst
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),

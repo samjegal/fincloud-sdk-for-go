@@ -85,6 +85,7 @@ func (client RootPasswordClient) GetPreparer(ctx context.Context, serverInstance
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -169,6 +170,7 @@ func (client RootPasswordClient) GetListPreparer(ctx context.Context, rootPasswo
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),

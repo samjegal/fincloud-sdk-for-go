@@ -83,6 +83,7 @@ func (client NetworkInterfaceClient) AddACGPreparer(ctx context.Context, network
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -166,6 +167,7 @@ func (client NetworkInterfaceClient) AttachPreparer(ctx context.Context, subnetN
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -272,6 +274,7 @@ func (client NetworkInterfaceClient) CreatePreparer(ctx context.Context, vpcNo s
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -354,6 +357,7 @@ func (client NetworkInterfaceClient) DeletePreparer(ctx context.Context, network
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -437,6 +441,7 @@ func (client NetworkInterfaceClient) DetachPreparer(ctx context.Context, subnetN
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -516,6 +521,7 @@ func (client NetworkInterfaceClient) GetDetailPreparer(ctx context.Context, netw
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -626,6 +632,7 @@ func (client NetworkInterfaceClient) GetListPreparer(ctx context.Context, networ
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -707,6 +714,7 @@ func (client NetworkInterfaceClient) RemoveACGPreparer(ctx context.Context, netw
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),

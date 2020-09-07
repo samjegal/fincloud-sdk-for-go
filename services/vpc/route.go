@@ -90,6 +90,7 @@ func (client RouteClient) AddPreparer(ctx context.Context, vpcNo string, routeTa
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -171,6 +172,7 @@ func (client RouteClient) GetListPreparer(ctx context.Context, routeTableNo stri
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -260,6 +262,7 @@ func (client RouteClient) RemovePreparer(ctx context.Context, vpcNo string, rout
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),

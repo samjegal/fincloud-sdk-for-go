@@ -95,6 +95,7 @@ func (client ImageProductClient) GetListPreparer(ctx context.Context, blockStora
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),

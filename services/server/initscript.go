@@ -93,6 +93,7 @@ func (client InitScriptClient) CreatePreparer(ctx context.Context, initScriptCon
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -175,6 +176,7 @@ func (client InitScriptClient) DeletePreparer(ctx context.Context, initScriptNoL
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -257,6 +259,7 @@ func (client InitScriptClient) GetDetailPreparer(ctx context.Context, initScript
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -363,6 +366,7 @@ func (client InitScriptClient) GetListPreparer(ctx context.Context, osTypeCode O
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),

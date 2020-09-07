@@ -85,6 +85,7 @@ func (client Client) CreatePreparer(ctx context.Context, ipv4CidrBlock string, v
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -164,6 +165,7 @@ func (client Client) DeletePreparer(ctx context.Context, vpcNo string) (*http.Re
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -243,6 +245,7 @@ func (client Client) GetDetailPreparer(ctx context.Context, vpcNo string) (*http
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -333,6 +336,7 @@ func (client Client) GetListPreparer(ctx context.Context, vpcStatusCode StatusCo
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),

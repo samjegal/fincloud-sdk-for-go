@@ -81,6 +81,7 @@ func (client LoginKeyClient) CreatePreparer(ctx context.Context, keyName string)
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -158,6 +159,7 @@ func (client LoginKeyClient) DeletePreparer(ctx context.Context, keyNameListN st
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -242,6 +244,7 @@ func (client LoginKeyClient) GetListPreparer(ctx context.Context, pageNo string,
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -324,6 +327,7 @@ func (client LoginKeyClient) ImportPreparer(ctx context.Context, publicKey strin
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),

@@ -89,6 +89,7 @@ func (client SnapshotClient) CreatePreparer(ctx context.Context, originalBlockSt
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -168,6 +169,7 @@ func (client SnapshotClient) DeletePreparer(ctx context.Context, blockStorageSna
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -247,6 +249,7 @@ func (client SnapshotClient) GetDetailPreparer(ctx context.Context, blockStorage
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -365,6 +368,7 @@ func (client SnapshotClient) GetListPreparer(ctx context.Context, blockStorageSn
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),

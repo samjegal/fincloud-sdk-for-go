@@ -82,6 +82,7 @@ func (client PlacementGroupClient) AddPreparer(ctx context.Context, placementGro
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -168,6 +169,7 @@ func (client PlacementGroupClient) CreatePreparer(ctx context.Context, placement
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -247,6 +249,7 @@ func (client PlacementGroupClient) DeletePreparer(ctx context.Context, placement
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -329,6 +332,7 @@ func (client PlacementGroupClient) GetDetailPreparer(ctx context.Context, placem
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -415,6 +419,7 @@ func (client PlacementGroupClient) GetListPreparer(ctx context.Context, placemen
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -496,6 +501,7 @@ func (client PlacementGroupClient) RemovePreparer(ctx context.Context, placement
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),

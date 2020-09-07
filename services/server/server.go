@@ -82,6 +82,7 @@ func (client Client) ChangeSpecPreparer(ctx context.Context, serverInstanceNo st
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -232,6 +233,7 @@ func (client Client) CreatePreparer(ctx context.Context, vpcNo string, subnetNo 
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -311,6 +313,7 @@ func (client Client) GetDetailPreparer(ctx context.Context, serverInstanceNo str
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -434,6 +437,7 @@ func (client Client) GetInstanceListPreparer(ctx context.Context, serverInstance
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -513,6 +517,7 @@ func (client Client) RebootPreparer(ctx context.Context, serverInstanceNoListN s
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -592,6 +597,7 @@ func (client Client) StartPreparer(ctx context.Context, serverInstanceNoListN st
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -671,6 +677,7 @@ func (client Client) StopPreparer(ctx context.Context, serverInstanceNoListN str
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -750,6 +757,7 @@ func (client Client) TerminatePreparer(ctx context.Context, serverInstanceNoList
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),

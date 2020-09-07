@@ -82,6 +82,7 @@ func (client PublicIPClient) AssociatePreparer(ctx context.Context, publicIPInst
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -168,6 +169,7 @@ func (client PublicIPClient) CreatePreparer(ctx context.Context, serverInstanceN
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -247,6 +249,7 @@ func (client PublicIPClient) DeletePreparer(ctx context.Context, publicIPInstanc
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -333,6 +336,7 @@ func (client PublicIPClient) DisassociatePreparer(ctx context.Context, publicIPI
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -412,6 +416,7 @@ func (client PublicIPClient) GetDetailPreparer(ctx context.Context, publicIPInst
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -506,6 +511,7 @@ func (client PublicIPClient) GetListPreparer(ctx context.Context, publicIPInstan
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -587,6 +593,7 @@ func (client PublicIPClient) GetTargetListPreparer(ctx context.Context, publicIP
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),

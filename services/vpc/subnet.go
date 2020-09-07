@@ -97,6 +97,7 @@ func (client SubnetClient) CreatePreparer(ctx context.Context, zoneCode string, 
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -176,6 +177,7 @@ func (client SubnetClient) DeletePreparer(ctx context.Context, subnetNo string) 
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -255,6 +257,7 @@ func (client SubnetClient) GetDetailPreparer(ctx context.Context, subnetNo strin
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -377,6 +380,7 @@ func (client SubnetClient) GetListPreparer(ctx context.Context, subnetNoListN st
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),

@@ -97,6 +97,7 @@ func (client NetworkACLClient) AddInboundRulePreparer(ctx context.Context, netwo
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -193,6 +194,7 @@ func (client NetworkACLClient) AddOutboundRulePreparer(ctx context.Context, netw
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -281,6 +283,7 @@ func (client NetworkACLClient) CreatePreparer(ctx context.Context, vpcNo string,
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -360,6 +363,7 @@ func (client NetworkACLClient) DeletePreparer(ctx context.Context, networkACLNo 
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -439,6 +443,7 @@ func (client NetworkACLClient) GetDetailPreparer(ctx context.Context, networkACL
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -541,6 +546,7 @@ func (client NetworkACLClient) GetListPreparer(ctx context.Context, networkACLNa
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -625,6 +631,7 @@ func (client NetworkACLClient) GetRuleListPreparer(ctx context.Context, networkA
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -717,6 +724,7 @@ func (client NetworkACLClient) RemoveInboundRulePreparer(ctx context.Context, ne
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -809,6 +817,7 @@ func (client NetworkACLClient) RemoveOutboundRulePreparer(ctx context.Context, n
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -890,6 +899,7 @@ func (client NetworkACLClient) SetSubnetPreparer(ctx context.Context, networkACL
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),

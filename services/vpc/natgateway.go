@@ -91,6 +91,7 @@ func (client NatGatewayClient) CreatePreparer(ctx context.Context, vpcNo string,
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -169,6 +170,7 @@ func (client NatGatewayClient) DeletePreparer(ctx context.Context, natGatewayIns
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -247,6 +249,7 @@ func (client NatGatewayClient) GetDetailPreparer(ctx context.Context, natGateway
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -352,6 +355,7 @@ func (client NatGatewayClient) GetListPreparer(ctx context.Context, natGatewayIn
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),

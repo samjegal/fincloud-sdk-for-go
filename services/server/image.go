@@ -89,6 +89,7 @@ func (client ImageClient) CreatePreparer(ctx context.Context, serverInstanceNo s
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -171,6 +172,7 @@ func (client ImageClient) DeletePreparer(ctx context.Context, memberServerImageI
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -250,6 +252,7 @@ func (client ImageClient) GetDetailPreparer(ctx context.Context, memberServerIma
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -362,6 +365,7 @@ func (client ImageClient) GetListPreparer(ctx context.Context, memberServerImage
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),

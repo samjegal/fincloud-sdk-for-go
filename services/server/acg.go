@@ -89,6 +89,7 @@ func (client ACGClient) CreatePreparer(ctx context.Context, vpcNo string, access
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -170,6 +171,7 @@ func (client ACGClient) DeletePreparer(ctx context.Context, vpcNo string, access
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -249,6 +251,7 @@ func (client ACGClient) GetDetailPreparer(ctx context.Context, accessControlGrou
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -351,6 +354,7 @@ func (client ACGClient) GetListPreparer(ctx context.Context, accessControlGroupN
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -435,6 +439,7 @@ func (client ACGClient) GetRuleListPreparer(ctx context.Context, accessControlGr
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),

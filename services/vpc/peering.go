@@ -82,6 +82,7 @@ func (client PeeringClient) AcceptOrRejectPreparer(ctx context.Context, vpcPeeri
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -180,6 +181,7 @@ func (client PeeringClient) CreatePreparer(ctx context.Context, sourceVpcNo stri
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -259,6 +261,7 @@ func (client PeeringClient) DeletePreparer(ctx context.Context, vpcPeeringInstan
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -338,6 +341,7 @@ func (client PeeringClient) GetDetailPreparer(ctx context.Context, vpcPeeringIns
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -451,6 +455,7 @@ func (client PeeringClient) GetListPreparer(ctx context.Context, vpcPeeringInsta
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),

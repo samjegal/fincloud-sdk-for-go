@@ -82,6 +82,7 @@ func (client BlockStorageClient) AttachPreparer(ctx context.Context, blockStorag
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -163,6 +164,7 @@ func (client BlockStorageClient) ChangeVolumeSizePreparer(ctx context.Context, b
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -267,6 +269,7 @@ func (client BlockStorageClient) CreatePreparer(ctx context.Context, serverInsta
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -346,6 +349,7 @@ func (client BlockStorageClient) DeletePreparer(ctx context.Context, blockStorag
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -425,6 +429,7 @@ func (client BlockStorageClient) DetachPreparer(ctx context.Context, blockStorag
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -504,6 +509,7 @@ func (client BlockStorageClient) GetDetailPreparer(ctx context.Context, blockSto
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -634,6 +640,7 @@ func (client BlockStorageClient) GetListPreparer(ctx context.Context, serverInst
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),

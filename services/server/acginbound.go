@@ -101,6 +101,7 @@ func (client ACGInboundClient) AddRulePreparer(ctx context.Context, vpcNo string
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -197,6 +198,7 @@ func (client ACGInboundClient) RemoveRulePreparer(ctx context.Context, vpcNo str
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),

@@ -97,6 +97,7 @@ func (client ProductClient) GetListPreparer(ctx context.Context, serverImageProd
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),

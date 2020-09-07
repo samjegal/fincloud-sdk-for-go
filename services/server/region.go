@@ -75,6 +75,7 @@ func (client RegionClient) GetListPreparer(ctx context.Context) (*http.Request, 
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
