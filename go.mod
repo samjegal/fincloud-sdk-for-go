@@ -2,7 +2,7 @@ module github.com/samjegal/fincloud-sdk-for-go
 
 go 1.15
 
-replace github.com/Azure/go-autorest/autorest => github.com/samjegal/go-autorest/autorest v0.11.5-0.20200906111652-5e286818fa7f
+replace github.com/Azure/go-autorest/autorest => github.com/samjegal/go-autorest/autorest v0.0.0-20200908011700-76a89b3e2bac
 
 require (
 	github.com/Azure/go-autorest/autorest v0.11.4
