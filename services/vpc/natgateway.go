@@ -36,13 +36,13 @@ func NewNatGatewayClientWithBaseURI(baseURI string) NatGatewayClient {
 // zoneCode - ZONE 코드
 // natGatewayName - NAT Gateway 이름
 // natGatewayDescription - NAT Gateway 설명
-func (client NatGatewayClient) Create(ctx context.Context, vpcNo string, zoneCode string, natGatewayName string, natGatewayDescription string) (result autorest.Response, err error) {
+func (client NatGatewayClient) Create(ctx context.Context, vpcNo string, zoneCode string, natGatewayName string, natGatewayDescription string) (result NatGatewayInstanceCreateResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NatGatewayClient.Create")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -55,7 +55,7 @@ func (client NatGatewayClient) Create(ctx context.Context, vpcNo string, zoneCod
 
 	resp, err := client.CreateSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "vpc.NatGatewayClient", "Create", resp, "Failure sending request")
 		return
 	}
@@ -111,25 +111,26 @@ func (client NatGatewayClient) CreateSender(req *http.Request) (*http.Response, 
 
 // CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
-func (client NatGatewayClient) CreateResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client NatGatewayClient) CreateResponder(resp *http.Response) (result NatGatewayInstanceCreateResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
 // Delete NAT Gateway 인스턴스를 삭제
 // Parameters:
 // natGatewayInstanceNo - NAT Gateway 인스턴스 번호
-func (client NatGatewayClient) Delete(ctx context.Context, natGatewayInstanceNo string) (result autorest.Response, err error) {
+func (client NatGatewayClient) Delete(ctx context.Context, natGatewayInstanceNo string) (result NatGatewayInstanceDeleteResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NatGatewayClient.Delete")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -142,7 +143,7 @@ func (client NatGatewayClient) Delete(ctx context.Context, natGatewayInstanceNo 
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "vpc.NatGatewayClient", "Delete", resp, "Failure sending request")
 		return
 	}
@@ -190,25 +191,26 @@ func (client NatGatewayClient) DeleteSender(req *http.Request) (*http.Response, 
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client NatGatewayClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client NatGatewayClient) DeleteResponder(resp *http.Response) (result NatGatewayInstanceDeleteResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
 // GetDetail NAT Gateway 인스턴스 상세 정보를 조회
 // Parameters:
 // natGatewayInstanceNo - NAT Gateway 인스턴스 번호
-func (client NatGatewayClient) GetDetail(ctx context.Context, natGatewayInstanceNo string) (result autorest.Response, err error) {
+func (client NatGatewayClient) GetDetail(ctx context.Context, natGatewayInstanceNo string) (result NatGatewayInstanceDetailResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NatGatewayClient.GetDetail")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -221,7 +223,7 @@ func (client NatGatewayClient) GetDetail(ctx context.Context, natGatewayInstance
 
 	resp, err := client.GetDetailSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "vpc.NatGatewayClient", "GetDetail", resp, "Failure sending request")
 		return
 	}
@@ -269,12 +271,13 @@ func (client NatGatewayClient) GetDetailSender(req *http.Request) (*http.Respons
 
 // GetDetailResponder handles the response to the GetDetail request. The method always
 // closes the http.Response Body.
-func (client NatGatewayClient) GetDetailResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client NatGatewayClient) GetDetailResponder(resp *http.Response) (result NatGatewayInstanceDetailResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -287,13 +290,13 @@ func (client NatGatewayClient) GetDetailResponder(resp *http.Response) (result a
 // natGatewayInstanceStatusCode - NAT Gateway 인스턴스 상태 코드
 // pageNo - 페이지 번호
 // pageSize - 페이지 사이즈
-func (client NatGatewayClient) GetList(ctx context.Context, natGatewayInstanceNoListN string, publicIP string, vpcName string, natGatewayName string, natGatewayInstanceStatusCode NatGatewayInstanceStatusCode, pageNo string, pageSize string) (result autorest.Response, err error) {
+func (client NatGatewayClient) GetList(ctx context.Context, natGatewayInstanceNoListN string, publicIP string, vpcName string, natGatewayName string, natGatewayInstanceStatusCode NatGatewayInstanceStatusCode, pageNo string, pageSize string) (result NatGatewayInstanceListResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NatGatewayClient.GetList")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -306,7 +309,7 @@ func (client NatGatewayClient) GetList(ctx context.Context, natGatewayInstanceNo
 
 	resp, err := client.GetListSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "vpc.NatGatewayClient", "GetList", resp, "Failure sending request")
 		return
 	}
@@ -375,11 +378,12 @@ func (client NatGatewayClient) GetListSender(req *http.Request) (*http.Response,
 
 // GetListResponder handles the response to the GetList request. The method always
 // closes the http.Response Body.
-func (client NatGatewayClient) GetListResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client NatGatewayClient) GetListResponder(resp *http.Response) (result NatGatewayInstanceListResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }

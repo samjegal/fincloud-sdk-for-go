@@ -36,7 +36,7 @@ func NewRouteTableClientWithBaseURI(baseURI string) RouteTableClient {
 // routeTableName - 라우트 테이블 이름
 // supportedSubnetTypeCode - 지원하는 서브넷 유형 코드
 // routeTableDescription - 라우트 테이블 설명
-func (client RouteTableClient) Create(ctx context.Context, vpcNo string, routeTableName string, supportedSubnetTypeCode SupportedSubnetTypeCode, routeTableDescription string) (result RouteTableResponse, err error) {
+func (client RouteTableClient) Create(ctx context.Context, vpcNo string, routeTableName string, supportedSubnetTypeCode SupportedSubnetTypeCode, routeTableDescription string) (result RouteTableCreateResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/RouteTableClient.Create")
 		defer func() {
@@ -113,7 +113,7 @@ func (client RouteTableClient) CreateSender(req *http.Request) (*http.Response, 
 
 // CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
-func (client RouteTableClient) CreateResponder(resp *http.Response) (result RouteTableResponse, err error) {
+func (client RouteTableClient) CreateResponder(resp *http.Response) (result RouteTableCreateResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -126,7 +126,7 @@ func (client RouteTableClient) CreateResponder(resp *http.Response) (result Rout
 // Delete 라우트 테이블을 삭제
 // Parameters:
 // routeTableNo - 라우트 테이블 번호
-func (client RouteTableClient) Delete(ctx context.Context, routeTableNo string) (result RouteTableResponse, err error) {
+func (client RouteTableClient) Delete(ctx context.Context, routeTableNo string) (result RouteTableDeleteResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/RouteTableClient.Delete")
 		defer func() {
@@ -193,7 +193,7 @@ func (client RouteTableClient) DeleteSender(req *http.Request) (*http.Response, 
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client RouteTableClient) DeleteResponder(resp *http.Response) (result RouteTableResponse, err error) {
+func (client RouteTableClient) DeleteResponder(resp *http.Response) (result RouteTableDeleteResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

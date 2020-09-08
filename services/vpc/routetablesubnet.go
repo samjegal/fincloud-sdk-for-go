@@ -36,7 +36,7 @@ func NewRouteTableSubnetClientWithBaseURI(baseURI string) RouteTableSubnetClient
 // vpcNo - VPC 번호
 // routeTableNo - 라우트 테이블 번호
 // subnetNoListN - 서브넷 번호 리스트
-func (client RouteTableSubnetClient) Add(ctx context.Context, vpcNo string, routeTableNo string, subnetNoListN string) (result RouteTableSubnetResponse, err error) {
+func (client RouteTableSubnetClient) Add(ctx context.Context, vpcNo string, routeTableNo string, subnetNoListN string) (result RouteTableSubnetAddResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/RouteTableSubnetClient.Add")
 		defer func() {
@@ -105,7 +105,7 @@ func (client RouteTableSubnetClient) AddSender(req *http.Request) (*http.Respons
 
 // AddResponder handles the response to the Add request. The method always
 // closes the http.Response Body.
-func (client RouteTableSubnetClient) AddResponder(resp *http.Response) (result RouteTableSubnetResponse, err error) {
+func (client RouteTableSubnetClient) AddResponder(resp *http.Response) (result RouteTableSubnetAddResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -200,7 +200,7 @@ func (client RouteTableSubnetClient) GetListResponder(resp *http.Response) (resu
 // vpcNo - VPC 번호
 // routeTableNo - 라우트 테이블 번호
 // subnetNoListN - 서브넷 번호 리스트
-func (client RouteTableSubnetClient) Remove(ctx context.Context, vpcNo string, routeTableNo string, subnetNoListN string) (result RouteTableSubnetResponse, err error) {
+func (client RouteTableSubnetClient) Remove(ctx context.Context, vpcNo string, routeTableNo string, subnetNoListN string) (result RouteTableSubnetRemoveResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/RouteTableSubnetClient.Remove")
 		defer func() {
@@ -269,7 +269,7 @@ func (client RouteTableSubnetClient) RemoveSender(req *http.Request) (*http.Resp
 
 // RemoveResponder handles the response to the Remove request. The method always
 // closes the http.Response Body.
-func (client RouteTableSubnetClient) RemoveResponder(resp *http.Response) (result RouteTableSubnetResponse, err error) {
+func (client RouteTableSubnetClient) RemoveResponder(resp *http.Response) (result RouteTableSubnetRemoveResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

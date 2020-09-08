@@ -38,7 +38,7 @@ func NewRouteClientWithBaseURI(baseURI string) RouteClient {
 // routeListNtargetTypeCode - 목적지 유형 코드
 // routeListNtargetNo - 목적지 번호
 // routeListNtargetName - 목적지 이름
-func (client RouteClient) Add(ctx context.Context, vpcNo string, routeTableNo string, routeListNdestinationCidrBlock string, routeListNtargetTypeCode TargetTypeCode, routeListNtargetNo string, routeListNtargetName string) (result RouteResponse, err error) {
+func (client RouteClient) Add(ctx context.Context, vpcNo string, routeTableNo string, routeListNdestinationCidrBlock string, routeListNtargetTypeCode TargetTypeCode, routeListNtargetNo string, routeListNtargetName string) (result RouteAddResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/RouteClient.Add")
 		defer func() {
@@ -110,7 +110,7 @@ func (client RouteClient) AddSender(req *http.Request) (*http.Response, error) {
 
 // AddResponder handles the response to the Add request. The method always
 // closes the http.Response Body.
-func (client RouteClient) AddResponder(resp *http.Response) (result RouteResponse, err error) {
+func (client RouteClient) AddResponder(resp *http.Response) (result RouteAddResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -210,7 +210,7 @@ func (client RouteClient) GetListResponder(resp *http.Response) (result RouteLis
 // routeListNtargetTypeCode - 목적지 유형 코드
 // routeListNtargetNo - 목적지 번호
 // routeListNtargetName - 목적지 이름
-func (client RouteClient) Remove(ctx context.Context, vpcNo string, routeTableNo string, routeListNdestinationCidrBlock string, routeListNtargetTypeCode TargetTypeCode, routeListNtargetNo string, routeListNtargetName string) (result RouteResponse, err error) {
+func (client RouteClient) Remove(ctx context.Context, vpcNo string, routeTableNo string, routeListNdestinationCidrBlock string, routeListNtargetTypeCode TargetTypeCode, routeListNtargetNo string, routeListNtargetName string) (result RouteRemoveResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/RouteClient.Remove")
 		defer func() {
@@ -282,7 +282,7 @@ func (client RouteClient) RemoveSender(req *http.Request) (*http.Response, error
 
 // RemoveResponder handles the response to the Remove request. The method always
 // closes the http.Response Body.
-func (client RouteClient) RemoveResponder(resp *http.Response) (result RouteResponse, err error) {
+func (client RouteClient) RemoveResponder(resp *http.Response) (result RouteRemoveResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

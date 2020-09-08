@@ -39,7 +39,7 @@ func NewNetworkACLClientWithBaseURI(baseURI string) NetworkACLClient {
 // networkACLRuleListNruleActionCode - rule 액션 코드
 // networkACLRuleListNportRange - 포트 범위
 // networkACLRuleListNnetworkACLRuleDescription - 네트워크 ACL Rule 설명
-func (client NetworkACLClient) AddInboundRule(ctx context.Context, networkACLNo string, networkACLRuleListNpriority string, networkACLRuleListNprotocolTypeCode ProtocolTypeCode, networkACLRuleListNipBlock string, networkACLRuleListNruleActionCode RuleActionCode, networkACLRuleListNportRange string, networkACLRuleListNnetworkACLRuleDescription string) (result NetworkACLInboundRuleResponse, err error) {
+func (client NetworkACLClient) AddInboundRule(ctx context.Context, networkACLNo string, networkACLRuleListNpriority string, networkACLRuleListNprotocolTypeCode ProtocolTypeCode, networkACLRuleListNipBlock string, networkACLRuleListNruleActionCode RuleActionCode, networkACLRuleListNportRange string, networkACLRuleListNnetworkACLRuleDescription string) (result NetworkACLInboundRuleAddResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NetworkACLClient.AddInboundRule")
 		defer func() {
@@ -117,7 +117,7 @@ func (client NetworkACLClient) AddInboundRuleSender(req *http.Request) (*http.Re
 
 // AddInboundRuleResponder handles the response to the AddInboundRule request. The method always
 // closes the http.Response Body.
-func (client NetworkACLClient) AddInboundRuleResponder(resp *http.Response) (result NetworkACLInboundRuleResponse, err error) {
+func (client NetworkACLClient) AddInboundRuleResponder(resp *http.Response) (result NetworkACLInboundRuleAddResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -136,7 +136,7 @@ func (client NetworkACLClient) AddInboundRuleResponder(resp *http.Response) (res
 // networkACLRuleListNruleActionCode - rule 액션 코드
 // networkACLRuleListNportRange - 포트 범위
 // networkACLRuleListNnetworkACLRuleDescription - 네트워크 ACL Rule 설명
-func (client NetworkACLClient) AddOutboundRule(ctx context.Context, networkACLNo string, networkACLRuleListNpriority string, networkACLRuleListNprotocolTypeCode ProtocolTypeCode, networkACLRuleListNipBlock string, networkACLRuleListNruleActionCode RuleActionCode, networkACLRuleListNportRange string, networkACLRuleListNnetworkACLRuleDescription string) (result NetworkACLOutboundRuleResponse, err error) {
+func (client NetworkACLClient) AddOutboundRule(ctx context.Context, networkACLNo string, networkACLRuleListNpriority string, networkACLRuleListNprotocolTypeCode ProtocolTypeCode, networkACLRuleListNipBlock string, networkACLRuleListNruleActionCode RuleActionCode, networkACLRuleListNportRange string, networkACLRuleListNnetworkACLRuleDescription string) (result NetworkACLOutboundRuleAddResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NetworkACLClient.AddOutboundRule")
 		defer func() {
@@ -214,7 +214,7 @@ func (client NetworkACLClient) AddOutboundRuleSender(req *http.Request) (*http.R
 
 // AddOutboundRuleResponder handles the response to the AddOutboundRule request. The method always
 // closes the http.Response Body.
-func (client NetworkACLClient) AddOutboundRuleResponder(resp *http.Response) (result NetworkACLOutboundRuleResponse, err error) {
+func (client NetworkACLClient) AddOutboundRuleResponder(resp *http.Response) (result NetworkACLOutboundRuleAddResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -229,7 +229,7 @@ func (client NetworkACLClient) AddOutboundRuleResponder(resp *http.Response) (re
 // vpcNo - VPC 번호
 // networkACLName - 네트워크 ACL 이름
 // networkACLDescription - 네트워크 ACL 설명
-func (client NetworkACLClient) Create(ctx context.Context, vpcNo string, networkACLName string, networkACLDescription string) (result NetworkACLResponse, err error) {
+func (client NetworkACLClient) Create(ctx context.Context, vpcNo string, networkACLName string, networkACLDescription string) (result NetworkACLCreateResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NetworkACLClient.Create")
 		defer func() {
@@ -303,7 +303,7 @@ func (client NetworkACLClient) CreateSender(req *http.Request) (*http.Response, 
 
 // CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
-func (client NetworkACLClient) CreateResponder(resp *http.Response) (result NetworkACLResponse, err error) {
+func (client NetworkACLClient) CreateResponder(resp *http.Response) (result NetworkACLCreateResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -316,7 +316,7 @@ func (client NetworkACLClient) CreateResponder(resp *http.Response) (result Netw
 // Delete 네트워크 ACL을 삭제
 // Parameters:
 // networkACLNo - 네트워크 ACL 번호
-func (client NetworkACLClient) Delete(ctx context.Context, networkACLNo string) (result NetworkACLResponse, err error) {
+func (client NetworkACLClient) Delete(ctx context.Context, networkACLNo string) (result NetworkACLDeleteResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NetworkACLClient.Delete")
 		defer func() {
@@ -383,7 +383,7 @@ func (client NetworkACLClient) DeleteSender(req *http.Request) (*http.Response, 
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client NetworkACLClient) DeleteResponder(resp *http.Response) (result NetworkACLResponse, err error) {
+func (client NetworkACLClient) DeleteResponder(resp *http.Response) (result NetworkACLDeleteResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -669,7 +669,7 @@ func (client NetworkACLClient) GetRuleListResponder(resp *http.Response) (result
 // networkACLRuleListNipBlock - IP 블록
 // networkACLRuleListNruleActionCode - rule 액션 코드
 // networkACLRuleListNportRange - 포트 범위
-func (client NetworkACLClient) RemoveInboundRule(ctx context.Context, networkACLNo string, networkACLRuleListNpriority string, networkACLRuleListNprotocolTypeCode ProtocolTypeCode, networkACLRuleListNipBlock string, networkACLRuleListNruleActionCode RuleActionCode, networkACLRuleListNportRange string) (result NetworkACLInboundRuleResponse, err error) {
+func (client NetworkACLClient) RemoveInboundRule(ctx context.Context, networkACLNo string, networkACLRuleListNpriority string, networkACLRuleListNprotocolTypeCode ProtocolTypeCode, networkACLRuleListNipBlock string, networkACLRuleListNruleActionCode RuleActionCode, networkACLRuleListNportRange string) (result NetworkACLInboundRuleRemoveResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NetworkACLClient.RemoveInboundRule")
 		defer func() {
@@ -744,7 +744,7 @@ func (client NetworkACLClient) RemoveInboundRuleSender(req *http.Request) (*http
 
 // RemoveInboundRuleResponder handles the response to the RemoveInboundRule request. The method always
 // closes the http.Response Body.
-func (client NetworkACLClient) RemoveInboundRuleResponder(resp *http.Response) (result NetworkACLInboundRuleResponse, err error) {
+func (client NetworkACLClient) RemoveInboundRuleResponder(resp *http.Response) (result NetworkACLInboundRuleRemoveResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -762,7 +762,7 @@ func (client NetworkACLClient) RemoveInboundRuleResponder(resp *http.Response) (
 // networkACLRuleListNipBlock - IP 블록
 // networkACLRuleListNruleActionCode - rule 액션 코드
 // networkACLRuleListNportRange - 포트 범위
-func (client NetworkACLClient) RemoveOutboundRule(ctx context.Context, networkACLNo string, networkACLRuleListNpriority string, networkACLRuleListNprotocolTypeCode ProtocolTypeCode, networkACLRuleListNipBlock string, networkACLRuleListNruleActionCode RuleActionCode, networkACLRuleListNportRange string) (result NetworkACLOutboundRuleResponse, err error) {
+func (client NetworkACLClient) RemoveOutboundRule(ctx context.Context, networkACLNo string, networkACLRuleListNpriority string, networkACLRuleListNprotocolTypeCode ProtocolTypeCode, networkACLRuleListNipBlock string, networkACLRuleListNruleActionCode RuleActionCode, networkACLRuleListNportRange string) (result NetworkACLOutboundRuleRemoveResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NetworkACLClient.RemoveOutboundRule")
 		defer func() {
@@ -837,7 +837,7 @@ func (client NetworkACLClient) RemoveOutboundRuleSender(req *http.Request) (*htt
 
 // RemoveOutboundRuleResponder handles the response to the RemoveOutboundRule request. The method always
 // closes the http.Response Body.
-func (client NetworkACLClient) RemoveOutboundRuleResponder(resp *http.Response) (result NetworkACLOutboundRuleResponse, err error) {
+func (client NetworkACLClient) RemoveOutboundRuleResponder(resp *http.Response) (result NetworkACLOutboundRuleRemoveResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

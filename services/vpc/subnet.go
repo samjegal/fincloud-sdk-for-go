@@ -39,7 +39,7 @@ func NewSubnetClientWithBaseURI(baseURI string) SubnetClient {
 // subnetTypeCode - 서브넷 유형 코드
 // subnetName - 서브넷 이름
 // usageTypeCode - 용도 유형 코드
-func (client SubnetClient) Create(ctx context.Context, zoneCode string, vpcNo string, subnet string, networkACLNo string, subnetTypeCode SubnetTypeCode, subnetName string, usageTypeCode UsageTypeCode) (result SubnetResponse, err error) {
+func (client SubnetClient) Create(ctx context.Context, zoneCode string, vpcNo string, subnet string, networkACLNo string, subnetTypeCode SubnetTypeCode, subnetName string, usageTypeCode UsageTypeCode) (result SubnetCreateResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SubnetClient.Create")
 		defer func() {
@@ -117,7 +117,7 @@ func (client SubnetClient) CreateSender(req *http.Request) (*http.Response, erro
 
 // CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
-func (client SubnetClient) CreateResponder(resp *http.Response) (result SubnetResponse, err error) {
+func (client SubnetClient) CreateResponder(resp *http.Response) (result SubnetCreateResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -130,7 +130,7 @@ func (client SubnetClient) CreateResponder(resp *http.Response) (result SubnetRe
 // Delete subnet을 삭제
 // Parameters:
 // subnetNo - 서브넷 번호
-func (client SubnetClient) Delete(ctx context.Context, subnetNo string) (result SubnetResponse, err error) {
+func (client SubnetClient) Delete(ctx context.Context, subnetNo string) (result SubnetDeleteResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SubnetClient.Delete")
 		defer func() {
@@ -197,7 +197,7 @@ func (client SubnetClient) DeleteSender(req *http.Request) (*http.Response, erro
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client SubnetClient) DeleteResponder(resp *http.Response) (result SubnetResponse, err error) {
+func (client SubnetClient) DeleteResponder(resp *http.Response) (result SubnetDeleteResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

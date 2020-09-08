@@ -34,7 +34,7 @@ func NewPeeringClientWithBaseURI(baseURI string) PeeringClient {
 // Parameters:
 // vpcPeeringInstanceNo - VPC Peering 인스턴스 번호
 // isAccept - 수락 여부
-func (client PeeringClient) AcceptOrReject(ctx context.Context, vpcPeeringInstanceNo string, isAccept string) (result PeeringInstanceResponse, err error) {
+func (client PeeringClient) AcceptOrReject(ctx context.Context, vpcPeeringInstanceNo string, isAccept string) (result PeeringInstanceAcceptOrRejectResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PeeringClient.AcceptOrReject")
 		defer func() {
@@ -102,7 +102,7 @@ func (client PeeringClient) AcceptOrRejectSender(req *http.Request) (*http.Respo
 
 // AcceptOrRejectResponder handles the response to the AcceptOrReject request. The method always
 // closes the http.Response Body.
-func (client PeeringClient) AcceptOrRejectResponder(resp *http.Response) (result PeeringInstanceResponse, err error) {
+func (client PeeringClient) AcceptOrRejectResponder(resp *http.Response) (result PeeringInstanceAcceptOrRejectResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -120,7 +120,7 @@ func (client PeeringClient) AcceptOrRejectResponder(resp *http.Response) (result
 // targetVpcName - 수락 VPC 이름
 // targetVpcLoginID - 수락 VPC 소유자 ID
 // vpcPeeringDescription - VPC Peering 설명
-func (client PeeringClient) Create(ctx context.Context, sourceVpcNo string, targetVpcNo string, vpcPeeringName string, targetVpcName string, targetVpcLoginID string, vpcPeeringDescription string) (result PeeringInstanceResponse, err error) {
+func (client PeeringClient) Create(ctx context.Context, sourceVpcNo string, targetVpcNo string, vpcPeeringName string, targetVpcName string, targetVpcLoginID string, vpcPeeringDescription string) (result PeeringInstanceCreateResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PeeringClient.Create")
 		defer func() {
@@ -201,7 +201,7 @@ func (client PeeringClient) CreateSender(req *http.Request) (*http.Response, err
 
 // CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
-func (client PeeringClient) CreateResponder(resp *http.Response) (result PeeringInstanceResponse, err error) {
+func (client PeeringClient) CreateResponder(resp *http.Response) (result PeeringInstanceCreateResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -214,7 +214,7 @@ func (client PeeringClient) CreateResponder(resp *http.Response) (result Peering
 // Delete VPC Peering 인스턴스를 삭제
 // Parameters:
 // vpcPeeringInstanceNo - VPC Peering 인스턴스 번호
-func (client PeeringClient) Delete(ctx context.Context, vpcPeeringInstanceNo string) (result PeeringInstanceResponse, err error) {
+func (client PeeringClient) Delete(ctx context.Context, vpcPeeringInstanceNo string) (result PeeringInstanceDeleteResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PeeringClient.Delete")
 		defer func() {
@@ -281,7 +281,7 @@ func (client PeeringClient) DeleteSender(req *http.Request) (*http.Response, err
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client PeeringClient) DeleteResponder(resp *http.Response) (result PeeringInstanceResponse, err error) {
+func (client PeeringClient) DeleteResponder(resp *http.Response) (result PeeringInstanceDeleteResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -294,13 +294,13 @@ func (client PeeringClient) DeleteResponder(resp *http.Response) (result Peering
 // GetDetail VPC Peering 인스턴스 상세 정보를 조회
 // Parameters:
 // vpcPeeringInstanceNo - VPC Peering 인스턴스 번호
-func (client PeeringClient) GetDetail(ctx context.Context, vpcPeeringInstanceNo string) (result autorest.Response, err error) {
+func (client PeeringClient) GetDetail(ctx context.Context, vpcPeeringInstanceNo string) (result PeeringInstanceDetailResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PeeringClient.GetDetail")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -313,7 +313,7 @@ func (client PeeringClient) GetDetail(ctx context.Context, vpcPeeringInstanceNo 
 
 	resp, err := client.GetDetailSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "vpc.PeeringClient", "GetDetail", resp, "Failure sending request")
 		return
 	}
@@ -361,12 +361,13 @@ func (client PeeringClient) GetDetailSender(req *http.Request) (*http.Response, 
 
 // GetDetailResponder handles the response to the GetDetail request. The method always
 // closes the http.Response Body.
-func (client PeeringClient) GetDetailResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client PeeringClient) GetDetailResponder(resp *http.Response) (result PeeringInstanceDetailResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -381,13 +382,13 @@ func (client PeeringClient) GetDetailResponder(resp *http.Response) (result auto
 // pageSize - 페이지 사이즈
 // sortedBy - 정렬 대상
 // sortingOrder - 정렬 순서
-func (client PeeringClient) GetList(ctx context.Context, vpcPeeringInstanceNoListN string, sourceVpcName string, vpcPeeringName string, targetVpcName string, vpcPeeringInstanceStatusCode PeeringInstanceStatusCode, pageNo string, pageSize string, sortedBy SortedBy, sortingOrder SortingOrder) (result autorest.Response, err error) {
+func (client PeeringClient) GetList(ctx context.Context, vpcPeeringInstanceNoListN string, sourceVpcName string, vpcPeeringName string, targetVpcName string, vpcPeeringInstanceStatusCode PeeringInstanceStatusCode, pageNo string, pageSize string, sortedBy SortedBy, sortingOrder SortingOrder) (result PeeringInstanceListResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PeeringClient.GetList")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -400,7 +401,7 @@ func (client PeeringClient) GetList(ctx context.Context, vpcPeeringInstanceNoLis
 
 	resp, err := client.GetListSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "vpc.PeeringClient", "GetList", resp, "Failure sending request")
 		return
 	}
@@ -475,11 +476,12 @@ func (client PeeringClient) GetListSender(req *http.Request) (*http.Response, er
 
 // GetListResponder handles the response to the GetList request. The method always
 // closes the http.Response Body.
-func (client PeeringClient) GetListResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client PeeringClient) GetListResponder(resp *http.Response) (result PeeringInstanceListResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
