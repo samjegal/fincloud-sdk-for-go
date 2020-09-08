@@ -9,9 +9,50 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/samjegal/fincloud-sdk-for-go/services/vpc"
 
+// CreateResponse ...
+type CreateResponse struct {
+	autorest.Response `json:"-"`
+	CreateVpcResponse *CreateResponseCreateVpcResponse `json:"createVpcResponse,omitempty"`
+}
+
+// CreateResponseCreateVpcResponse ...
+type CreateResponseCreateVpcResponse struct {
+	// ReturnCode - 리턴 코드
+	ReturnCode *string `json:"returnCode,omitempty"`
+	// ReturnMessage - 리턴 메시지
+	ReturnMessage *string `json:"returnMessage,omitempty"`
+	// TotalRows - 총 행 개수
+	TotalRows *int32 `json:"totalRows,omitempty"`
+	// VpcList - VPC 리스트
+	VpcList *[]List `json:"vpcList,omitempty"`
+}
+
+// DeleteResponse ...
+type DeleteResponse struct {
+	autorest.Response `json:"-"`
+	DeleteVpcResponse *DeleteResponseDeleteVpcResponse `json:"deleteVpcResponse,omitempty"`
+}
+
+// DeleteResponseDeleteVpcResponse ...
+type DeleteResponseDeleteVpcResponse struct {
+	// ReturnCode - 리턴 코드
+	ReturnCode *string `json:"returnCode,omitempty"`
+	// ReturnMessage - 리턴 메시지
+	ReturnMessage *string `json:"returnMessage,omitempty"`
+	// TotalRows - 총 행 개수
+	TotalRows *int32 `json:"totalRows,omitempty"`
+	// VpcList - VPC 리스트
+	VpcList *[]List `json:"vpcList,omitempty"`
+}
+
 // DetailResponse ...
 type DetailResponse struct {
-	autorest.Response `json:"-"`
+	autorest.Response    `json:"-"`
+	GetVpcDetailResponse *DetailResponseGetVpcDetailResponse `json:"getVpcDetailResponse,omitempty"`
+}
+
+// DetailResponseGetVpcDetailResponse ...
+type DetailResponseGetVpcDetailResponse struct {
 	// ReturnCode - 리턴 코드
 	ReturnCode *string `json:"returnCode,omitempty"`
 	// ReturnMessage - 리턴 메시지
@@ -359,19 +400,6 @@ type ProtocolType struct {
 	Code *string `json:"code,omitempty"`
 	// CodeName - 상태 코드 이름
 	CodeName *string `json:"codeName,omitempty"`
-}
-
-// Response ...
-type Response struct {
-	autorest.Response `json:"-"`
-	// ReturnCode - 리턴 코드
-	ReturnCode *string `json:"returnCode,omitempty"`
-	// ReturnMessage - 리턴 메시지
-	ReturnMessage *string `json:"returnMessage,omitempty"`
-	// TotalRows - 총 행 개수
-	TotalRows *int32 `json:"totalRows,omitempty"`
-	// VpcList - VPC 리스트
-	VpcList *[]List `json:"vpcList,omitempty"`
 }
 
 // RouteList ...

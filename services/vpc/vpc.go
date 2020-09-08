@@ -34,7 +34,7 @@ func NewClientWithBaseURI(baseURI string) Client {
 // Parameters:
 // ipv4CidrBlock - IP 주소 범위
 // vpcName - VPC 이름
-func (client Client) Create(ctx context.Context, ipv4CidrBlock string, vpcName string) (result Response, err error) {
+func (client Client) Create(ctx context.Context, ipv4CidrBlock string, vpcName string) (result CreateResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.Create")
 		defer func() {
@@ -105,7 +105,7 @@ func (client Client) CreateSender(req *http.Request) (*http.Response, error) {
 
 // CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
-func (client Client) CreateResponder(resp *http.Response) (result Response, err error) {
+func (client Client) CreateResponder(resp *http.Response) (result CreateResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -118,7 +118,7 @@ func (client Client) CreateResponder(resp *http.Response) (result Response, err 
 // Delete vPC를 삭제
 // Parameters:
 // vpcNo - VPC 번호
-func (client Client) Delete(ctx context.Context, vpcNo string) (result Response, err error) {
+func (client Client) Delete(ctx context.Context, vpcNo string) (result DeleteResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.Delete")
 		defer func() {
@@ -185,7 +185,7 @@ func (client Client) DeleteSender(req *http.Request) (*http.Response, error) {
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client Client) DeleteResponder(resp *http.Response) (result Response, err error) {
+func (client Client) DeleteResponder(resp *http.Response) (result DeleteResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

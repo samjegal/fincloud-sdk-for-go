@@ -135,7 +135,12 @@ const (
 
 type BaseClient = original.BaseClient
 type Client = original.Client
+type CreateResponse = original.CreateResponse
+type CreateResponseCreateVpcResponse = original.CreateResponseCreateVpcResponse
+type DeleteResponse = original.DeleteResponse
+type DeleteResponseDeleteVpcResponse = original.DeleteResponseDeleteVpcResponse
 type DetailResponse = original.DetailResponse
+type DetailResponseGetVpcDetailResponse = original.DetailResponseGetVpcDetailResponse
 type List = original.List
 type ListResponse = original.ListResponse
 type ListResponseGetVpcListResponse = original.ListResponseGetVpcListResponse
@@ -164,7 +169,6 @@ type PeeringInstanceResponse = original.PeeringInstanceResponse
 type PeeringInstanceStatus = original.PeeringInstanceStatus
 type PeeringResponse = original.PeeringResponse
 type ProtocolType = original.ProtocolType
-type Response = original.Response
 type RouteClient = original.RouteClient
 type RouteList = original.RouteList
 type RouteListResponse = original.RouteListResponse

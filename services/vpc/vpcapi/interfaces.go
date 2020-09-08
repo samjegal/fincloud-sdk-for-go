@@ -74,8 +74,8 @@ var _ SubnetClientAPI = (*vpc.SubnetClient)(nil)
 
 // ClientAPI contains the set of methods on the Client type.
 type ClientAPI interface {
-	Create(ctx context.Context, ipv4CidrBlock string, vpcName string) (result vpc.Response, err error)
-	Delete(ctx context.Context, vpcNo string) (result vpc.Response, err error)
+	Create(ctx context.Context, ipv4CidrBlock string, vpcName string) (result vpc.CreateResponse, err error)
+	Delete(ctx context.Context, vpcNo string) (result vpc.DeleteResponse, err error)
 	GetDetail(ctx context.Context, vpcNo string) (result vpc.DetailResponse, err error)
 	GetList(ctx context.Context, vpcStatusCode vpc.StatusCode, vpcName string, vpcNoListN string) (result vpc.ListResponse, err error)
 }
