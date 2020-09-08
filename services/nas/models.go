@@ -9,9 +9,48 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/samjegal/fincloud-sdk-for-go/services/nas"
 
-// VolumeAccessControlResponse ...
-type VolumeAccessControlResponse struct {
-	autorest.Response `json:"-"`
+// VolumeAccessControlAddResponse ...
+type VolumeAccessControlAddResponse struct {
+	autorest.Response                 `json:"-"`
+	AddNasVolumeAccessControlResponse *VolumeAccessControlAddResponseAddNasVolumeAccessControlResponse `json:"addNasVolumeAccessControlResponse,omitempty"`
+}
+
+// VolumeAccessControlAddResponseAddNasVolumeAccessControlResponse ...
+type VolumeAccessControlAddResponseAddNasVolumeAccessControlResponse struct {
+	// ReturnCode - 리턴 코드
+	ReturnCode *string `json:"returnCode,omitempty"`
+	// ReturnMessage - 리턴 메시지
+	ReturnMessage *string `json:"returnMessage,omitempty"`
+	// TotalRows - 총 행 개수
+	TotalRows             *int32                `json:"totalRows,omitempty"`
+	NasVolumeInstanceList *[]VolumeInstanceList `json:"nasVolumeInstanceList,omitempty"`
+}
+
+// VolumeAccessControlRemoveResponse ...
+type VolumeAccessControlRemoveResponse struct {
+	autorest.Response                    `json:"-"`
+	RemoveNasVolumeAccessControlResponse *VolumeAccessControlRemoveResponseRemoveNasVolumeAccessControlResponse `json:"removeNasVolumeAccessControlResponse,omitempty"`
+}
+
+// VolumeAccessControlRemoveResponseRemoveNasVolumeAccessControlResponse ...
+type VolumeAccessControlRemoveResponseRemoveNasVolumeAccessControlResponse struct {
+	// ReturnCode - 리턴 코드
+	ReturnCode *string `json:"returnCode,omitempty"`
+	// ReturnMessage - 리턴 메시지
+	ReturnMessage *string `json:"returnMessage,omitempty"`
+	// TotalRows - 총 행 개수
+	TotalRows             *int32                `json:"totalRows,omitempty"`
+	NasVolumeInstanceList *[]VolumeInstanceList `json:"nasVolumeInstanceList,omitempty"`
+}
+
+// VolumeAccessControlSetResponse ...
+type VolumeAccessControlSetResponse struct {
+	autorest.Response                 `json:"-"`
+	SetNasVolumeAccessControlResponse *VolumeAccessControlSetResponseSetNasVolumeAccessControlResponse `json:"setNasVolumeAccessControlResponse,omitempty"`
+}
+
+// VolumeAccessControlSetResponseSetNasVolumeAccessControlResponse ...
+type VolumeAccessControlSetResponseSetNasVolumeAccessControlResponse struct {
 	// ReturnCode - 리턴 코드
 	ReturnCode *string `json:"returnCode,omitempty"`
 	// ReturnMessage - 리턴 메시지
@@ -31,7 +70,12 @@ type VolumeAllotmentProtocolType struct {
 
 // VolumeInstanceDetailResponse ...
 type VolumeInstanceDetailResponse struct {
-	autorest.Response `json:"-"`
+	autorest.Response                  `json:"-"`
+	GetNasVolumeInstanceDetailResponse *VolumeInstanceDetailResponseGetNasVolumeInstanceDetailResponse `json:"getNasVolumeInstanceDetailResponse,omitempty"`
+}
+
+// VolumeInstanceDetailResponseGetNasVolumeInstanceDetailResponse ...
+type VolumeInstanceDetailResponseGetNasVolumeInstanceDetailResponse struct {
 	// ReturnCode - 리턴 코드
 	ReturnCode *string `json:"returnCode,omitempty"`
 	// ReturnMessage - 리턴 메시지
@@ -70,7 +114,12 @@ type VolumeInstanceList struct {
 
 // VolumeInstanceListResponse ...
 type VolumeInstanceListResponse struct {
-	autorest.Response `json:"-"`
+	autorest.Response                `json:"-"`
+	GetNasVolumeInstanceListResponse *VolumeInstanceListResponseGetNasVolumeInstanceListResponse `json:"getNasVolumeInstanceListResponse,omitempty"`
+}
+
+// VolumeInstanceListResponseGetNasVolumeInstanceListResponse ...
+type VolumeInstanceListResponseGetNasVolumeInstanceListResponse struct {
 	// ReturnCode - 리턴 코드
 	ReturnCode *string `json:"returnCode,omitempty"`
 	// ReturnMessage - 리턴 메시지
@@ -88,9 +137,31 @@ type VolumeInstanceOperation struct {
 	CodeName *string `json:"codeName,omitempty"`
 }
 
-// VolumeInstancesResponse ...
-type VolumeInstancesResponse struct {
-	autorest.Response `json:"-"`
+// VolumeInstancesCreateResponse ...
+type VolumeInstancesCreateResponse struct {
+	autorest.Response               `json:"-"`
+	CreateNasVolumeInstanceResponse *VolumeInstancesCreateResponseCreateNasVolumeInstanceResponse `json:"createNasVolumeInstanceResponse,omitempty"`
+}
+
+// VolumeInstancesCreateResponseCreateNasVolumeInstanceResponse ...
+type VolumeInstancesCreateResponseCreateNasVolumeInstanceResponse struct {
+	// ReturnCode - 리턴 코드
+	ReturnCode *string `json:"returnCode,omitempty"`
+	// ReturnMessage - 리턴 메시지
+	ReturnMessage *string `json:"returnMessage,omitempty"`
+	// TotalRows - 총 행 개수
+	TotalRows             *int32                `json:"totalRows,omitempty"`
+	NasVolumeInstanceList *[]VolumeInstanceList `json:"nasVolumeInstanceList,omitempty"`
+}
+
+// VolumeInstancesDeleteResponse ...
+type VolumeInstancesDeleteResponse struct {
+	autorest.Response                `json:"-"`
+	DeleteNasVolumeInstancesResponse *VolumeInstancesDeleteResponseDeleteNasVolumeInstancesResponse `json:"deleteNasVolumeInstancesResponse,omitempty"`
+}
+
+// VolumeInstancesDeleteResponseDeleteNasVolumeInstancesResponse ...
+type VolumeInstancesDeleteResponseDeleteNasVolumeInstancesResponse struct {
 	// ReturnCode - 리턴 코드
 	ReturnCode *string `json:"returnCode,omitempty"`
 	// ReturnMessage - 리턴 메시지
@@ -115,7 +186,12 @@ type VolumeServerInstanceNoList struct {
 
 // VolumeSizeResponse ...
 type VolumeSizeResponse struct {
-	autorest.Response `json:"-"`
+	autorest.Response           `json:"-"`
+	ChangeNasVolumeSizeResponse *VolumeSizeResponseChangeNasVolumeSizeResponse `json:"changeNasVolumeSizeResponse,omitempty"`
+}
+
+// VolumeSizeResponseChangeNasVolumeSizeResponse ...
+type VolumeSizeResponseChangeNasVolumeSizeResponse struct {
 	// ReturnCode - 리턴 코드
 	ReturnCode *string `json:"returnCode,omitempty"`
 	// ReturnMessage - 리턴 메시지

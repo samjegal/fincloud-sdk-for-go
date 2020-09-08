@@ -34,7 +34,7 @@ func NewClientWithBaseURI(baseURI string) Client {
 // Parameters:
 // nasVolumeInstanceNo - NAS 볼륜 인스턴스 번호
 // serverInstanceNoListN - 서버 인스턴스 번호 리스트
-func (client Client) AddAccessControl(ctx context.Context, nasVolumeInstanceNo string, serverInstanceNoListN string) (result VolumeAccessControlResponse, err error) {
+func (client Client) AddAccessControl(ctx context.Context, nasVolumeInstanceNo string, serverInstanceNoListN string) (result VolumeAccessControlAddResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.AddAccessControl")
 		defer func() {
@@ -102,7 +102,7 @@ func (client Client) AddAccessControlSender(req *http.Request) (*http.Response, 
 
 // AddAccessControlResponder handles the response to the AddAccessControl request. The method always
 // closes the http.Response Body.
-func (client Client) AddAccessControlResponder(resp *http.Response) (result VolumeAccessControlResponse, err error) {
+func (client Client) AddAccessControlResponder(resp *http.Response) (result VolumeAccessControlAddResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -205,7 +205,7 @@ func (client Client) ChangeSizeResponder(resp *http.Response) (result VolumeSize
 // cifsUserPassword - CIFS 유저 비밀번호
 // isEncryptedVolume - 볼륨 암호화 여부
 // nasVolumeDescription - NAS 볼륨 설명
-func (client Client) Create(ctx context.Context, volumeSize string, zoneCode string, volumeName string, volumeAllotmentProtocolTypeCode VolumeAllotmentProtocolTypeCode, serverInstanceNoListN string, cifsUserName string, cifsUserPassword string, isEncryptedVolume EncryptedVolume, nasVolumeDescription string) (result VolumeInstancesResponse, err error) {
+func (client Client) Create(ctx context.Context, volumeSize string, zoneCode string, volumeName string, volumeAllotmentProtocolTypeCode VolumeAllotmentProtocolTypeCode, serverInstanceNoListN string, cifsUserName string, cifsUserPassword string, isEncryptedVolume EncryptedVolume, nasVolumeDescription string) (result VolumeInstancesCreateResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.Create")
 		defer func() {
@@ -297,7 +297,7 @@ func (client Client) CreateSender(req *http.Request) (*http.Response, error) {
 
 // CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
-func (client Client) CreateResponder(resp *http.Response) (result VolumeInstancesResponse, err error) {
+func (client Client) CreateResponder(resp *http.Response) (result VolumeInstancesCreateResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -310,7 +310,7 @@ func (client Client) CreateResponder(resp *http.Response) (result VolumeInstance
 // Delete NAS 볼륨 인스턴스 삭제
 // Parameters:
 // nasVolumeInstanceNoListN - NAS 볼륨 인스턴스 번호 리스트
-func (client Client) Delete(ctx context.Context, nasVolumeInstanceNoListN string) (result VolumeInstancesResponse, err error) {
+func (client Client) Delete(ctx context.Context, nasVolumeInstanceNoListN string) (result VolumeInstancesDeleteResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.Delete")
 		defer func() {
@@ -377,7 +377,7 @@ func (client Client) DeleteSender(req *http.Request) (*http.Response, error) {
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client Client) DeleteResponder(resp *http.Response) (result VolumeInstancesResponse, err error) {
+func (client Client) DeleteResponder(resp *http.Response) (result VolumeInstancesDeleteResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -590,7 +590,7 @@ func (client Client) GetListResponder(resp *http.Response) (result VolumeInstanc
 // Parameters:
 // nasVolumeInstanceNo - NAS 볼륜 인스턴스 번호
 // serverInstanceNoListN - 서버 인스턴스 번호 리스트
-func (client Client) RemoveAccessControl(ctx context.Context, nasVolumeInstanceNo string, serverInstanceNoListN string) (result VolumeAccessControlResponse, err error) {
+func (client Client) RemoveAccessControl(ctx context.Context, nasVolumeInstanceNo string, serverInstanceNoListN string) (result VolumeAccessControlRemoveResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.RemoveAccessControl")
 		defer func() {
@@ -658,7 +658,7 @@ func (client Client) RemoveAccessControlSender(req *http.Request) (*http.Respons
 
 // RemoveAccessControlResponder handles the response to the RemoveAccessControl request. The method always
 // closes the http.Response Body.
-func (client Client) RemoveAccessControlResponder(resp *http.Response) (result VolumeAccessControlResponse, err error) {
+func (client Client) RemoveAccessControlResponder(resp *http.Response) (result VolumeAccessControlRemoveResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -672,7 +672,7 @@ func (client Client) RemoveAccessControlResponder(resp *http.Response) (result V
 // Parameters:
 // nasVolumeInstanceNo - NAS 볼륜 인스턴스 번호
 // serverInstanceNoListN - 서버 인스턴스 번호 리스트
-func (client Client) SetAccessControl(ctx context.Context, nasVolumeInstanceNo string, serverInstanceNoListN string) (result VolumeAccessControlResponse, err error) {
+func (client Client) SetAccessControl(ctx context.Context, nasVolumeInstanceNo string, serverInstanceNoListN string) (result VolumeAccessControlSetResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.SetAccessControl")
 		defer func() {
@@ -743,7 +743,7 @@ func (client Client) SetAccessControlSender(req *http.Request) (*http.Response, 
 
 // SetAccessControlResponder handles the response to the SetAccessControl request. The method always
 // closes the http.Response Body.
-func (client Client) SetAccessControlResponder(resp *http.Response) (result VolumeAccessControlResponse, err error) {
+func (client Client) SetAccessControlResponder(resp *http.Response) (result VolumeAccessControlSetResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
