@@ -1,3 +1,13 @@
+## 1.9.2 (September 9, 2020)
+
+### UPDATED SERVICES
+
+- VPC
+- Server
+- NAS
+- Cloud Insight
+-
+
 ## 1.9.1 (September 7, 2020)
 
 ### UPDATED SERVICES
