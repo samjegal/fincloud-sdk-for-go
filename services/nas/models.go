@@ -181,7 +181,7 @@ type VolumeInstanceStatus struct {
 
 // VolumeServerInstanceNoList ...
 type VolumeServerInstanceNoList struct {
-	ServerInstanceNo *string `json:"serverInstanceNo,omitempty"`
+	ServerInstanceNo *[]string `json:"serverInstanceNo,omitempty"`
 }
 
 // VolumeSizeResponse ...
