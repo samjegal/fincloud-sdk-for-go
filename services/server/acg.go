@@ -35,7 +35,7 @@ func NewACGClientWithBaseURI(baseURI string) ACGClient {
 // vpcNo - VPC 번호
 // accessControlGroupName - ACG 이름
 // accessControlGroupDescription - ACG 설명
-func (client ACGClient) Create(ctx context.Context, vpcNo string, accessControlGroupName string, accessControlGroupDescription string) (result AccessControlGroupResponse, err error) {
+func (client ACGClient) Create(ctx context.Context, vpcNo string, accessControlGroupName string, accessControlGroupDescription string) (result AccessControlGroupCreateResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ACGClient.Create")
 		defer func() {
@@ -109,7 +109,7 @@ func (client ACGClient) CreateSender(req *http.Request) (*http.Response, error) 
 
 // CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
-func (client ACGClient) CreateResponder(resp *http.Response) (result AccessControlGroupResponse, err error) {
+func (client ACGClient) CreateResponder(resp *http.Response) (result AccessControlGroupCreateResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -123,7 +123,7 @@ func (client ACGClient) CreateResponder(resp *http.Response) (result AccessContr
 // Parameters:
 // vpcNo - VPC 번호
 // accessControlGroupNo - ACG 번호
-func (client ACGClient) Delete(ctx context.Context, vpcNo string, accessControlGroupNo string) (result AccessControlGroupResponse, err error) {
+func (client ACGClient) Delete(ctx context.Context, vpcNo string, accessControlGroupNo string) (result AccessControlGroupDeleteResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ACGClient.Delete")
 		defer func() {
@@ -191,7 +191,7 @@ func (client ACGClient) DeleteSender(req *http.Request) (*http.Response, error) 
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client ACGClient) DeleteResponder(resp *http.Response) (result AccessControlGroupResponse, err error) {
+func (client ACGClient) DeleteResponder(resp *http.Response) (result AccessControlGroupDeleteResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

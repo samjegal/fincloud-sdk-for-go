@@ -34,7 +34,7 @@ func NewPlacementGroupClientWithBaseURI(baseURI string) PlacementGroupClient {
 // Parameters:
 // placementGroupNo - 물리 배치 그룹 번호
 // serverInstanceNo - 서버 인스턴스 번호
-func (client PlacementGroupClient) Add(ctx context.Context, placementGroupNo string, serverInstanceNo string) (result PlacementGroupServerInstanceResponse, err error) {
+func (client PlacementGroupClient) Add(ctx context.Context, placementGroupNo string, serverInstanceNo string) (result PlacementGroupServerInstanceAddResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PlacementGroupClient.Add")
 		defer func() {
@@ -102,7 +102,7 @@ func (client PlacementGroupClient) AddSender(req *http.Request) (*http.Response,
 
 // AddResponder handles the response to the Add request. The method always
 // closes the http.Response Body.
-func (client PlacementGroupClient) AddResponder(resp *http.Response) (result PlacementGroupServerInstanceResponse, err error) {
+func (client PlacementGroupClient) AddResponder(resp *http.Response) (result PlacementGroupServerInstanceAddResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -116,7 +116,7 @@ func (client PlacementGroupClient) AddResponder(resp *http.Response) (result Pla
 // Parameters:
 // placementGroupName - 물리 배치 그룹 이름
 // placementGroupTypeCode - 물리 배치 그룹 유형 코드
-func (client PlacementGroupClient) Create(ctx context.Context, placementGroupName string, placementGroupTypeCode string) (result PlacementGroupResponse, err error) {
+func (client PlacementGroupClient) Create(ctx context.Context, placementGroupName string, placementGroupTypeCode string) (result PlacementGroupCreateResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PlacementGroupClient.Create")
 		defer func() {
@@ -189,7 +189,7 @@ func (client PlacementGroupClient) CreateSender(req *http.Request) (*http.Respon
 
 // CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
-func (client PlacementGroupClient) CreateResponder(resp *http.Response) (result PlacementGroupResponse, err error) {
+func (client PlacementGroupClient) CreateResponder(resp *http.Response) (result PlacementGroupCreateResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -202,7 +202,7 @@ func (client PlacementGroupClient) CreateResponder(resp *http.Response) (result 
 // Delete 물리 배치 그룹을 삭제
 // Parameters:
 // placementGroupNo - 물리 배치 그룹 번호
-func (client PlacementGroupClient) Delete(ctx context.Context, placementGroupNo string) (result PlacementGroupResponse, err error) {
+func (client PlacementGroupClient) Delete(ctx context.Context, placementGroupNo string) (result PlacementGroupDeleteResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PlacementGroupClient.Delete")
 		defer func() {
@@ -269,7 +269,7 @@ func (client PlacementGroupClient) DeleteSender(req *http.Request) (*http.Respon
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client PlacementGroupClient) DeleteResponder(resp *http.Response) (result PlacementGroupResponse, err error) {
+func (client PlacementGroupClient) DeleteResponder(resp *http.Response) (result PlacementGroupDeleteResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -453,7 +453,7 @@ func (client PlacementGroupClient) GetListResponder(resp *http.Response) (result
 // Parameters:
 // placementGroupNo - 물리 배치 그룹 번호
 // serverInstanceNo - 서버 인스턴스 번호
-func (client PlacementGroupClient) Remove(ctx context.Context, placementGroupNo string, serverInstanceNo string) (result PlacementGroupServerInstanceResponse, err error) {
+func (client PlacementGroupClient) Remove(ctx context.Context, placementGroupNo string, serverInstanceNo string) (result PlacementGroupServerInstanceRemoveResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PlacementGroupClient.Remove")
 		defer func() {
@@ -521,7 +521,7 @@ func (client PlacementGroupClient) RemoveSender(req *http.Request) (*http.Respon
 
 // RemoveResponder handles the response to the Remove request. The method always
 // closes the http.Response Body.
-func (client PlacementGroupClient) RemoveResponder(resp *http.Response) (result PlacementGroupServerInstanceResponse, err error) {
+func (client PlacementGroupClient) RemoveResponder(resp *http.Response) (result PlacementGroupServerInstanceRemoveResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

@@ -33,7 +33,7 @@ func NewLoginKeyClientWithBaseURI(baseURI string) LoginKeyClient {
 // Create 로그인 키를 생성
 // Parameters:
 // keyName - 키 이름
-func (client LoginKeyClient) Create(ctx context.Context, keyName string) (result CreateLoginKeyResponse, err error) {
+func (client LoginKeyClient) Create(ctx context.Context, keyName string) (result LoginKeyCreateResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/LoginKeyClient.Create")
 		defer func() {
@@ -101,7 +101,7 @@ func (client LoginKeyClient) CreateSender(req *http.Request) (*http.Response, er
 
 // CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
-func (client LoginKeyClient) CreateResponder(resp *http.Response) (result CreateLoginKeyResponse, err error) {
+func (client LoginKeyClient) CreateResponder(resp *http.Response) (result LoginKeyCreateResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -114,7 +114,7 @@ func (client LoginKeyClient) CreateResponder(resp *http.Response) (result Create
 // Delete 로그인 키를 삭제
 // Parameters:
 // keyNameListN - 키 이름 리스트
-func (client LoginKeyClient) Delete(ctx context.Context, keyNameListN string) (result DeleteLoginKeysResponse, err error) {
+func (client LoginKeyClient) Delete(ctx context.Context, keyNameListN string) (result LoginKeysDeleteResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/LoginKeyClient.Delete")
 		defer func() {
@@ -179,7 +179,7 @@ func (client LoginKeyClient) DeleteSender(req *http.Request) (*http.Response, er
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client LoginKeyClient) DeleteResponder(resp *http.Response) (result DeleteLoginKeysResponse, err error) {
+func (client LoginKeyClient) DeleteResponder(resp *http.Response) (result LoginKeysDeleteResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -278,7 +278,7 @@ func (client LoginKeyClient) GetListResponder(resp *http.Response) (result Login
 // Parameters:
 // publicKey - 공개키
 // keyName - 키 이름
-func (client LoginKeyClient) Import(ctx context.Context, publicKey string, keyName string) (result LoginKeyResponse, err error) {
+func (client LoginKeyClient) Import(ctx context.Context, publicKey string, keyName string) (result LoginKeyImportResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/LoginKeyClient.Import")
 		defer func() {
@@ -347,7 +347,7 @@ func (client LoginKeyClient) ImportSender(req *http.Request) (*http.Response, er
 
 // ImportResponder handles the response to the Import request. The method always
 // closes the http.Response Body.
-func (client LoginKeyClient) ImportResponder(resp *http.Response) (result LoginKeyResponse, err error) {
+func (client LoginKeyClient) ImportResponder(resp *http.Response) (result LoginKeyImportResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

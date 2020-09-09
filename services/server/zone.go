@@ -31,13 +31,13 @@ func NewZoneClientWithBaseURI(baseURI string) ZoneClient {
 }
 
 // GetList ZONE 리스트를 조회
-func (client ZoneClient) GetList(ctx context.Context) (result autorest.Response, err error) {
+func (client ZoneClient) GetList(ctx context.Context) (result ZoneListResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ZoneClient.GetList")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -50,7 +50,7 @@ func (client ZoneClient) GetList(ctx context.Context) (result autorest.Response,
 
 	resp, err := client.GetListSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "server.ZoneClient", "GetList", resp, "Failure sending request")
 		return
 	}
@@ -97,11 +97,12 @@ func (client ZoneClient) GetListSender(req *http.Request) (*http.Response, error
 
 // GetListResponder handles the response to the GetList request. The method always
 // closes the http.Response Body.
-func (client ZoneClient) GetListResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client ZoneClient) GetListResponder(resp *http.Response) (result ZoneListResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }

@@ -35,7 +35,7 @@ func NewNetworkInterfaceClientWithBaseURI(baseURI string) NetworkInterfaceClient
 // Parameters:
 // networkInterfaceNo - 네트워크 인터페이스 번호
 // accessControlGroupNoListN - ACG 번호 리스트
-func (client NetworkInterfaceClient) AddACG(ctx context.Context, networkInterfaceNo string, accessControlGroupNoListN string) (result NetworkInterfaceAccessControlGroupResponse, err error) {
+func (client NetworkInterfaceClient) AddACG(ctx context.Context, networkInterfaceNo string, accessControlGroupNoListN string) (result NetworkInterfaceAccessControlGroupAddResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NetworkInterfaceClient.AddACG")
 		defer func() {
@@ -103,7 +103,7 @@ func (client NetworkInterfaceClient) AddACGSender(req *http.Request) (*http.Resp
 
 // AddACGResponder handles the response to the AddACG request. The method always
 // closes the http.Response Body.
-func (client NetworkInterfaceClient) AddACGResponder(resp *http.Response) (result NetworkInterfaceAccessControlGroupResponse, err error) {
+func (client NetworkInterfaceClient) AddACGResponder(resp *http.Response) (result NetworkInterfaceAccessControlGroupAddResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -118,7 +118,7 @@ func (client NetworkInterfaceClient) AddACGResponder(resp *http.Response) (resul
 // subnetNo - 서브넷 번호
 // networkInterfaceNo - 네트워크 인터페이스 번호
 // serverInstanceNo - 서버 인스턴스 번호
-func (client NetworkInterfaceClient) Attach(ctx context.Context, subnetNo string, networkInterfaceNo string, serverInstanceNo string) (result NetworkInterfaceResponse, err error) {
+func (client NetworkInterfaceClient) Attach(ctx context.Context, subnetNo string, networkInterfaceNo string, serverInstanceNo string) (result NetworkInterfaceAttachResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NetworkInterfaceClient.Attach")
 		defer func() {
@@ -187,7 +187,7 @@ func (client NetworkInterfaceClient) AttachSender(req *http.Request) (*http.Resp
 
 // AttachResponder handles the response to the Attach request. The method always
 // closes the http.Response Body.
-func (client NetworkInterfaceClient) AttachResponder(resp *http.Response) (result NetworkInterfaceResponse, err error) {
+func (client NetworkInterfaceClient) AttachResponder(resp *http.Response) (result NetworkInterfaceAttachResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -206,7 +206,7 @@ func (client NetworkInterfaceClient) AttachResponder(resp *http.Response) (resul
 // serverInstanceNo - 서버 인스턴스 번호
 // IP - IP 주소
 // networkInterfaceDescription - 네트워크 인터페이스 설명
-func (client NetworkInterfaceClient) Create(ctx context.Context, vpcNo string, subnetNo string, networkInterfaceName string, accessControlGroupNoListN string, serverInstanceNo string, IP string, networkInterfaceDescription string) (result NetworkInterfaceResponse, err error) {
+func (client NetworkInterfaceClient) Create(ctx context.Context, vpcNo string, subnetNo string, networkInterfaceName string, accessControlGroupNoListN string, serverInstanceNo string, IP string, networkInterfaceDescription string) (result NetworkInterfaceCreateResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NetworkInterfaceClient.Create")
 		defer func() {
@@ -294,7 +294,7 @@ func (client NetworkInterfaceClient) CreateSender(req *http.Request) (*http.Resp
 
 // CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
-func (client NetworkInterfaceClient) CreateResponder(resp *http.Response) (result NetworkInterfaceResponse, err error) {
+func (client NetworkInterfaceClient) CreateResponder(resp *http.Response) (result NetworkInterfaceCreateResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -307,7 +307,7 @@ func (client NetworkInterfaceClient) CreateResponder(resp *http.Response) (resul
 // Delete 네트워크 인터페이스 삭제
 // Parameters:
 // networkInterfaceNo - 네트워크 인터페이스 번호
-func (client NetworkInterfaceClient) Delete(ctx context.Context, networkInterfaceNo string) (result NetworkInterfaceResponse, err error) {
+func (client NetworkInterfaceClient) Delete(ctx context.Context, networkInterfaceNo string) (result NetworkInterfaceDeleteResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NetworkInterfaceClient.Delete")
 		defer func() {
@@ -377,7 +377,7 @@ func (client NetworkInterfaceClient) DeleteSender(req *http.Request) (*http.Resp
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client NetworkInterfaceClient) DeleteResponder(resp *http.Response) (result NetworkInterfaceResponse, err error) {
+func (client NetworkInterfaceClient) DeleteResponder(resp *http.Response) (result NetworkInterfaceDeleteResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -392,7 +392,7 @@ func (client NetworkInterfaceClient) DeleteResponder(resp *http.Response) (resul
 // subnetNo - 서브넷 번호
 // networkInterfaceNo - 네트워크 인터페이스 번호
 // serverInstanceNo - 서버 인스턴스 번호
-func (client NetworkInterfaceClient) Detach(ctx context.Context, subnetNo string, networkInterfaceNo string, serverInstanceNo string) (result NetworkInterfaceResponse, err error) {
+func (client NetworkInterfaceClient) Detach(ctx context.Context, subnetNo string, networkInterfaceNo string, serverInstanceNo string) (result NetworkInterfaceDetachResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NetworkInterfaceClient.Detach")
 		defer func() {
@@ -461,7 +461,7 @@ func (client NetworkInterfaceClient) DetachSender(req *http.Request) (*http.Resp
 
 // DetachResponder handles the response to the Detach request. The method always
 // closes the http.Response Body.
-func (client NetworkInterfaceClient) DetachResponder(resp *http.Response) (result NetworkInterfaceResponse, err error) {
+func (client NetworkInterfaceClient) DetachResponder(resp *http.Response) (result NetworkInterfaceDetachResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -666,7 +666,7 @@ func (client NetworkInterfaceClient) GetListResponder(resp *http.Response) (resu
 // Parameters:
 // networkInterfaceNo - 네트워크 인터페이스 번호
 // accessControlGroupNoListN - ACG 번호 리스트
-func (client NetworkInterfaceClient) RemoveACG(ctx context.Context, networkInterfaceNo string, accessControlGroupNoListN string) (result NetworkInterfaceAccessControlGroupResponse, err error) {
+func (client NetworkInterfaceClient) RemoveACG(ctx context.Context, networkInterfaceNo string, accessControlGroupNoListN string) (result NetworkInterfaceAccessControlGroupRemoveResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NetworkInterfaceClient.RemoveACG")
 		defer func() {
@@ -734,7 +734,7 @@ func (client NetworkInterfaceClient) RemoveACGSender(req *http.Request) (*http.R
 
 // RemoveACGResponder handles the response to the RemoveACG request. The method always
 // closes the http.Response Body.
-func (client NetworkInterfaceClient) RemoveACGResponder(resp *http.Response) (result NetworkInterfaceAccessControlGroupResponse, err error) {
+func (client NetworkInterfaceClient) RemoveACGResponder(resp *http.Response) (result NetworkInterfaceAccessControlGroupRemoveResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

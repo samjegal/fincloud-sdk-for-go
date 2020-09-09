@@ -35,7 +35,7 @@ func NewImageClientWithBaseURI(baseURI string) ImageClient {
 // serverInstanceNo - 서버 인스턴스 번호
 // memberServerImageName - 회원 서버 이미지 이름
 // memberServerImageDescription - 회원 서버 이미지 설명
-func (client ImageClient) Create(ctx context.Context, serverInstanceNo string, memberServerImageName string, memberServerImageDescription string) (result MemberServerImageInstanceResponse, err error) {
+func (client ImageClient) Create(ctx context.Context, serverInstanceNo string, memberServerImageName string, memberServerImageDescription string) (result MemberServerImageInstanceCreateResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ImageClient.Create")
 		defer func() {
@@ -109,7 +109,7 @@ func (client ImageClient) CreateSender(req *http.Request) (*http.Response, error
 
 // CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
-func (client ImageClient) CreateResponder(resp *http.Response) (result MemberServerImageInstanceResponse, err error) {
+func (client ImageClient) CreateResponder(resp *http.Response) (result MemberServerImageInstanceCreateResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -122,7 +122,7 @@ func (client ImageClient) CreateResponder(resp *http.Response) (result MemberSer
 // Delete 회원 서버 이미지 인스턴스를 삭제
 // Parameters:
 // memberServerImageInstanceNoListN - 회원 서버 이미지 인스턴스 번호 리스트
-func (client ImageClient) Delete(ctx context.Context, memberServerImageInstanceNoListN string) (result MemberServerImageInstanceResponse, err error) {
+func (client ImageClient) Delete(ctx context.Context, memberServerImageInstanceNoListN string) (result MemberServerImageInstanceDeleteResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ImageClient.Delete")
 		defer func() {
@@ -192,7 +192,7 @@ func (client ImageClient) DeleteSender(req *http.Request) (*http.Response, error
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client ImageClient) DeleteResponder(resp *http.Response) (result MemberServerImageInstanceResponse, err error) {
+func (client ImageClient) DeleteResponder(resp *http.Response) (result MemberServerImageInstanceDeleteResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -205,7 +205,7 @@ func (client ImageClient) DeleteResponder(resp *http.Response) (result MemberSer
 // GetDetail 회원 서버 이미지 인스턴스 상세 정보를 조회
 // Parameters:
 // memberServerImageInstanceNo - 회원 서버 이미지 인스턴스 번호
-func (client ImageClient) GetDetail(ctx context.Context, memberServerImageInstanceNo string) (result MemberServerImageInstanceListResponse, err error) {
+func (client ImageClient) GetDetail(ctx context.Context, memberServerImageInstanceNo string) (result MemberServerImageInstanceDetailResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ImageClient.GetDetail")
 		defer func() {
@@ -272,7 +272,7 @@ func (client ImageClient) GetDetailSender(req *http.Request) (*http.Response, er
 
 // GetDetailResponder handles the response to the GetDetail request. The method always
 // closes the http.Response Body.
-func (client ImageClient) GetDetailResponder(resp *http.Response) (result MemberServerImageInstanceListResponse, err error) {
+func (client ImageClient) GetDetailResponder(resp *http.Response) (result MemberServerImageInstanceDetailResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

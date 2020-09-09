@@ -35,7 +35,7 @@ func NewSnapshotClientWithBaseURI(baseURI string) SnapshotClient {
 // originalBlockStorageInstanceNo - 원본 블록스토리지 인스턴스 번호
 // blockStorageSnapshotName - 블록스토리지 스냅샷 이름
 // blockStorageSnapshotDescription - 블록스토리지 스냅샷 설명
-func (client SnapshotClient) Create(ctx context.Context, originalBlockStorageInstanceNo string, blockStorageSnapshotName string, blockStorageSnapshotDescription string) (result BlockStorageSnapshotInstanceResponse, err error) {
+func (client SnapshotClient) Create(ctx context.Context, originalBlockStorageInstanceNo string, blockStorageSnapshotName string, blockStorageSnapshotDescription string) (result BlockStorageSnapshotInstanceCreateResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SnapshotClient.Create")
 		defer func() {
@@ -109,7 +109,7 @@ func (client SnapshotClient) CreateSender(req *http.Request) (*http.Response, er
 
 // CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
-func (client SnapshotClient) CreateResponder(resp *http.Response) (result BlockStorageSnapshotInstanceResponse, err error) {
+func (client SnapshotClient) CreateResponder(resp *http.Response) (result BlockStorageSnapshotInstanceCreateResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -122,7 +122,7 @@ func (client SnapshotClient) CreateResponder(resp *http.Response) (result BlockS
 // Delete 블록스토리지 스냅샷 인스턴스 번호 리스트
 // Parameters:
 // blockStorageSnapshotInstanceNoListN - 블록스토리지 스냅샷 인스턴스 번호 리스트
-func (client SnapshotClient) Delete(ctx context.Context, blockStorageSnapshotInstanceNoListN string) (result BlockStorageSnapshotInstanceResponse, err error) {
+func (client SnapshotClient) Delete(ctx context.Context, blockStorageSnapshotInstanceNoListN string) (result BlockStorageSnapshotInstanceDeleteResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SnapshotClient.Delete")
 		defer func() {
@@ -189,7 +189,7 @@ func (client SnapshotClient) DeleteSender(req *http.Request) (*http.Response, er
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client SnapshotClient) DeleteResponder(resp *http.Response) (result BlockStorageSnapshotInstanceResponse, err error) {
+func (client SnapshotClient) DeleteResponder(resp *http.Response) (result BlockStorageSnapshotInstanceDeleteResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

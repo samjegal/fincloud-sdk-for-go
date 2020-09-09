@@ -34,7 +34,7 @@ func NewBlockStorageClientWithBaseURI(baseURI string) BlockStorageClient {
 // Parameters:
 // blockStorageInstanceNo - 블록스토리지 인스턴스 번호
 // serverInstanceNo - 서버 인스턴스 번호
-func (client BlockStorageClient) Attach(ctx context.Context, blockStorageInstanceNo string, serverInstanceNo string) (result BlockStorageInstanceResponse, err error) {
+func (client BlockStorageClient) Attach(ctx context.Context, blockStorageInstanceNo string, serverInstanceNo string) (result BlockStorageInstanceAttachResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BlockStorageClient.Attach")
 		defer func() {
@@ -102,7 +102,7 @@ func (client BlockStorageClient) AttachSender(req *http.Request) (*http.Response
 
 // AttachResponder handles the response to the Attach request. The method always
 // closes the http.Response Body.
-func (client BlockStorageClient) AttachResponder(resp *http.Response) (result BlockStorageInstanceResponse, err error) {
+func (client BlockStorageClient) AttachResponder(resp *http.Response) (result BlockStorageInstanceAttachResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -203,7 +203,7 @@ func (client BlockStorageClient) ChangeVolumeSizeResponder(resp *http.Response) 
 // blockStorageSnapshotInstanceNo - 블록스토리지 스냅샷 인스턴스 번호
 // blockStorageSize - 블록스토리지 사이즈
 // blockStorageDescription - 블록스토리지 설명
-func (client BlockStorageClient) Create(ctx context.Context, serverInstanceNo string, zoneCode string, blockStorageName string, blockStorageDiskDetailTypeCode BlockStorageDiskDetailTypeCode, blockStorageSnapshotInstanceNo string, blockStorageSize string, blockStorageDescription string) (result BlockStorageInstanceResponse, err error) {
+func (client BlockStorageClient) Create(ctx context.Context, serverInstanceNo string, zoneCode string, blockStorageName string, blockStorageDiskDetailTypeCode BlockStorageDiskDetailTypeCode, blockStorageSnapshotInstanceNo string, blockStorageSize string, blockStorageDescription string) (result BlockStorageInstanceCreateResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BlockStorageClient.Create")
 		defer func() {
@@ -289,7 +289,7 @@ func (client BlockStorageClient) CreateSender(req *http.Request) (*http.Response
 
 // CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
-func (client BlockStorageClient) CreateResponder(resp *http.Response) (result BlockStorageInstanceResponse, err error) {
+func (client BlockStorageClient) CreateResponder(resp *http.Response) (result BlockStorageInstanceCreateResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -302,7 +302,7 @@ func (client BlockStorageClient) CreateResponder(resp *http.Response) (result Bl
 // Delete 블록스토리지 인스턴스를 삭제
 // Parameters:
 // blockStorageInstanceNoListN - 블록스토리지 인스턴스 번호 리스트
-func (client BlockStorageClient) Delete(ctx context.Context, blockStorageInstanceNoListN string) (result BlockStorageInstanceResponse, err error) {
+func (client BlockStorageClient) Delete(ctx context.Context, blockStorageInstanceNoListN string) (result BlockStorageInstanceDeleteResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BlockStorageClient.Delete")
 		defer func() {
@@ -369,7 +369,7 @@ func (client BlockStorageClient) DeleteSender(req *http.Request) (*http.Response
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client BlockStorageClient) DeleteResponder(resp *http.Response) (result BlockStorageInstanceResponse, err error) {
+func (client BlockStorageClient) DeleteResponder(resp *http.Response) (result BlockStorageInstanceDeleteResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -382,7 +382,7 @@ func (client BlockStorageClient) DeleteResponder(resp *http.Response) (result Bl
 // Detach 블록스토리지 인스턴스를 할당 해제
 // Parameters:
 // blockStorageInstanceNoListN - 블록스토리지 인스턴스 번호 리스트
-func (client BlockStorageClient) Detach(ctx context.Context, blockStorageInstanceNoListN string) (result BlockStorageInstanceResponse, err error) {
+func (client BlockStorageClient) Detach(ctx context.Context, blockStorageInstanceNoListN string) (result BlockStorageInstanceDetachResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BlockStorageClient.Detach")
 		defer func() {
@@ -449,7 +449,7 @@ func (client BlockStorageClient) DetachSender(req *http.Request) (*http.Response
 
 // DetachResponder handles the response to the Detach request. The method always
 // closes the http.Response Body.
-func (client BlockStorageClient) DetachResponder(resp *http.Response) (result BlockStorageInstanceResponse, err error) {
+func (client BlockStorageClient) DetachResponder(resp *http.Response) (result BlockStorageInstanceDetachResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

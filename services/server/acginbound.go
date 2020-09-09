@@ -39,7 +39,7 @@ func NewACGInboundClientWithBaseURI(baseURI string) ACGInboundClient {
 // accessControlGroupRuleListNaccessControlGroupSequence - 접근 소스 ACG
 // accessControlGroupRuleListNportRange - 포트 범위
 // accessControlGroupRuleListNaccessControlGroupRuleDescription - ACG Rule 설명
-func (client ACGInboundClient) AddRule(ctx context.Context, vpcNo string, accessControlGroupNo string, accessControlGroupRuleListNprotocolTypeCode ProtocolTypeCode, accessControlGroupRuleListNipBlock string, accessControlGroupRuleListNaccessControlGroupSequence string, accessControlGroupRuleListNportRange string, accessControlGroupRuleListNaccessControlGroupRuleDescription string) (result AccessControlGroupInboundRuleResponse, err error) {
+func (client ACGInboundClient) AddRule(ctx context.Context, vpcNo string, accessControlGroupNo string, accessControlGroupRuleListNprotocolTypeCode ProtocolTypeCode, accessControlGroupRuleListNipBlock string, accessControlGroupRuleListNaccessControlGroupSequence string, accessControlGroupRuleListNportRange string, accessControlGroupRuleListNaccessControlGroupRuleDescription string) (result AccessControlGroupInboundRuleAddResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ACGInboundClient.AddRule")
 		defer func() {
@@ -121,7 +121,7 @@ func (client ACGInboundClient) AddRuleSender(req *http.Request) (*http.Response,
 
 // AddRuleResponder handles the response to the AddRule request. The method always
 // closes the http.Response Body.
-func (client ACGInboundClient) AddRuleResponder(resp *http.Response) (result AccessControlGroupInboundRuleResponse, err error) {
+func (client ACGInboundClient) AddRuleResponder(resp *http.Response) (result AccessControlGroupInboundRuleAddResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -139,7 +139,7 @@ func (client ACGInboundClient) AddRuleResponder(resp *http.Response) (result Acc
 // accessControlGroupRuleListNipBlock - IP 블록
 // accessControlGroupRuleListNaccessControlGroupSequence - 접근 소스 ACG
 // accessControlGroupRuleListNportRange - 포트 범위
-func (client ACGInboundClient) RemoveRule(ctx context.Context, vpcNo string, accessControlGroupNo string, accessControlGroupRuleListNprotocolTypeCode ProtocolTypeCode, accessControlGroupRuleListNipBlock string, accessControlGroupRuleListNaccessControlGroupSequence string, accessControlGroupRuleListNportRange string) (result AccessControlGroupInboundRuleResponse, err error) {
+func (client ACGInboundClient) RemoveRule(ctx context.Context, vpcNo string, accessControlGroupNo string, accessControlGroupRuleListNprotocolTypeCode ProtocolTypeCode, accessControlGroupRuleListNipBlock string, accessControlGroupRuleListNaccessControlGroupSequence string, accessControlGroupRuleListNportRange string) (result AccessControlGroupInboundRuleRemoveResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ACGInboundClient.RemoveRule")
 		defer func() {
@@ -218,7 +218,7 @@ func (client ACGInboundClient) RemoveRuleSender(req *http.Request) (*http.Respon
 
 // RemoveRuleResponder handles the response to the RemoveRule request. The method always
 // closes the http.Response Body.
-func (client ACGInboundClient) RemoveRuleResponder(resp *http.Response) (result AccessControlGroupInboundRuleResponse, err error) {
+func (client ACGInboundClient) RemoveRuleResponder(resp *http.Response) (result AccessControlGroupInboundRuleRemoveResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

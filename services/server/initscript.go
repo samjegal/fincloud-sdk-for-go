@@ -36,7 +36,7 @@ func NewInitScriptClientWithBaseURI(baseURI string) InitScriptClient {
 // osTypeCode - OS 유형 코드
 // initScriptName - 초기화 스크립트 이름
 // initScriptDescription - 초기화 스크립트 설명
-func (client InitScriptClient) Create(ctx context.Context, initScriptContent string, osTypeCode OsTypeCode, initScriptName string, initScriptDescription string) (result InitScriptResponse, err error) {
+func (client InitScriptClient) Create(ctx context.Context, initScriptContent string, osTypeCode OsTypeCode, initScriptName string, initScriptDescription string) (result InitScriptCreateResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/InitScriptClient.Create")
 		defer func() {
@@ -113,7 +113,7 @@ func (client InitScriptClient) CreateSender(req *http.Request) (*http.Response, 
 
 // CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
-func (client InitScriptClient) CreateResponder(resp *http.Response) (result InitScriptResponse, err error) {
+func (client InitScriptClient) CreateResponder(resp *http.Response) (result InitScriptCreateResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -126,7 +126,7 @@ func (client InitScriptClient) CreateResponder(resp *http.Response) (result Init
 // Delete 초기화 스크립트를 삭제
 // Parameters:
 // initScriptNoListN - 초기화 스크립트 번호 리스트
-func (client InitScriptClient) Delete(ctx context.Context, initScriptNoListN string) (result InitScriptResponse, err error) {
+func (client InitScriptClient) Delete(ctx context.Context, initScriptNoListN string) (result InitScriptDeleteResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/InitScriptClient.Delete")
 		defer func() {
@@ -196,7 +196,7 @@ func (client InitScriptClient) DeleteSender(req *http.Request) (*http.Response, 
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client InitScriptClient) DeleteResponder(resp *http.Response) (result InitScriptResponse, err error) {
+func (client InitScriptClient) DeleteResponder(resp *http.Response) (result InitScriptDeleteResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

@@ -134,7 +134,7 @@ func (client Client) ChangeSpecResponder(resp *http.Response) (result InstanceSp
 // serverDescription - 서버 설명
 // initScriptNo - 초기화 스크립트 번호
 // loginKeyName - 로그인 키 이름
-func (client Client) Create(ctx context.Context, vpcNo string, subnetNo string, networkInterfaceListNnetworkInterfaceOrder string, networkInterfaceListNaccessControlGroupNoListN string, memberServerImageInstanceNo string, serverImageProductCode string, serverProductCode string, isEncryptedBaseBlockStorageVolume *bool, feeSystemTypeCode FeeSystemTypeCode, serverCreateCount string, serverCreateStartNo string, serverName string, networkInterfaceListNnetworkInterfaceNo string, networkInterfaceListNsubnetNo string, networkInterfaceListNip string, placementGroupNo string, isProtectServerTermination *bool, serverDescription string, initScriptNo string, loginKeyName string) (result InstancesResponse, err error) {
+func (client Client) Create(ctx context.Context, vpcNo string, subnetNo string, networkInterfaceListNnetworkInterfaceOrder string, networkInterfaceListNaccessControlGroupNoListN string, memberServerImageInstanceNo string, serverImageProductCode string, serverProductCode string, isEncryptedBaseBlockStorageVolume *bool, feeSystemTypeCode FeeSystemTypeCode, serverCreateCount string, serverCreateStartNo string, serverName string, networkInterfaceListNnetworkInterfaceNo string, networkInterfaceListNsubnetNo string, networkInterfaceListNip string, placementGroupNo string, isProtectServerTermination *bool, serverDescription string, initScriptNo string, loginKeyName string) (result InstancesCreateResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.Create")
 		defer func() {
@@ -253,7 +253,7 @@ func (client Client) CreateSender(req *http.Request) (*http.Response, error) {
 
 // CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
-func (client Client) CreateResponder(resp *http.Response) (result InstancesResponse, err error) {
+func (client Client) CreateResponder(resp *http.Response) (result InstancesCreateResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -470,7 +470,7 @@ func (client Client) GetInstanceListResponder(resp *http.Response) (result Insta
 // Reboot 서버 인스턴스를 재시작
 // Parameters:
 // serverInstanceNoListN - 서버 인스턴스 번호 리스트
-func (client Client) Reboot(ctx context.Context, serverInstanceNoListN string) (result InstancesResponse, err error) {
+func (client Client) Reboot(ctx context.Context, serverInstanceNoListN string) (result InstancesRebootResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.Reboot")
 		defer func() {
@@ -537,7 +537,7 @@ func (client Client) RebootSender(req *http.Request) (*http.Response, error) {
 
 // RebootResponder handles the response to the Reboot request. The method always
 // closes the http.Response Body.
-func (client Client) RebootResponder(resp *http.Response) (result InstancesResponse, err error) {
+func (client Client) RebootResponder(resp *http.Response) (result InstancesRebootResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -550,7 +550,7 @@ func (client Client) RebootResponder(resp *http.Response) (result InstancesRespo
 // Start 서버 인스턴스를 시작
 // Parameters:
 // serverInstanceNoListN - 서버 인스턴스 번호 리스트
-func (client Client) Start(ctx context.Context, serverInstanceNoListN string) (result InstancesResponse, err error) {
+func (client Client) Start(ctx context.Context, serverInstanceNoListN string) (result InstancesStartResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.Start")
 		defer func() {
@@ -617,7 +617,7 @@ func (client Client) StartSender(req *http.Request) (*http.Response, error) {
 
 // StartResponder handles the response to the Start request. The method always
 // closes the http.Response Body.
-func (client Client) StartResponder(resp *http.Response) (result InstancesResponse, err error) {
+func (client Client) StartResponder(resp *http.Response) (result InstancesStartResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -630,7 +630,7 @@ func (client Client) StartResponder(resp *http.Response) (result InstancesRespon
 // Stop 서버 인스턴스를 종료
 // Parameters:
 // serverInstanceNoListN - 서버 인스턴스 번호 리스트
-func (client Client) Stop(ctx context.Context, serverInstanceNoListN string) (result InstancesResponse, err error) {
+func (client Client) Stop(ctx context.Context, serverInstanceNoListN string) (result InstancesStopResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.Stop")
 		defer func() {
@@ -697,7 +697,7 @@ func (client Client) StopSender(req *http.Request) (*http.Response, error) {
 
 // StopResponder handles the response to the Stop request. The method always
 // closes the http.Response Body.
-func (client Client) StopResponder(resp *http.Response) (result InstancesResponse, err error) {
+func (client Client) StopResponder(resp *http.Response) (result InstancesStopResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -710,7 +710,7 @@ func (client Client) StopResponder(resp *http.Response) (result InstancesRespons
 // Terminate 서버 인스턴스를 반납
 // Parameters:
 // serverInstanceNoListN - 서버 인스턴스 번호 리스트
-func (client Client) Terminate(ctx context.Context, serverInstanceNoListN string) (result InstancesResponse, err error) {
+func (client Client) Terminate(ctx context.Context, serverInstanceNoListN string) (result InstancesTerminateResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.Terminate")
 		defer func() {
@@ -777,7 +777,7 @@ func (client Client) TerminateSender(req *http.Request) (*http.Response, error) 
 
 // TerminateResponder handles the response to the Terminate request. The method always
 // closes the http.Response Body.
-func (client Client) TerminateResponder(resp *http.Response) (result InstancesResponse, err error) {
+func (client Client) TerminateResponder(resp *http.Response) (result InstancesTerminateResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

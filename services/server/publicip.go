@@ -34,7 +34,7 @@ func NewPublicIPClientWithBaseURI(baseURI string) PublicIPClient {
 // Parameters:
 // publicIPInstanceNo - 공인 IP 인스턴스 번호
 // serverInstanceNo - 서버 인스턴스 번호
-func (client PublicIPClient) Associate(ctx context.Context, publicIPInstanceNo string, serverInstanceNo string) (result PublicIPWithServerInstanceResponse, err error) {
+func (client PublicIPClient) Associate(ctx context.Context, publicIPInstanceNo string, serverInstanceNo string) (result PublicIPWithServerInstanceAssociateResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PublicIPClient.Associate")
 		defer func() {
@@ -102,7 +102,7 @@ func (client PublicIPClient) AssociateSender(req *http.Request) (*http.Response,
 
 // AssociateResponder handles the response to the Associate request. The method always
 // closes the http.Response Body.
-func (client PublicIPClient) AssociateResponder(resp *http.Response) (result PublicIPWithServerInstanceResponse, err error) {
+func (client PublicIPClient) AssociateResponder(resp *http.Response) (result PublicIPWithServerInstanceAssociateResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -116,7 +116,7 @@ func (client PublicIPClient) AssociateResponder(resp *http.Response) (result Pub
 // Parameters:
 // serverInstanceNo - 서버 인스턴스 번호
 // publicIPDescription - 공인 IP 설명
-func (client PublicIPClient) Create(ctx context.Context, serverInstanceNo string, publicIPDescription string) (result PublicIPInstanceResponse, err error) {
+func (client PublicIPClient) Create(ctx context.Context, serverInstanceNo string, publicIPDescription string) (result PublicIPInstanceCreateResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PublicIPClient.Create")
 		defer func() {
@@ -189,7 +189,7 @@ func (client PublicIPClient) CreateSender(req *http.Request) (*http.Response, er
 
 // CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
-func (client PublicIPClient) CreateResponder(resp *http.Response) (result PublicIPInstanceResponse, err error) {
+func (client PublicIPClient) CreateResponder(resp *http.Response) (result PublicIPInstanceCreateResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -202,7 +202,7 @@ func (client PublicIPClient) CreateResponder(resp *http.Response) (result Public
 // Delete 공인 IP 인스턴스를 삭제
 // Parameters:
 // publicIPInstanceNo - 공인 IP 인스턴스 번호
-func (client PublicIPClient) Delete(ctx context.Context, publicIPInstanceNo string) (result PublicIPInstanceResponse, err error) {
+func (client PublicIPClient) Delete(ctx context.Context, publicIPInstanceNo string) (result PublicIPInstanceDeleteResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PublicIPClient.Delete")
 		defer func() {
@@ -269,7 +269,7 @@ func (client PublicIPClient) DeleteSender(req *http.Request) (*http.Response, er
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client PublicIPClient) DeleteResponder(resp *http.Response) (result PublicIPInstanceResponse, err error) {
+func (client PublicIPClient) DeleteResponder(resp *http.Response) (result PublicIPInstanceDeleteResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -283,7 +283,7 @@ func (client PublicIPClient) DeleteResponder(resp *http.Response) (result Public
 // Parameters:
 // publicIPInstanceNo - 공인 IP 인스턴스 번호
 // serverInstanceNo - 서버 인스턴스 번호
-func (client PublicIPClient) Disassociate(ctx context.Context, publicIPInstanceNo string, serverInstanceNo string) (result PublicIPFromServerInstanceResponse, err error) {
+func (client PublicIPClient) Disassociate(ctx context.Context, publicIPInstanceNo string, serverInstanceNo string) (result PublicIPFromServerInstanceDisassociateResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PublicIPClient.Disassociate")
 		defer func() {
@@ -356,7 +356,7 @@ func (client PublicIPClient) DisassociateSender(req *http.Request) (*http.Respon
 
 // DisassociateResponder handles the response to the Disassociate request. The method always
 // closes the http.Response Body.
-func (client PublicIPClient) DisassociateResponder(resp *http.Response) (result PublicIPFromServerInstanceResponse, err error) {
+func (client PublicIPClient) DisassociateResponder(resp *http.Response) (result PublicIPFromServerInstanceDisassociateResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

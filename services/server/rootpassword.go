@@ -34,7 +34,7 @@ func NewRootPasswordClientWithBaseURI(baseURI string) RootPasswordClient {
 // Parameters:
 // serverInstanceNo - 서버 인스턴스 번호
 // privateKey - 개인키
-func (client RootPasswordClient) Get(ctx context.Context, serverInstanceNo string, privateKey string) (result RootPassword, err error) {
+func (client RootPasswordClient) Get(ctx context.Context, serverInstanceNo string, privateKey string) (result RootPasswordResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/RootPasswordClient.Get")
 		defer func() {
@@ -105,7 +105,7 @@ func (client RootPasswordClient) GetSender(req *http.Request) (*http.Response, e
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client RootPasswordClient) GetResponder(resp *http.Response) (result RootPassword, err error) {
+func (client RootPasswordClient) GetResponder(resp *http.Response) (result RootPasswordResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
