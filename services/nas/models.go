@@ -108,7 +108,7 @@ type VolumeInstanceList struct {
 	IsEventConfiguration             *bool                        `json:"isEventConfiguration,omitempty"`
 	RegionCode                       *string                      `json:"regionCode,omitempty"`
 	ZoneCode                         *string                      `json:"zoneCode,omitempty"`
-	NasVolumeServerInstanceNoList    *VolumeServerInstanceNoList  `json:"nasVolumeServerInstanceNoList,omitempty"`
+	NasVolumeServerInstanceNoList    *[]string                    `json:"nasVolumeServerInstanceNoList,omitempty"`
 	IsEncryptedVolume                *bool                        `json:"isEncryptedVolume,omitempty"`
 }
 
@@ -177,11 +177,6 @@ type VolumeInstanceStatus struct {
 	Code *string `json:"code,omitempty"`
 	// CodeName - 상태 코드 이름
 	CodeName *string `json:"codeName,omitempty"`
-}
-
-// VolumeServerInstanceNoList ...
-type VolumeServerInstanceNoList struct {
-	ServerInstanceNo *[]string `json:"serverInstanceNo,omitempty"`
 }
 
 // VolumeSizeResponse ...
