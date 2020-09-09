@@ -70,7 +70,7 @@ func (client SchemaClient) Delete(ctx context.Context, cwKey string, prodName st
 func (client SchemaClient) DeletePreparer(ctx context.Context, cwKey string, prodName string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
 		"cw_key":   autorest.Encode("query", cwKey),
-		"prodName": autorest.Encode("query", prodName),
+		"prodName": prodName,
 	}
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
@@ -148,7 +148,7 @@ func (client SchemaClient) Get(ctx context.Context, prodName string, cwKey strin
 // GetPreparer prepares the Get request.
 func (client SchemaClient) GetPreparer(ctx context.Context, prodName string, cwKey string) (*http.Request, error) {
 	queryParameters := map[string]interface{}{
-		"prodName": autorest.Encode("query", prodName),
+		"prodName": prodName,
 	}
 
 	if len(cwKey) > 0 {

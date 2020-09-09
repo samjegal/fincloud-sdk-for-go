@@ -69,7 +69,7 @@ func (client CollectorClient) SendMethod(ctx context.Context, parameters Collect
 func (client CollectorClient) SendMethodPreparer(ctx context.Context, parameters CollectorRequest) (*http.Request, error) {
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("POST", autorest.GetPath(DefaultBaseURI, "/cw_collector/real"), client.Client.AccessKey, timestamp)
+	signature, err := sec.Signature("POST", autorest.GetPath(DefaultBaseURI, "/cw_collector/real/"), client.Client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}
@@ -78,7 +78,7 @@ func (client CollectorClient) SendMethodPreparer(ctx context.Context, parameters
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/cw_collector/real"),
+		autorest.WithPath("/cw_collector/real/"),
 		autorest.WithJSON(parameters),
 		autorest.WithHeader("x-ncp-apigw-api-key", client.Client.APIGatewayAPIKey),
 		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
