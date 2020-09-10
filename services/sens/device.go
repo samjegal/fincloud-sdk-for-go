@@ -9,6 +9,7 @@ import (
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
 	"github.com/Azure/go-autorest/tracing"
+	"github.com/samjegal/fincloud-sdk-for-go/common"
 	"github.com/samjegal/go-fincloud-helpers/security"
 	"net/http"
 	"strconv"
@@ -85,7 +86,7 @@ func (client DeviceClient) CreatePreparer(ctx context.Context, serviceID string,
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("POST", autorest.GetPathParameters(DefaultBaseURI, "/push/v2/services/{serviceId}/users", pathParameters), client.Client.AccessKey, timestamp)
+	signature, err := sec.Signature("POST", common.GetPathParameters(DefaultBaseURI, "/push/v2/services/{serviceId}/users", pathParameters), client.Client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}
@@ -165,7 +166,7 @@ func (client DeviceClient) DeletePreparer(ctx context.Context, serviceID string,
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("DELETE", autorest.GetPathParameters(DefaultBaseURI, "/push/v2/services/{serviceId}/users/{userId}", pathParameters), client.Client.AccessKey, timestamp)
+	signature, err := sec.Signature("DELETE", common.GetPathParameters(DefaultBaseURI, "/push/v2/services/{serviceId}/users/{userId}", pathParameters), client.Client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}
@@ -243,7 +244,7 @@ func (client DeviceClient) GetPreparer(ctx context.Context, serviceID string, us
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("GET", autorest.GetPathParameters(DefaultBaseURI, "/push/v2/services/{serviceId}/users/{userId}", pathParameters), client.Client.AccessKey, timestamp)
+	signature, err := sec.Signature("GET", common.GetPathParameters(DefaultBaseURI, "/push/v2/services/{serviceId}/users/{userId}", pathParameters), client.Client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}

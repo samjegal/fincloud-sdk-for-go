@@ -9,6 +9,7 @@ import (
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
 	"github.com/Azure/go-autorest/tracing"
+	"github.com/samjegal/fincloud-sdk-for-go/common"
 	"github.com/samjegal/go-fincloud-helpers/security"
 	"net/http"
 	"strconv"
@@ -70,7 +71,7 @@ func (client DataClient) Query(ctx context.Context, parameters QueryRequest) (re
 func (client DataClient) QueryPreparer(ctx context.Context, parameters QueryRequest) (*http.Request, error) {
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("POST", autorest.GetPath(DefaultBaseURI, "/cw_fea/real/cw/api/data/query"), client.Client.AccessKey, timestamp)
+	signature, err := sec.Signature("POST", common.GetPath(DefaultBaseURI, "/cw_fea/real/cw/api/data/query"), client.Client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}
@@ -153,7 +154,7 @@ func (client DataClient) QueryMultiple(ctx context.Context, parameters QueryMult
 func (client DataClient) QueryMultiplePreparer(ctx context.Context, parameters QueryMultipleRequest) (*http.Request, error) {
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("POST", autorest.GetPath(DefaultBaseURI, "/cw_fea/real/cw/api/data/query/multiple"), client.Client.AccessKey, timestamp)
+	signature, err := sec.Signature("POST", common.GetPath(DefaultBaseURI, "/cw_fea/real/cw/api/data/query/multiple"), client.Client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}

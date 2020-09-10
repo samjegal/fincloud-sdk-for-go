@@ -8,6 +8,7 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/tracing"
+	"github.com/samjegal/fincloud-sdk-for-go/common"
 	"github.com/samjegal/go-fincloud-helpers/security"
 	"net/http"
 	"strconv"
@@ -75,7 +76,7 @@ func (client ExtendedClient) DisablePreparer(ctx context.Context, cwKey string, 
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("PUT", autorest.GetPath(DefaultBaseURI, "/cw_fea/real/cw/api/schema/extended/disable")+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	signature, err := sec.Signature("PUT", common.GetPath(DefaultBaseURI, "/cw_fea/real/cw/api/schema/extended/disable")+"?"+common.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}
@@ -155,7 +156,7 @@ func (client ExtendedClient) EnablePreparer(ctx context.Context, cwKey string, i
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("PUT", autorest.GetPath(DefaultBaseURI, "/cw_fea/real/cw/api/schema/extended/enable")+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	signature, err := sec.Signature("PUT", common.GetPath(DefaultBaseURI, "/cw_fea/real/cw/api/schema/extended/enable")+"?"+common.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}
@@ -235,7 +236,7 @@ func (client ExtendedClient) StatusPreparer(ctx context.Context, cwKey string, i
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("GET", autorest.GetPath(DefaultBaseURI, "/cw_fea/real/cw/api/schema/extended/status")+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	signature, err := sec.Signature("GET", common.GetPath(DefaultBaseURI, "/cw_fea/real/cw/api/schema/extended/status")+"?"+common.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}

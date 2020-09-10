@@ -9,6 +9,7 @@ import (
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
 	"github.com/Azure/go-autorest/tracing"
+	"github.com/samjegal/fincloud-sdk-for-go/common"
 	"github.com/samjegal/go-fincloud-helpers/security"
 	"net/http"
 	"strconv"
@@ -82,7 +83,7 @@ func (client AlimtalkClient) CreatePreparer(ctx context.Context, serviceID strin
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("POST", autorest.GetPathParameters(DefaultBaseURI, "/alimtalk/v2/services/{serviceId}/messages", pathParameters), client.Client.AccessKey, timestamp)
+	signature, err := sec.Signature("POST", common.GetPathParameters(DefaultBaseURI, "/alimtalk/v2/services/{serviceId}/messages", pathParameters), client.Client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}
@@ -163,7 +164,7 @@ func (client AlimtalkClient) DeleteReservationPreparer(ctx context.Context, serv
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("DELETE", autorest.GetPathParameters(DefaultBaseURI, "/alimtalk/v2/services/{serviceId}/reservations/{reserveId}", pathParameters), client.Client.AccessKey, timestamp)
+	signature, err := sec.Signature("DELETE", common.GetPathParameters(DefaultBaseURI, "/alimtalk/v2/services/{serviceId}/reservations/{reserveId}", pathParameters), client.Client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}
@@ -243,7 +244,7 @@ func (client AlimtalkClient) DeleteSchedulePreparer(ctx context.Context, service
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("DELETE", autorest.GetPathParameters(DefaultBaseURI, "/alimtalk/v2/services/{serviceId}/schedules/{scheduleCode}/messages/{messageId}", pathParameters), client.Client.AccessKey, timestamp)
+	signature, err := sec.Signature("DELETE", common.GetPathParameters(DefaultBaseURI, "/alimtalk/v2/services/{serviceId}/schedules/{scheduleCode}/messages/{messageId}", pathParameters), client.Client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}
@@ -324,7 +325,7 @@ func (client AlimtalkClient) GetRequestPreparer(ctx context.Context, serviceID s
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("GET", autorest.GetPathParameters(DefaultBaseURI, "/alimtalk/v2/services/{serviceId}/messages", pathParameters)+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	signature, err := sec.Signature("GET", common.GetPathParameters(DefaultBaseURI, "/alimtalk/v2/services/{serviceId}/messages", pathParameters)+"?"+common.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}
@@ -404,7 +405,7 @@ func (client AlimtalkClient) GetResultPreparer(ctx context.Context, serviceID st
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("GET", autorest.GetPathParameters(DefaultBaseURI, "/alimtalk/v2/services/{serviceId}/messages/{messageId}", pathParameters), client.Client.AccessKey, timestamp)
+	signature, err := sec.Signature("GET", common.GetPathParameters(DefaultBaseURI, "/alimtalk/v2/services/{serviceId}/messages/{messageId}", pathParameters), client.Client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}

@@ -9,6 +9,7 @@ import (
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
 	"github.com/Azure/go-autorest/tracing"
+	"github.com/samjegal/fincloud-sdk-for-go/common"
 	"github.com/samjegal/go-fincloud-helpers/security"
 	"net/http"
 	"strconv"
@@ -83,10 +84,11 @@ func (client NodePoolClient) CreatePreparer(ctx context.Context, UUID string, pa
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("POST", autorest.GetPath(DefaultBaseURI, "/clusters/{uuid}/node-pool")+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	signature, err := sec.Signature("POST", common.GetPathParameters(DefaultBaseURI, "/clusters/{uuid}/node-pool", pathParameters), client.Client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json;charset=UTF-8"),
 		autorest.AsPost(),
@@ -161,10 +163,11 @@ func (client NodePoolClient) DeletePreparer(ctx context.Context, UUID string, in
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("DELETE", autorest.GetPath(DefaultBaseURI, "/clusters/{uuid}/node-pool/{instanceNo}")+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	signature, err := sec.Signature("DELETE", common.GetPathParameters(DefaultBaseURI, "/clusters/{uuid}/node-pool/{instanceNo}", pathParameters), client.Client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -235,10 +238,11 @@ func (client NodePoolClient) GetPreparer(ctx context.Context, UUID string) (*htt
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("GET", autorest.GetPath(DefaultBaseURI, "/clusters/{uuid}/node-pool")+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	signature, err := sec.Signature("GET", common.GetPathParameters(DefaultBaseURI, "/clusters/{uuid}/node-pool", pathParameters), client.Client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
@@ -313,10 +317,11 @@ func (client NodePoolClient) UpdatePreparer(ctx context.Context, UUID string, in
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("PATCH", autorest.GetPath(DefaultBaseURI, "/clusters/{uuid}/node-pool/{instanceNo}")+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	signature, err := sec.Signature("PATCH", common.GetPathParameters(DefaultBaseURI, "/clusters/{uuid}/node-pool/{instanceNo}", pathParameters), client.Client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json;charset=UTF-8"),
 		autorest.AsPatch(),

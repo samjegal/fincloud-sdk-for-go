@@ -8,6 +8,7 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/tracing"
+	"github.com/samjegal/fincloud-sdk-for-go/common"
 	"github.com/samjegal/go-fincloud-helpers/security"
 	"net/http"
 	"strconv"
@@ -89,7 +90,7 @@ func (client RouteTableClient) CreatePreparer(ctx context.Context, vpcNo string,
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("POST", autorest.GetPath(DefaultBaseURI, "/createRouteTable")+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	signature, err := sec.Signature("POST", common.GetPath(DefaultBaseURI, "/createRouteTable")+"?"+common.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}
@@ -169,7 +170,7 @@ func (client RouteTableClient) DeletePreparer(ctx context.Context, routeTableNo 
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("POST", autorest.GetPath(DefaultBaseURI, "/deleteRouteTable")+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	signature, err := sec.Signature("POST", common.GetPath(DefaultBaseURI, "/deleteRouteTable")+"?"+common.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}
@@ -249,7 +250,7 @@ func (client RouteTableClient) GetDetailPreparer(ctx context.Context, routeTable
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("GET", autorest.GetPath(DefaultBaseURI, "/getRouteTableDetail")+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	signature, err := sec.Signature("GET", common.GetPath(DefaultBaseURI, "/getRouteTableDetail")+"?"+common.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}
@@ -360,7 +361,7 @@ func (client RouteTableClient) GetListPreparer(ctx context.Context, routeTableNo
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("GET", autorest.GetPath(DefaultBaseURI, "/getRouteTableList")+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	signature, err := sec.Signature("GET", common.GetPath(DefaultBaseURI, "/getRouteTableList")+"?"+common.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}

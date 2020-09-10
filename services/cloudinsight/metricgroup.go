@@ -9,6 +9,7 @@ import (
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
 	"github.com/Azure/go-autorest/tracing"
+	"github.com/samjegal/fincloud-sdk-for-go/common"
 	"github.com/samjegal/go-fincloud-helpers/security"
 	"net/http"
 	"strconv"
@@ -79,7 +80,7 @@ func (client MetricGroupClient) Create(ctx context.Context, parameters MetricsGr
 func (client MetricGroupClient) CreatePreparer(ctx context.Context, parameters MetricsGroupRequest) (*http.Request, error) {
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("POST", autorest.GetPath(DefaultBaseURI, "/cw_fea/real/cw/api/rule/group/metrics"), client.Client.AccessKey, timestamp)
+	signature, err := sec.Signature("POST", common.GetPath(DefaultBaseURI, "/cw_fea/real/cw/api/rule/group/metrics"), client.Client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}
@@ -165,7 +166,7 @@ func (client MetricGroupClient) DeletePreparer(ctx context.Context, prodKey stri
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("DELETE", autorest.GetPath(DefaultBaseURI, "/cw_fea/real/cw/api/rule/group/metrics/del")+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	signature, err := sec.Signature("DELETE", common.GetPath(DefaultBaseURI, "/cw_fea/real/cw/api/rule/group/metrics/del")+"?"+common.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}
@@ -246,7 +247,7 @@ func (client MetricGroupClient) DeleteByProdKeyAndIDPreparer(ctx context.Context
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("DELETE", autorest.GetPathParameters(DefaultBaseURI, "/cw_fea/real/cw/api/rule/group/metrics/del/{prodKey}/{id}", pathParameters), client.Client.AccessKey, timestamp)
+	signature, err := sec.Signature("DELETE", common.GetPathParameters(DefaultBaseURI, "/cw_fea/real/cw/api/rule/group/metrics/del/{prodKey}/{id}", pathParameters), client.Client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}
@@ -324,7 +325,7 @@ func (client MetricGroupClient) GetPreparer(ctx context.Context, prodKey string,
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("GET", autorest.GetPathParameters(DefaultBaseURI, "/cw_fea/real/cw/api/rule/group/metrics/query/{prodKey}/{id}", pathParameters), client.Client.AccessKey, timestamp)
+	signature, err := sec.Signature("GET", common.GetPathParameters(DefaultBaseURI, "/cw_fea/real/cw/api/rule/group/metrics/query/{prodKey}/{id}", pathParameters), client.Client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}
@@ -401,7 +402,7 @@ func (client MetricGroupClient) ListPreparer(ctx context.Context, prodKey string
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("GET", autorest.GetPathParameters(DefaultBaseURI, "/cw_fea/real/cw/api/rule/group/metrics/query/{prodKey}", pathParameters), client.Client.AccessKey, timestamp)
+	signature, err := sec.Signature("GET", common.GetPathParameters(DefaultBaseURI, "/cw_fea/real/cw/api/rule/group/metrics/query/{prodKey}", pathParameters), client.Client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}
@@ -483,7 +484,7 @@ func (client MetricGroupClient) Update(ctx context.Context, parameters MetricsGr
 func (client MetricGroupClient) UpdatePreparer(ctx context.Context, parameters MetricsGroupRequest) (*http.Request, error) {
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("POST", autorest.GetPath(DefaultBaseURI, "/cw_fea/real/cw/api/rule/group/metrics/update"), client.Client.AccessKey, timestamp)
+	signature, err := sec.Signature("POST", common.GetPath(DefaultBaseURI, "/cw_fea/real/cw/api/rule/group/metrics/update"), client.Client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}

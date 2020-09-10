@@ -8,6 +8,7 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/tracing"
+	"github.com/samjegal/fincloud-sdk-for-go/common"
 	"github.com/samjegal/go-fincloud-helpers/security"
 	"net/http"
 	"strconv"
@@ -78,7 +79,7 @@ func (client Client) ChangeSpecPreparer(ctx context.Context, serverInstanceNo st
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("POST", autorest.GetPath(DefaultBaseURI, "/changeServerInstanceSpec")+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	signature, err := sec.Signature("POST", common.GetPath(DefaultBaseURI, "/changeServerInstanceSpec")+"?"+common.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}
@@ -229,7 +230,7 @@ func (client Client) CreatePreparer(ctx context.Context, vpcNo string, subnetNo 
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("POST", autorest.GetPath(DefaultBaseURI, "/createServerInstances")+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	signature, err := sec.Signature("POST", common.GetPath(DefaultBaseURI, "/createServerInstances")+"?"+common.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}
@@ -309,7 +310,7 @@ func (client Client) GetDetailPreparer(ctx context.Context, serverInstanceNo str
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("GET", autorest.GetPath(DefaultBaseURI, "/getServerInstanceDetail")+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	signature, err := sec.Signature("GET", common.GetPath(DefaultBaseURI, "/getServerInstanceDetail")+"?"+common.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}
@@ -433,7 +434,7 @@ func (client Client) GetInstanceListPreparer(ctx context.Context, serverInstance
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("GET", autorest.GetPath(DefaultBaseURI, "/getServerInstanceList")+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	signature, err := sec.Signature("GET", common.GetPath(DefaultBaseURI, "/getServerInstanceList")+"?"+common.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}
@@ -513,7 +514,7 @@ func (client Client) RebootPreparer(ctx context.Context, serverInstanceNoListN s
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("POST", autorest.GetPath(DefaultBaseURI, "/rebootServerInstances")+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	signature, err := sec.Signature("POST", common.GetPath(DefaultBaseURI, "/rebootServerInstances")+"?"+common.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}
@@ -593,7 +594,7 @@ func (client Client) StartPreparer(ctx context.Context, serverInstanceNoListN st
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("POST", autorest.GetPath(DefaultBaseURI, "/startServerInstances")+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	signature, err := sec.Signature("POST", common.GetPath(DefaultBaseURI, "/startServerInstances")+"?"+common.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}
@@ -673,7 +674,7 @@ func (client Client) StopPreparer(ctx context.Context, serverInstanceNoListN str
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("POST", autorest.GetPath(DefaultBaseURI, "/stopServerInstances")+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	signature, err := sec.Signature("POST", common.GetPath(DefaultBaseURI, "/stopServerInstances")+"?"+common.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}
@@ -753,7 +754,7 @@ func (client Client) TerminatePreparer(ctx context.Context, serverInstanceNoList
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("POST", autorest.GetPath(DefaultBaseURI, "/terminateServerInstances")+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	signature, err := sec.Signature("POST", common.GetPath(DefaultBaseURI, "/terminateServerInstances")+"?"+common.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}

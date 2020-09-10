@@ -9,6 +9,7 @@ import (
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
 	"github.com/Azure/go-autorest/tracing"
+	"github.com/samjegal/fincloud-sdk-for-go/common"
 	"github.com/samjegal/go-fincloud-helpers/security"
 	"net/http"
 	"strconv"
@@ -74,7 +75,7 @@ func (client RuleGroupClient) CopyPreparer(ctx context.Context, ID string) (*htt
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("PUT", autorest.GetPathParameters(DefaultBaseURI, "/cw_fea/real/cw/api/rule/group/ruleGrp/copy/{id}", pathParameters), client.Client.AccessKey, timestamp)
+	signature, err := sec.Signature("PUT", common.GetPathParameters(DefaultBaseURI, "/cw_fea/real/cw/api/rule/group/ruleGrp/copy/{id}", pathParameters), client.Client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}
@@ -156,7 +157,7 @@ func (client RuleGroupClient) CopyAsgGroup(ctx context.Context, parameters RuleG
 func (client RuleGroupClient) CopyAsgGroupPreparer(ctx context.Context, parameters RuleGroupCopyForAsgGroupRequest) (*http.Request, error) {
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("POST", autorest.GetPath(DefaultBaseURI, "/cw_fea/real/cw/api/rule/group/ruleGrp/asgCopy"), client.Client.AccessKey, timestamp)
+	signature, err := sec.Signature("POST", common.GetPath(DefaultBaseURI, "/cw_fea/real/cw/api/rule/group/ruleGrp/asgCopy"), client.Client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}
@@ -239,7 +240,7 @@ func (client RuleGroupClient) CopySettings(ctx context.Context, parameters RuleG
 func (client RuleGroupClient) CopySettingsPreparer(ctx context.Context, parameters RuleGroupCopySettingRequest) (*http.Request, error) {
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("POST", autorest.GetPath(DefaultBaseURI, "/cw_fea/real/cw/api/rule/group/ruleGrp/copySettings"), client.Client.AccessKey, timestamp)
+	signature, err := sec.Signature("POST", common.GetPath(DefaultBaseURI, "/cw_fea/real/cw/api/rule/group/ruleGrp/copySettings"), client.Client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}
@@ -323,7 +324,7 @@ func (client RuleGroupClient) Create(ctx context.Context, parameters RuleGroupRe
 func (client RuleGroupClient) CreatePreparer(ctx context.Context, parameters RuleGroupRequest) (*http.Request, error) {
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("POST", autorest.GetPath(DefaultBaseURI, "/cw_fea/real/cw/api/rule/group/ruleGrp"), client.Client.AccessKey, timestamp)
+	signature, err := sec.Signature("POST", common.GetPath(DefaultBaseURI, "/cw_fea/real/cw/api/rule/group/ruleGrp"), client.Client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}
@@ -411,7 +412,7 @@ func (client RuleGroupClient) CreateDirectly(ctx context.Context, parameters Dir
 func (client RuleGroupClient) CreateDirectlyPreparer(ctx context.Context, parameters DirectRuleGroupCreateRequest) (*http.Request, error) {
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("POST", autorest.GetPath(DefaultBaseURI, "/cw_fea/real/cw/api/rule/group/ruleGrp/createDirectly"), client.Client.AccessKey, timestamp)
+	signature, err := sec.Signature("POST", common.GetPath(DefaultBaseURI, "/cw_fea/real/cw/api/rule/group/ruleGrp/createDirectly"), client.Client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}
@@ -492,7 +493,7 @@ func (client RuleGroupClient) Delete(ctx context.Context, parameters RuleGroupDe
 func (client RuleGroupClient) DeletePreparer(ctx context.Context, parameters RuleGroupDeleteRequest) (*http.Request, error) {
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("POST", autorest.GetPath(DefaultBaseURI, "/cw_fea/real/cw/api/rule/group/ruleGrp/del"), client.Client.AccessKey, timestamp)
+	signature, err := sec.Signature("POST", common.GetPath(DefaultBaseURI, "/cw_fea/real/cw/api/rule/group/ruleGrp/del"), client.Client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}
@@ -572,7 +573,7 @@ func (client RuleGroupClient) DeleteByProdKeyAndIDPreparer(ctx context.Context, 
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("DELETE", autorest.GetPathParameters(DefaultBaseURI, "/cw_fea/real/cw/api/rule/group/ruleGrp/del/{prodKey}/{id}", pathParameters), client.Client.AccessKey, timestamp)
+	signature, err := sec.Signature("DELETE", common.GetPathParameters(DefaultBaseURI, "/cw_fea/real/cw/api/rule/group/ruleGrp/del/{prodKey}/{id}", pathParameters), client.Client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}
@@ -655,7 +656,7 @@ func (client RuleGroupClient) GetByMonitorGroupIdsPreparer(ctx context.Context, 
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("POST", autorest.GetPath(DefaultBaseURI, "/cw_fea/real/cw/api/rule/group/metric/group/related")+"?"+autorest.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	signature, err := sec.Signature("POST", common.GetPath(DefaultBaseURI, "/cw_fea/real/cw/api/rule/group/metric/group/related")+"?"+common.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}
@@ -731,7 +732,7 @@ func (client RuleGroupClient) Query(ctx context.Context, parameters RuleGroupLis
 func (client RuleGroupClient) QueryPreparer(ctx context.Context, parameters RuleGroupListQueryRequest) (*http.Request, error) {
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("POST", autorest.GetPath(DefaultBaseURI, "/cw_fea/real/cw/api/rule/group/ruleGrp/query"), client.Client.AccessKey, timestamp)
+	signature, err := sec.Signature("POST", common.GetPath(DefaultBaseURI, "/cw_fea/real/cw/api/rule/group/ruleGrp/query"), client.Client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}
@@ -812,7 +813,7 @@ func (client RuleGroupClient) QueryByProdKeyAndIDPreparer(ctx context.Context, p
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("GET", autorest.GetPathParameters(DefaultBaseURI, "/cw_fea/real/cw/api/rule/group/ruleGrp/query/{prodKey}/{id}", pathParameters), client.Client.AccessKey, timestamp)
+	signature, err := sec.Signature("GET", common.GetPathParameters(DefaultBaseURI, "/cw_fea/real/cw/api/rule/group/ruleGrp/query/{prodKey}/{id}", pathParameters), client.Client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}
@@ -894,7 +895,7 @@ func (client RuleGroupClient) Update(ctx context.Context, parameters RuleGroupRe
 func (client RuleGroupClient) UpdatePreparer(ctx context.Context, parameters RuleGroupRequest) (*http.Request, error) {
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("POST", autorest.GetPath(DefaultBaseURI, "/cw_fea/real/cw/api/rule/group/ruleGrp/update"), client.Client.AccessKey, timestamp)
+	signature, err := sec.Signature("POST", common.GetPath(DefaultBaseURI, "/cw_fea/real/cw/api/rule/group/ruleGrp/update"), client.Client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}

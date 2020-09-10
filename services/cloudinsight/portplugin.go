@@ -8,6 +8,7 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/tracing"
+	"github.com/samjegal/fincloud-sdk-for-go/common"
 	"github.com/samjegal/go-fincloud-helpers/security"
 	"net/http"
 	"strconv"
@@ -69,7 +70,7 @@ func (client PortPluginClient) Create(ctx context.Context, parameters PortPlugin
 func (client PortPluginClient) CreatePreparer(ctx context.Context, parameters PortPluginRequest) (*http.Request, error) {
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("POST", autorest.GetPath(DefaultBaseURI, "/cw_server/real/api/plugin/port"), client.Client.AccessKey, timestamp)
+	signature, err := sec.Signature("POST", common.GetPath(DefaultBaseURI, "/cw_server/real/api/plugin/port"), client.Client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}
@@ -147,7 +148,7 @@ func (client PortPluginClient) GetPreparer(ctx context.Context, instanceNo strin
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("GET", autorest.GetPathParameters(DefaultBaseURI, "/cw_server/real/api/plugin/port/instanceNo/{instanceNo}", pathParameters), client.Client.AccessKey, timestamp)
+	signature, err := sec.Signature("GET", common.GetPathParameters(DefaultBaseURI, "/cw_server/real/api/plugin/port/instanceNo/{instanceNo}", pathParameters), client.Client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}
@@ -218,7 +219,7 @@ func (client PortPluginClient) List(ctx context.Context) (result ListPortPluginP
 func (client PortPluginClient) ListPreparer(ctx context.Context) (*http.Request, error) {
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
 	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("GET", autorest.GetPath(DefaultBaseURI, "/cw_server/real/api/plugin/port"), client.Client.AccessKey, timestamp)
+	signature, err := sec.Signature("GET", common.GetPath(DefaultBaseURI, "/cw_server/real/api/plugin/port"), client.Client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}
