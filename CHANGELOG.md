@@ -1,3 +1,14 @@
+## 1.9.5 (September 10, 2020)
+
+### UPDATED SERVICES
+
+- VPC
+- Server
+- NAS
+- Kuebernetes
+- Cloud Insight
+- SENS
+
 ## 1.9.4 (September 10, 2020)
 
 ### UPDATED SERVICES
