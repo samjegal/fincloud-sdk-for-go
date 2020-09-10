@@ -17,11 +17,12 @@ const (
 // BaseClient is the base client for Nas.
 type BaseClient struct {
 	autorest.Client
-	BaseURI   string
+	BaseURI string
+
 	AccessKey string
 	Secretkey string
-	// APIGatewayAPIKey can control user access by using API Key and IP ACL issued by API Gateway. The API can be protected
-	// by using the same user authentication as the own API provided by Naver Cloud Platform.	APIGatewayAPIKey string
+
+	APIGatewayAPIKey string
 }
 
 // New creates an instance of the BaseClient client.
