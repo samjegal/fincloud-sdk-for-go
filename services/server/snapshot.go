@@ -85,8 +85,8 @@ func (client SnapshotClient) CreatePreparer(ctx context.Context, originalBlockSt
 	}
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
-	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("POST", common.GetPath(DefaultBaseURI, "/createBlockStorageSnapshotInstance")+"?"+common.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	sec := security.NewSignature(client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("POST", common.GetPath(DefaultBaseURI, "/createBlockStorageSnapshotInstance")+"?"+common.GetQuery(queryParameters), client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}
@@ -97,7 +97,7 @@ func (client SnapshotClient) CreatePreparer(ctx context.Context, originalBlockSt
 		autorest.WithPath("/createBlockStorageSnapshotInstance"),
 		autorest.WithQueryParameters(queryParameters),
 		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
-		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-iam-access-key", client.AccessKey),
 		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -165,8 +165,8 @@ func (client SnapshotClient) DeletePreparer(ctx context.Context, blockStorageSna
 	queryParameters["regionCode"] = autorest.Encode("query", "FKR")
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
-	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("POST", common.GetPath(DefaultBaseURI, "/deleteBlockStorageSnapshotInstances")+"?"+common.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	sec := security.NewSignature(client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("POST", common.GetPath(DefaultBaseURI, "/deleteBlockStorageSnapshotInstances")+"?"+common.GetQuery(queryParameters), client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}
@@ -177,7 +177,7 @@ func (client SnapshotClient) DeletePreparer(ctx context.Context, blockStorageSna
 		autorest.WithPath("/deleteBlockStorageSnapshotInstances"),
 		autorest.WithQueryParameters(queryParameters),
 		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
-		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-iam-access-key", client.AccessKey),
 		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -245,8 +245,8 @@ func (client SnapshotClient) GetDetailPreparer(ctx context.Context, blockStorage
 	queryParameters["regionCode"] = autorest.Encode("query", "FKR")
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
-	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("GET", common.GetPath(DefaultBaseURI, "/getBlockStorageSnapshotInstanceDetail")+"?"+common.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	sec := security.NewSignature(client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("GET", common.GetPath(DefaultBaseURI, "/getBlockStorageSnapshotInstanceDetail")+"?"+common.GetQuery(queryParameters), client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}
@@ -257,7 +257,7 @@ func (client SnapshotClient) GetDetailPreparer(ctx context.Context, blockStorage
 		autorest.WithPath("/getBlockStorageSnapshotInstanceDetail"),
 		autorest.WithQueryParameters(queryParameters),
 		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
-		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-iam-access-key", client.AccessKey),
 		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -364,8 +364,8 @@ func (client SnapshotClient) GetListPreparer(ctx context.Context, blockStorageSn
 	}
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
-	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("GET", common.GetPath(DefaultBaseURI, "/getBlockStorageSnapshotInstanceList")+"?"+common.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	sec := security.NewSignature(client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("GET", common.GetPath(DefaultBaseURI, "/getBlockStorageSnapshotInstanceList")+"?"+common.GetQuery(queryParameters), client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}
@@ -376,7 +376,7 @@ func (client SnapshotClient) GetListPreparer(ctx context.Context, blockStorageSn
 		autorest.WithPath("/getBlockStorageSnapshotInstanceList"),
 		autorest.WithQueryParameters(queryParameters),
 		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
-		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-iam-access-key", client.AccessKey),
 		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

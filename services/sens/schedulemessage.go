@@ -77,8 +77,8 @@ func (client ScheduleMessageClient) DeletePreparer(ctx context.Context, serviceI
 	}
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
-	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("DELETE", common.GetPathParameters(DefaultBaseURI, "/push/v2/services/{serviceId}/schedules/{scheduleCode}/messages/{messageId}", pathParameters), client.Client.AccessKey, timestamp)
+	sec := security.NewSignature(client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("DELETE", common.GetPathParameters(DefaultBaseURI, "/push/v2/services/{serviceId}/schedules/{scheduleCode}/messages/{messageId}", pathParameters), client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}
@@ -87,9 +87,9 @@ func (client ScheduleMessageClient) DeletePreparer(ctx context.Context, serviceI
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/push/v2/services/{serviceId}/schedules/{scheduleCode}/messages/{messageId}", pathParameters),
-		autorest.WithHeader("x-ncp-apigw-api-key", client.Client.APIGatewayAPIKey),
+		autorest.WithHeader("x-ncp-apigw-api-key", client.APIGatewayAPIKey),
 		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
-		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-iam-access-key", client.AccessKey),
 		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -157,8 +157,8 @@ func (client ScheduleMessageClient) GetPreparer(ctx context.Context, serviceID s
 	}
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
-	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("GET", common.GetPathParameters(DefaultBaseURI, "/push/v2/services/{serviceId}/schedules/{scheduleCode}/messages/{messageId}", pathParameters), client.Client.AccessKey, timestamp)
+	sec := security.NewSignature(client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("GET", common.GetPathParameters(DefaultBaseURI, "/push/v2/services/{serviceId}/schedules/{scheduleCode}/messages/{messageId}", pathParameters), client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}
@@ -167,9 +167,9 @@ func (client ScheduleMessageClient) GetPreparer(ctx context.Context, serviceID s
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/push/v2/services/{serviceId}/schedules/{scheduleCode}/messages/{messageId}", pathParameters),
-		autorest.WithHeader("x-ncp-apigw-api-key", client.Client.APIGatewayAPIKey),
+		autorest.WithHeader("x-ncp-apigw-api-key", client.APIGatewayAPIKey),
 		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
-		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-iam-access-key", client.AccessKey),
 		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -247,8 +247,8 @@ func (client ScheduleMessageClient) ListPreparer(ctx context.Context, serviceID 
 	}
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
-	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("GET", common.GetPathParameters(DefaultBaseURI, "/push/v2/services/{serviceId}/schedules/{scheduleCode}/messages", pathParameters)+"?"+common.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	sec := security.NewSignature(client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("GET", common.GetPathParameters(DefaultBaseURI, "/push/v2/services/{serviceId}/schedules/{scheduleCode}/messages", pathParameters)+"?"+common.GetQuery(queryParameters), client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}
@@ -258,9 +258,9 @@ func (client ScheduleMessageClient) ListPreparer(ctx context.Context, serviceID 
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/push/v2/services/{serviceId}/schedules/{scheduleCode}/messages", pathParameters),
 		autorest.WithQueryParameters(queryParameters),
-		autorest.WithHeader("x-ncp-apigw-api-key", client.Client.APIGatewayAPIKey),
+		autorest.WithHeader("x-ncp-apigw-api-key", client.APIGatewayAPIKey),
 		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
-		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-iam-access-key", client.AccessKey),
 		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

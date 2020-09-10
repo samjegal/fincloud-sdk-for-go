@@ -70,8 +70,8 @@ func (client DataClient) Query(ctx context.Context, parameters QueryRequest) (re
 // QueryPreparer prepares the Query request.
 func (client DataClient) QueryPreparer(ctx context.Context, parameters QueryRequest) (*http.Request, error) {
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
-	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("POST", common.GetPath(DefaultBaseURI, "/cw_fea/real/cw/api/data/query"), client.Client.AccessKey, timestamp)
+	sec := security.NewSignature(client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("POST", common.GetPath(DefaultBaseURI, "/cw_fea/real/cw/api/data/query"), client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}
@@ -82,9 +82,9 @@ func (client DataClient) QueryPreparer(ctx context.Context, parameters QueryRequ
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPath("/cw_fea/real/cw/api/data/query"),
 		autorest.WithJSON(parameters),
-		autorest.WithHeader("x-ncp-apigw-api-key", client.Client.APIGatewayAPIKey),
+		autorest.WithHeader("x-ncp-apigw-api-key", client.APIGatewayAPIKey),
 		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
-		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-iam-access-key", client.AccessKey),
 		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -153,8 +153,8 @@ func (client DataClient) QueryMultiple(ctx context.Context, parameters QueryMult
 // QueryMultiplePreparer prepares the QueryMultiple request.
 func (client DataClient) QueryMultiplePreparer(ctx context.Context, parameters QueryMultipleRequest) (*http.Request, error) {
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
-	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("POST", common.GetPath(DefaultBaseURI, "/cw_fea/real/cw/api/data/query/multiple"), client.Client.AccessKey, timestamp)
+	sec := security.NewSignature(client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("POST", common.GetPath(DefaultBaseURI, "/cw_fea/real/cw/api/data/query/multiple"), client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}
@@ -165,9 +165,9 @@ func (client DataClient) QueryMultiplePreparer(ctx context.Context, parameters Q
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPath("/cw_fea/real/cw/api/data/query/multiple"),
 		autorest.WithJSON(parameters),
-		autorest.WithHeader("x-ncp-apigw-api-key", client.Client.APIGatewayAPIKey),
+		autorest.WithHeader("x-ncp-apigw-api-key", client.APIGatewayAPIKey),
 		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
-		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-iam-access-key", client.AccessKey),
 		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

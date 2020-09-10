@@ -77,8 +77,8 @@ func (client MonitorClient) Create(ctx context.Context, parameters MonitorGroupR
 // CreatePreparer prepares the Create request.
 func (client MonitorClient) CreatePreparer(ctx context.Context, parameters MonitorGroupRequest) (*http.Request, error) {
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
-	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("POST", common.GetPath(DefaultBaseURI, "/cw_fea/real/cw/api/rule/group/monitor"), client.Client.AccessKey, timestamp)
+	sec := security.NewSignature(client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("POST", common.GetPath(DefaultBaseURI, "/cw_fea/real/cw/api/rule/group/monitor"), client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}
@@ -89,9 +89,9 @@ func (client MonitorClient) CreatePreparer(ctx context.Context, parameters Monit
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPath("/cw_fea/real/cw/api/rule/group/monitor"),
 		autorest.WithJSON(parameters),
-		autorest.WithHeader("x-ncp-apigw-api-key", client.Client.APIGatewayAPIKey),
+		autorest.WithHeader("x-ncp-apigw-api-key", client.APIGatewayAPIKey),
 		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
-		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-iam-access-key", client.AccessKey),
 		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

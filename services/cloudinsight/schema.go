@@ -75,8 +75,8 @@ func (client SchemaClient) DeletePreparer(ctx context.Context, cwKey string, pro
 	}
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
-	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("DELETE", common.GetPath(DefaultBaseURI, "/cw_fea/real/cw/api/schema")+"?"+common.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	sec := security.NewSignature(client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("DELETE", common.GetPath(DefaultBaseURI, "/cw_fea/real/cw/api/schema")+"?"+common.GetQuery(queryParameters), client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}
@@ -86,9 +86,9 @@ func (client SchemaClient) DeletePreparer(ctx context.Context, cwKey string, pro
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPath("/cw_fea/real/cw/api/schema"),
 		autorest.WithQueryParameters(queryParameters),
-		autorest.WithHeader("x-ncp-apigw-api-key", client.Client.APIGatewayAPIKey),
+		autorest.WithHeader("x-ncp-apigw-api-key", client.APIGatewayAPIKey),
 		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
-		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-iam-access-key", client.AccessKey),
 		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -157,8 +157,8 @@ func (client SchemaClient) GetPreparer(ctx context.Context, prodName string, cwK
 	}
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
-	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("GET", common.GetPath(DefaultBaseURI, "/cw_fea/real/cw/api/schema")+"?"+common.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	sec := security.NewSignature(client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("GET", common.GetPath(DefaultBaseURI, "/cw_fea/real/cw/api/schema")+"?"+common.GetQuery(queryParameters), client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}
@@ -168,9 +168,9 @@ func (client SchemaClient) GetPreparer(ctx context.Context, prodName string, cwK
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPath("/cw_fea/real/cw/api/schema"),
 		autorest.WithQueryParameters(queryParameters),
-		autorest.WithHeader("x-ncp-apigw-api-key", client.Client.APIGatewayAPIKey),
+		autorest.WithHeader("x-ncp-apigw-api-key", client.APIGatewayAPIKey),
 		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
-		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-iam-access-key", client.AccessKey),
 		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -231,8 +231,8 @@ func (client SchemaClient) Register(ctx context.Context, parameters SchemaReques
 // RegisterPreparer prepares the Register request.
 func (client SchemaClient) RegisterPreparer(ctx context.Context, parameters SchemaRequest) (*http.Request, error) {
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
-	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("POST", common.GetPath(DefaultBaseURI, "/cw_fea/real/cw/api/schema"), client.Client.AccessKey, timestamp)
+	sec := security.NewSignature(client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("POST", common.GetPath(DefaultBaseURI, "/cw_fea/real/cw/api/schema"), client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}
@@ -243,9 +243,9 @@ func (client SchemaClient) RegisterPreparer(ctx context.Context, parameters Sche
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPath("/cw_fea/real/cw/api/schema"),
 		autorest.WithJSON(parameters),
-		autorest.WithHeader("x-ncp-apigw-api-key", client.Client.APIGatewayAPIKey),
+		autorest.WithHeader("x-ncp-apigw-api-key", client.APIGatewayAPIKey),
 		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
-		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-iam-access-key", client.AccessKey),
 		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -306,8 +306,8 @@ func (client SchemaClient) Update(ctx context.Context, parameters SchemaRequest)
 // UpdatePreparer prepares the Update request.
 func (client SchemaClient) UpdatePreparer(ctx context.Context, parameters SchemaRequest) (*http.Request, error) {
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
-	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("PUT", common.GetPath(DefaultBaseURI, "/cw_fea/real/cw/api/schema"), client.Client.AccessKey, timestamp)
+	sec := security.NewSignature(client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("PUT", common.GetPath(DefaultBaseURI, "/cw_fea/real/cw/api/schema"), client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}
@@ -318,9 +318,9 @@ func (client SchemaClient) UpdatePreparer(ctx context.Context, parameters Schema
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPath("/cw_fea/real/cw/api/schema"),
 		autorest.WithJSON(parameters),
-		autorest.WithHeader("x-ncp-apigw-api-key", client.Client.APIGatewayAPIKey),
+		autorest.WithHeader("x-ncp-apigw-api-key", client.APIGatewayAPIKey),
 		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
-		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-iam-access-key", client.AccessKey),
 		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

@@ -69,8 +69,8 @@ func (client PortPluginClient) Create(ctx context.Context, parameters PortPlugin
 // CreatePreparer prepares the Create request.
 func (client PortPluginClient) CreatePreparer(ctx context.Context, parameters PortPluginRequest) (*http.Request, error) {
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
-	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("POST", common.GetPath(DefaultBaseURI, "/cw_server/real/api/plugin/port"), client.Client.AccessKey, timestamp)
+	sec := security.NewSignature(client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("POST", common.GetPath(DefaultBaseURI, "/cw_server/real/api/plugin/port"), client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}
@@ -81,9 +81,9 @@ func (client PortPluginClient) CreatePreparer(ctx context.Context, parameters Po
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPath("/cw_server/real/api/plugin/port"),
 		autorest.WithJSON(parameters),
-		autorest.WithHeader("x-ncp-apigw-api-key", client.Client.APIGatewayAPIKey),
+		autorest.WithHeader("x-ncp-apigw-api-key", client.APIGatewayAPIKey),
 		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
-		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-iam-access-key", client.AccessKey),
 		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -147,8 +147,8 @@ func (client PortPluginClient) GetPreparer(ctx context.Context, instanceNo strin
 	}
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
-	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("GET", common.GetPathParameters(DefaultBaseURI, "/cw_server/real/api/plugin/port/instanceNo/{instanceNo}", pathParameters), client.Client.AccessKey, timestamp)
+	sec := security.NewSignature(client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("GET", common.GetPathParameters(DefaultBaseURI, "/cw_server/real/api/plugin/port/instanceNo/{instanceNo}", pathParameters), client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}
@@ -157,9 +157,9 @@ func (client PortPluginClient) GetPreparer(ctx context.Context, instanceNo strin
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/cw_server/real/api/plugin/port/instanceNo/{instanceNo}", pathParameters),
-		autorest.WithHeader("x-ncp-apigw-api-key", client.Client.APIGatewayAPIKey),
+		autorest.WithHeader("x-ncp-apigw-api-key", client.APIGatewayAPIKey),
 		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
-		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-iam-access-key", client.AccessKey),
 		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -218,8 +218,8 @@ func (client PortPluginClient) List(ctx context.Context) (result ListPortPluginP
 // ListPreparer prepares the List request.
 func (client PortPluginClient) ListPreparer(ctx context.Context) (*http.Request, error) {
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
-	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("GET", common.GetPath(DefaultBaseURI, "/cw_server/real/api/plugin/port"), client.Client.AccessKey, timestamp)
+	sec := security.NewSignature(client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("GET", common.GetPath(DefaultBaseURI, "/cw_server/real/api/plugin/port"), client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}
@@ -228,9 +228,9 @@ func (client PortPluginClient) ListPreparer(ctx context.Context) (*http.Request,
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPath("/cw_server/real/api/plugin/port"),
-		autorest.WithHeader("x-ncp-apigw-api-key", client.Client.APIGatewayAPIKey),
+		autorest.WithHeader("x-ncp-apigw-api-key", client.APIGatewayAPIKey),
 		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
-		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-iam-access-key", client.AccessKey),
 		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

@@ -86,8 +86,8 @@ func (client ClustersClient) Create(ctx context.Context, parameters ClusterReque
 // CreatePreparer prepares the Create request.
 func (client ClustersClient) CreatePreparer(ctx context.Context, parameters ClusterRequest) (*http.Request, error) {
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
-	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("POST", common.GetPath(DefaultBaseURI, "/clusters"), client.Client.AccessKey, timestamp)
+	sec := security.NewSignature(client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("POST", common.GetPath(DefaultBaseURI, "/clusters"), client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}
@@ -99,7 +99,7 @@ func (client ClustersClient) CreatePreparer(ctx context.Context, parameters Clus
 		autorest.WithPath("/clusters"),
 		autorest.WithJSON(parameters),
 		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
-		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-iam-access-key", client.AccessKey),
 		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -163,8 +163,8 @@ func (client ClustersClient) DeletePreparer(ctx context.Context, UUID string) (*
 	}
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
-	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("DELETE", common.GetPathParameters(DefaultBaseURI, "/clusters/{uuid}", pathParameters), client.Client.AccessKey, timestamp)
+	sec := security.NewSignature(client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("DELETE", common.GetPathParameters(DefaultBaseURI, "/clusters/{uuid}", pathParameters), client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}
@@ -174,7 +174,7 @@ func (client ClustersClient) DeletePreparer(ctx context.Context, UUID string) (*
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/clusters/{uuid}", pathParameters),
 		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
-		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-iam-access-key", client.AccessKey),
 		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -238,8 +238,8 @@ func (client ClustersClient) GetPreparer(ctx context.Context, UUID string) (*htt
 	}
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
-	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("GET", common.GetPathParameters(DefaultBaseURI, "/clusters/{uuid}", pathParameters), client.Client.AccessKey, timestamp)
+	sec := security.NewSignature(client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("GET", common.GetPathParameters(DefaultBaseURI, "/clusters/{uuid}", pathParameters), client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}
@@ -249,7 +249,7 @@ func (client ClustersClient) GetPreparer(ctx context.Context, UUID string) (*htt
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/clusters/{uuid}", pathParameters),
 		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
-		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-iam-access-key", client.AccessKey),
 		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -308,8 +308,8 @@ func (client ClustersClient) List(ctx context.Context) (result ClustersListRespo
 // ListPreparer prepares the List request.
 func (client ClustersClient) ListPreparer(ctx context.Context) (*http.Request, error) {
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
-	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("GET", common.GetPath(DefaultBaseURI, "/clusters"), client.Client.AccessKey, timestamp)
+	sec := security.NewSignature(client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("GET", common.GetPath(DefaultBaseURI, "/clusters"), client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}
@@ -319,7 +319,7 @@ func (client ClustersClient) ListPreparer(ctx context.Context) (*http.Request, e
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPath("/clusters"),
 		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
-		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-iam-access-key", client.AccessKey),
 		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

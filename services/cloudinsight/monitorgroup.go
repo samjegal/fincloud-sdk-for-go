@@ -81,8 +81,8 @@ func (client MonitorGroupClient) DeleteForcePreparer(ctx context.Context, prodKe
 	}
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
-	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("DELETE", common.GetPath(DefaultBaseURI, "/cw_fea/real/cw/api/rule/group/metric/groups")+"?"+common.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	sec := security.NewSignature(client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("DELETE", common.GetPath(DefaultBaseURI, "/cw_fea/real/cw/api/rule/group/metric/groups")+"?"+common.GetQuery(queryParameters), client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}
@@ -94,9 +94,9 @@ func (client MonitorGroupClient) DeleteForcePreparer(ctx context.Context, prodKe
 		autorest.WithPath("/cw_fea/real/cw/api/rule/group/metric/groups"),
 		autorest.WithJSON(parameters),
 		autorest.WithQueryParameters(queryParameters),
-		autorest.WithHeader("x-ncp-apigw-api-key", client.Client.APIGatewayAPIKey),
+		autorest.WithHeader("x-ncp-apigw-api-key", client.APIGatewayAPIKey),
 		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
-		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-iam-access-key", client.AccessKey),
 		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -167,8 +167,8 @@ func (client MonitorGroupClient) DeleteForce1Preparer(ctx context.Context, prodK
 	}
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
-	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("DELETE", common.GetPath(DefaultBaseURI, "/cw_fea/real/cw/api/rule/group/monitor/groups")+"?"+common.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	sec := security.NewSignature(client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("DELETE", common.GetPath(DefaultBaseURI, "/cw_fea/real/cw/api/rule/group/monitor/groups")+"?"+common.GetQuery(queryParameters), client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}
@@ -180,9 +180,9 @@ func (client MonitorGroupClient) DeleteForce1Preparer(ctx context.Context, prodK
 		autorest.WithPath("/cw_fea/real/cw/api/rule/group/monitor/groups"),
 		autorest.WithJSON(parameters),
 		autorest.WithQueryParameters(queryParameters),
-		autorest.WithHeader("x-ncp-apigw-api-key", client.Client.APIGatewayAPIKey),
+		autorest.WithHeader("x-ncp-apigw-api-key", client.APIGatewayAPIKey),
 		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
-		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-iam-access-key", client.AccessKey),
 		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -249,8 +249,8 @@ func (client MonitorGroupClient) GetPreparer(ctx context.Context, prodKey string
 	}
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
-	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("GET", common.GetPathParameters(DefaultBaseURI, "/cw_fea/real/cw/api/rule/group/monitor/{prodKey}/{id}", pathParameters), client.Client.AccessKey, timestamp)
+	sec := security.NewSignature(client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("GET", common.GetPathParameters(DefaultBaseURI, "/cw_fea/real/cw/api/rule/group/monitor/{prodKey}/{id}", pathParameters), client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}
@@ -259,9 +259,9 @@ func (client MonitorGroupClient) GetPreparer(ctx context.Context, prodKey string
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/cw_fea/real/cw/api/rule/group/monitor/{prodKey}/{id}", pathParameters),
-		autorest.WithHeader("x-ncp-apigw-api-key", client.Client.APIGatewayAPIKey),
+		autorest.WithHeader("x-ncp-apigw-api-key", client.APIGatewayAPIKey),
 		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
-		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-iam-access-key", client.AccessKey),
 		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -333,8 +333,8 @@ func (client MonitorGroupClient) GetByMonitorGroupIdsPreparer(ctx context.Contex
 	}
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
-	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("POST", common.GetPath(DefaultBaseURI, "/cw_fea/real/cw/api/rule/group/monitor/group/related")+"?"+common.GetQuery(queryParameters), client.Client.AccessKey, timestamp)
+	sec := security.NewSignature(client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("POST", common.GetPath(DefaultBaseURI, "/cw_fea/real/cw/api/rule/group/monitor/group/related")+"?"+common.GetQuery(queryParameters), client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}
@@ -346,9 +346,9 @@ func (client MonitorGroupClient) GetByMonitorGroupIdsPreparer(ctx context.Contex
 		autorest.WithPath("/cw_fea/real/cw/api/rule/group/monitor/group/related"),
 		autorest.WithJSON(parameters),
 		autorest.WithQueryParameters(queryParameters),
-		autorest.WithHeader("x-ncp-apigw-api-key", client.Client.APIGatewayAPIKey),
+		autorest.WithHeader("x-ncp-apigw-api-key", client.APIGatewayAPIKey),
 		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
-		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-iam-access-key", client.AccessKey),
 		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -413,8 +413,8 @@ func (client MonitorGroupClient) ListPreparer(ctx context.Context, prodKey strin
 	}
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
-	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("GET", common.GetPathParameters(DefaultBaseURI, "/cw_fea/real/cw/api/rule/group/monitor/{prodKey}", pathParameters), client.Client.AccessKey, timestamp)
+	sec := security.NewSignature(client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("GET", common.GetPathParameters(DefaultBaseURI, "/cw_fea/real/cw/api/rule/group/monitor/{prodKey}", pathParameters), client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}
@@ -423,9 +423,9 @@ func (client MonitorGroupClient) ListPreparer(ctx context.Context, prodKey strin
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/cw_fea/real/cw/api/rule/group/monitor/{prodKey}", pathParameters),
-		autorest.WithHeader("x-ncp-apigw-api-key", client.Client.APIGatewayAPIKey),
+		autorest.WithHeader("x-ncp-apigw-api-key", client.APIGatewayAPIKey),
 		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
-		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-iam-access-key", client.AccessKey),
 		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -486,8 +486,8 @@ func (client MonitorGroupClient) RemoveResourceFromRules(ctx context.Context, pa
 // RemoveResourceFromRulesPreparer prepares the RemoveResourceFromRules request.
 func (client MonitorGroupClient) RemoveResourceFromRulesPreparer(ctx context.Context, parameters RemoveResourceFromRulesParameter) (*http.Request, error) {
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
-	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("POST", common.GetPath(DefaultBaseURI, "/cw_fea/real/cw/api/rule/group/monitor/removeResourceFromRules"), client.Client.AccessKey, timestamp)
+	sec := security.NewSignature(client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("POST", common.GetPath(DefaultBaseURI, "/cw_fea/real/cw/api/rule/group/monitor/removeResourceFromRules"), client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}
@@ -498,9 +498,9 @@ func (client MonitorGroupClient) RemoveResourceFromRulesPreparer(ctx context.Con
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPath("/cw_fea/real/cw/api/rule/group/monitor/removeResourceFromRules"),
 		autorest.WithJSON(parameters),
-		autorest.WithHeader("x-ncp-apigw-api-key", client.Client.APIGatewayAPIKey),
+		autorest.WithHeader("x-ncp-apigw-api-key", client.APIGatewayAPIKey),
 		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
-		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-iam-access-key", client.AccessKey),
 		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

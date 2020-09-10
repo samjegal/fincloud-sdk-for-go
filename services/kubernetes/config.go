@@ -73,8 +73,8 @@ func (client ConfigClient) GetPreparer(ctx context.Context, UUID string) (*http.
 	}
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
-	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("GET", common.GetPathParameters(DefaultBaseURI, "/clusters/{uuid}/kubeconfig", pathParameters), client.Client.AccessKey, timestamp)
+	sec := security.NewSignature(client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("GET", common.GetPathParameters(DefaultBaseURI, "/clusters/{uuid}/kubeconfig", pathParameters), client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}
@@ -84,7 +84,7 @@ func (client ConfigClient) GetPreparer(ctx context.Context, UUID string) (*http.
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/clusters/{uuid}/kubeconfig", pathParameters),
 		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
-		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-iam-access-key", client.AccessKey),
 		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -149,8 +149,8 @@ func (client ConfigClient) ResetPreparer(ctx context.Context, UUID string) (*htt
 	}
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
-	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("PATCH", common.GetPathParameters(DefaultBaseURI, "/clusters/{uuid}/kubeconfig/reset", pathParameters), client.Client.AccessKey, timestamp)
+	sec := security.NewSignature(client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("PATCH", common.GetPathParameters(DefaultBaseURI, "/clusters/{uuid}/kubeconfig/reset", pathParameters), client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}
@@ -160,7 +160,7 @@ func (client ConfigClient) ResetPreparer(ctx context.Context, UUID string) (*htt
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/clusters/{uuid}/kubeconfig/reset", pathParameters),
 		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
-		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-iam-access-key", client.AccessKey),
 		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

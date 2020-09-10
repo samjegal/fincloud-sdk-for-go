@@ -83,8 +83,8 @@ func (client NodePoolClient) CreatePreparer(ctx context.Context, UUID string, pa
 	}
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
-	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("POST", common.GetPathParameters(DefaultBaseURI, "/clusters/{uuid}/node-pool", pathParameters), client.Client.AccessKey, timestamp)
+	sec := security.NewSignature(client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("POST", common.GetPathParameters(DefaultBaseURI, "/clusters/{uuid}/node-pool", pathParameters), client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}
@@ -96,7 +96,7 @@ func (client NodePoolClient) CreatePreparer(ctx context.Context, UUID string, pa
 		autorest.WithPathParameters("/clusters/{uuid}/node-pool", pathParameters),
 		autorest.WithJSON(parameters),
 		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
-		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-iam-access-key", client.AccessKey),
 		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -162,8 +162,8 @@ func (client NodePoolClient) DeletePreparer(ctx context.Context, UUID string, in
 	}
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
-	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("DELETE", common.GetPathParameters(DefaultBaseURI, "/clusters/{uuid}/node-pool/{instanceNo}", pathParameters), client.Client.AccessKey, timestamp)
+	sec := security.NewSignature(client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("DELETE", common.GetPathParameters(DefaultBaseURI, "/clusters/{uuid}/node-pool/{instanceNo}", pathParameters), client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}
@@ -173,7 +173,7 @@ func (client NodePoolClient) DeletePreparer(ctx context.Context, UUID string, in
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/clusters/{uuid}/node-pool/{instanceNo}", pathParameters),
 		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
-		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-iam-access-key", client.AccessKey),
 		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -237,8 +237,8 @@ func (client NodePoolClient) GetPreparer(ctx context.Context, UUID string) (*htt
 	}
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
-	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("GET", common.GetPathParameters(DefaultBaseURI, "/clusters/{uuid}/node-pool", pathParameters), client.Client.AccessKey, timestamp)
+	sec := security.NewSignature(client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("GET", common.GetPathParameters(DefaultBaseURI, "/clusters/{uuid}/node-pool", pathParameters), client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}
@@ -248,7 +248,7 @@ func (client NodePoolClient) GetPreparer(ctx context.Context, UUID string) (*htt
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/clusters/{uuid}/node-pool", pathParameters),
 		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
-		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-iam-access-key", client.AccessKey),
 		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -316,8 +316,8 @@ func (client NodePoolClient) UpdatePreparer(ctx context.Context, UUID string, in
 	}
 
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/int64(time.Millisecond), 10)
-	sec := security.NewSignature(client.Client.Secretkey, crypto.SHA256)
-	signature, err := sec.Signature("PATCH", common.GetPathParameters(DefaultBaseURI, "/clusters/{uuid}/node-pool/{instanceNo}", pathParameters), client.Client.AccessKey, timestamp)
+	sec := security.NewSignature(client.Secretkey, crypto.SHA256)
+	signature, err := sec.Signature("PATCH", common.GetPathParameters(DefaultBaseURI, "/clusters/{uuid}/node-pool/{instanceNo}", pathParameters), client.AccessKey, timestamp)
 	if err != nil {
 		return nil, err
 	}
@@ -329,7 +329,7 @@ func (client NodePoolClient) UpdatePreparer(ctx context.Context, UUID string, in
 		autorest.WithPathParameters("/clusters/{uuid}/node-pool/{instanceNo}", pathParameters),
 		autorest.WithJSON(parameters),
 		autorest.WithHeader("x-ncp-apigw-timestamp", timestamp),
-		autorest.WithHeader("x-ncp-iam-access-key", client.Client.AccessKey),
+		autorest.WithHeader("x-ncp-iam-access-key", client.AccessKey),
 		autorest.WithHeader("x-ncp-apigw-signature-v2", signature))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
