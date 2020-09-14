@@ -36,7 +36,7 @@ type ChartDataWidgetRequest struct {
 type CollectorRequest struct {
 	// CwKey - Schema 생성시 발급받은 키
 	CwKey *string `json:"cw_key,omitempty"`
-	// Data - 검색할 subnet 페이지 번호
+	// Data - Custom Product로 보낼 데이터 집합
 	Data interface{} `json:"data,omitempty"`
 }
 
@@ -356,7 +356,7 @@ type MetricInfoParameter struct {
 	// QueryAggregation - Query 일괄 처리. Possible values include: 'QueryAggregationTypeAVG', 'QueryAggregationTypeCOUNT', 'QueryAggregationTypeMIN', 'QueryAggregationTypeMAX', 'QueryAggregationTypeNONE', 'QueryAggregationTypeSUM', 'QueryAggregationTypeFIRST', 'QueryAggregationTypeLAST', 'QueryAggregationTypeMULT'
 	QueryAggregation QueryAggregationType `json:"queryAggregation,omitempty"`
 	// Dimensions - Query Dimension 데이터
-	Dimensions *DimensionParameter `json:"dimensions,omitempty"`
+	Dimensions interface{} `json:"dimensions,omitempty"`
 }
 
 // MetricListRequest metric 리스트 조회
@@ -490,8 +490,8 @@ type MultipleDataParameter struct {
 	// Aggregation - 일괄 처리. Possible values include: 'MIN', 'MAX', 'SUM', 'COUNT', 'AVG'
 	Aggregation AggregationType `json:"aggregation,omitempty"`
 	// Dimensions - Query Dimension 데이터
-	Dimensions *DimensionResultParameter `json:"dimensions,omitempty"`
-	Dps        *[][]float64              `json:"dps,omitempty"`
+	Dimensions interface{}  `json:"dimensions,omitempty"`
+	Dps        *[][]float64 `json:"dps,omitempty"`
 	// Interval - 조회 시간 간격. Possible values include: 'MIN1', 'MIN5', 'MIN30', 'HOUR2', 'DAY1'
 	Interval QueryIntervalTime `json:"interval,omitempty"`
 	// Metric - Metric 이름
