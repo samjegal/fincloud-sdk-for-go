@@ -98,8 +98,20 @@ func NewClient() Client {
 func NewClientWithBaseURI(baseURI string) Client {
 	return original.NewClientWithBaseURI(baseURI)
 }
+func NewClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string) Client {
+	return original.NewClientWithBaseURIWithKey(baseURI, accessKey, secretKey)
+}
+func NewClientWithKey(accessKey string, secretKey string) Client {
+	return original.NewClientWithKey(accessKey, secretKey)
+}
 func NewWithBaseURI(baseURI string) BaseClient {
 	return original.NewWithBaseURI(baseURI)
+}
+func NewWithBaseURIWithKey(baseURI string, accessKey string, secretKey string) BaseClient {
+	return original.NewWithBaseURIWithKey(baseURI, accessKey, secretKey)
+}
+func NewWithKey(accessKey string, secretKey string) BaseClient {
+	return original.NewWithKey(accessKey, secretKey)
 }
 func PossibleEncryptedVolumeValues() []EncryptedVolume {
 	return original.PossibleEncryptedVolumeValues()

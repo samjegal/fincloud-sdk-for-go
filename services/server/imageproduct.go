@@ -25,10 +25,18 @@ func NewImageProductClient() ImageProductClient {
 	return NewImageProductClientWithBaseURI(DefaultBaseURI)
 }
 
+func NewImageProductClientWithKey(accessKey string, secretKey string) ImageProductClient {
+	return NewImageProductClientWithBaseURIWithKey(DefaultBaseURI, accessKey, secretKey)
+}
+
 // NewImageProductClientWithBaseURI creates an instance of the ImageProductClient client using a custom endpoint.  Use
 // this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewImageProductClientWithBaseURI(baseURI string) ImageProductClient {
 	return ImageProductClient{NewWithBaseURI(baseURI)}
+}
+
+func NewImageProductClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string) ImageProductClient {
+	return ImageProductClient{NewWithBaseURIWithKey(baseURI, accessKey, secretKey)}
 }
 
 // GetList 서버 이미지 상품 리스트를 조회

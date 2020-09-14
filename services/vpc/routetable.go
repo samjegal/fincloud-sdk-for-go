@@ -25,10 +25,18 @@ func NewRouteTableClient() RouteTableClient {
 	return NewRouteTableClientWithBaseURI(DefaultBaseURI)
 }
 
+func NewRouteTableClientWithKey(accessKey string, secretKey string) RouteTableClient {
+	return NewRouteTableClientWithBaseURIWithKey(DefaultBaseURI, accessKey, secretKey)
+}
+
 // NewRouteTableClientWithBaseURI creates an instance of the RouteTableClient client using a custom endpoint.  Use this
 // when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewRouteTableClientWithBaseURI(baseURI string) RouteTableClient {
 	return RouteTableClient{NewWithBaseURI(baseURI)}
+}
+
+func NewRouteTableClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string) RouteTableClient {
+	return RouteTableClient{NewWithBaseURIWithKey(baseURI, accessKey, secretKey)}
 }
 
 // Create 라우트 테이블을 생성

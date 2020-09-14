@@ -25,10 +25,18 @@ func NewPeeringClient() PeeringClient {
 	return NewPeeringClientWithBaseURI(DefaultBaseURI)
 }
 
+func NewPeeringClientWithKey(accessKey string, secretKey string) PeeringClient {
+	return NewPeeringClientWithBaseURIWithKey(DefaultBaseURI, accessKey, secretKey)
+}
+
 // NewPeeringClientWithBaseURI creates an instance of the PeeringClient client using a custom endpoint.  Use this when
 // interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewPeeringClientWithBaseURI(baseURI string) PeeringClient {
 	return PeeringClient{NewWithBaseURI(baseURI)}
+}
+
+func NewPeeringClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string) PeeringClient {
+	return PeeringClient{NewWithBaseURIWithKey(baseURI, accessKey, secretKey)}
 }
 
 // AcceptOrReject VPC Peering 요청을 수락/거절

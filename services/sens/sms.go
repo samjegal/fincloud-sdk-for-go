@@ -26,10 +26,18 @@ func NewSMSClient() SMSClient {
 	return NewSMSClientWithBaseURI(DefaultBaseURI)
 }
 
+func NewSMSClientWithKey(accessKey string, secretKey string) SMSClient {
+	return NewSMSClientWithBaseURIWithKey(DefaultBaseURI, accessKey, secretKey)
+}
+
 // NewSMSClientWithBaseURI creates an instance of the SMSClient client using a custom endpoint.  Use this when
 // interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewSMSClientWithBaseURI(baseURI string) SMSClient {
 	return SMSClient{NewWithBaseURI(baseURI)}
+}
+
+func NewSMSClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string) SMSClient {
+	return SMSClient{NewWithBaseURIWithKey(baseURI, accessKey, secretKey)}
 }
 
 // DeleteReservation 예약 메시지를 취소

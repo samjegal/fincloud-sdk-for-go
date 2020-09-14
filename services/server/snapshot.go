@@ -25,10 +25,18 @@ func NewSnapshotClient() SnapshotClient {
 	return NewSnapshotClientWithBaseURI(DefaultBaseURI)
 }
 
+func NewSnapshotClientWithKey(accessKey string, secretKey string) SnapshotClient {
+	return NewSnapshotClientWithBaseURIWithKey(DefaultBaseURI, accessKey, secretKey)
+}
+
 // NewSnapshotClientWithBaseURI creates an instance of the SnapshotClient client using a custom endpoint.  Use this
 // when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewSnapshotClientWithBaseURI(baseURI string) SnapshotClient {
 	return SnapshotClient{NewWithBaseURI(baseURI)}
+}
+
+func NewSnapshotClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string) SnapshotClient {
+	return SnapshotClient{NewWithBaseURIWithKey(baseURI, accessKey, secretKey)}
 }
 
 // Create 블록스토리지 스냅샷 인스턴스를 생성

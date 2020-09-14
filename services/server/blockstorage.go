@@ -25,10 +25,18 @@ func NewBlockStorageClient() BlockStorageClient {
 	return NewBlockStorageClientWithBaseURI(DefaultBaseURI)
 }
 
+func NewBlockStorageClientWithKey(accessKey string, secretKey string) BlockStorageClient {
+	return NewBlockStorageClientWithBaseURIWithKey(DefaultBaseURI, accessKey, secretKey)
+}
+
 // NewBlockStorageClientWithBaseURI creates an instance of the BlockStorageClient client using a custom endpoint.  Use
 // this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewBlockStorageClientWithBaseURI(baseURI string) BlockStorageClient {
 	return BlockStorageClient{NewWithBaseURI(baseURI)}
+}
+
+func NewBlockStorageClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string) BlockStorageClient {
+	return BlockStorageClient{NewWithBaseURIWithKey(baseURI, accessKey, secretKey)}
 }
 
 // Attach 블록스토리지 인스턴스를 할당

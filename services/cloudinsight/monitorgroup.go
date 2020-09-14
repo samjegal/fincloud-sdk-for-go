@@ -26,10 +26,18 @@ func NewMonitorGroupClient() MonitorGroupClient {
 	return NewMonitorGroupClientWithBaseURI(DefaultBaseURI)
 }
 
+func NewMonitorGroupClientWithKey(accessKey string, secretKey string, apiGatewayKey string) MonitorGroupClient {
+	return NewMonitorGroupClientWithBaseURIWithKey(DefaultBaseURI, accessKey, secretKey, apiGatewayKey)
+}
+
 // NewMonitorGroupClientWithBaseURI creates an instance of the MonitorGroupClient client using a custom endpoint.  Use
 // this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewMonitorGroupClientWithBaseURI(baseURI string) MonitorGroupClient {
 	return MonitorGroupClient{NewWithBaseURI(baseURI)}
+}
+
+func NewMonitorGroupClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string, apiGatewayKey string) MonitorGroupClient {
+	return MonitorGroupClient{NewWithBaseURIWithKey(baseURI, accessKey, secretKey, apiGatewayKey)}
 }
 
 // DeleteForce 감시 대상 그룹과 관련된 모든 Event Rule을 삭제합니다.

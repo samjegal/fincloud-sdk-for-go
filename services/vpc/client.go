@@ -30,11 +30,24 @@ func New() BaseClient {
 	return NewWithBaseURI(DefaultBaseURI)
 }
 
+func NewWithKey(accessKey string, secretKey string) BaseClient {
+	return NewWithBaseURIWithKey(DefaultBaseURI, accessKey, secretKey)
+}
+
 // NewWithBaseURI creates an instance of the BaseClient client using a custom endpoint.  Use this when interacting with
 // an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewWithBaseURI(baseURI string) BaseClient {
 	return BaseClient{
 		Client:  autorest.NewClientWithUserAgent(UserAgent()),
 		BaseURI: baseURI,
+	}
+}
+
+func NewWithBaseURIWithKey(baseURI string, accessKey string, secretKey string) BaseClient {
+	return BaseClient{
+		Client:    autorest.NewClientWithUserAgent(UserAgent()),
+		BaseURI:   baseURI,
+		AccessKey: accessKey,
+		Secretkey: secretKey,
 	}
 }

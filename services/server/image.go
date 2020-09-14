@@ -25,10 +25,18 @@ func NewImageClient() ImageClient {
 	return NewImageClientWithBaseURI(DefaultBaseURI)
 }
 
+func NewImageClientWithKey(accessKey string, secretKey string) ImageClient {
+	return NewImageClientWithBaseURIWithKey(DefaultBaseURI, accessKey, secretKey)
+}
+
 // NewImageClientWithBaseURI creates an instance of the ImageClient client using a custom endpoint.  Use this when
 // interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewImageClientWithBaseURI(baseURI string) ImageClient {
 	return ImageClient{NewWithBaseURI(baseURI)}
+}
+
+func NewImageClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string) ImageClient {
+	return ImageClient{NewWithBaseURIWithKey(baseURI, accessKey, secretKey)}
 }
 
 // Create 회원 서버 이미지 인스턴스를 생성

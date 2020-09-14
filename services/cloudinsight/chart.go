@@ -26,10 +26,18 @@ func NewChartClient() ChartClient {
 	return NewChartClientWithBaseURI(DefaultBaseURI)
 }
 
+func NewChartClientWithKey(accessKey string, secretKey string, apiGatewayKey string) ChartClient {
+	return NewChartClientWithBaseURIWithKey(DefaultBaseURI, accessKey, secretKey, apiGatewayKey)
+}
+
 // NewChartClientWithBaseURI creates an instance of the ChartClient client using a custom endpoint.  Use this when
 // interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewChartClientWithBaseURI(baseURI string) ChartClient {
 	return ChartClient{NewWithBaseURI(baseURI)}
+}
+
+func NewChartClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string, apiGatewayKey string) ChartClient {
+	return ChartClient{NewWithBaseURIWithKey(baseURI, accessKey, secretKey, apiGatewayKey)}
 }
 
 // Preview 간단하게 Metric 데이터와 함께 Preview Chart를 조회합니다.

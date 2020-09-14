@@ -26,10 +26,18 @@ func NewMonitorClient() MonitorClient {
 	return NewMonitorClientWithBaseURI(DefaultBaseURI)
 }
 
+func NewMonitorClientWithKey(accessKey string, secretKey string, apiGatewayKey string) MonitorClient {
+	return NewMonitorClientWithBaseURIWithKey(DefaultBaseURI, accessKey, secretKey, apiGatewayKey)
+}
+
 // NewMonitorClientWithBaseURI creates an instance of the MonitorClient client using a custom endpoint.  Use this when
 // interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewMonitorClientWithBaseURI(baseURI string) MonitorClient {
 	return MonitorClient{NewWithBaseURI(baseURI)}
+}
+
+func NewMonitorClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string, apiGatewayKey string) MonitorClient {
+	return MonitorClient{NewWithBaseURIWithKey(baseURI, accessKey, secretKey, apiGatewayKey)}
 }
 
 // Create 감시 대상 그룹을 생성합니다.

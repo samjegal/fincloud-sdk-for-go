@@ -25,10 +25,18 @@ func NewExtendedClient() ExtendedClient {
 	return NewExtendedClientWithBaseURI(DefaultBaseURI)
 }
 
+func NewExtendedClientWithKey(accessKey string, secretKey string, apiGatewayKey string) ExtendedClient {
+	return NewExtendedClientWithBaseURIWithKey(DefaultBaseURI, accessKey, secretKey, apiGatewayKey)
+}
+
 // NewExtendedClientWithBaseURI creates an instance of the ExtendedClient client using a custom endpoint.  Use this
 // when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewExtendedClientWithBaseURI(baseURI string) ExtendedClient {
 	return ExtendedClient{NewWithBaseURI(baseURI)}
+}
+
+func NewExtendedClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string, apiGatewayKey string) ExtendedClient {
+	return ExtendedClient{NewWithBaseURIWithKey(baseURI, accessKey, secretKey, apiGatewayKey)}
 }
 
 // Disable NCP 상품의 extended 설정을 해제합니다.

@@ -25,10 +25,18 @@ func NewPlacementGroupClient() PlacementGroupClient {
 	return NewPlacementGroupClientWithBaseURI(DefaultBaseURI)
 }
 
+func NewPlacementGroupClientWithKey(accessKey string, secretKey string) PlacementGroupClient {
+	return NewPlacementGroupClientWithBaseURIWithKey(DefaultBaseURI, accessKey, secretKey)
+}
+
 // NewPlacementGroupClientWithBaseURI creates an instance of the PlacementGroupClient client using a custom endpoint.
 // Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewPlacementGroupClientWithBaseURI(baseURI string) PlacementGroupClient {
 	return PlacementGroupClient{NewWithBaseURI(baseURI)}
+}
+
+func NewPlacementGroupClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string) PlacementGroupClient {
+	return PlacementGroupClient{NewWithBaseURIWithKey(baseURI, accessKey, secretKey)}
 }
 
 // Add 물리 배치 그룹에 서버 인스턴스를 추가

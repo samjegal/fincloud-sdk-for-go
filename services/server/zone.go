@@ -25,10 +25,18 @@ func NewZoneClient() ZoneClient {
 	return NewZoneClientWithBaseURI(DefaultBaseURI)
 }
 
+func NewZoneClientWithKey(accessKey string, secretKey string) ZoneClient {
+	return NewZoneClientWithBaseURIWithKey(DefaultBaseURI, accessKey, secretKey)
+}
+
 // NewZoneClientWithBaseURI creates an instance of the ZoneClient client using a custom endpoint.  Use this when
 // interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewZoneClientWithBaseURI(baseURI string) ZoneClient {
 	return ZoneClient{NewWithBaseURI(baseURI)}
+}
+
+func NewZoneClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string) ZoneClient {
+	return ZoneClient{NewWithBaseURIWithKey(baseURI, accessKey, secretKey)}
 }
 
 // GetList ZONE 리스트를 조회

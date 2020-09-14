@@ -25,10 +25,18 @@ func NewInitScriptClient() InitScriptClient {
 	return NewInitScriptClientWithBaseURI(DefaultBaseURI)
 }
 
+func NewInitScriptClientWithKey(accessKey string, secretKey string) InitScriptClient {
+	return NewInitScriptClientWithBaseURIWithKey(DefaultBaseURI, accessKey, secretKey)
+}
+
 // NewInitScriptClientWithBaseURI creates an instance of the InitScriptClient client using a custom endpoint.  Use this
 // when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewInitScriptClientWithBaseURI(baseURI string) InitScriptClient {
 	return InitScriptClient{NewWithBaseURI(baseURI)}
+}
+
+func NewInitScriptClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string) InitScriptClient {
+	return InitScriptClient{NewWithBaseURIWithKey(baseURI, accessKey, secretKey)}
 }
 
 // Create 초기화 스크립트를 생성

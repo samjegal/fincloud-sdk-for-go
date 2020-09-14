@@ -25,10 +25,18 @@ func NewServerClient() ServerClient {
 	return NewServerClientWithBaseURI(DefaultBaseURI)
 }
 
+func NewServerClientWithKey(accessKey string, secretKey string, apiGatewayKey string) ServerClient {
+	return NewServerClientWithBaseURIWithKey(DefaultBaseURI, accessKey, secretKey, apiGatewayKey)
+}
+
 // NewServerClientWithBaseURI creates an instance of the ServerClient client using a custom endpoint.  Use this when
 // interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewServerClientWithBaseURI(baseURI string) ServerClient {
 	return ServerClient{NewWithBaseURI(baseURI)}
+}
+
+func NewServerClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string, apiGatewayKey string) ServerClient {
+	return ServerClient{NewWithBaseURIWithKey(baseURI, accessKey, secretKey, apiGatewayKey)}
 }
 
 // GetTop 사용자의 Server 중 CPU, Memory, File system 별 사용량 top5에 해당하는 server를 조회합니다.

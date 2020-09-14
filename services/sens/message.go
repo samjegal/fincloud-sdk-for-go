@@ -26,10 +26,18 @@ func NewMessageClient() MessageClient {
 	return NewMessageClientWithBaseURI(DefaultBaseURI)
 }
 
+func NewMessageClientWithKey(accessKey string, secretKey string) MessageClient {
+	return NewMessageClientWithBaseURIWithKey(DefaultBaseURI, accessKey, secretKey)
+}
+
 // NewMessageClientWithBaseURI creates an instance of the MessageClient client using a custom endpoint.  Use this when
 // interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewMessageClientWithBaseURI(baseURI string) MessageClient {
 	return MessageClient{NewWithBaseURI(baseURI)}
+}
+
+func NewMessageClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string) MessageClient {
+	return MessageClient{NewWithBaseURIWithKey(baseURI, accessKey, secretKey)}
 }
 
 // Delete 예약 메시지 삭제

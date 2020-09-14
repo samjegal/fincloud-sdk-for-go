@@ -25,10 +25,18 @@ func NewNatGatewayClient() NatGatewayClient {
 	return NewNatGatewayClientWithBaseURI(DefaultBaseURI)
 }
 
+func NewNatGatewayClientWithKey(accessKey string, secretKey string) NatGatewayClient {
+	return NewNatGatewayClientWithBaseURIWithKey(DefaultBaseURI, accessKey, secretKey)
+}
+
 // NewNatGatewayClientWithBaseURI creates an instance of the NatGatewayClient client using a custom endpoint.  Use this
 // when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewNatGatewayClientWithBaseURI(baseURI string) NatGatewayClient {
 	return NatGatewayClient{NewWithBaseURI(baseURI)}
+}
+
+func NewNatGatewayClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string) NatGatewayClient {
+	return NatGatewayClient{NewWithBaseURIWithKey(baseURI, accessKey, secretKey)}
 }
 
 // Create NAT Gateway 인스턴스를 생성

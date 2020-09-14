@@ -25,11 +25,19 @@ func NewNetworkInterfaceClient() NetworkInterfaceClient {
 	return NewNetworkInterfaceClientWithBaseURI(DefaultBaseURI)
 }
 
+func NewNetworkInterfaceClientWithKey(accessKey string, secretKey string) NetworkInterfaceClient {
+	return NewNetworkInterfaceClientWithBaseURIWithKey(DefaultBaseURI, accessKey, secretKey)
+}
+
 // NewNetworkInterfaceClientWithBaseURI creates an instance of the NetworkInterfaceClient client using a custom
 // endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
 // stack).
 func NewNetworkInterfaceClientWithBaseURI(baseURI string) NetworkInterfaceClient {
 	return NetworkInterfaceClient{NewWithBaseURI(baseURI)}
+}
+
+func NewNetworkInterfaceClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string) NetworkInterfaceClient {
+	return NetworkInterfaceClient{NewWithBaseURIWithKey(baseURI, accessKey, secretKey)}
 }
 
 // AddACG 네트워크 인터페이스의 ACG를 추가

@@ -25,10 +25,18 @@ func NewNetworkACLClient() NetworkACLClient {
 	return NewNetworkACLClientWithBaseURI(DefaultBaseURI)
 }
 
+func NewNetworkACLClientWithKey(accessKey string, secretKey string) NetworkACLClient {
+	return NewNetworkACLClientWithBaseURIWithKey(DefaultBaseURI, accessKey, secretKey)
+}
+
 // NewNetworkACLClientWithBaseURI creates an instance of the NetworkACLClient client using a custom endpoint.  Use this
 // when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewNetworkACLClientWithBaseURI(baseURI string) NetworkACLClient {
 	return NetworkACLClient{NewWithBaseURI(baseURI)}
+}
+
+func NewNetworkACLClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string) NetworkACLClient {
+	return NetworkACLClient{NewWithBaseURIWithKey(baseURI, accessKey, secretKey)}
 }
 
 // AddInboundRule 네트워크 ACL의 Inbound Rule을 추가

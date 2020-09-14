@@ -25,10 +25,18 @@ func NewLoginKeyClient() LoginKeyClient {
 	return NewLoginKeyClientWithBaseURI(DefaultBaseURI)
 }
 
+func NewLoginKeyClientWithKey(accessKey string, secretKey string) LoginKeyClient {
+	return NewLoginKeyClientWithBaseURIWithKey(DefaultBaseURI, accessKey, secretKey)
+}
+
 // NewLoginKeyClientWithBaseURI creates an instance of the LoginKeyClient client using a custom endpoint.  Use this
 // when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewLoginKeyClientWithBaseURI(baseURI string) LoginKeyClient {
 	return LoginKeyClient{NewWithBaseURI(baseURI)}
+}
+
+func NewLoginKeyClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string) LoginKeyClient {
+	return LoginKeyClient{NewWithBaseURIWithKey(baseURI, accessKey, secretKey)}
 }
 
 // Create 로그인 키를 생성

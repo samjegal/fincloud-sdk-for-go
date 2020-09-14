@@ -25,10 +25,18 @@ func NewPortPluginClient() PortPluginClient {
 	return NewPortPluginClientWithBaseURI(DefaultBaseURI)
 }
 
+func NewPortPluginClientWithKey(accessKey string, secretKey string, apiGatewayKey string) PortPluginClient {
+	return NewPortPluginClientWithBaseURIWithKey(DefaultBaseURI, accessKey, secretKey, apiGatewayKey)
+}
+
 // NewPortPluginClientWithBaseURI creates an instance of the PortPluginClient client using a custom endpoint.  Use this
 // when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewPortPluginClientWithBaseURI(baseURI string) PortPluginClient {
 	return PortPluginClient{NewWithBaseURI(baseURI)}
+}
+
+func NewPortPluginClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string, apiGatewayKey string) PortPluginClient {
+	return PortPluginClient{NewWithBaseURIWithKey(baseURI, accessKey, secretKey, apiGatewayKey)}
 }
 
 // Create port Plugin을 설정

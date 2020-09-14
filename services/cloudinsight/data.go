@@ -26,10 +26,18 @@ func NewDataClient() DataClient {
 	return NewDataClientWithBaseURI(DefaultBaseURI)
 }
 
+func NewDataClientWithKey(accessKey string, secretKey string, apiGatewayKey string) DataClient {
+	return NewDataClientWithBaseURIWithKey(DefaultBaseURI, accessKey, secretKey, apiGatewayKey)
+}
+
 // NewDataClientWithBaseURI creates an instance of the DataClient client using a custom endpoint.  Use this when
 // interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewDataClientWithBaseURI(baseURI string) DataClient {
 	return DataClient{NewWithBaseURI(baseURI)}
+}
+
+func NewDataClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string, apiGatewayKey string) DataClient {
+	return DataClient{NewWithBaseURIWithKey(baseURI, accessKey, secretKey, apiGatewayKey)}
 }
 
 // Query cloud Insight에서 수집한 time-series 데이터를 쿼리합니다.

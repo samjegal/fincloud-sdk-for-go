@@ -26,10 +26,18 @@ func NewScheduleClient() ScheduleClient {
 	return NewScheduleClientWithBaseURI(DefaultBaseURI)
 }
 
+func NewScheduleClientWithKey(accessKey string, secretKey string) ScheduleClient {
+	return NewScheduleClientWithBaseURIWithKey(DefaultBaseURI, accessKey, secretKey)
+}
+
 // NewScheduleClientWithBaseURI creates an instance of the ScheduleClient client using a custom endpoint.  Use this
 // when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewScheduleClientWithBaseURI(baseURI string) ScheduleClient {
 	return ScheduleClient{NewWithBaseURI(baseURI)}
+}
+
+func NewScheduleClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string) ScheduleClient {
+	return ScheduleClient{NewWithBaseURIWithKey(baseURI, accessKey, secretKey)}
 }
 
 // Create 스케줄 등록

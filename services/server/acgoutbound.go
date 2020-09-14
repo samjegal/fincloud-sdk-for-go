@@ -25,10 +25,18 @@ func NewACGOutboundClient() ACGOutboundClient {
 	return NewACGOutboundClientWithBaseURI(DefaultBaseURI)
 }
 
+func NewACGOutboundClientWithKey(accessKey string, secretKey string) ACGOutboundClient {
+	return NewACGOutboundClientWithBaseURIWithKey(DefaultBaseURI, accessKey, secretKey)
+}
+
 // NewACGOutboundClientWithBaseURI creates an instance of the ACGOutboundClient client using a custom endpoint.  Use
 // this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewACGOutboundClientWithBaseURI(baseURI string) ACGOutboundClient {
 	return ACGOutboundClient{NewWithBaseURI(baseURI)}
+}
+
+func NewACGOutboundClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string) ACGOutboundClient {
+	return ACGOutboundClient{NewWithBaseURIWithKey(baseURI, accessKey, secretKey)}
 }
 
 // AddRule ACG Outbound Rule을 추가

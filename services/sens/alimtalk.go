@@ -26,10 +26,18 @@ func NewAlimtalkClient() AlimtalkClient {
 	return NewAlimtalkClientWithBaseURI(DefaultBaseURI)
 }
 
+func NewAlimtalkClientWithKey(accessKey string, secretKey string) AlimtalkClient {
+	return NewAlimtalkClientWithBaseURIWithKey(DefaultBaseURI, accessKey, secretKey)
+}
+
 // NewAlimtalkClientWithBaseURI creates an instance of the AlimtalkClient client using a custom endpoint.  Use this
 // when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewAlimtalkClientWithBaseURI(baseURI string) AlimtalkClient {
 	return AlimtalkClient{NewWithBaseURI(baseURI)}
+}
+
+func NewAlimtalkClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string) AlimtalkClient {
+	return AlimtalkClient{NewWithBaseURIWithKey(baseURI, accessKey, secretKey)}
 }
 
 // Create 알림톡 발송 요청

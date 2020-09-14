@@ -25,10 +25,18 @@ func NewWorkerNodeClient() WorkerNodeClient {
 	return NewWorkerNodeClientWithBaseURI(DefaultBaseURI)
 }
 
+func NewWorkerNodeClientWithKey(accessKey string, secretKey string) WorkerNodeClient {
+	return NewWorkerNodeClientWithBaseURIWithKey(DefaultBaseURI, accessKey, secretKey)
+}
+
 // NewWorkerNodeClientWithBaseURI creates an instance of the WorkerNodeClient client using a custom endpoint.  Use this
 // when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewWorkerNodeClientWithBaseURI(baseURI string) WorkerNodeClient {
 	return WorkerNodeClient{NewWithBaseURI(baseURI)}
+}
+
+func NewWorkerNodeClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string) WorkerNodeClient {
+	return WorkerNodeClient{NewWithBaseURIWithKey(baseURI, accessKey, secretKey)}
 }
 
 // Get 워커노드 조회

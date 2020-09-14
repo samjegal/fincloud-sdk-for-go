@@ -25,10 +25,18 @@ func NewProductClient() ProductClient {
 	return NewProductClientWithBaseURI(DefaultBaseURI)
 }
 
+func NewProductClientWithKey(accessKey string, secretKey string) ProductClient {
+	return NewProductClientWithBaseURIWithKey(DefaultBaseURI, accessKey, secretKey)
+}
+
 // NewProductClientWithBaseURI creates an instance of the ProductClient client using a custom endpoint.  Use this when
 // interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewProductClientWithBaseURI(baseURI string) ProductClient {
 	return ProductClient{NewWithBaseURI(baseURI)}
+}
+
+func NewProductClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string) ProductClient {
+	return ProductClient{NewWithBaseURIWithKey(baseURI, accessKey, secretKey)}
 }
 
 // GetList 서버 상품 리스트를 조회

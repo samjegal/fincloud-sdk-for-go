@@ -26,10 +26,18 @@ func NewClustersClient() ClustersClient {
 	return NewClustersClientWithBaseURI(DefaultBaseURI)
 }
 
+func NewClustersClientWithKey(accessKey string, secretKey string) ClustersClient {
+	return NewClustersClientWithBaseURIWithKey(DefaultBaseURI, accessKey, secretKey)
+}
+
 // NewClustersClientWithBaseURI creates an instance of the ClustersClient client using a custom endpoint.  Use this
 // when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewClustersClientWithBaseURI(baseURI string) ClustersClient {
 	return ClustersClient{NewWithBaseURI(baseURI)}
+}
+
+func NewClustersClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string) ClustersClient {
+	return ClustersClient{NewWithBaseURIWithKey(baseURI, accessKey, secretKey)}
 }
 
 // Create 클러스터 생성

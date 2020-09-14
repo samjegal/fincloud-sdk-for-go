@@ -26,10 +26,18 @@ func NewNodePoolClient() NodePoolClient {
 	return NewNodePoolClientWithBaseURI(DefaultBaseURI)
 }
 
+func NewNodePoolClientWithKey(accessKey string, secretKey string) NodePoolClient {
+	return NewNodePoolClientWithBaseURIWithKey(DefaultBaseURI, accessKey, secretKey)
+}
+
 // NewNodePoolClientWithBaseURI creates an instance of the NodePoolClient client using a custom endpoint.  Use this
 // when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewNodePoolClientWithBaseURI(baseURI string) NodePoolClient {
 	return NodePoolClient{NewWithBaseURI(baseURI)}
+}
+
+func NewNodePoolClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string) NodePoolClient {
+	return NodePoolClient{NewWithBaseURIWithKey(baseURI, accessKey, secretKey)}
 }
 
 // Create 노드풀 생성

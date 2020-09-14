@@ -17,16 +17,21 @@ const (
 // BaseClient is the base client for Server.
 type BaseClient struct {
 	autorest.Client
-	BaseURI   string
+	BaseURI string
+
 	AccessKey string
 	Secretkey string
-	// APIGatewayAPIKey can control user access by using API Key and IP ACL issued by API Gateway. The API can be protected
-	// by using the same user authentication as the own API provided by Naver Cloud Platform.	APIGatewayAPIKey string
+
+	APIGatewayAPIKey string
 }
 
 // New creates an instance of the BaseClient client.
 func New() BaseClient {
 	return NewWithBaseURI(DefaultBaseURI)
+}
+
+func NewWithKey(accessKey string, secretKey string) BaseClient {
+	return NewWithBaseURIWithKey(DefaultBaseURI, accessKey, secretKey)
 }
 
 // NewWithBaseURI creates an instance of the BaseClient client using a custom endpoint.  Use this when interacting with
@@ -35,5 +40,14 @@ func NewWithBaseURI(baseURI string) BaseClient {
 	return BaseClient{
 		Client:  autorest.NewClientWithUserAgent(UserAgent()),
 		BaseURI: baseURI,
+	}
+}
+
+func NewWithBaseURIWithKey(baseURI string, accessKey string, secretKey string) BaseClient {
+	return BaseClient{
+		Client:    autorest.NewClientWithUserAgent(UserAgent()),
+		BaseURI:   baseURI,
+		AccessKey: accessKey,
+		Secretkey: secretKey,
 	}
 }

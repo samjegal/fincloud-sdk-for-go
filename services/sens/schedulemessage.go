@@ -25,10 +25,18 @@ func NewScheduleMessageClient() ScheduleMessageClient {
 	return NewScheduleMessageClientWithBaseURI(DefaultBaseURI)
 }
 
+func NewScheduleMessageClientWithKey(accessKey string, secretKey string) ScheduleMessageClient {
+	return NewScheduleMessageClientWithBaseURIWithKey(DefaultBaseURI, accessKey, secretKey)
+}
+
 // NewScheduleMessageClientWithBaseURI creates an instance of the ScheduleMessageClient client using a custom endpoint.
 // Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewScheduleMessageClientWithBaseURI(baseURI string) ScheduleMessageClient {
 	return ScheduleMessageClient{NewWithBaseURI(baseURI)}
+}
+
+func NewScheduleMessageClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string) ScheduleMessageClient {
+	return ScheduleMessageClient{NewWithBaseURIWithKey(baseURI, accessKey, secretKey)}
 }
 
 // Delete 스케쥴 메시지 삭제

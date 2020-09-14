@@ -339,11 +339,23 @@ func NewACGClient() ACGClient {
 func NewACGClientWithBaseURI(baseURI string) ACGClient {
 	return original.NewACGClientWithBaseURI(baseURI)
 }
+func NewACGClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string) ACGClient {
+	return original.NewACGClientWithBaseURIWithKey(baseURI, accessKey, secretKey)
+}
+func NewACGClientWithKey(accessKey string, secretKey string) ACGClient {
+	return original.NewACGClientWithKey(accessKey, secretKey)
+}
 func NewACGInboundClient() ACGInboundClient {
 	return original.NewACGInboundClient()
 }
 func NewACGInboundClientWithBaseURI(baseURI string) ACGInboundClient {
 	return original.NewACGInboundClientWithBaseURI(baseURI)
+}
+func NewACGInboundClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string) ACGInboundClient {
+	return original.NewACGInboundClientWithBaseURIWithKey(baseURI, accessKey, secretKey)
+}
+func NewACGInboundClientWithKey(accessKey string, secretKey string) ACGInboundClient {
+	return original.NewACGInboundClientWithKey(accessKey, secretKey)
 }
 func NewACGOutboundClient() ACGOutboundClient {
 	return original.NewACGOutboundClient()
@@ -351,11 +363,23 @@ func NewACGOutboundClient() ACGOutboundClient {
 func NewACGOutboundClientWithBaseURI(baseURI string) ACGOutboundClient {
 	return original.NewACGOutboundClientWithBaseURI(baseURI)
 }
+func NewACGOutboundClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string) ACGOutboundClient {
+	return original.NewACGOutboundClientWithBaseURIWithKey(baseURI, accessKey, secretKey)
+}
+func NewACGOutboundClientWithKey(accessKey string, secretKey string) ACGOutboundClient {
+	return original.NewACGOutboundClientWithKey(accessKey, secretKey)
+}
 func NewBlockStorageClient() BlockStorageClient {
 	return original.NewBlockStorageClient()
 }
 func NewBlockStorageClientWithBaseURI(baseURI string) BlockStorageClient {
 	return original.NewBlockStorageClientWithBaseURI(baseURI)
+}
+func NewBlockStorageClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string) BlockStorageClient {
+	return original.NewBlockStorageClientWithBaseURIWithKey(baseURI, accessKey, secretKey)
+}
+func NewBlockStorageClientWithKey(accessKey string, secretKey string) BlockStorageClient {
+	return original.NewBlockStorageClientWithKey(accessKey, secretKey)
 }
 func NewClient() Client {
 	return original.NewClient()
@@ -363,11 +387,23 @@ func NewClient() Client {
 func NewClientWithBaseURI(baseURI string) Client {
 	return original.NewClientWithBaseURI(baseURI)
 }
+func NewClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string) Client {
+	return original.NewClientWithBaseURIWithKey(baseURI, accessKey, secretKey)
+}
+func NewClientWithKey(accessKey string, secretKey string) Client {
+	return original.NewClientWithKey(accessKey, secretKey)
+}
 func NewImageClient() ImageClient {
 	return original.NewImageClient()
 }
 func NewImageClientWithBaseURI(baseURI string) ImageClient {
 	return original.NewImageClientWithBaseURI(baseURI)
+}
+func NewImageClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string) ImageClient {
+	return original.NewImageClientWithBaseURIWithKey(baseURI, accessKey, secretKey)
+}
+func NewImageClientWithKey(accessKey string, secretKey string) ImageClient {
+	return original.NewImageClientWithKey(accessKey, secretKey)
 }
 func NewImageProductClient() ImageProductClient {
 	return original.NewImageProductClient()
@@ -375,11 +411,23 @@ func NewImageProductClient() ImageProductClient {
 func NewImageProductClientWithBaseURI(baseURI string) ImageProductClient {
 	return original.NewImageProductClientWithBaseURI(baseURI)
 }
+func NewImageProductClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string) ImageProductClient {
+	return original.NewImageProductClientWithBaseURIWithKey(baseURI, accessKey, secretKey)
+}
+func NewImageProductClientWithKey(accessKey string, secretKey string) ImageProductClient {
+	return original.NewImageProductClientWithKey(accessKey, secretKey)
+}
 func NewInitScriptClient() InitScriptClient {
 	return original.NewInitScriptClient()
 }
 func NewInitScriptClientWithBaseURI(baseURI string) InitScriptClient {
 	return original.NewInitScriptClientWithBaseURI(baseURI)
+}
+func NewInitScriptClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string) InitScriptClient {
+	return original.NewInitScriptClientWithBaseURIWithKey(baseURI, accessKey, secretKey)
+}
+func NewInitScriptClientWithKey(accessKey string, secretKey string) InitScriptClient {
+	return original.NewInitScriptClientWithKey(accessKey, secretKey)
 }
 func NewLoginKeyClient() LoginKeyClient {
 	return original.NewLoginKeyClient()
@@ -387,11 +435,23 @@ func NewLoginKeyClient() LoginKeyClient {
 func NewLoginKeyClientWithBaseURI(baseURI string) LoginKeyClient {
 	return original.NewLoginKeyClientWithBaseURI(baseURI)
 }
+func NewLoginKeyClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string) LoginKeyClient {
+	return original.NewLoginKeyClientWithBaseURIWithKey(baseURI, accessKey, secretKey)
+}
+func NewLoginKeyClientWithKey(accessKey string, secretKey string) LoginKeyClient {
+	return original.NewLoginKeyClientWithKey(accessKey, secretKey)
+}
 func NewNetworkInterfaceClient() NetworkInterfaceClient {
 	return original.NewNetworkInterfaceClient()
 }
 func NewNetworkInterfaceClientWithBaseURI(baseURI string) NetworkInterfaceClient {
 	return original.NewNetworkInterfaceClientWithBaseURI(baseURI)
+}
+func NewNetworkInterfaceClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string) NetworkInterfaceClient {
+	return original.NewNetworkInterfaceClientWithBaseURIWithKey(baseURI, accessKey, secretKey)
+}
+func NewNetworkInterfaceClientWithKey(accessKey string, secretKey string) NetworkInterfaceClient {
+	return original.NewNetworkInterfaceClientWithKey(accessKey, secretKey)
 }
 func NewPlacementGroupClient() PlacementGroupClient {
 	return original.NewPlacementGroupClient()
@@ -399,11 +459,23 @@ func NewPlacementGroupClient() PlacementGroupClient {
 func NewPlacementGroupClientWithBaseURI(baseURI string) PlacementGroupClient {
 	return original.NewPlacementGroupClientWithBaseURI(baseURI)
 }
+func NewPlacementGroupClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string) PlacementGroupClient {
+	return original.NewPlacementGroupClientWithBaseURIWithKey(baseURI, accessKey, secretKey)
+}
+func NewPlacementGroupClientWithKey(accessKey string, secretKey string) PlacementGroupClient {
+	return original.NewPlacementGroupClientWithKey(accessKey, secretKey)
+}
 func NewProductClient() ProductClient {
 	return original.NewProductClient()
 }
 func NewProductClientWithBaseURI(baseURI string) ProductClient {
 	return original.NewProductClientWithBaseURI(baseURI)
+}
+func NewProductClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string) ProductClient {
+	return original.NewProductClientWithBaseURIWithKey(baseURI, accessKey, secretKey)
+}
+func NewProductClientWithKey(accessKey string, secretKey string) ProductClient {
+	return original.NewProductClientWithKey(accessKey, secretKey)
 }
 func NewPublicIPClient() PublicIPClient {
 	return original.NewPublicIPClient()
@@ -411,11 +483,23 @@ func NewPublicIPClient() PublicIPClient {
 func NewPublicIPClientWithBaseURI(baseURI string) PublicIPClient {
 	return original.NewPublicIPClientWithBaseURI(baseURI)
 }
+func NewPublicIPClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string) PublicIPClient {
+	return original.NewPublicIPClientWithBaseURIWithKey(baseURI, accessKey, secretKey)
+}
+func NewPublicIPClientWithKey(accessKey string, secretKey string) PublicIPClient {
+	return original.NewPublicIPClientWithKey(accessKey, secretKey)
+}
 func NewRegionClient() RegionClient {
 	return original.NewRegionClient()
 }
 func NewRegionClientWithBaseURI(baseURI string) RegionClient {
 	return original.NewRegionClientWithBaseURI(baseURI)
+}
+func NewRegionClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string) RegionClient {
+	return original.NewRegionClientWithBaseURIWithKey(baseURI, accessKey, secretKey)
+}
+func NewRegionClientWithKey(accessKey string, secretKey string) RegionClient {
+	return original.NewRegionClientWithKey(accessKey, secretKey)
 }
 func NewRootPasswordClient() RootPasswordClient {
 	return original.NewRootPasswordClient()
@@ -423,20 +507,44 @@ func NewRootPasswordClient() RootPasswordClient {
 func NewRootPasswordClientWithBaseURI(baseURI string) RootPasswordClient {
 	return original.NewRootPasswordClientWithBaseURI(baseURI)
 }
+func NewRootPasswordClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string) RootPasswordClient {
+	return original.NewRootPasswordClientWithBaseURIWithKey(baseURI, accessKey, secretKey)
+}
+func NewRootPasswordClientWithKey(accessKey string, secretKey string) RootPasswordClient {
+	return original.NewRootPasswordClientWithKey(accessKey, secretKey)
+}
 func NewSnapshotClient() SnapshotClient {
 	return original.NewSnapshotClient()
 }
 func NewSnapshotClientWithBaseURI(baseURI string) SnapshotClient {
 	return original.NewSnapshotClientWithBaseURI(baseURI)
 }
+func NewSnapshotClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string) SnapshotClient {
+	return original.NewSnapshotClientWithBaseURIWithKey(baseURI, accessKey, secretKey)
+}
+func NewSnapshotClientWithKey(accessKey string, secretKey string) SnapshotClient {
+	return original.NewSnapshotClientWithKey(accessKey, secretKey)
+}
 func NewWithBaseURI(baseURI string) BaseClient {
 	return original.NewWithBaseURI(baseURI)
+}
+func NewWithBaseURIWithKey(baseURI string, accessKey string, secretKey string) BaseClient {
+	return original.NewWithBaseURIWithKey(baseURI, accessKey, secretKey)
+}
+func NewWithKey(accessKey string, secretKey string) BaseClient {
+	return original.NewWithKey(accessKey, secretKey)
 }
 func NewZoneClient() ZoneClient {
 	return original.NewZoneClient()
 }
 func NewZoneClientWithBaseURI(baseURI string) ZoneClient {
 	return original.NewZoneClientWithBaseURI(baseURI)
+}
+func NewZoneClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string) ZoneClient {
+	return original.NewZoneClientWithBaseURIWithKey(baseURI, accessKey, secretKey)
+}
+func NewZoneClientWithKey(accessKey string, secretKey string) ZoneClient {
+	return original.NewZoneClientWithKey(accessKey, secretKey)
 }
 func PossibleAccessControlGroupRuleTypeCodeValues() []AccessControlGroupRuleTypeCode {
 	return original.PossibleAccessControlGroupRuleTypeCodeValues()

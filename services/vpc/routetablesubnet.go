@@ -25,11 +25,19 @@ func NewRouteTableSubnetClient() RouteTableSubnetClient {
 	return NewRouteTableSubnetClientWithBaseURI(DefaultBaseURI)
 }
 
+func NewRouteTableSubnetClientWithKey(accessKey string, secretKey string) RouteTableSubnetClient {
+	return NewRouteTableSubnetClientWithBaseURIWithKey(DefaultBaseURI, accessKey, secretKey)
+}
+
 // NewRouteTableSubnetClientWithBaseURI creates an instance of the RouteTableSubnetClient client using a custom
 // endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
 // stack).
 func NewRouteTableSubnetClientWithBaseURI(baseURI string) RouteTableSubnetClient {
 	return RouteTableSubnetClient{NewWithBaseURI(baseURI)}
+}
+
+func NewRouteTableSubnetClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string) RouteTableSubnetClient {
+	return RouteTableSubnetClient{NewWithBaseURIWithKey(baseURI, accessKey, secretKey)}
 }
 
 // Add 라우트 테이블의 연관 서브넷을 추가

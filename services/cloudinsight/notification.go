@@ -25,10 +25,18 @@ func NewNotificationClient() NotificationClient {
 	return NewNotificationClientWithBaseURI(DefaultBaseURI)
 }
 
+func NewNotificationClientWithKey(accessKey string, secretKey string, apiGatewayKey string) NotificationClient {
+	return NewNotificationClientWithBaseURIWithKey(DefaultBaseURI, accessKey, secretKey, apiGatewayKey)
+}
+
 // NewNotificationClientWithBaseURI creates an instance of the NotificationClient client using a custom endpoint.  Use
 // this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewNotificationClientWithBaseURI(baseURI string) NotificationClient {
 	return NotificationClient{NewWithBaseURI(baseURI)}
+}
+
+func NewNotificationClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string, apiGatewayKey string) NotificationClient {
+	return NotificationClient{NewWithBaseURIWithKey(baseURI, accessKey, secretKey, apiGatewayKey)}
 }
 
 // Get get notification rule with a given group Id

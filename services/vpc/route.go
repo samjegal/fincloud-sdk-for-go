@@ -25,10 +25,18 @@ func NewRouteClient() RouteClient {
 	return NewRouteClientWithBaseURI(DefaultBaseURI)
 }
 
+func NewRouteClientWithKey(accessKey string, secretKey string) RouteClient {
+	return NewRouteClientWithBaseURIWithKey(DefaultBaseURI, accessKey, secretKey)
+}
+
 // NewRouteClientWithBaseURI creates an instance of the RouteClient client using a custom endpoint.  Use this when
 // interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewRouteClientWithBaseURI(baseURI string) RouteClient {
 	return RouteClient{NewWithBaseURI(baseURI)}
+}
+
+func NewRouteClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string) RouteClient {
+	return RouteClient{NewWithBaseURIWithKey(baseURI, accessKey, secretKey)}
 }
 
 // Add 라우트를 추가

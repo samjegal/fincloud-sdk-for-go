@@ -25,10 +25,18 @@ func NewFilePluginClient() FilePluginClient {
 	return NewFilePluginClientWithBaseURI(DefaultBaseURI)
 }
 
+func NewFilePluginClientWithKey(accessKey string, secretKey string, apiGatewayKey string) FilePluginClient {
+	return NewFilePluginClientWithBaseURIWithKey(DefaultBaseURI, accessKey, secretKey, apiGatewayKey)
+}
+
 // NewFilePluginClientWithBaseURI creates an instance of the FilePluginClient client using a custom endpoint.  Use this
 // when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewFilePluginClientWithBaseURI(baseURI string) FilePluginClient {
 	return FilePluginClient{NewWithBaseURI(baseURI)}
+}
+
+func NewFilePluginClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string, apiGatewayKey string) FilePluginClient {
+	return FilePluginClient{NewWithBaseURIWithKey(baseURI, accessKey, secretKey, apiGatewayKey)}
 }
 
 // Create plugin에 설정할 File 정보

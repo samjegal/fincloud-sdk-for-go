@@ -26,10 +26,18 @@ func NewRuleGroupClient() RuleGroupClient {
 	return NewRuleGroupClientWithBaseURI(DefaultBaseURI)
 }
 
+func NewRuleGroupClientWithKey(accessKey string, secretKey string, apiGatewayKey string) RuleGroupClient {
+	return NewRuleGroupClientWithBaseURIWithKey(DefaultBaseURI, accessKey, secretKey, apiGatewayKey)
+}
+
 // NewRuleGroupClientWithBaseURI creates an instance of the RuleGroupClient client using a custom endpoint.  Use this
 // when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewRuleGroupClientWithBaseURI(baseURI string) RuleGroupClient {
 	return RuleGroupClient{NewWithBaseURI(baseURI)}
+}
+
+func NewRuleGroupClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string, apiGatewayKey string) RuleGroupClient {
+	return RuleGroupClient{NewWithBaseURIWithKey(baseURI, accessKey, secretKey, apiGatewayKey)}
 }
 
 // Copy event Rule을 복제합니다.

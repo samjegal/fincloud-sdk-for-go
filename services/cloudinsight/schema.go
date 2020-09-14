@@ -25,10 +25,18 @@ func NewSchemaClient() SchemaClient {
 	return NewSchemaClientWithBaseURI(DefaultBaseURI)
 }
 
+func NewSchemaClientWithKey(accessKey string, secretKey string, apiGatewayKey string) SchemaClient {
+	return NewSchemaClientWithBaseURIWithKey(DefaultBaseURI, accessKey, secretKey, apiGatewayKey)
+}
+
 // NewSchemaClientWithBaseURI creates an instance of the SchemaClient client using a custom endpoint.  Use this when
 // interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewSchemaClientWithBaseURI(baseURI string) SchemaClient {
 	return SchemaClient{NewWithBaseURI(baseURI)}
+}
+
+func NewSchemaClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string, apiGatewayKey string) SchemaClient {
+	return SchemaClient{NewWithBaseURIWithKey(baseURI, accessKey, secretKey, apiGatewayKey)}
 }
 
 // Delete delete schema for an application

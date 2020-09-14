@@ -93,11 +93,23 @@ func NewAlimtalkClient() AlimtalkClient {
 func NewAlimtalkClientWithBaseURI(baseURI string) AlimtalkClient {
 	return original.NewAlimtalkClientWithBaseURI(baseURI)
 }
+func NewAlimtalkClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string) AlimtalkClient {
+	return original.NewAlimtalkClientWithBaseURIWithKey(baseURI, accessKey, secretKey)
+}
+func NewAlimtalkClientWithKey(accessKey string, secretKey string) AlimtalkClient {
+	return original.NewAlimtalkClientWithKey(accessKey, secretKey)
+}
 func NewChannelClient() ChannelClient {
 	return original.NewChannelClient()
 }
 func NewChannelClientWithBaseURI(baseURI string) ChannelClient {
 	return original.NewChannelClientWithBaseURI(baseURI)
+}
+func NewChannelClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string) ChannelClient {
+	return original.NewChannelClientWithBaseURIWithKey(baseURI, accessKey, secretKey)
+}
+func NewChannelClientWithKey(accessKey string, secretKey string) ChannelClient {
+	return original.NewChannelClientWithKey(accessKey, secretKey)
 }
 func NewDeviceClient() DeviceClient {
 	return original.NewDeviceClient()
@@ -105,11 +117,23 @@ func NewDeviceClient() DeviceClient {
 func NewDeviceClientWithBaseURI(baseURI string) DeviceClient {
 	return original.NewDeviceClientWithBaseURI(baseURI)
 }
+func NewDeviceClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string) DeviceClient {
+	return original.NewDeviceClientWithBaseURIWithKey(baseURI, accessKey, secretKey)
+}
+func NewDeviceClientWithKey(accessKey string, secretKey string) DeviceClient {
+	return original.NewDeviceClientWithKey(accessKey, secretKey)
+}
 func NewMessageClient() MessageClient {
 	return original.NewMessageClient()
 }
 func NewMessageClientWithBaseURI(baseURI string) MessageClient {
 	return original.NewMessageClientWithBaseURI(baseURI)
+}
+func NewMessageClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string) MessageClient {
+	return original.NewMessageClientWithBaseURIWithKey(baseURI, accessKey, secretKey)
+}
+func NewMessageClientWithKey(accessKey string, secretKey string) MessageClient {
+	return original.NewMessageClientWithKey(accessKey, secretKey)
 }
 func NewSMSClient() SMSClient {
 	return original.NewSMSClient()
@@ -117,11 +141,23 @@ func NewSMSClient() SMSClient {
 func NewSMSClientWithBaseURI(baseURI string) SMSClient {
 	return original.NewSMSClientWithBaseURI(baseURI)
 }
+func NewSMSClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string) SMSClient {
+	return original.NewSMSClientWithBaseURIWithKey(baseURI, accessKey, secretKey)
+}
+func NewSMSClientWithKey(accessKey string, secretKey string) SMSClient {
+	return original.NewSMSClientWithKey(accessKey, secretKey)
+}
 func NewScheduleClient() ScheduleClient {
 	return original.NewScheduleClient()
 }
 func NewScheduleClientWithBaseURI(baseURI string) ScheduleClient {
 	return original.NewScheduleClientWithBaseURI(baseURI)
+}
+func NewScheduleClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string) ScheduleClient {
+	return original.NewScheduleClientWithBaseURIWithKey(baseURI, accessKey, secretKey)
+}
+func NewScheduleClientWithKey(accessKey string, secretKey string) ScheduleClient {
+	return original.NewScheduleClientWithKey(accessKey, secretKey)
 }
 func NewScheduleMessageClient() ScheduleMessageClient {
 	return original.NewScheduleMessageClient()
@@ -129,8 +165,20 @@ func NewScheduleMessageClient() ScheduleMessageClient {
 func NewScheduleMessageClientWithBaseURI(baseURI string) ScheduleMessageClient {
 	return original.NewScheduleMessageClientWithBaseURI(baseURI)
 }
+func NewScheduleMessageClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string) ScheduleMessageClient {
+	return original.NewScheduleMessageClientWithBaseURIWithKey(baseURI, accessKey, secretKey)
+}
+func NewScheduleMessageClientWithKey(accessKey string, secretKey string) ScheduleMessageClient {
+	return original.NewScheduleMessageClientWithKey(accessKey, secretKey)
+}
 func NewWithBaseURI(baseURI string) BaseClient {
 	return original.NewWithBaseURI(baseURI)
+}
+func NewWithBaseURIWithKey(baseURI string, accessKey string, secretKey string) BaseClient {
+	return original.NewWithBaseURIWithKey(baseURI, accessKey, secretKey)
+}
+func NewWithKey(accessKey string, secretKey string) BaseClient {
+	return original.NewWithKey(accessKey, secretKey)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"

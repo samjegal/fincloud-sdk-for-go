@@ -25,10 +25,18 @@ func NewRootPasswordClient() RootPasswordClient {
 	return NewRootPasswordClientWithBaseURI(DefaultBaseURI)
 }
 
+func NewRootPasswordClientWithKey(accessKey string, secretKey string) RootPasswordClient {
+	return NewRootPasswordClientWithBaseURIWithKey(DefaultBaseURI, accessKey, secretKey)
+}
+
 // NewRootPasswordClientWithBaseURI creates an instance of the RootPasswordClient client using a custom endpoint.  Use
 // this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewRootPasswordClientWithBaseURI(baseURI string) RootPasswordClient {
 	return RootPasswordClient{NewWithBaseURI(baseURI)}
+}
+
+func NewRootPasswordClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string) RootPasswordClient {
+	return RootPasswordClient{NewWithBaseURIWithKey(baseURI, accessKey, secretKey)}
 }
 
 // Get 서버 인스턴스의 루트 패스워드를 조회

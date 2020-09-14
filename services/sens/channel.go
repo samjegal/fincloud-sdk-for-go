@@ -26,10 +26,18 @@ func NewChannelClient() ChannelClient {
 	return NewChannelClientWithBaseURI(DefaultBaseURI)
 }
 
+func NewChannelClientWithKey(accessKey string, secretKey string) ChannelClient {
+	return NewChannelClientWithBaseURIWithKey(DefaultBaseURI, accessKey, secretKey)
+}
+
 // NewChannelClientWithBaseURI creates an instance of the ChannelClient client using a custom endpoint.  Use this when
 // interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewChannelClientWithBaseURI(baseURI string) ChannelClient {
 	return ChannelClient{NewWithBaseURI(baseURI)}
+}
+
+func NewChannelClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string) ChannelClient {
+	return ChannelClient{NewWithBaseURIWithKey(baseURI, accessKey, secretKey)}
 }
 
 // AddUser 채널에 사용자 추가

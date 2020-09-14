@@ -25,10 +25,18 @@ func NewSubnetClient() SubnetClient {
 	return NewSubnetClientWithBaseURI(DefaultBaseURI)
 }
 
+func NewSubnetClientWithKey(accessKey string, secretKey string) SubnetClient {
+	return NewSubnetClientWithBaseURIWithKey(DefaultBaseURI, accessKey, secretKey)
+}
+
 // NewSubnetClientWithBaseURI creates an instance of the SubnetClient client using a custom endpoint.  Use this when
 // interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewSubnetClientWithBaseURI(baseURI string) SubnetClient {
 	return SubnetClient{NewWithBaseURI(baseURI)}
+}
+
+func NewSubnetClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string) SubnetClient {
+	return SubnetClient{NewWithBaseURIWithKey(baseURI, accessKey, secretKey)}
 }
 
 // Create subnet을 생성

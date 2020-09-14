@@ -25,10 +25,18 @@ func NewConfigClient() ConfigClient {
 	return NewConfigClientWithBaseURI(DefaultBaseURI)
 }
 
+func NewConfigClientWithKey(accessKey string, secretKey string) ConfigClient {
+	return NewConfigClientWithBaseURIWithKey(DefaultBaseURI, accessKey, secretKey)
+}
+
 // NewConfigClientWithBaseURI creates an instance of the ConfigClient client using a custom endpoint.  Use this when
 // interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewConfigClientWithBaseURI(baseURI string) ConfigClient {
 	return ConfigClient{NewWithBaseURI(baseURI)}
+}
+
+func NewConfigClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string) ConfigClient {
+	return ConfigClient{NewWithBaseURIWithKey(baseURI, accessKey, secretKey)}
 }
 
 // Get kubeConfig 조회

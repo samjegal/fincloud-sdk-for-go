@@ -364,11 +364,23 @@ func NewChartClient() ChartClient {
 func NewChartClientWithBaseURI(baseURI string) ChartClient {
 	return original.NewChartClientWithBaseURI(baseURI)
 }
+func NewChartClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string, apiGatewayKey string) ChartClient {
+	return original.NewChartClientWithBaseURIWithKey(baseURI, accessKey, secretKey, apiGatewayKey)
+}
+func NewChartClientWithKey(accessKey string, secretKey string, apiGatewayKey string) ChartClient {
+	return original.NewChartClientWithKey(accessKey, secretKey, apiGatewayKey)
+}
 func NewCollectorClient() CollectorClient {
 	return original.NewCollectorClient()
 }
 func NewCollectorClientWithBaseURI(baseURI string) CollectorClient {
 	return original.NewCollectorClientWithBaseURI(baseURI)
+}
+func NewCollectorClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string, apiGatewayKey string) CollectorClient {
+	return original.NewCollectorClientWithBaseURIWithKey(baseURI, accessKey, secretKey, apiGatewayKey)
+}
+func NewCollectorClientWithKey(accessKey string, secretKey string, apiGatewayKey string) CollectorClient {
+	return original.NewCollectorClientWithKey(accessKey, secretKey, apiGatewayKey)
 }
 func NewDataClient() DataClient {
 	return original.NewDataClient()
@@ -376,11 +388,23 @@ func NewDataClient() DataClient {
 func NewDataClientWithBaseURI(baseURI string) DataClient {
 	return original.NewDataClientWithBaseURI(baseURI)
 }
+func NewDataClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string, apiGatewayKey string) DataClient {
+	return original.NewDataClientWithBaseURIWithKey(baseURI, accessKey, secretKey, apiGatewayKey)
+}
+func NewDataClientWithKey(accessKey string, secretKey string, apiGatewayKey string) DataClient {
+	return original.NewDataClientWithKey(accessKey, secretKey, apiGatewayKey)
+}
 func NewEventClient() EventClient {
 	return original.NewEventClient()
 }
 func NewEventClientWithBaseURI(baseURI string) EventClient {
 	return original.NewEventClientWithBaseURI(baseURI)
+}
+func NewEventClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string, apiGatewayKey string) EventClient {
+	return original.NewEventClientWithBaseURIWithKey(baseURI, accessKey, secretKey, apiGatewayKey)
+}
+func NewEventClientWithKey(accessKey string, secretKey string, apiGatewayKey string) EventClient {
+	return original.NewEventClientWithKey(accessKey, secretKey, apiGatewayKey)
 }
 func NewExtendedClient() ExtendedClient {
 	return original.NewExtendedClient()
@@ -388,11 +412,23 @@ func NewExtendedClient() ExtendedClient {
 func NewExtendedClientWithBaseURI(baseURI string) ExtendedClient {
 	return original.NewExtendedClientWithBaseURI(baseURI)
 }
+func NewExtendedClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string, apiGatewayKey string) ExtendedClient {
+	return original.NewExtendedClientWithBaseURIWithKey(baseURI, accessKey, secretKey, apiGatewayKey)
+}
+func NewExtendedClientWithKey(accessKey string, secretKey string, apiGatewayKey string) ExtendedClient {
+	return original.NewExtendedClientWithKey(accessKey, secretKey, apiGatewayKey)
+}
 func NewFilePluginClient() FilePluginClient {
 	return original.NewFilePluginClient()
 }
 func NewFilePluginClientWithBaseURI(baseURI string) FilePluginClient {
 	return original.NewFilePluginClientWithBaseURI(baseURI)
+}
+func NewFilePluginClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string, apiGatewayKey string) FilePluginClient {
+	return original.NewFilePluginClientWithBaseURIWithKey(baseURI, accessKey, secretKey, apiGatewayKey)
+}
+func NewFilePluginClientWithKey(accessKey string, secretKey string, apiGatewayKey string) FilePluginClient {
+	return original.NewFilePluginClientWithKey(accessKey, secretKey, apiGatewayKey)
 }
 func NewMetricClient() MetricClient {
 	return original.NewMetricClient()
@@ -400,11 +436,23 @@ func NewMetricClient() MetricClient {
 func NewMetricClientWithBaseURI(baseURI string) MetricClient {
 	return original.NewMetricClientWithBaseURI(baseURI)
 }
+func NewMetricClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string, apiGatewayKey string) MetricClient {
+	return original.NewMetricClientWithBaseURIWithKey(baseURI, accessKey, secretKey, apiGatewayKey)
+}
+func NewMetricClientWithKey(accessKey string, secretKey string, apiGatewayKey string) MetricClient {
+	return original.NewMetricClientWithKey(accessKey, secretKey, apiGatewayKey)
+}
 func NewMetricGroupClient() MetricGroupClient {
 	return original.NewMetricGroupClient()
 }
 func NewMetricGroupClientWithBaseURI(baseURI string) MetricGroupClient {
 	return original.NewMetricGroupClientWithBaseURI(baseURI)
+}
+func NewMetricGroupClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string, apiGatewayKey string) MetricGroupClient {
+	return original.NewMetricGroupClientWithBaseURIWithKey(baseURI, accessKey, secretKey, apiGatewayKey)
+}
+func NewMetricGroupClientWithKey(accessKey string, secretKey string, apiGatewayKey string) MetricGroupClient {
+	return original.NewMetricGroupClientWithKey(accessKey, secretKey, apiGatewayKey)
 }
 func NewMonitorClient() MonitorClient {
 	return original.NewMonitorClient()
@@ -412,11 +460,23 @@ func NewMonitorClient() MonitorClient {
 func NewMonitorClientWithBaseURI(baseURI string) MonitorClient {
 	return original.NewMonitorClientWithBaseURI(baseURI)
 }
+func NewMonitorClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string, apiGatewayKey string) MonitorClient {
+	return original.NewMonitorClientWithBaseURIWithKey(baseURI, accessKey, secretKey, apiGatewayKey)
+}
+func NewMonitorClientWithKey(accessKey string, secretKey string, apiGatewayKey string) MonitorClient {
+	return original.NewMonitorClientWithKey(accessKey, secretKey, apiGatewayKey)
+}
 func NewMonitorGroupClient() MonitorGroupClient {
 	return original.NewMonitorGroupClient()
 }
 func NewMonitorGroupClientWithBaseURI(baseURI string) MonitorGroupClient {
 	return original.NewMonitorGroupClientWithBaseURI(baseURI)
+}
+func NewMonitorGroupClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string, apiGatewayKey string) MonitorGroupClient {
+	return original.NewMonitorGroupClientWithBaseURIWithKey(baseURI, accessKey, secretKey, apiGatewayKey)
+}
+func NewMonitorGroupClientWithKey(accessKey string, secretKey string, apiGatewayKey string) MonitorGroupClient {
+	return original.NewMonitorGroupClientWithKey(accessKey, secretKey, apiGatewayKey)
 }
 func NewNotificationClient() NotificationClient {
 	return original.NewNotificationClient()
@@ -424,11 +484,23 @@ func NewNotificationClient() NotificationClient {
 func NewNotificationClientWithBaseURI(baseURI string) NotificationClient {
 	return original.NewNotificationClientWithBaseURI(baseURI)
 }
+func NewNotificationClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string, apiGatewayKey string) NotificationClient {
+	return original.NewNotificationClientWithBaseURIWithKey(baseURI, accessKey, secretKey, apiGatewayKey)
+}
+func NewNotificationClientWithKey(accessKey string, secretKey string, apiGatewayKey string) NotificationClient {
+	return original.NewNotificationClientWithKey(accessKey, secretKey, apiGatewayKey)
+}
 func NewPortPluginClient() PortPluginClient {
 	return original.NewPortPluginClient()
 }
 func NewPortPluginClientWithBaseURI(baseURI string) PortPluginClient {
 	return original.NewPortPluginClientWithBaseURI(baseURI)
+}
+func NewPortPluginClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string, apiGatewayKey string) PortPluginClient {
+	return original.NewPortPluginClientWithBaseURIWithKey(baseURI, accessKey, secretKey, apiGatewayKey)
+}
+func NewPortPluginClientWithKey(accessKey string, secretKey string, apiGatewayKey string) PortPluginClient {
+	return original.NewPortPluginClientWithKey(accessKey, secretKey, apiGatewayKey)
 }
 func NewProcessPluginClient() ProcessPluginClient {
 	return original.NewProcessPluginClient()
@@ -436,11 +508,23 @@ func NewProcessPluginClient() ProcessPluginClient {
 func NewProcessPluginClientWithBaseURI(baseURI string) ProcessPluginClient {
 	return original.NewProcessPluginClientWithBaseURI(baseURI)
 }
+func NewProcessPluginClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string, apiGatewayKey string) ProcessPluginClient {
+	return original.NewProcessPluginClientWithBaseURIWithKey(baseURI, accessKey, secretKey, apiGatewayKey)
+}
+func NewProcessPluginClientWithKey(accessKey string, secretKey string, apiGatewayKey string) ProcessPluginClient {
+	return original.NewProcessPluginClientWithKey(accessKey, secretKey, apiGatewayKey)
+}
 func NewRuleGroupClient() RuleGroupClient {
 	return original.NewRuleGroupClient()
 }
 func NewRuleGroupClientWithBaseURI(baseURI string) RuleGroupClient {
 	return original.NewRuleGroupClientWithBaseURI(baseURI)
+}
+func NewRuleGroupClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string, apiGatewayKey string) RuleGroupClient {
+	return original.NewRuleGroupClientWithBaseURIWithKey(baseURI, accessKey, secretKey, apiGatewayKey)
+}
+func NewRuleGroupClientWithKey(accessKey string, secretKey string, apiGatewayKey string) RuleGroupClient {
+	return original.NewRuleGroupClientWithKey(accessKey, secretKey, apiGatewayKey)
 }
 func NewSchemaClient() SchemaClient {
 	return original.NewSchemaClient()
@@ -448,14 +532,32 @@ func NewSchemaClient() SchemaClient {
 func NewSchemaClientWithBaseURI(baseURI string) SchemaClient {
 	return original.NewSchemaClientWithBaseURI(baseURI)
 }
+func NewSchemaClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string, apiGatewayKey string) SchemaClient {
+	return original.NewSchemaClientWithBaseURIWithKey(baseURI, accessKey, secretKey, apiGatewayKey)
+}
+func NewSchemaClientWithKey(accessKey string, secretKey string, apiGatewayKey string) SchemaClient {
+	return original.NewSchemaClientWithKey(accessKey, secretKey, apiGatewayKey)
+}
 func NewServerClient() ServerClient {
 	return original.NewServerClient()
 }
 func NewServerClientWithBaseURI(baseURI string) ServerClient {
 	return original.NewServerClientWithBaseURI(baseURI)
 }
+func NewServerClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string, apiGatewayKey string) ServerClient {
+	return original.NewServerClientWithBaseURIWithKey(baseURI, accessKey, secretKey, apiGatewayKey)
+}
+func NewServerClientWithKey(accessKey string, secretKey string, apiGatewayKey string) ServerClient {
+	return original.NewServerClientWithKey(accessKey, secretKey, apiGatewayKey)
+}
 func NewWithBaseURI(baseURI string) BaseClient {
 	return original.NewWithBaseURI(baseURI)
+}
+func NewWithBaseURIWithKey(baseURI string, accessKey string, secretKey string, apiGatewayKey string) BaseClient {
+	return original.NewWithBaseURIWithKey(baseURI, accessKey, secretKey, apiGatewayKey)
+}
+func NewWithKey(accessKey string, secretKey string, apiGatewayKey string) BaseClient {
+	return original.NewWithKey(accessKey, secretKey, apiGatewayKey)
 }
 func PossibleAggregationTypeValues() []AggregationType {
 	return original.PossibleAggregationTypeValues()

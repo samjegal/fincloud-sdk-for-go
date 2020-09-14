@@ -25,10 +25,18 @@ func NewPublicIPClient() PublicIPClient {
 	return NewPublicIPClientWithBaseURI(DefaultBaseURI)
 }
 
+func NewPublicIPClientWithKey(accessKey string, secretKey string) PublicIPClient {
+	return NewPublicIPClientWithBaseURIWithKey(DefaultBaseURI, accessKey, secretKey)
+}
+
 // NewPublicIPClientWithBaseURI creates an instance of the PublicIPClient client using a custom endpoint.  Use this
 // when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewPublicIPClientWithBaseURI(baseURI string) PublicIPClient {
 	return PublicIPClient{NewWithBaseURI(baseURI)}
+}
+
+func NewPublicIPClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string) PublicIPClient {
+	return PublicIPClient{NewWithBaseURIWithKey(baseURI, accessKey, secretKey)}
 }
 
 // Associate 공인 IP를 서버 인스턴스에 할당

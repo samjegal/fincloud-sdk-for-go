@@ -26,10 +26,18 @@ func NewMetricGroupClient() MetricGroupClient {
 	return NewMetricGroupClientWithBaseURI(DefaultBaseURI)
 }
 
+func NewMetricGroupClientWithKey(accessKey string, secretKey string, apiGatewayKey string) MetricGroupClient {
+	return NewMetricGroupClientWithBaseURIWithKey(DefaultBaseURI, accessKey, secretKey, apiGatewayKey)
+}
+
 // NewMetricGroupClientWithBaseURI creates an instance of the MetricGroupClient client using a custom endpoint.  Use
 // this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewMetricGroupClientWithBaseURI(baseURI string) MetricGroupClient {
 	return MetricGroupClient{NewWithBaseURI(baseURI)}
+}
+
+func NewMetricGroupClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string, apiGatewayKey string) MetricGroupClient {
+	return MetricGroupClient{NewWithBaseURIWithKey(baseURI, accessKey, secretKey, apiGatewayKey)}
 }
 
 // Create 감시 항목 그룹(템플릿)을 생성합니다.

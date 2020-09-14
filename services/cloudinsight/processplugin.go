@@ -25,10 +25,18 @@ func NewProcessPluginClient() ProcessPluginClient {
 	return NewProcessPluginClientWithBaseURI(DefaultBaseURI)
 }
 
+func NewProcessPluginClientWithKey(accessKey string, secretKey string, apiGatewayKey string) ProcessPluginClient {
+	return NewProcessPluginClientWithBaseURIWithKey(DefaultBaseURI, accessKey, secretKey, apiGatewayKey)
+}
+
 // NewProcessPluginClientWithBaseURI creates an instance of the ProcessPluginClient client using a custom endpoint.
 // Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewProcessPluginClientWithBaseURI(baseURI string) ProcessPluginClient {
 	return ProcessPluginClient{NewWithBaseURI(baseURI)}
+}
+
+func NewProcessPluginClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string, apiGatewayKey string) ProcessPluginClient {
+	return ProcessPluginClient{NewWithBaseURIWithKey(baseURI, accessKey, secretKey, apiGatewayKey)}
 }
 
 // Create process Plugin을 설정

@@ -26,10 +26,18 @@ func NewDeviceClient() DeviceClient {
 	return NewDeviceClientWithBaseURI(DefaultBaseURI)
 }
 
+func NewDeviceClientWithKey(accessKey string, secretKey string) DeviceClient {
+	return NewDeviceClientWithBaseURIWithKey(DefaultBaseURI, accessKey, secretKey)
+}
+
 // NewDeviceClientWithBaseURI creates an instance of the DeviceClient client using a custom endpoint.  Use this when
 // interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewDeviceClientWithBaseURI(baseURI string) DeviceClient {
 	return DeviceClient{NewWithBaseURI(baseURI)}
+}
+
+func NewDeviceClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string) DeviceClient {
+	return DeviceClient{NewWithBaseURIWithKey(baseURI, accessKey, secretKey)}
 }
 
 // Create 디바이스 등록

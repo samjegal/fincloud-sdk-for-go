@@ -25,10 +25,18 @@ func NewACGClient() ACGClient {
 	return NewACGClientWithBaseURI(DefaultBaseURI)
 }
 
+func NewACGClientWithKey(accessKey string, secretKey string) ACGClient {
+	return NewACGClientWithBaseURIWithKey(DefaultBaseURI, accessKey, secretKey)
+}
+
 // NewACGClientWithBaseURI creates an instance of the ACGClient client using a custom endpoint.  Use this when
 // interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewACGClientWithBaseURI(baseURI string) ACGClient {
 	return ACGClient{NewWithBaseURI(baseURI)}
+}
+
+func NewACGClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string) ACGClient {
+	return ACGClient{NewWithBaseURIWithKey(baseURI, accessKey, secretKey)}
 }
 
 // Create aCG를 생성

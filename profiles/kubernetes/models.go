@@ -52,11 +52,23 @@ func NewClustersClient() ClustersClient {
 func NewClustersClientWithBaseURI(baseURI string) ClustersClient {
 	return original.NewClustersClientWithBaseURI(baseURI)
 }
+func NewClustersClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string) ClustersClient {
+	return original.NewClustersClientWithBaseURIWithKey(baseURI, accessKey, secretKey)
+}
+func NewClustersClientWithKey(accessKey string, secretKey string) ClustersClient {
+	return original.NewClustersClientWithKey(accessKey, secretKey)
+}
 func NewConfigClient() ConfigClient {
 	return original.NewConfigClient()
 }
 func NewConfigClientWithBaseURI(baseURI string) ConfigClient {
 	return original.NewConfigClientWithBaseURI(baseURI)
+}
+func NewConfigClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string) ConfigClient {
+	return original.NewConfigClientWithBaseURIWithKey(baseURI, accessKey, secretKey)
+}
+func NewConfigClientWithKey(accessKey string, secretKey string) ConfigClient {
+	return original.NewConfigClientWithKey(accessKey, secretKey)
 }
 func NewNodePoolClient() NodePoolClient {
 	return original.NewNodePoolClient()
@@ -64,14 +76,32 @@ func NewNodePoolClient() NodePoolClient {
 func NewNodePoolClientWithBaseURI(baseURI string) NodePoolClient {
 	return original.NewNodePoolClientWithBaseURI(baseURI)
 }
+func NewNodePoolClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string) NodePoolClient {
+	return original.NewNodePoolClientWithBaseURIWithKey(baseURI, accessKey, secretKey)
+}
+func NewNodePoolClientWithKey(accessKey string, secretKey string) NodePoolClient {
+	return original.NewNodePoolClientWithKey(accessKey, secretKey)
+}
 func NewWithBaseURI(baseURI string) BaseClient {
 	return original.NewWithBaseURI(baseURI)
+}
+func NewWithBaseURIWithKey(baseURI string, accessKey string, secretKey string) BaseClient {
+	return original.NewWithBaseURIWithKey(baseURI, accessKey, secretKey)
+}
+func NewWithKey(accessKey string, secretKey string) BaseClient {
+	return original.NewWithKey(accessKey, secretKey)
 }
 func NewWorkerNodeClient() WorkerNodeClient {
 	return original.NewWorkerNodeClient()
 }
 func NewWorkerNodeClientWithBaseURI(baseURI string) WorkerNodeClient {
 	return original.NewWorkerNodeClientWithBaseURI(baseURI)
+}
+func NewWorkerNodeClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string) WorkerNodeClient {
+	return original.NewWorkerNodeClientWithBaseURIWithKey(baseURI, accessKey, secretKey)
+}
+func NewWorkerNodeClientWithKey(accessKey string, secretKey string) WorkerNodeClient {
+	return original.NewWorkerNodeClientWithKey(accessKey, secretKey)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"

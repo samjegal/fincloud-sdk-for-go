@@ -25,10 +25,18 @@ func NewCollectorClient() CollectorClient {
 	return NewCollectorClientWithBaseURI(DefaultBaseURI)
 }
 
+func NewCollectorClientWithKey(accessKey string, secretKey string, apiGatewayKey string) CollectorClient {
+	return NewCollectorClientWithBaseURIWithKey(DefaultBaseURI, accessKey, secretKey, apiGatewayKey)
+}
+
 // NewCollectorClientWithBaseURI creates an instance of the CollectorClient client using a custom endpoint.  Use this
 // when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewCollectorClientWithBaseURI(baseURI string) CollectorClient {
 	return CollectorClient{NewWithBaseURI(baseURI)}
+}
+
+func NewCollectorClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string, apiGatewayKey string) CollectorClient {
+	return CollectorClient{NewWithBaseURIWithKey(baseURI, accessKey, secretKey, apiGatewayKey)}
 }
 
 // SendMethod JSON 데이터를 Cloud Insight Collector로 보냅니다.

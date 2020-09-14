@@ -248,11 +248,23 @@ func NewClient() Client {
 func NewClientWithBaseURI(baseURI string) Client {
 	return original.NewClientWithBaseURI(baseURI)
 }
+func NewClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string) Client {
+	return original.NewClientWithBaseURIWithKey(baseURI, accessKey, secretKey)
+}
+func NewClientWithKey(accessKey string, secretKey string) Client {
+	return original.NewClientWithKey(accessKey, secretKey)
+}
 func NewNatGatewayClient() NatGatewayClient {
 	return original.NewNatGatewayClient()
 }
 func NewNatGatewayClientWithBaseURI(baseURI string) NatGatewayClient {
 	return original.NewNatGatewayClientWithBaseURI(baseURI)
+}
+func NewNatGatewayClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string) NatGatewayClient {
+	return original.NewNatGatewayClientWithBaseURIWithKey(baseURI, accessKey, secretKey)
+}
+func NewNatGatewayClientWithKey(accessKey string, secretKey string) NatGatewayClient {
+	return original.NewNatGatewayClientWithKey(accessKey, secretKey)
 }
 func NewNetworkACLClient() NetworkACLClient {
 	return original.NewNetworkACLClient()
@@ -260,11 +272,23 @@ func NewNetworkACLClient() NetworkACLClient {
 func NewNetworkACLClientWithBaseURI(baseURI string) NetworkACLClient {
 	return original.NewNetworkACLClientWithBaseURI(baseURI)
 }
+func NewNetworkACLClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string) NetworkACLClient {
+	return original.NewNetworkACLClientWithBaseURIWithKey(baseURI, accessKey, secretKey)
+}
+func NewNetworkACLClientWithKey(accessKey string, secretKey string) NetworkACLClient {
+	return original.NewNetworkACLClientWithKey(accessKey, secretKey)
+}
 func NewPeeringClient() PeeringClient {
 	return original.NewPeeringClient()
 }
 func NewPeeringClientWithBaseURI(baseURI string) PeeringClient {
 	return original.NewPeeringClientWithBaseURI(baseURI)
+}
+func NewPeeringClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string) PeeringClient {
+	return original.NewPeeringClientWithBaseURIWithKey(baseURI, accessKey, secretKey)
+}
+func NewPeeringClientWithKey(accessKey string, secretKey string) PeeringClient {
+	return original.NewPeeringClientWithKey(accessKey, secretKey)
 }
 func NewRouteClient() RouteClient {
 	return original.NewRouteClient()
@@ -272,11 +296,23 @@ func NewRouteClient() RouteClient {
 func NewRouteClientWithBaseURI(baseURI string) RouteClient {
 	return original.NewRouteClientWithBaseURI(baseURI)
 }
+func NewRouteClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string) RouteClient {
+	return original.NewRouteClientWithBaseURIWithKey(baseURI, accessKey, secretKey)
+}
+func NewRouteClientWithKey(accessKey string, secretKey string) RouteClient {
+	return original.NewRouteClientWithKey(accessKey, secretKey)
+}
 func NewRouteTableClient() RouteTableClient {
 	return original.NewRouteTableClient()
 }
 func NewRouteTableClientWithBaseURI(baseURI string) RouteTableClient {
 	return original.NewRouteTableClientWithBaseURI(baseURI)
+}
+func NewRouteTableClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string) RouteTableClient {
+	return original.NewRouteTableClientWithBaseURIWithKey(baseURI, accessKey, secretKey)
+}
+func NewRouteTableClientWithKey(accessKey string, secretKey string) RouteTableClient {
+	return original.NewRouteTableClientWithKey(accessKey, secretKey)
 }
 func NewRouteTableSubnetClient() RouteTableSubnetClient {
 	return original.NewRouteTableSubnetClient()
@@ -284,14 +320,32 @@ func NewRouteTableSubnetClient() RouteTableSubnetClient {
 func NewRouteTableSubnetClientWithBaseURI(baseURI string) RouteTableSubnetClient {
 	return original.NewRouteTableSubnetClientWithBaseURI(baseURI)
 }
+func NewRouteTableSubnetClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string) RouteTableSubnetClient {
+	return original.NewRouteTableSubnetClientWithBaseURIWithKey(baseURI, accessKey, secretKey)
+}
+func NewRouteTableSubnetClientWithKey(accessKey string, secretKey string) RouteTableSubnetClient {
+	return original.NewRouteTableSubnetClientWithKey(accessKey, secretKey)
+}
 func NewSubnetClient() SubnetClient {
 	return original.NewSubnetClient()
 }
 func NewSubnetClientWithBaseURI(baseURI string) SubnetClient {
 	return original.NewSubnetClientWithBaseURI(baseURI)
 }
+func NewSubnetClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string) SubnetClient {
+	return original.NewSubnetClientWithBaseURIWithKey(baseURI, accessKey, secretKey)
+}
+func NewSubnetClientWithKey(accessKey string, secretKey string) SubnetClient {
+	return original.NewSubnetClientWithKey(accessKey, secretKey)
+}
 func NewWithBaseURI(baseURI string) BaseClient {
 	return original.NewWithBaseURI(baseURI)
+}
+func NewWithBaseURIWithKey(baseURI string, accessKey string, secretKey string) BaseClient {
+	return original.NewWithBaseURIWithKey(baseURI, accessKey, secretKey)
+}
+func NewWithKey(accessKey string, secretKey string) BaseClient {
+	return original.NewWithKey(accessKey, secretKey)
 }
 func PossibleNatGatewayInstanceStatusCodeValues() []NatGatewayInstanceStatusCode {
 	return original.PossibleNatGatewayInstanceStatusCodeValues()

@@ -26,10 +26,18 @@ func NewEventClient() EventClient {
 	return NewEventClientWithBaseURI(DefaultBaseURI)
 }
 
+func NewEventClientWithKey(accessKey string, secretKey string, apiGatewayKey string) EventClient {
+	return NewEventClientWithBaseURIWithKey(DefaultBaseURI, accessKey, secretKey, apiGatewayKey)
+}
+
 // NewEventClientWithBaseURI creates an instance of the EventClient client using a custom endpoint.  Use this when
 // interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
 func NewEventClientWithBaseURI(baseURI string) EventClient {
 	return EventClient{NewWithBaseURI(baseURI)}
+}
+
+func NewEventClientWithBaseURIWithKey(baseURI string, accessKey string, secretKey string, apiGatewayKey string) EventClient {
+	return EventClient{NewWithBaseURIWithKey(baseURI, accessKey, secretKey, apiGatewayKey)}
 }
 
 // SearchByID event id와 Rule id로 Event를 상세 조회합니다.
